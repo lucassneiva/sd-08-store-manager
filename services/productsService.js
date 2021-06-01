@@ -77,8 +77,31 @@ const getProductById = async (id) => {
   }
 };
 
+const updateProductById = async (id, newProductInfo) => {
+  const validationError = isProductValid(newProductInfo);
+  if(validationError) return validationError;
+
+  const result = await ProductsModel.updateProductById(id, newProductInfo);
+  if (!result) return {
+    err: {
+      code: 'not_found',
+      message: 'Id not found'
+    }
+  };
+  return result;
+};
+
+const deleteProductById = async (id) => {
+  const product = await getProductById(id);
+  if (product.err) return product;
+  await ProductsModel.deleteProductById(id);
+  return product;
+};
+
 module.exports = {
   newProduct,
   getAllProducts,
   getProductById,
+  updateProductById,
+  deleteProductById,
 };

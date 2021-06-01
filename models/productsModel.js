@@ -1,6 +1,8 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
+const ZERO = 0;
+
 const findProductByName = async (name) => {
   const db = await connection();
   const result = await db.collection('products').findOne({ name });
@@ -29,9 +31,28 @@ const getProductById = async (id) => {
   return result;
 };
 
+const updateProductById = async (id, newProductInfo) => {
+  const db = await connection();
+  const result = await db.collection('products')
+    .updateOne({ _id: new ObjectId(id) }, { $set: newProductInfo });
+  if (!result.matchedCount) return null;
+  return {
+    _id: id,
+    ...newProductInfo,
+  };
+};
+
+const deleteProductById = async (id) => {
+  const db = await connection();
+  const result = await db.collection('products')
+    .deleteOne({ _id: new ObjectId(id) });
+};
+
 module.exports = {
   newProduct,
   findProductByName,
   getAllProducts,
   getProductById,
+  updateProductById,
+  deleteProductById,
 };
