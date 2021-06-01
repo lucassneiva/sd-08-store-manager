@@ -1,8 +1,10 @@
 const connection = require('./connection');
 
+const COLLECTION_NAME = 'products';
+
 const create = async ({ name, quantity }) => {
   const productsCollection = await connection()
-    .then((db) => db.collection('products'));
+    .then((db) => db.collection(COLLECTION_NAME));
   
   const { insertedID: _id } = await productsCollection
     .insertOne({ name, quantity });
@@ -16,11 +18,17 @@ const create = async ({ name, quantity }) => {
 
 
 const read = async () => {
-  const productsCollection = await connection()
-    .then((db) => db.collection('products'));
-  
-  return productsCollection.find();
+  const products = await connection().then((db) => {
+    return db
+      .collection(COLLECTION_NAME)
+      .find().toArray();
+  });
+  return products;
 };
+// const read = async () => {
+//   return connection()
+//     .then((db) => db.collection('products').find().toArray());
+// };
 
 module.exports = {
   create,
