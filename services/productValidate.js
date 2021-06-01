@@ -1,6 +1,6 @@
 const ProductModel = require('../models/productModel');
 
-const validateAdd = (name, quantity) => {
+const validate = (name, quantity) => {
   const nameIsValid = 5;
   const quantityIsValid = 0;
   switch (true) {
@@ -16,7 +16,7 @@ const validateAdd = (name, quantity) => {
 };
 
 const addProduct = async (name, quantity) => {
-  const validation = validateAdd(name, quantity);
+  const validation = validate(name, quantity);
   if(validation.message) return validation;
 
   if (await ProductModel.nameExists(name)) {
@@ -41,8 +41,22 @@ const getById = async (id) => {
   return { code: 200, result };
 };
 
+const updateProduct = async (id, name, quantity) => {
+  const validation = validate(name, quantity);
+  if(validation.message) return validation;
+
+  if (await ProductModel.nameExists(name)) {
+    return { code: 422, message: 'Product already exists'};
+  }
+
+  const result = await ProductModel.updateById(id, name, quantity);
+  
+  return { code: 201, result };
+};
+
 module.exports = { 
   addProduct,
   getAll,
-  getById
+  getById,
+  updateProduct
 };
