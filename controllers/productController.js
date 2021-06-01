@@ -2,10 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const ProductValidate = require('../services/productValidate');
-const { ObjectID } = require('mongodb');
-// const ProductModel = require('../models/productModel');
-
-// const STATUS_OK = 200;
 const STATUS_ERROR = 500;
 
 router.get('/', async (_req, res) => {
