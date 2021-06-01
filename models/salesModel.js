@@ -42,8 +42,27 @@ const getSalesById = async (id) => {
   }
 };
 
+const updateSale = async (id, itens) => {
+  try {
+    const verifyProduct = await getSalesById(id);
+    if (!verifyProduct) return null;
+
+    await connection()
+      .then((db) => db.collection('sales').updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { itensSold: itens } }
+      ));
+
+    return ({ _id: new ObjectId(id), itensSold: itens });
+  } catch (err) {
+    console.error(err);
+    return process.exit(1);
+  }
+};
+
 module.exports = {
   createSales,
   getSales,
   getSalesById,
+  updateSale,
 };

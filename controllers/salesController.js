@@ -39,5 +39,21 @@ router.get('/:id', async (req, res, _next) => {
   res.status(SUCCESS_CODE).json(response);
 });
 
+router.put('/:id', async (req, res, _next) => {
+  const { id } = req.params;
+  const itens = req.body;
+
+  const validation = await SalesServices.verifySalesItens(itens);
+  if (validation) return res.status(INVALID_CODE).json({ err: validation });
+
+  const response = await SalesModel.updateSale(id, itens);
+
+  if (!response) return res.status(INVALID_CODE)
+    .json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
+
+
+  res.status(SUCCESS_CODE).json(response);
+});
+
 
 module.exports = router;
