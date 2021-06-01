@@ -34,6 +34,19 @@ const getById = async(req, res) => {
   }
 };
 
+const updateProduct = async(req, res) => {
+  const { id } = req.params;
+  const{ name, quantity } = req.body;
+  try {
+    checkProduct(req, res);
+    const data = await products.updateProduct(id, name, quantity);
+    if(data.err) return res.status(error).json(data);
+    res.status(success).json(data);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
-  createProduct, getAll, getById
+  createProduct, getAll, getById, updateProduct
 };

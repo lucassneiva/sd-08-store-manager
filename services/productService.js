@@ -24,6 +24,19 @@ async function getById(id){
   return data;
 }
 
+async function updateProduct(id, name, quantity){
+  const data = await products.updateProduct(id, name, quantity);
+  if(!data){
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Product already exists'
+      }
+    };
+  }
+  return data;
+}
+
 module.exports = {
-  createProduct, getAll, getById
+  createProduct, getAll, getById, updateProduct
 };

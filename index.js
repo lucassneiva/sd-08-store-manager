@@ -10,7 +10,8 @@ app.route('/products')
   .get(products.getAll);
 
 app.route('/products/:id')
-  .get(products.getById);
+  .get(products.getById)
+  .put(products.updateProduct);
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Online port: ${PORT}`));
