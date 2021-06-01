@@ -18,10 +18,22 @@ const isValid = async (name, quantity) => {
   return {};
 };
 
+const findById = async (id) => {  
+  const productData = await ProductModel.findById(id);
+  
+  if (!productData) return null;
+
+  return productData;
+};
+
+const getAll = async () => {
+  const produtcsData = await ProductModel.getAll();
+
+  return produtcsData;
+};
+
 const create = async ({ name, quantity }) => {
   const messageError = await isValid(name, quantity);
-
-  console.log(messageError);
 
   if (messageError && Object.keys(messageError).length !== ZERO) return { 
     err: {
@@ -30,11 +42,11 @@ const create = async ({ name, quantity }) => {
     }
   };
 
-  const { id } = await ProductModel
+  const { _id } = await ProductModel
     .create({ name, quantity });
 
   return {
-    id,
+    _id,
     name,
     quantity,
   };
@@ -42,4 +54,6 @@ const create = async ({ name, quantity }) => {
 
 module.exports = {
   create,
+  getAll,
+  findById,
 };
