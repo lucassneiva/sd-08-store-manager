@@ -1,3 +1,21 @@
+<!-- 
+https://github.com/tryber/sd-08-store-manager/pull/12 
+
+products
+{ "name": "Produto Silva", "quantity": 10 }
+{ "_id": ObjectId("5f43cbf4c45ff5104986e81d"), "name": "Produto Silva", "quantity": 10 }
+
+sales
+{ "itensSold": [{ "productId": "5f43cbf4c45ff5104986e81d", "quantity": 2 }] }
+{
+  "_id": ObjectId("5f43cc53c45ff5104986e81e"),
+  "itensSold": [{ "productId": "5f43cbf4c45ff5104986e81d", "quantity": 2 }]
+}
+
+-->
+
+
+
 ### Termos e acordos
 
 Ao iniciar este projeto, você concorda com as diretrizes do Código de Ética e Conduta e do Manual da Pessoa Estudante da Trybe
