@@ -22,7 +22,7 @@ const validateUpdate = async (name, quantity) => {
   return undefined;
 };
 
-const newProduct = async(name, quantity) => {
+const newProduct = async (name, quantity) => {
   const db = await connection();
 
   const product = await db.collection('products').findOne({ name });
