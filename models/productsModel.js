@@ -28,9 +28,17 @@ const updateProduct = async (id, name, quantity) =>
       .then((result) => result.matchedCount),
   );
 
+const deleteProduct = async (id) => {
+  const productDeleted = await getProductById(id);
+  connection()
+    .then((db) => db.collection(collectionName).deleteOne({ _id: ObjectId(id) }));
+  return productDeleted;
+};
+
 module.exports = {
   getAllProducts,
   insertAProduct,
   getProductById,
   updateProduct,
+  deleteProduct,
 };

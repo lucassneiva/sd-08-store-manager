@@ -4,6 +4,14 @@ const { isValidName, isValidQuantity, alreadyExists } = require('./productsValid
 
 const getAllProducts = async () => await productsModels.getAllProducts();
 
+const erroID = {
+  err: {
+    code: 'invalid_data',
+    message: 'Wrong id format',
+    status: 422,
+  },
+};
+
 const insertAProduct = async (name, quantity) => {
   const nameValidation = isValidName(name);
   const quantityValidation = isValidQuantity(quantity);
@@ -20,14 +28,7 @@ const insertAProduct = async (name, quantity) => {
 };
 
 const getProductById = async (id) => {
-  if (!ObjectId.isValid(id))
-    return {
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong id format',
-        status: 422,
-      },
-    };
+  if (!ObjectId.isValid(id)) return erroID;
   const response = await productsModels.getProductById(id);
   if (!response)
     return {
@@ -47,14 +48,7 @@ const updateProduct = async (id, name, quantity) => {
   if (nameValidation.err) return nameValidation;
   if (quantityValidation.err) return quantityValidation;
 
-  if (!ObjectId.isValid(id))
-    return {
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong id format',
-        status: 422,
-      },
-    };
+  if (!ObjectId.isValid(id)) return erroID;
 
   const response = await productsModels.updateProduct(id, name, quantity);
 
@@ -69,9 +63,16 @@ const updateProduct = async (id, name, quantity) => {
   return response;
 };
 
+const deleteProduct = async (id) => {
+  if (!ObjectId.isValid(id)) return erroID;
+  const response = productsModels.deleteProduct(id);
+  return response;
+};
+
 module.exports = {
   getAllProducts,
   insertAProduct,
   getProductById,
   updateProduct,
+  deleteProduct,
 };

@@ -27,13 +27,21 @@ const updateProduct = rescue(async (req, res, next) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
   const result = await productsServices.updateProduct(id, name, quantity);
-  if(result.err) return next(result);
-  res.status(OK_STATUS).json({_id: id, name, quantity});
+  if (result.err) return next(result);
+  res.status(OK_STATUS).json({ _id: id, name, quantity });
+});
+
+const deleteProduct = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  result = await productsServices.deleteProduct(id);
+  if (result.err) return next(result);
+  res.status(OK_STATUS).json(result);
 });
 
 module.exports = {
   insertAProduct,
   getAllProducts,
   getProductById,
-  updateProduct
+  updateProduct,
+  deleteProduct,
 };
