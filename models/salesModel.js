@@ -16,6 +16,34 @@ const createSales = async (itens) => {
   }
 };
 
+const getSales = async () => {
+  try {
+    const result = await connection()
+      .then((db) => db.collection('sales').find().toArray());
+
+    return result;
+  } catch (err) {
+    console.error(err);
+    return process.exit(1);
+  }
+};
+
+const getSalesById = async (id) => {
+  try {
+    if (!ObjectID.isValid(id)) { return null; };
+
+    const result = await connection()
+      .then((db) => db.collection('sales').findOne({ _id: new ObjectId(id) }));
+
+    return result;
+  } catch (err) {
+    console.error(err);
+    return process.exit(1);
+  }
+};
+
 module.exports = {
   createSales,
+  getSales,
+  getSalesById,
 };
