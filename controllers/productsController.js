@@ -15,6 +15,9 @@ router.post('/products', async (req, res, _next) => {
   const validation = await ProductService.validateNewProduct({ name, quantity });
   if (validation) return res.status(INVALID_CODE).json({ err: validation });
 
+  const productExists = await ProductService.verifyIfExists(name);
+  if (productExists) return res.status(INVALID_CODE).json({ err: productExists });
+
   const response = await ProductModel.createProduct({ name, quantity });
 
   res.status(CREATED_CODE).json(response);
@@ -32,6 +35,22 @@ router.get('/products/:id', async (req, res, _next) => {
   const { id } = req.params;
 
   const response = await ProductModel.getProductById(id);
+
+  if (!response) return res.status(INVALID_CODE)
+    .json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
+
+
+  res.status(SUCCESS_CODE).json(response);
+});
+
+router.put('/products/:id', async (req, res, _next) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+
+  const validation = await ProductService.validateNewProduct({ name, quantity });
+  if (validation) return res.status(INVALID_CODE).json({ err: validation });
+
+  const response = await ProductModel.updateProduct(id, name, quantity);
 
   if (!response) return res.status(INVALID_CODE)
     .json({ err: { code: 'invalid_data', message: 'Wrong id format' } });

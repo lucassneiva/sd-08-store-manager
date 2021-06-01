@@ -10,12 +10,12 @@ const QUANTITY_TYPE_MESSAGE = '"quantity" must be a number';
 
 const verifyIfExists = async (itemName) => {
   const result = await ProductModel.getProductByName(itemName);
-  if (result) return true;
+  if (result) return ({ code: INVALID_CODE, message: PRODUCT_EXISTS_MESSAGE });
 
-  return false;
+  return null;
 };
 
-const validateNewProduct = async (item) => {
+const validateNewProduct = (item) => {
   const { name, quantity } = item;
 
   if (name.length < MIN_LENGTH) return (
@@ -27,14 +27,10 @@ const validateNewProduct = async (item) => {
   if (typeof quantity !== 'number') return (
     { code: INVALID_CODE, message: QUANTITY_TYPE_MESSAGE });
 
-  const productExists = await verifyIfExists(name);
-  if (productExists) return (
-    { code: INVALID_CODE, message: PRODUCT_EXISTS_MESSAGE });
-
-
   return null;
 };
 
 module.exports = {
   validateNewProduct,
+  verifyIfExists,
 };
