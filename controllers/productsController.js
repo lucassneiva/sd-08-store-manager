@@ -4,6 +4,7 @@ const rescue = require('express-rescue');
 const ProductsService = require('../services/productsService');
 
 const INVALID_ERR = 422;
+const OK = 200;
 const CREATED = 201;
 const NONE = 0;
 
@@ -54,11 +55,31 @@ const createProduct = rescue(async (req, res) => {
   res.status(CREATED).json(newProduct);
 });
 
+const findProductById = rescue(async (req, res) => {
+  const { id } = req.params;
+  const product = await ProductsService.findById(id);
+  if(!product) return res.status(INVALID_ERR).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format'
+    }
+  });
+  return res.status(OK).json(product);
+});
+
+const listAllProducts = rescue(async(req, res) => {
+  const products = await ProductsService.listAllProducts();
+  return res.status(OK).json(products);
+});
+
 router.post('/products',
   validateProductName,
   productExists,
   validateProductQuantity,
   createProduct,
 );
+
+router.get('/products/:id', findProductById);
+router.get('/products', listAllProducts);
 
 module.exports = router;
