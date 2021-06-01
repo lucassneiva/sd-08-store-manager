@@ -35,8 +35,6 @@ const validateNewProduct = async (item) => {
   return null;
 };
 
-
-
 module.exports = {
   validateNewProduct,
 };

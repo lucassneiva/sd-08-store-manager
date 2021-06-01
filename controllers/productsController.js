@@ -4,8 +4,10 @@ const ProductModel = require('../models/productsModel');
 const ProductService = require('../services/productsServices');
 const router = express.Router();
 
+const SUCCESS_CODE = 200;
 const CREATED_CODE = 201;
 const INVALID_CODE = 422;
+const NOT_FOUND_CODE = 404;
 
 router.post('/products', async (req, res, _next) => {
   const { name, quantity } = req.body;
@@ -16,6 +18,26 @@ router.post('/products', async (req, res, _next) => {
   const response = await ProductModel.createProduct({ name, quantity });
 
   res.status(CREATED_CODE).json(response);
+});
+
+router.get('/products', async (_req, res, _next) => {
+  const response = await ProductModel.getProducts();
+
+  if (!response) return res.status(NOT_FOUND_CODE).json({ err: 'None product in DB' });
+
+  res.status(SUCCESS_CODE).json({ products: response });
+});
+
+router.get('/products/:id', async (req, res, _next) => {
+  const { id } = req.params;
+
+  const response = await ProductModel.getProductById(id);
+
+  if (!response) return res.status(INVALID_CODE)
+    .json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
+
+
+  res.status(SUCCESS_CODE).json(response);
 });
 
 
