@@ -112,8 +112,8 @@ Você deve utilizar o banco MongoDB para a gestão de dados. Além disso, a API 
 
 ## Data de Entrega
 
-  - Serão `X` dias de projeto.
-  - Data de entrega para avaliação final do projeto: `DD/MM/YYYY - 14:00h`.
+  - Serão `2` dias de projeto.
+  - Data de entrega para avaliação final do projeto: `09/06/2021 - 14:00h`.
 
 ---
 
@@ -353,7 +353,7 @@ O retorno da API de um produto cadastrado com sucesso deverá ser:
 
 #### Requisição de Cadastro de Produtos:
 
-O projeto deve rodar na porta `http://localhost/3000`
+O projeto deve rodar na porta `http://localhost:3000`
 
 ![Criar produtos](./public/criarProdutos.png)
 
