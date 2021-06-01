@@ -36,7 +36,8 @@ const getOne = async(id)=>{
 };
 const updateOne = async(id,body)=>{
   return conn().
-    then(db=>db.collection('products').updateOne({'_id':ObjectId(id)},{$set:body}).toArray());
+    then(db=>db.collection('products')
+      .updateOne({'_id':ObjectId(id)},{$set:body}).toArray());
   
 };
 
