@@ -7,6 +7,7 @@ const create = async (name, quantity) => {
 
 const findByName = async (name) => {
   const productByName = await ProductModel.findByName(name);
+  return productByName;
 };
 
 module.exports = {

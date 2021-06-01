@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const rescue = require('express-rescue');
 const ProductsService = require('../services/productsService');
+
 const INVALID_ERR = 422;
 const CREATED = 201;
+const NONE = 0;
 
 const validateProductName = (req, res, next) => {
   const { name } = req.body;
@@ -11,7 +13,7 @@ const validateProductName = (req, res, next) => {
   if (!name || name.length < minLength) return res.status(INVALID_ERR).json({
     err: {
       code: 'invalid_data',
-      'message': '"name" must be at least 5 characters long'
+      'message': '"name" length must be at least 5 characters long'
     }
   });
   next();
