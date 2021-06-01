@@ -29,11 +29,43 @@ const getProductById = async (id) => {
       },
     };
   const response = await productsModels.getProductById(id);
-  if(!response) return {err: {
-    code: 'invalid_data',
-    message: 'Wrong id format',
-    status: 422,
-  },};
+  if (!response)
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+        status: 422,
+      },
+    };
+  return response;
+};
+
+const updateProduct = async (id, name, quantity) => {
+  const nameValidation = isValidName(name);
+  const quantityValidation = isValidQuantity(quantity);
+
+  if (nameValidation.err) return nameValidation;
+  if (quantityValidation.err) return quantityValidation;
+
+  if (!ObjectId.isValid(id))
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+        status: 422,
+      },
+    };
+
+  const response = await productsModels.updateProduct(id, name, quantity);
+
+  if (!response)
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+        status: 422,
+      },
+    };
   return response;
 };
 
@@ -41,4 +73,5 @@ module.exports = {
   getAllProducts,
   insertAProduct,
   getProductById,
+  updateProduct,
 };

@@ -3,7 +3,6 @@ const productsServices = require('../services/productsServices');
 
 const OK_STATUS = 200;
 const CREATED_STATUS = 201;
-const Unprocessable_Entity_Status = 422;
 
 const insertAProduct = rescue(async (req, res, next) => {
   const { name, quantity } = req.body;
@@ -20,12 +19,21 @@ const getAllProducts = rescue(async (_req, res, _next) => {
 const getProductById = rescue(async (req, res, next) => {
   const { id } = req.params;
   const result = await productsServices.getProductById(id);
-  if(result.err) return next(result);
+  if (result.err) return next(result);
   res.status(OK_STATUS).json(result);
+});
+
+const updateProduct = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  const result = await productsServices.updateProduct(id, name, quantity);
+  if(result.err) return next(result);
+  res.status(OK_STATUS).json({_id: id, name, quantity});
 });
 
 module.exports = {
   insertAProduct,
   getAllProducts,
   getProductById,
+  updateProduct
 };
