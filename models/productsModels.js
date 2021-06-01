@@ -41,8 +41,19 @@ const findById = async (productId) => {
   }
 };
 
+const updateOne = async (productId, changes) => {
+  try {
+    const db = await connection();
+    await db.collection(PRODUCTS).update({ _id: ObjectId(productId)}, changes);
+    return true;
+  } catch (err) {
+    return err;
+  }
+};
+
 module.exports = {
   create,
   getAll,
   findById,
+  updateOne,
 };

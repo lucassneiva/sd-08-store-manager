@@ -26,8 +26,18 @@ const findById = async (req, res) => {
   res.status(OK).json(result);
 };
 
+const updateOne = async (req, res) => {
+  const { id } = req.params;
+  const newProduct = req.body;
+  const validation = productsServices.validProduct(newProduct);
+  if (validation) return res.status(UNPROCEESSABLE_ENTITY).json(validation);
+  const result = await productsServices.updateOne(id, newProduct);
+  res.status(OK).json(result);
+};
+
 module.exports = {
   create,
   getAll,
   findById,
+  updateOne,
 };

@@ -50,9 +50,19 @@ const findById = async (productId) => {
   return result;
 };
 
+const updateOne = async (productId, changes) => {
+  const result = await productModel.updateOne(productId, changes);
+  if (result) return ({
+    _id: productId,
+    ...changes,
+  });
+  return false;
+};
+
 module.exports = {
   create,
   validProduct,
   getAll,
   findById,
+  updateOne,
 };
