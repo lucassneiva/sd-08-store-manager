@@ -1,3 +1,5 @@
+
+const ProductSchema = require('../schema/ProductSchema');
 const ProductModel = require('../models/productsModel');
 
 const UNPROCESSABLE_ENTITY = 422;
@@ -20,4 +22,17 @@ const validateIfNameExists = async (req, res, next) => {
   next();
 };
 
-module.exports = validateIfNameExists;
+const validateProduct = (req, res, next) => {
+  const { name, quantity } = req.body;
+  const validations = ProductSchema.validate(name, quantity);
+  
+  if (validations.err) {
+    return res.status(validations.code).json({ err: validations.err });
+  }
+  next();
+};
+
+module.exports = {
+  validateIfNameExists,
+  validateProduct,
+};
