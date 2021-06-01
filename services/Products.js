@@ -3,11 +3,8 @@ const Products = require('../models/Products');
 const MIN_NAME_LEN = 5;
 const MIN_QNT = 0;
 
-const add = async (product) => {
-  const { name, quantity } = product;
-
-  const existingProduct = await Products.findProduct(product);
-
+const isValid = (product) => {
+  const {name,quantity} = product;
   if (typeof name !== 'string' || name.length <= MIN_NAME_LEN) {
     return {
       err: {
@@ -32,6 +29,16 @@ const add = async (product) => {
       },
     };
   }
+  return 'validated';
+};
+
+const add = async (product) => {
+  const existingProduct = await Products.findProduct(product);
+
+  const validation = isValid(product);
+
+  if (validation.err) return validation;
+
   if (existingProduct) {
     return {
       err: {
@@ -64,8 +71,28 @@ const getById = async (id) => {
   return product;
 };
 
+const updateById = async (id, updatedProduct) => {
+  const result = await Products.updateById(id, updatedProduct);
+
+  const validation = isValid(updatedProduct);
+
+  if (validation.err) return validation;
+
+  if (!result) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Id not found',
+      },
+    };
+  }
+
+  return result;
+};
+
 module.exports = {
   add,
   getAll,
   getById,
+  updateById,
 };
