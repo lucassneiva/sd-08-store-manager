@@ -47,9 +47,22 @@ const updateById = async (req, res) => {
   return res.status(OK).json(product);
 };
 
+const deleteById = async (req, res) => {
+  const { id } = req.params;
+
+  const product = await Products.deleteById(id);
+  
+  if (product.err) {
+    return res.status(UNPROCESSABLE_ENTITY).json(product);
+  }
+
+  return res.status(OK).json(product);
+};
+
 module.exports = {
   add,
   getAll,
   getById,
-  updateById
+  updateById,
+  deleteById,
 };

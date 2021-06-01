@@ -40,16 +40,21 @@ const updateById = async (id, updatedProduct) => {
       db.collection('products')
         .updateOne({ _id: ObjectId(id) }, { $set: updatedProduct }),
     );
-
   } catch (err) {
     return null;
   }
 };
 
 const deleteById = async (id) => {
-  const deleteResult = await connection().then((db) =>
-    db.collection('products').deleteOne(new ObjectId(id)),
-  );
+  try {
+    const product = await connection().then((db) =>
+      db.collection('products').deleteOne({_id: ObjectId(id)}),
+    );
+    console.log(product);
+    return product;
+  } catch (err) {
+    return null;
+  }
 };
 
 module.exports = {
@@ -58,4 +63,5 @@ module.exports = {
   getAll,
   getById,
   updateById,
+  deleteById,
 };
