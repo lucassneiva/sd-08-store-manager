@@ -1,6 +1,6 @@
 const Products = require('../services/Products');
-const rescue = require('express-rescue');
 
+const OK = 200;
 const CREATED = 201;
 const UNPROCESSABLE_ENTITY = 422;
 
@@ -9,13 +9,33 @@ const add = async (req, res) => {
 
   const product = await Products.add(newProduct);
 
-  if(product.err) {
+  if (product.err) {
     return res.status(UNPROCESSABLE_ENTITY).json(product);
   }
 
   return res.status(CREATED).json(product);
 };
 
+const getAll = async (_req, res) => {
+  const products = await Products.getAll();
+
+  return res.status(OK).json(products);
+};
+
+const getById = async (req, res) => {
+  const { id } = req.params;
+
+  const product = await Products.getById(id);
+
+  if (product.err) {
+    return res.status(UNPROCESSABLE_ENTITY).json(product);
+  }
+
+  return res.status(OK).json(product);
+};
+
 module.exports = {
   add,
+  getAll,
+  getById,
 };
