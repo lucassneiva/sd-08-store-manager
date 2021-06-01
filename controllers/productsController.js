@@ -67,7 +67,24 @@ router.get('/:id', async (req, res) => {
 });
 
 router.put('/:id', async (req, res) => {
+  try {
+    const { name, quantity } = req.body;
+    const { id } = req.params;
+    const { error } = addProductValidation(req.body);
 
+    if(error) return res.status(422).json({
+      err: {
+        code: 'invalid_data',
+        message: error.details[0].message,
+      }
+    });
+
+    const result = await productsModel.updateProducts(id, name, quantity);
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Algo deu errado' });
+  }
 });
 
 module.exports = router;
