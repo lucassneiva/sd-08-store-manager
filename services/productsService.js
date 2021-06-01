@@ -50,6 +50,35 @@ const newProduct = async ({ name, quantity }) => {
   return result;
 };
 
+const getAllProducts = async () => {
+  const result = await ProductsModel.getAllProducts();
+  return {
+    products: result,
+  };
+};
+
+const getProductById = async (id) => {
+  try {
+    const result = await ProductsModel.getProductById(id);
+    if (!result) return {
+      err: {
+        code: 'not_found',
+        message: 'Id not found'
+      }
+    };
+    return result;
+  } catch(err) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    };
+  }
+};
+
 module.exports = {
   newProduct,
+  getAllProducts,
+  getProductById,
 };
