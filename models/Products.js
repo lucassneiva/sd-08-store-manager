@@ -36,19 +36,20 @@ const getById = async (id) => {
 
 const updateById = async (id, updatedProduct) => {
   try {
-    const updateResult = await connection().then((db) =>
-      db.collection('products').updateOne({_id: ObjectId(id)}, { $set: updatedProduct }),
+    return connection().then((db) =>
+      db.collection('products')
+        .updateOne({ _id: ObjectId(id) }, { $set: updatedProduct }),
     );
-    
-    if (!updateResult.matchedCount) return null;
 
-    return {
-      _id: id,
-      ...updatedProduct
-    };
   } catch (err) {
     return null;
   }
+};
+
+const deleteById = async (id) => {
+  const deleteResult = await connection().then((db) =>
+    db.collection('products').deleteOne(new ObjectId(id)),
+  );
 };
 
 module.exports = {

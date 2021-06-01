@@ -78,7 +78,7 @@ const updateById = async (id, updatedProduct) => {
 
   if (validation.err) return validation;
 
-  if (!result) {
+  if (!result.matchedCount) {
     return {
       err: {
         code: 'invalid_data',
@@ -87,7 +87,10 @@ const updateById = async (id, updatedProduct) => {
     };
   }
 
-  return result;
+  return {
+    _id: id,
+    ...updatedProduct
+  };
 };
 
 module.exports = {
