@@ -28,4 +28,21 @@ const addProduct = async (name, quantity) => {
   return { code: 201, result };
 };
 
-module.exports = { addProduct };
+const getAll = async () => {
+  const result = await ProductModel.getAll();
+  return { code: 200, result };  
+};
+
+const getById = async (id) => {
+  const result = await ProductModel.getById(id);
+  if (!result) {
+    return { code: 422, message: 'Wrong id format' };
+  }
+  return { code: 200, result };
+};
+
+module.exports = { 
+  addProduct,
+  getAll,
+  getById
+};
