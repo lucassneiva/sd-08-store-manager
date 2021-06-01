@@ -37,8 +37,20 @@ const getById = async (req, res) => {
   }
 };
 
+const exclude = async (req, res) => {
+  try {
+    const products = await salesModel.exclude(req.params.id);
+
+    res.status(OK).json(products);
+  } catch (error) {
+    res.status(ERROR)
+      .json( { err: { code: error.code, message: error.message } } );
+  }
+};
+
 module.exports = { 
   newSale,
   getAll,
   getById,
+  exclude
 };

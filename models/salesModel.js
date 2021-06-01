@@ -40,8 +40,20 @@ const getById = async (id) => {
   return sale;
 };
 
+const exclude = async (id) => {
+  const db = await connection();
+
+  const sale = await getById(id);
+
+  if(!sale) throw { code: 'invalid_data', message: 'Wrong sale ID format' };
+  await db.collection('sales').deleteOne({ _id: ObjectId(id) });
+  
+  return sale;
+};
+
 module.exports = { 
   newSale,
   getAll,
   getById,
+  exclude
 };
