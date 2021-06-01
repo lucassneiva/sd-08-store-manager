@@ -51,7 +51,7 @@ const updateProduct = async (id, name, quantity) => {
 
   const result = await ProductModel.updateById(id, name, quantity);
   
-  return { code: 201, result };
+  return { code: 200, result };
 };
 
 module.exports = { 
