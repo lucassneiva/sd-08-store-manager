@@ -1,5 +1,7 @@
 const ProductsModel = require('../models/products');
 
+const { ObjectID } = require('mongodb');
+
 const isNameInvalid = (name) => {
   return ProductsModel.read()
     .then((data) => {
@@ -85,7 +87,20 @@ const create =  async ({name, quantity}) => {
 
 const read = () => ProductsModel.read();
 
+const readById = async (id) => {
+
+  if(!ObjectID.isValid(id)) {
+    throw new Error('Wrong id format');
+  }
+  
+  console.log('é valido');
+
+  const product = await ProductsModel.readById(id);
+  return product;
+};
+
 module.exports = {
   create,
   read,
+  readById,
 };
