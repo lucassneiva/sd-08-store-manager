@@ -21,8 +21,16 @@ const getAll = async (_req, res) => {
   res.json({ products: result });
 };
 
+const edit = async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body; 
+  const result = await ProductsService.edit(id, { name, quantity });
+  res.json(result);
+};
+
 module.exports = {
   create,
   getById,
-  getAll
+  getAll,
+  edit
 };
