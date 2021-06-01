@@ -33,37 +33,6 @@ const isNameInvalid = (name) => {
       return false;
     });
 };
-// const isNameInvalid = async (name) => {
-//   const products = await ProductsModel.read();
-//   const MIN_LENGTH_NAME = 6;
-//   const thisNameExists = await products.some((product) => product.name === name);
-
-//   if(name.length < MIN_LENGTH_NAME) {
-//     return {
-//       errorStatus: 422,
-//       json: {
-//         err: {
-//           code: 'invalid_data',
-//           message: '\"name\" length must be at least 5 characters long'
-//         }
-//       },
-//     };
-//   }
-
-//   if(thisNameExists) {
-//     return {
-//       errorStatus: 422,
-//       json: {
-//         err: {
-//           code: 'invalid_data',
-//           message: 'Product already exists'
-//         }
-//       },
-//     };
-//   }
-
-//   return false;
-// };
 
 const isQuantityInvalid = (quantity) => {
   const MIN_QUANTITY = 1;
@@ -74,7 +43,7 @@ const isQuantityInvalid = (quantity) => {
       json: {
         err: {
           code: 'invalid_data',
-          message: '\"Quantity\" must be a number'
+          message: '\"quantity\" must be a number'
         }
       },
     };
@@ -86,7 +55,7 @@ const isQuantityInvalid = (quantity) => {
       json: {
         err: {
           code: 'invalid_data',
-          message: '\"Quantity\" must be larger than or equal to 1'
+          message: '\"quantity\" must be larger than or equal to 1'
         }
       },
     };

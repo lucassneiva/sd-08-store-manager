@@ -1,13 +1,13 @@
 const ProductsService = require('../services/products');
 
-const STATUS_OK = 200;
+const STATUS_OK = 201;
 
 const create = async (req, res) => {
   const { name, quantity } = req.body;
 
   const newProduct = {
     name,
-    quantity: Number(quantity)
+    quantity,
   };
 
   const productInserted = await ProductsService
