@@ -1,6 +1,10 @@
 const express = require( 'express');
 
-const { createProductController } = require('./controllers/productsCrontoller');
+const {
+  createProductController,
+  getAllProductsController,
+  getByIdProductsController,
+} = require('./controllers/productsCrontoller');
 
 const app = express();
 
@@ -13,10 +17,12 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.post(
-  '/products',
-  createProductController
-);
+app.post('/products', createProductController);
+
+app.get('/products/:id', getByIdProductsController);
+
+app.get('/products', getAllProductsController);
+
 
 app.listen(PORT, () => {
   console.log(`Online na porta ${PORT}`);

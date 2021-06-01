@@ -1,4 +1,8 @@
-const { createProductModel } = require('../models/productModel');
+const {
+  createProductModel,
+  getAllProductsModel,
+  getByIdProductsModel,
+} = require('../models/productModel');
 
 const productValidation = ({ name, quantity }) => {
   const LENGTH = 5;
@@ -35,7 +39,25 @@ const createProductService = async (name) => {
   return result;
 };
 
+const getAllProductsService = async () => {
+  const products = await getAllProductsModel();
+  return products;
+};
+
+const getByIdProductsService = async (id) => {
+  const product = await getByIdProductsModel(id);
+  if (!product) return ({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format'
+    }
+  });
+  return product;
+};
+
 module.exports = {
   productValidation,
   createProductService,
+  getAllProductsService,
+  getByIdProductsService,
 };
