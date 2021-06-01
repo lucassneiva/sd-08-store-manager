@@ -59,5 +59,17 @@ router.put('/products/:id', async (req, res, _next) => {
   res.status(SUCCESS_CODE).json(response);
 });
 
+router.delete('/products/:id', async (req, res, _next) => {
+  const { id } = req.params;
+
+  const response = await ProductModel.removeProduct(id);
+
+  if (!response) return res.status(INVALID_CODE)
+    .json({ err: { code: 'invalid_data', message: 'Wrong id format' } });
+
+
+  res.status(SUCCESS_CODE).json(response);
+});
+
 
 module.exports = router;
