@@ -1,6 +1,7 @@
 const service = require('../service/productService');
 const fail = 422;
 const success = 201;
+const success2 = 200;
 
 const createP = async (req, res) => {
   try {
@@ -18,4 +19,25 @@ const createP = async (req, res) => {
   }
 };
 
-module.exports = { createP };
+const getAllProducts = async (_req, res) => {
+  const products = await service.getAllProducts();
+  res.status(success2).json({ products: products });
+};
+
+const findById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await service.findById(id);
+    console.log(product);
+    res.status(success2).json(product);
+  } catch (err) {
+    res.status(fail).json({
+      err: {
+        code: 'invalid_data',
+        message: err.message,
+      }
+    });
+  }
+};
+
+module.exports = { createP, getAllProducts, findById };

@@ -1,3 +1,4 @@
+const { ObjectId } = require('bson');
 const product = require('../models/productModel');
 
 const NAME_LENGTH = 5;
@@ -28,4 +29,18 @@ const createProduct = async (name, quantity) => {
   return product.createProduct(name, quantity);
 };
 
-module.exports = { createProduct };
+const getAllProducts = async () => {
+  const productsList = await product.getAllProducts();
+  return productsList;
+};
+
+const findById = async (id) => {
+  if (!ObjectId.isValid(id)) throw new Error('Wrong id format');
+  const productById = await product.findById(id);
+  // if (!product) {
+  //   return 'Wrong id format';
+  // }
+  return productById;
+};
+
+module.exports = { createProduct, getAllProducts, findById };
