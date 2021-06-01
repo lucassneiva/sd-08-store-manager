@@ -9,7 +9,7 @@ const CREATED_CODE = 201;
 const INVALID_CODE = 422;
 const NOT_FOUND_CODE = 404;
 
-router.post('/products', async (req, res, _next) => {
+router.post('/', async (req, res, _next) => {
   const { name, quantity } = req.body;
 
   const validation = await ProductService.validateNewProduct({ name, quantity });
@@ -23,7 +23,7 @@ router.post('/products', async (req, res, _next) => {
   res.status(CREATED_CODE).json(response);
 });
 
-router.get('/products', async (_req, res, _next) => {
+router.get('/', async (_req, res, _next) => {
   const response = await ProductModel.getProducts();
 
   if (!response) return res.status(NOT_FOUND_CODE).json({ err: 'None product in DB' });
@@ -31,7 +31,7 @@ router.get('/products', async (_req, res, _next) => {
   res.status(SUCCESS_CODE).json({ products: response });
 });
 
-router.get('/products/:id', async (req, res, _next) => {
+router.get('/:id', async (req, res, _next) => {
   const { id } = req.params;
 
   const response = await ProductModel.getProductById(id);
@@ -43,7 +43,7 @@ router.get('/products/:id', async (req, res, _next) => {
   res.status(SUCCESS_CODE).json(response);
 });
 
-router.put('/products/:id', async (req, res, _next) => {
+router.put('/:id', async (req, res, _next) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
 
@@ -59,7 +59,7 @@ router.put('/products/:id', async (req, res, _next) => {
   res.status(SUCCESS_CODE).json(response);
 });
 
-router.delete('/products/:id', async (req, res, _next) => {
+router.delete('/:id', async (req, res, _next) => {
   const { id } = req.params;
 
   const response = await ProductModel.removeProduct(id);
