@@ -25,7 +25,31 @@ router.post('/', async (req, res) => {
   } catch (e) {
     res.status(STATUS_ERROR).send({ message: 'Algo deu errado!' });
   }
+});
 
+router.get('/', async (_req, res) => {
+  const { code, result } = await SalesValidate.getAll();
+  res.status(code).json({
+    sales: result,
+  });
+});
+
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { code, message, result } = await SalesValidate.getById(id);
+    if (!result) {
+      return res.status(code).json({
+        err: {
+          code: 'not_found',
+          message,
+        }
+      });
+    }
+    res.status(code).json(result);
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 module.exports = router;

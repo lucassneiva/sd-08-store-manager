@@ -25,6 +25,21 @@ const addSalesProductValidated = async (sales) => {
   return { code: 200, result };
 };
 
+const getAll = async () => {
+  const result = await salesModel.getAll();
+  return { code: 200, result };  
+};
+
+const getById = async (id) => {
+  const result = await salesModel.getById(id);
+  if (!result) {
+    return { code: 404, message: 'Sale not found' };
+  }
+  return { code: 200, result };
+};
+
 module.exports = {
-  addSalesProductValidated
+  addSalesProductValidated,
+  getAll,
+  getById
 };
