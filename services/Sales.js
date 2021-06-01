@@ -2,7 +2,7 @@ const salesModel = require('../models/Sales');
 const salesSchema = require('../Schemas/SalesValidator');
 
 const createSales = async (salesArr) =>  {
-  const validate = salesSchema.salesValidator(salesArr);
+  const validate = await salesSchema.salesValidator(salesArr);
   if(validate.err) return validate;    
   const data = await salesModel.createSales(salesArr);
   return {data};

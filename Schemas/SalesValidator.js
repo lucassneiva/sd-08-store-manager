@@ -1,8 +1,8 @@
 const { ObjectId } = require('bson');
 const number = 0;
 
-const salesValidator =   (salesArr) => {
-  const data = salesArr.map(item => item.quantity);
+const salesValidator = async (salesArr) => {
+  const data = await salesArr.map(item => item.quantity);
   if(data.some(item => item <= number))  return {err:{
     code:'invalid_data',
     message:'Wrong product ID or invalid quantity'
