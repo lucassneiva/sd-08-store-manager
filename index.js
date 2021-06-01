@@ -15,17 +15,15 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-// app.get('/products/:id', productController.findById);
+app.get('/products/:id', productController.findById);
 
-// app.put('/products/:id', productController.updateProduct);
+app.put('/products/:id', productController.updateProduct);
 
-// app.delete('/products/:id', productController.deleteProduct);
+app.delete('/products/:id', productController.deleteProduct);
 
-// app.get('/products',productController.getAll);
+app.get('/products',productController.getAll);
 
-// app.post('/products', productController.createProducts);
-
-app.post('/sales', salesController.createSales);
+app.post('/products', productController.createProducts);
 
 app.get('/sales/:id', salesController.findById);
 
@@ -34,6 +32,8 @@ app.put('/sales/:id', salesController.updateSales);
 app.delete('/sales/:id', salesController.deleteSale);
 
 app.get('/sales', salesController.getAll);
+
+app.post('/sales', salesController.createSales);
 
 
 
