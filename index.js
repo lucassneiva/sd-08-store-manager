@@ -6,7 +6,11 @@ const app = express();
 app.use(bodyParser.json());
 
 app.route('/products')
-  .post(products.createProduct);
+  .post(products.createProduct)
+  .get(products.getAll);
+
+app.route('/products/:id')
+  .get(products.getById);
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Online port: ${PORT}`));

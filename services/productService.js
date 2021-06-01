@@ -9,6 +9,21 @@ async function createProduct(name, quantity){
   return data;
 }
 
+async function getAll(){
+  const data = await products.getAll();
+  return data;
+}
+
+async function getById(id){
+  const data = await products.getById(id);
+  if (!data) return {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format'}
+  };
+  return data;
+}
+
 module.exports = {
-  createProduct
+  createProduct, getAll, getById
 };
