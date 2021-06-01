@@ -49,9 +49,9 @@ const createSales = async (salesArr) =>  {
  
 module.exports = {
   createSales,
-  findById, 
-  getAll,
-  updateSales,
-  deleteSale
+  // findById, 
+  // getAll,
+  // updateSales,
+  // deleteSale
 
 };

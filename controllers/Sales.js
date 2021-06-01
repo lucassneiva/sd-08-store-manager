@@ -45,8 +45,8 @@ const createSales = async (req, res) => {
 
 module.exports = {
   createSales,
-  getAll,
-  findById,
-  updateSales,
-  deleteSale
+  // getAll,
+  // findById,
+  // updateSales,
+  // deleteSale
 };
