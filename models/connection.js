@@ -1,16 +1,21 @@
 const { MongoClient } = require('mongodb');
 
-const connection = () => {
-  return MongoClient.connect(
-    process.env.DB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  ).then((conn) => conn.db(process.env.DB_NAME))
-    .catch((err) => {
-      console.error(err);
-      process.exit(1);
-    });
+const OPTIONS = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 };
+
+let db = null;
+
+const connection = () => {
+  return db
+    ? Promise.resolve(db)
+    : MongoClient.connect(process.env.DB_URL, OPTIONS)
+      .then((conn) => {
+        db = conn.db(process.env.DB_NAME);
+        return db;
+      });
+};
+
 
 module.exports = connection;

@@ -40,7 +40,6 @@ const getById = async (id) => {
   return sale;
 };
 
-
 module.exports = { 
   newSale,
   getAll,
