@@ -5,8 +5,8 @@ const createProductModel = async ({ name, quantity }) => {
     const db = await connection();
     const product = await db.collection('products').findOne({ name });
     if (product) return 'not unique';
-    const { data } = await db.collection('products').insertOne({ name, quantity });
-    const [result] = data.map(({ _id, name, quantity }) => ({
+    const { ops } = await db.collection('products').insertOne({ name, quantity });
+    const [result] = ops.map(({ _id, name, quantity }) => ({
       _id,
       name,
       quantity,
