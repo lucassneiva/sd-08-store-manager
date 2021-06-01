@@ -60,9 +60,25 @@ const updateSale = async (id, itens) => {
   }
 };
 
+const removeSale = async (id) => {
+  try {
+    const sale = await getSalesById(id);
+    if (!sale) return null;
+
+    await connection().then((db) => db.collection('sales')
+      .deleteOne({ _id: ObjectId(id) }));
+
+    return sale;
+  } catch (err) {
+    console.error(err);
+    return process.exit(1);
+  }
+};
+
 module.exports = {
   createSales,
   getSales,
   getSalesById,
   updateSale,
+  removeSale,
 };
