@@ -26,7 +26,7 @@ const findById = async (id) => {
 };
 
 const updateSales = async(id, {salesArr}) => {
-  const validation =  salesSchema.salesValidator(salesArr);
+  const validation = await salesSchema.salesValidator(salesArr);
   if(validation.err) return validation;
   const data = await salesModel.updateSales(id, {salesArr});
   return {data}; 
