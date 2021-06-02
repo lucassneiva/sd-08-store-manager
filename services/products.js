@@ -73,7 +73,7 @@ const update = async (_id, name, quantity) => {
 };
 
 const erase = async (_id) => {
-  if (await !ObjectId.isValid(id)) return 'Wrong id format';
+  if (await !ObjectId.isValid(_id)) return 'Wrong id format';
 
   await productsModel.erase(_id);
 
