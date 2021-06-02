@@ -76,7 +76,14 @@ const update = async (req, res) => {
       res.status(STATUS_OK).json(response);})
     .catch((err) => {
       console.log(err, 'update');
-      res.status(UNPROCESSABLE).json({err:'oi'});
+      res
+        .status(UNPROCESSABLE)
+        .json({
+          err: {
+            code: 'invalid_data',
+            message: err.message
+          }
+        });
     });
 };
 
