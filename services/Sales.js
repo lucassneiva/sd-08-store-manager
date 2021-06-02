@@ -72,9 +72,25 @@ const updateById = async (id, updatedSale) => {
   };
 };
 
+const deleteById = async (id) => {
+  const deletedSale = await Sales.getById(id);
+  const sales = await Sales.deleteById(id);
+  console.log(sales, 'sevices');
+
+  if (!sales || !sales.deletedCount) return {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    },
+  };
+
+  return deletedSale;
+};
+
 module.exports = {
   add,
   getAll,
   getById,
   updateById,
+  deleteById,
 };

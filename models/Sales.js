@@ -28,8 +28,18 @@ const updateById = async (id, updatedSale) => {
   try {
     return connection().then((db) =>
       db.collection('sales')
-        .updateOne({ _id: ObjectId(id) }, { $set: {itensSold: updatedSale} }),
+        .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: updatedSale } }),
     );
+  } catch (err) {
+    return null;
+  }
+};
+
+const deleteById = async (id) => {
+  try {
+    const sales = await connection()
+      .then((db) => db.collection('sales').deleteOne({_id: ObjectId(id)}));
+    return sales;
   } catch (err) {
     return null;
   }
@@ -40,4 +50,5 @@ module.exports = {
   getAll,
   getById,
   updateById,
+  deleteById,
 };

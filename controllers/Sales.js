@@ -42,9 +42,22 @@ const updateById = async (req, res) => {
   return res.status(OK).json(sale);
 };
 
+const deleteById = async (req, res) => {
+  const { id } = req.params;
+
+  const sale = await Sales.deleteById(id);
+
+  console.log(sale, 'controller');
+
+  if (sale.err) return res.status(UNPROCESSABLE_ENTITY).json(sale);
+
+  return res.status(OK).json(sale);
+};
+
 module.exports = {
   add,
   getAll,
   getById,
   updateById,
+  deleteById,
 };

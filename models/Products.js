@@ -50,7 +50,6 @@ const deleteById = async (id) => {
     const product = await connection().then((db) =>
       db.collection('products').deleteOne({_id: ObjectId(id)}),
     );
-    console.log(product);
     return product;
   } catch (err) {
     return null;
