@@ -17,6 +17,22 @@ const createSale = async (sale) => {
   return model.createSale(sale);
 };
 
+const getAllSales = async () => {
+  const salesList = await model.getAllSales();
+  return salesList;
+};
+
+const findById = async (id) => {
+  if (!ObjectId.isValid(id)) throw new Error('Sale not found');
+  const saleById = await model.findById(id);
+  // if (!product || !ObjectId.isValid(id)) {
+  //   throw new Error('Wrong id format');
+  // }
+  return saleById;
+};
+
 module.exports = {
   createSale,
+  getAllSales,
+  findById,
 };

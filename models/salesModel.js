@@ -8,6 +8,20 @@ const createSale = async (sale) => {
   return result[0];
 };
 
+const getAllSales = async () => {
+  const db = await connection();
+  const salesList = await db.collection('sales').find().toArray();
+  if (salesList) return salesList;
+};
+
+const findById = async (id) => {
+  // if (!ObjectId.isValid(id)) return null;
+  const db = await connection();
+  const sale = await db.collection('sales').findOne(new ObjectId(id));
+  return sale;
+};
+
+
 // const findSale = async (sale) => {
 //   const db = await connection();
 //   const sales = await db.collection('sales').findOne({ itensSold: sale });
@@ -15,4 +29,4 @@ const createSale = async (sale) => {
 // };
 
 
-module.exports = { createSale, findSale };
+module.exports = { createSale, getAllSales, findById };
