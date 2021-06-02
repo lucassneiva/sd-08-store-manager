@@ -29,8 +29,11 @@ const getById = async (id) => {
 
 const getAll = () => SalesModel.getAll();
 
+const edit = (id, updatedSale) => SalesModel.edit(id, updatedSale);
+
 module.exports = {
   create,
   getById,
-  getAll
+  getAll,
+  edit
 };

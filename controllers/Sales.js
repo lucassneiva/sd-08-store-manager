@@ -17,8 +17,15 @@ const getAll = async (_req, res) => {
   res.json({ sales: result });
 };
 
+const edit = async (req, res) => {
+  const { id } = req.params;
+  const result = await SalesServices.edit(id, req.body);
+  res.json(result);
+};
+
 module.exports = {
   create,
   getById,
-  getAll
+  getAll,
+  edit
 };
