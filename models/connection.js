@@ -5,7 +5,7 @@ const DB_NAME = 'StoreManager';
 
 const connection = async () => {
   return MongoClient
-    .connect(DB_URL, {
+    .connect(MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
