@@ -29,8 +29,16 @@ const getAllProducts = () => connection()
     })};
   });
 
+const  getProductById = async (id) => {
+  const product = await connection()
+    .then((db) =>  db.collection('products').findOne(ObjectId(id)));
+
+  return product;
+};
+
 module.exports = {
   createProduct,
   getAllProducts,
+  getProductById,
 };
 

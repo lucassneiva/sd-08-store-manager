@@ -26,7 +26,20 @@ const getAllProduct = async (_req, res) => {
   }
 };
 
+const getProductById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await productsServices.getProductById(id);
+    return res.status(code_200).json(product);
+  } catch (error) {
+    const message = messageError(error.message);
+    console.error(error.message);
+    res.status(code_422).json(message);
+  }
+};
+
 module.exports = {
   createProduct,
   getAllProduct,
+  getProductById,
 };
