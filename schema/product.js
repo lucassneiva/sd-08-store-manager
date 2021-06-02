@@ -3,6 +3,8 @@ const Joi = require('@hapi/joi');
 const MIN_name = 5;
 const MAX_name = 50;
 
+const QUANTITY_MIN = 1;
+
 const schema = Joi.object({
   name: Joi.string()
     .min(MIN_name)
@@ -10,8 +12,7 @@ const schema = Joi.object({
     .required(),
   quantity: Joi.number()
     .integer()
-    .positive()
-    .min(1)
+    .min(QUANTITY_MIN)
     .required()
 });
 
