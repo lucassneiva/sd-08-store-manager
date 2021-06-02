@@ -6,7 +6,6 @@ const notFound = 404;
 
 const createSales = async (req, res) => {
   const salesArr = req.body;
-  console.log(req.body);
   const {err, data} = await salesService.createSales(salesArr);
   if(err) return res.status(error).json({err:err});
   return res.status(sucess).json(data);

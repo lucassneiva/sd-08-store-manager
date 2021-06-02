@@ -4,7 +4,8 @@ const { ObjectId, MongoError, } = require('mongodb');
 
 const createSales = async (salesArr) =>  {
   const data = await connection()
-    .then((db) => db.collection('sales').insertOne({itensSold:[...salesArr]}));
+    .then((db) => db.collection('sales').insertOne({itensSold:[...salesArr]}))
+    .then((result) => result);
   return data.ops[0];
 };
 

@@ -3,9 +3,6 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 const PORT = 3000;
-const productModel = require('./models/Products');
-
-
 const productController = require('./controllers/Product');
 const salesController = require('./controllers/Sales');
 
@@ -25,9 +22,9 @@ app.put('/products/:id', productController.updateProduct);
 
 app.delete('/products/:id', productController.deleteProduct);
 
-// app.get('/sales', salesController.getAll);
+//  app.get('/sales', salesController.getAll);
 
-app.post('/sales', salesController.createSales);
+ app.post('/sales', salesController.createSales);
 
 // app.get('/sales/:id', salesController.findById);
 
