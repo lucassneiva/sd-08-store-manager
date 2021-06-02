@@ -16,5 +16,6 @@ router.put('/products/:id',
   validQuantity,
   productController.updateProduct
 );
+router.delete('/products/:id', productController.excludeProduct);
 
 module.exports = router;

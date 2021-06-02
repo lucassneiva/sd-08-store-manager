@@ -61,9 +61,30 @@ const updateProduct = async (req, res) => {
   }
 };
 
+const excludeProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedProduct = await productModel.excludeProduct(id);
+    if(!deletedProduct) {
+      return res.status(UNPROCESSABLE_ENTITY).json({ 
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong id format'
+        }
+      });
+    }
+    
+    res.status(HTTP_STATUS_OK).json(deletedProduct);
+  } catch (err) {
+    console.error(err.message);
+    res.status(INTERNAL_ERROR).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getAllProducts,
   addProduct,
   getProductById,
-  updateProduct
+  updateProduct,
+  excludeProduct
 };
