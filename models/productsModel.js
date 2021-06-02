@@ -1,4 +1,3 @@
-// const { ObjectId } = require('mongodb');
 const connect = require('./connection');
 
 const getByName = async(nameToFind) => {
@@ -11,7 +10,6 @@ const getByName = async(nameToFind) => {
 const add = async(name, quantity) =>  {
   const db = await connect();
   const addedProduct = await db.collection('products').insertOne({name, quantity});
-  console.log(addedProduct);
   return addedProduct;
 };
 
