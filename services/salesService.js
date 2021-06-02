@@ -24,37 +24,62 @@ const productsValidation = async (sale) => {
   return true;
 };
 
-const createQuantityObject = (sale) => {
+const validateStock = async (sale, operation) => {
   const quantityObject = sale.reduce((obj, item) => {
     const { productId, quantity } = item;
     obj[productId] = (obj[productId] ? obj[productId] : ZERO) + quantity;
     return obj;
   },{});
-  return quantityObject;
+  const quantityArray = Object.entries(quantityObject);
+  const validationArray = await Promise
+    .all(quantityArray.map(async (itemSold) => {
+      const { quantity: availableQuantity } = await ProductsModel
+        .getProductById(itemSold[0]);
+      if (operation === '-' && itemSold[1] > availableQuantity) return false;
+      return true; 
+    }));
+  return validationArray;
 };
 
-const validateAndUpdateStock = async (sale, operation) => {
-  const quantityObject = createQuantityObject(sale);
-  const itensIdArray = Object.keys(quantityObject);
-  const soldQuantityArray = Object.values(quantityObject);
-  const productQuantityArray = await Promise.all(itensIdArray.map(async (itemId) => {
-    const { quantity } = await ProductsModel.getProductById(itemId);
-    return quantity;
-  }));
-  const validationArray = productQuantityArray.map((productQuantity, index) => {
-    if (operation === '-') return productQuantity - soldQuantityArray[index];
-    if (operation === '+') return productQuantity + soldQuantityArray[index];
-  });
-  const validation = validationArray.reduce((acc, value) => {
-    if (value < ZERO) acc = false;
-    return acc;
-  }, true);
-  if (!validation) return false;
-  await Promise.all(itensIdArray.map(async (itemId, index) => {
-    await ProductsModel.updateProductById(itemId, { quantity: validationArray[index] });
-  }));
-  return true;
+const restoreStock = async (sale) => {
+  for(const item of sale) {
+    const { productId, quantity } = item;
+    const product = await ProductsModel.getProductById(item.productId);
+    const newQuantity = product.quantity + quantity;
+    await ProductsModel
+      .updateProductById(productId, { quantity: newQuantity });
+  };
+};
 
+const updateStock = async (sale, operation) => {
+  // const validationArray = await Promise
+  //   .all(sale.map(async (item, index) => {
+  //     console.log(index);
+  //     const { productId, quantity } = item;
+  //     const product = await ProductsModel.getProductById(item.productId);
+  //     console.log(product);
+  //     console.log(quantity);
+  //     if (quantity > product.quantity) return false;
+  //     const newQuantity = product.quantity - quantity;
+  //     const result = await ProductsModel
+  //       .updateProductById(productId, { quantity: newQuantity });
+  //     console.log(result);
+  //   }));
+  const validation = await validateStock(sale, operation);
+  if (validation.includes(false)) return false;
+  for(const item of sale) {
+    const { productId, quantity } = item;
+    const product = await ProductsModel.getProductById(item.productId);
+    let newQuantity;
+    if (operation === '-') {
+      newQuantity = product.quantity - quantity;
+    } else {
+      newQuantity = product.quantity + quantity;
+    }
+    await ProductsModel
+      .updateProductById(productId, { quantity: newQuantity });
+  }
+  return true;
 };
 
 const addNewSale = async (sale) => {
@@ -66,7 +91,7 @@ const addNewSale = async (sale) => {
     }
   };
 
-  const stockValidation = await validateAndUpdateStock(sale, '-');
+  const stockValidation = await updateStock(sale, '-');
   if (!stockValidation) return {
     err: {
       code: 'stock_problem',
@@ -133,7 +158,7 @@ const deleteSaleById = async (id) => {
     }
   };
 
-  const stockValidation = await validateAndUpdateStock(sale.itensSold, '+');
+  const stockValidation = await updateStock(sale.itensSold, '+');
 
   await SalesModel.deleteSaleById(id);
   return sale;
