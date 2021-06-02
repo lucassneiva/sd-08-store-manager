@@ -10,7 +10,7 @@ const validateProduct = Joi.object({
 
 const create = async (name, quantity) => {
   const { error } = validateProduct.validate({ name, quantity });
-  
+
   if (error) { 
     return {status: 422, code: 'invalid_data', error};
   };
@@ -35,7 +35,20 @@ const readAll = async () => {
   return products;
 };
 
+const readById = async (id) => {
+  const product = await model.readById(id);
+
+  if (!product) {
+    return {
+      status: 422, code: 'invalid_data', error: { message: 'Wrong id format' }
+    };
+  }
+
+  return product;
+};
+
 module.exports = {
   create,
-  readAll
+  readAll,
+  readById
 };

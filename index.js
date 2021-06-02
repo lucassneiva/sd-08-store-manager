@@ -9,6 +9,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.get('/', (_request, response) => {response.send();});
+app.get('/products/:id', controller.readById);
 app.get('/products', controller.readAll);
 app.post('/products', controller.create);
 
