@@ -7,18 +7,25 @@ const UNPROCESSABLE = 422;
 const create = async (req, res) => {
   const newProduct = req.body;
 
-  const productInserted = await ProductsService
-    .create(newProduct);
-
-  if(productInserted.errorStatus) {
-    return res
-      .status(productInserted.errorStatus)
-      .json(productInserted.json);
-  }
-
-  return res
-    .status(STATUS_CREATED)
-    .json(productInserted);
+  ProductsService.create(newProduct)
+    .then((response) => {
+      res
+        .status(STATUS_CREATED)
+        .json(response);
+    })
+    .catch((err) => {
+      console.log(err);
+      res
+        .status(UNPROCESSABLE)
+        .json(
+          {
+            err: {
+              code: 'invalid_data',
+              message: err.message
+            }
+          }
+        );
+    });
 };
 
 const read = (_req, res) => {
@@ -41,7 +48,7 @@ const readById = async (req, res) => {
           {
             err: {
               code: 'invalid_data',
-              message: 'Wrong id format'
+              message: err.message,
             }
           }
         );

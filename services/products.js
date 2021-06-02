@@ -9,30 +9,12 @@ const isNameInvalid = (name) => {
       const thisNameExists = data.some((product) => product.name === name);
   
       if(name.length < MIN_LENGTH_NAME) {
-        return {
-          errorStatus: 422,
-          json: {
-            err: {
-              code: 'invalid_data',
-              message: '\"name\" length must be at least 5 characters long'
-            }
-          },
-        };
+        throw new Error('\"name\" length must be at least 5 characters long'); 
       }
   
       if(thisNameExists) {
-        return {
-          errorStatus: 422,
-          json: {
-            err: {
-              code: 'invalid_data',
-              message: 'Product already exists'
-            }
-          },
-        };
+        throw new Error('Product already exists');
       }
-  
-      return false;
     });
 };
 
@@ -40,43 +22,18 @@ const isQuantityInvalid = (quantity) => {
   const MIN_QUANTITY = 1;
 
   if(typeof quantity !== 'number') {
-    return {
-      errorStatus: 422,
-      json: {
-        err: {
-          code: 'invalid_data',
-          message: '\"quantity\" must be a number'
-        }
-      },
-    };
+    throw new Error('\"quantity\" must be a number');
   }
 
   if(quantity < MIN_QUANTITY) {
-    return {
-      errorStatus: 422,
-      json: {
-        err: {
-          code: 'invalid_data',
-          message: '\"quantity\" must be larger than or equal to 1'
-        }
-      },
-    };
+    throw new Error('\"quantity\" must be larger than or equal to 1');
   }
-
-  return false;
 };
-
-
-
-
 
 const create =  async ({name, quantity}) => {
 
-  const invalidName = await isNameInvalid(name);
-  if (invalidName) return invalidName;
-
-  const invalidQuantity = isQuantityInvalid(quantity);
-  if(invalidQuantity) return invalidQuantity;
+  await isNameInvalid(name);
+  isQuantityInvalid(quantity);
 
   const productInserted = await ProductsModel
     .create({name, quantity});
@@ -101,7 +58,7 @@ const readById = async (id) => {
 
 const update = () => {
 
-}
+};
 
 module.exports = {
   create,
