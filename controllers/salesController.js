@@ -39,9 +39,27 @@ const findById = async (req, res) => {
   }
 };
 
+const deleteSale = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const saleToDelete = await service.deleteSale(id);
+    res.status(success2).json(saleToDelete);
+    // await findById(id);
+  } catch (err) {
+    res.status(fail).json({
+      err: {
+        code: 'invalid_data',
+        message: err.message,
+      },
+    });
+  }
+};
+
+
 
 module.exports = {
   createSale,
   getAllSales,
   findById,
+  deleteSale,
 };

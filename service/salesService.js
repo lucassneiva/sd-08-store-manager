@@ -25,14 +25,25 @@ const getAllSales = async () => {
 const findById = async (id) => {
   if (!ObjectId.isValid(id)) throw new Error('Sale not found');
   const saleById = await model.findById(id);
+  if (!saleById) {
+    throw new Error('Sale not found');
+  }
   // if (!product || !ObjectId.isValid(id)) {
   //   throw new Error('Wrong id format');
   // }
   return saleById;
 };
 
+const deleteSale = async (id) => {
+  if (!ObjectId.isValid(id)) throw new Error('Wrong sale ID format');
+  const deleteThisSale = await model.deleteSale(id);
+  return deleteThisSale;
+};
+
+
 module.exports = {
   createSale,
   getAllSales,
   findById,
+  deleteSale,
 };
