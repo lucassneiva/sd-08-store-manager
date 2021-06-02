@@ -9,6 +9,29 @@ const addNewSale = async (req, res, next) => {
   res.status(ok).json(result);
 };
 
+const getAllSales = async (req, res, next) => {
+  const result = await SalesService.getAllSales();
+  res.status(ok).json(result);
+};
+
+const getSaleById = async (req, res, next) => {
+  const { id } = req.params;
+  const result = await SalesService.getSaleById(id);
+  if (result.err) next(result.err);
+  res.status(ok).json(result);
+};
+
+const updateSaleById = async (req, res, next) => {
+  const { id } = req.params;
+  const newSaleInfo = req.body;
+  const result = await SalesService.updateSaleById(id, newSaleInfo);
+  if (result.err) return next(result.err);
+  res.status(ok).json(result);
+};
+
 module.exports = {
   addNewSale,
+  getAllSales,
+  getSaleById,
+  updateSaleById,
 };

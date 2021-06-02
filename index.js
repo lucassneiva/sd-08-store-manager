@@ -21,6 +21,9 @@ app.put('/products/:id', ProductsController.updateProductById);
 app.delete('/products/:id', ProductsController.deleteProductById);
 
 app.post('/sales', SalesController.addNewSale);
+app.get('/sales', SalesController.getAllSales);
+app.get('/sales/:id', SalesController.getSaleById);
+app.put('/sales/:id', SalesController.updateSaleById);
 
 app.use(Middlewares.error);
 
