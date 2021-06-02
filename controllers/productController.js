@@ -55,4 +55,25 @@ const updateProduct = async (req, res) => {
   }
 };
 
-module.exports = { createP, getAllProducts, findById, updateProduct };
+const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const productToDelete = await service.deleteProduct(id);
+    res.status(success2).json(productToDelete);
+  } catch (err) {
+    res.status(fail).send({
+      err: {
+        code: 'invalid_data',
+        message: err.message,
+      },
+    });
+  }
+};
+
+module.exports = {
+  createP,
+  getAllProducts,
+  findById,
+  updateProduct,
+  deleteProduct
+};

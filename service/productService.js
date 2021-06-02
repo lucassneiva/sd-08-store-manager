@@ -57,7 +57,6 @@ const findById = async (id) => {
 };
 
 const updateProduct = async (id, name, quantity) => {
-  if (!ObjectId.isValid(id)) throw new Error('Wrong id format');
   const invalid = await validateUpdate(name, quantity);
   if (invalid) {
     throw new Error(invalid);
@@ -65,4 +64,15 @@ const updateProduct = async (id, name, quantity) => {
   return product.updateProduct(id, name, quantity);
 };
 
-module.exports = { createProduct, getAllProducts, findById, updateProduct };
+const deleteProduct = async (id) => {
+  if (!ObjectId.isValid(id)) throw new Error('Wrong id format');
+  return product.deleteProduct(id);
+};
+
+module.exports = {
+  createProduct,
+  getAllProducts,
+  findById,
+  updateProduct,
+  deleteProduct,
+};
