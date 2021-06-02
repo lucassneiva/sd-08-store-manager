@@ -5,6 +5,7 @@ const {
   getAllProducts,
   getProductById,
   updateProduct,
+  deleteProduct,
 } = require('../services/productServices');
 
 const UNPROCESSABLE = 422;
@@ -43,8 +44,17 @@ router.put('/:id', async(req, res) => {
   const updatedProduct = await updateProduct(id, name, quantity);
 
   if(updatedProduct.err) return res.status(UNPROCESSABLE).json(updatedProduct);
-  
+
   res.status(OK).json(updatedProduct);
+});
+
+router.delete('/:id', async(req, res) => {
+  const {id} = req.params;
+  const deletedProduct = await deleteProduct(id);
+
+  if(deletedProduct.err) return res.status(UNPROCESSABLE).json(deletedProduct);
+
+  res.status(OK).json(deleteProduct);
 });
 
 module.exports = router;
