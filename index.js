@@ -1,4 +1,5 @@
 const express = require('express');
+const salesRoute = require('./routes/sales');
 const productRoute = require('./routes/products');
 const errorMiddleware = require('./middlewares/error');
 const app = express();
@@ -11,6 +12,8 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', productRoute);
+app.use('/sales', salesRoute);
+
 app.listen(PORT, () => {
   console.log(`Listen at port ${PORT}`);
 });
