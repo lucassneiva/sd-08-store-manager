@@ -8,7 +8,7 @@ const NOTFOUND = 404;
 const create = async (req, res) => {
   const sale = req.body;
   const validSale = salesServices.validSale(sale);
-  if (validSale.err) res.status(UNPROCEESSABLE_ENTITY).json(validSale);
+  if (validSale) res.status(UNPROCEESSABLE_ENTITY).json(validSale);
   const result = await salesServices.create(sale);
   res.status(OK).json(result);
 };
@@ -25,8 +25,18 @@ const findById = async (req, res) => {
   res.status(OK).json(result);
 };
 
+const updateOne = async (req, res) => {
+  const { id } = req.params;
+  const sale = req.body;
+  const validSale = salesServices.validSale(sale);
+  if (validSale) return res.status(UNPROCEESSABLE_ENTITY).json(validSale);
+  const result = await salesServices.updateOne(id, sale);
+  res.status(OK).json(result);
+};
+
 module.exports = {
   create,
   getAll,
   findById,
+  updateOne,
 };

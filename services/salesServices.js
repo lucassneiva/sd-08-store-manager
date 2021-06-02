@@ -11,7 +11,7 @@ const validSale = (sale) => {
     const { quantity } = sale[index - 1];
     if (typeof quantity === 'string' || quantity < 1) return err;
   }
-  return false;
+  return null;
 };
 
 const create = async (sale) => {
@@ -38,9 +38,18 @@ const findById = async (saleId) => {
   return result;
 };
 
+const updateOne = async (saleId, changes) => {
+  await salesModel.updateOne(saleId, changes);
+  return ({
+    _id: saleId,
+    itensSold: [...changes],
+  });
+};
+
 module.exports =  {
   create,
   validSale,
   getAll,
   findById,
+  updateOne,
 };

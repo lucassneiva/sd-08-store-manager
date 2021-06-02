@@ -28,4 +28,6 @@ app.get('/sales', salesControllers.getAll);
 
 app.get('/sales/:id', salesControllers.findById);
 
+app.put('/sales/:id', salesControllers.updateOne);
+
 app.listen(PORT, console.log(`Servidor aberto na porta ${PORT}.`));
