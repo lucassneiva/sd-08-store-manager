@@ -3,6 +3,7 @@ const {
   createProductService,
   getAllProductsService,
   getByIdProductsService,
+  updateProductService,
 } = require('../services/productsService');
 
 const OK = 200;
@@ -10,10 +11,10 @@ const CREATED = 201;
 const UNPROCESSABLE_ENTITY= 422;
 
 const createProductController = async (req, res) => {
-  const product = req.body;
-  const response = productValidation(product);
+  const { name, quantity } = req.body;
+  const response = productValidation(name, quantity);
   if (response) return res.status(UNPROCESSABLE_ENTITY).json(response);
-  const result = await createProductService(product);
+  const result = await createProductService(name, quantity);
   if (result.err) return res.status(UNPROCESSABLE_ENTITY).json(result);
   res.status(CREATED).json(result);
 };
@@ -30,8 +31,18 @@ const getByIdProductsController = async (req, res) => {
   res.status(OK).json(product);
 };
 
+const updateProductController = async (req, res) => {
+  const { name, quantity } = req.body;
+  const { id } = req.params;
+  const response = productValidation(name, quantity);
+  if (response) return res.status(UNPROCESSABLE_ENTITY).json(response);
+  const result = await updateProductService(id, name, quantity);
+  res.status(OK).json(result);
+};
+
 module.exports = {
   createProductController,
   getAllProductsController,
   getByIdProductsController,
+  updateProductController,
 };

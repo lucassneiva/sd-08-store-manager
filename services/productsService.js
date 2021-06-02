@@ -2,9 +2,10 @@ const {
   createProductModel,
   getAllProductsModel,
   getByIdProductsModel,
+  updateProductModel,
 } = require('../models/productModel');
 
-const productValidation = ({ name, quantity }) => {
+const productValidation = (name, quantity) => {
   const LENGTH = 5;
   const MIN = 1;
   if (name.length < LENGTH) return ({
@@ -28,8 +29,8 @@ const productValidation = ({ name, quantity }) => {
   return null;
 };
 
-const createProductService = async (name) => {
-  const result = await createProductModel(name);
+const createProductService = async (name, quantity) => {
+  const result = await createProductModel(name, quantity);
   if (result === 'not unique') return ({
     err: {
       code: 'invalid_data',
@@ -55,9 +56,20 @@ const getByIdProductsService = async (id) => {
   return product;
 };
 
+const updateProductService = async (id, name, quantity) => {
+  const result = await updateProductModel(id, name, quantity);
+  if (result == 'updated') return ({
+    _id: id,
+    name,
+    quantity
+  });
+  return false;
+};
+
 module.exports = {
   productValidation,
   createProductService,
   getAllProductsService,
   getByIdProductsService,
+  updateProductService,
 };

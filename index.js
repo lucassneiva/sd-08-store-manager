@@ -4,6 +4,7 @@ const {
   createProductController,
   getAllProductsController,
   getByIdProductsController,
+  updateProductController,
 } = require('./controllers/productsCrontoller');
 
 const app = express();
@@ -23,6 +24,7 @@ app.get('/products/:id', getByIdProductsController);
 
 app.get('/products', getAllProductsController);
 
+app.put('/products/:id', updateProductController);
 
 app.listen(PORT, () => {
   console.log(`Online na porta ${PORT}`);
