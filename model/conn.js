@@ -10,6 +10,7 @@ const DB_NAME = 'StoreManager';
 
 const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 
+
 let db = null;
 
 const connection = () => {
