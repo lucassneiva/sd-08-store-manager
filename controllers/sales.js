@@ -7,7 +7,6 @@ const UNPROCESSABLE = 422;
 
 const create = async( req, res) => {
   const itensSold = req.body;
-  console.log(itensSold);
 
   SalesServices.create(itensSold)
     .then((response) => res.status(STATUS_OK).json(response))
