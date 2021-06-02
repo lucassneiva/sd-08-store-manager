@@ -1,3 +1,4 @@
+const { ObjectID } = require('mongodb');
 const { productsModel } = require('../models');
 
 const readProducts = async () => {
@@ -10,7 +11,13 @@ const createProduct = async (name, quantity) => {
   return { _id: newProduct.insertedId, name, quantity };
 };
 
+const readProductsById = async (id) => {
+  const product = await productsModel.readId(id);
+  return product;
+};
+
 module.exports = {
   createProduct,
   readProducts,
+  readProductsById,
 };

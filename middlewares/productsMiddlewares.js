@@ -1,4 +1,7 @@
-const { readProducts } = require('../services/productsServices');
+const { ObjectID } = require('mongodb');
+const { productsServices } = require('../services');
+const { productsModel } = require('../models');
+
 
 const UNPROCESSABLE = 422;
 const CODE = 'invalid_data';
@@ -11,7 +14,7 @@ const checkNameAndQuantity = async (req, res, next) => {
     return res.status(UNPROCESSABLE).json({
       err: {
         code: CODE,
-        message: 'É obrigatório informar um nome',
+        message: 'Wrong id format',
       }
     });
   }
@@ -63,7 +66,7 @@ const checkNameAndQuantity = async (req, res, next) => {
       }
     });
   }
-  const productsList = await readProducts();
+  const productsList = await productsServices.readProducts();
   const productsListFind = productsList.find(product => product.name === name);
   if (productsListFind) {
     return res.status(UNPROCESSABLE).json({
@@ -76,6 +79,31 @@ const checkNameAndQuantity = async (req, res, next) => {
   next();
 };
 
+const productNotFoundAndValidFormat = async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!ObjectID.isValid(id)) {
+    return res.status(UNPROCESSABLE).json({
+      err: {
+        code: CODE,
+        message: 'Wrong id format',
+      }
+    });
+  }
+  const product = await productsModel.readId(id);
+  if (!product) {
+    return res.status(UNPROCESSABLE).json({
+      err: {
+        code: CODE,
+        message: 'Product not found',
+      }
+    });
+  }
+
+  next();
+};
+
 module.exports = {
   checkNameAndQuantity,
+  productNotFoundAndValidFormat,
 };

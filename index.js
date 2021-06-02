@@ -5,8 +5,7 @@ const { productsRouter } = require('./routes');
 
 const app = express();
 
-const PORT = 3000;  // porta node
-const SUCESS = 200; // status de resposta
+const PORT = 3000;
 
 app.use(bodyParser.json());
 

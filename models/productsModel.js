@@ -1,3 +1,4 @@
+const { ObjectID } = require('mongodb');
 const connection = require('../connection/connection');
 
 const NAME_COLLECTION = 'products';
@@ -20,7 +21,18 @@ const read = async () => {
   return products;
 };
 
+const readId = async (id) => {
+  const product = await connection().then((db) => {
+    return db
+      .collection(NAME_COLLECTION)
+      .findOne(ObjectID(id));
+  });
+  // console.log(product);
+  return product;
+};
+
 module.exports = {
   read,
   create,
+  readId, 
 };
