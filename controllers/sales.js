@@ -66,8 +66,20 @@ const readById = async (req, res) => {
     });
 };
 
+const update = async (req, res) => {
+  const { id } = req.params;
+  const { productId, quantity } = req.body;
+
+  SalesServices.update(id, productId, quantity)
+    .then((response) => res.status(STATUS_OK).json(response))
+    .catch((err) => {
+      console.log(err, 'update');
+    });
+};
+
 module.exports = {
   create,
   read,
   readById,
+  update,
 };

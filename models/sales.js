@@ -21,8 +21,23 @@ const readById = async (id) => connection()
   )
   .catch(console.log);
 
+const update = async(id, productId, quantity) => connection()
+  .then((db) => db
+    .collection(COLLECTION_NAME)
+    .updateOne(
+      { _id: ObjectId(id) },
+      {
+        $set: {
+          itensSold:{
+            productId, quantity
+          }
+        }
+      }
+    ));
+
 module.exports = {
   create,
   read,
   readById,
+  update,
 };

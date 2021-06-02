@@ -55,8 +55,34 @@ const readById = async (id) => {
   return sale;
 };
 
+const update = async (id, productId, quantity) => {
+  
+  if(!ObjectId.isValid(id)){
+    throw new Error('Sale not found');
+  }
+
+  const sale = await SalesMode.readById(id);
+
+  if(!sale) {
+    throw new Error('Wrong product ID or invalid quantity');
+  }
+
+  isQuantityInvalid(quantity);
+
+  await SalesModel.update(id, productId, quantity);
+
+  return {
+    _id: id,
+    itensSold: {
+      productId,
+      quantity,
+    }
+  };
+};
+
 module.exports = {
   create,
   read,
   readById,
+  update,
 };
