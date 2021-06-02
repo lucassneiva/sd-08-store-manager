@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongodb');
 const connection = require('./connection');
-collectionName = 'products';
+const collectionName = 'products';
 
 const getNewInsertedProduct = (id, name, quantity) => ({ _id: id, name, quantity });
 
