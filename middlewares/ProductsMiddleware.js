@@ -13,7 +13,7 @@ module.exports = async (request, response, next) => {
     return response.status(HTTP_UNPROCESSABLE_ENTITY_STATUS).send({
       err: {
         code: 'invalid_data',
-        message: '\'name\' length must be at least 5 characters long'
+        message: '\"name\" length must be at least 5 characters long'
       }
     });
   } else if (product) {
@@ -27,14 +27,14 @@ module.exports = async (request, response, next) => {
     return response.status(HTTP_UNPROCESSABLE_ENTITY_STATUS).send({
       err: {
         code: 'invalid_data',
-        message: '\'quantity\' must be larger than or equal to 1'
+        message: '\"quantity\" must be larger than or equal to 1'
       }
     });
-  } else if (typeof quantity !== Number) {
+  } else if (typeof quantity !== 'number') {
     return response.status(HTTP_UNPROCESSABLE_ENTITY_STATUS).send({
       err: {
         code: 'invalid_data',
-        message: '\'quantity\' must be a number'
+        message: '\"quantity\" must be a number'
       }
     });
   }
