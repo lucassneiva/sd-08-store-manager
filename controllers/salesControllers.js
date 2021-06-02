@@ -23,8 +23,18 @@ const getAllSales = rescue(async (req, res, next) => {
   res.status(OK_STATUS).json(result);
 });
 
+const updateSale = rescue(async (req, res, next) => {
+  const sale = req.body;
+  const {id} = req.params;
+  const {productId, quantity} = sale[0];
+  const result = await salesServices.updateSale(id, productId, quantity);
+  if(result.err) return next(result);
+  res.status(OK_STATUS).json(result);
+});
+
 module.exports = {
   insertSale,
   getSaleById,
   getAllSales,
+  updateSale,
 };

@@ -18,8 +18,16 @@ const getSaleById = async (id) => {
     .then((sale) => sale);
 };
 
+const updateSale = async (id, productId, quantity) =>
+  connection()
+    .then((db) => db.collection(collectionName)
+      .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: { productId, quantity } } }),
+    )
+    .then((sale) => sale.matchedCount);
+
 module.exports = {
   insertSale,
   getAllSales,
   getSaleById,
+  updateSale
 };

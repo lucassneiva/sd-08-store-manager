@@ -20,20 +20,28 @@ const insertSale = async (saleArray) => {
 };
 
 const getSaleById = async (id) => {
-  if(!ObjectId.isValid(id)) return objError;
+  if (!ObjectId.isValid(id)) return objError;
   const response = await salesModel.getSaleById(id);
-  if(!response) return objError;
+  if (!response) return objError;
   return response;
 };
 
 const getAllSales = async () => {
   const response = await salesModel.getAllSales();
   if (response.length === emptyArrayLength) return objError;
-  return {sales: response};
+  return { sales: response };
+};
+
+const updateSale = async (id, productId, quantity) => {
+  const validateQuantity = isValidQuantity(quantity);
+  if (validateQuantity.err) return validateQuantity;
+  await salesModel.updateSale(id, productId, quantity);
+  return { _id: id, itensSold: [{ productId, quantity }] };
 };
 
 module.exports = {
   insertSale,
   getAllSales,
   getSaleById,
+  updateSale,
 };
