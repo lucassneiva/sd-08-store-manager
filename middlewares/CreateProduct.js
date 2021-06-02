@@ -1,11 +1,11 @@
 const Product = require('../models/Products');
 
+const HTTP_UNPROCESSABLE_ENTITY_STATUS = 422;
+const NAME_MIN_LENGTH = 5;
+const MIN_QUANTITY = 1;
+
 module.exports = async (request, response, next) => {
   const { name, quantity } = request.body;
-
-  const HTTP_UNPROCESSABLE_ENTITY_STATUS = 422;
-  const NAME_MIN_LENGTH = 5;
-  const MIN_QUANTITY = 1;
 
   const product = await Product.findOne({ name });
 
