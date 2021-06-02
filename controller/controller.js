@@ -57,7 +57,7 @@ const updateProduct = async (req, res) => {
 
     res.status(deuBom).json(result);
   } catch (e) {
-    res.status(deuRuimTb).json( {err: 
+    res.status(deuRuim).json( {err: 
       { 
         code: 'invalid_data',
         message: e.message
