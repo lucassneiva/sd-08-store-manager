@@ -1,5 +1,6 @@
 const express = require('express');
 const productsControllers = require('./controllers/productsControllers');
+const salesControllers = require('./controllers/salesControllers');
 
 const app = express();
 const PORT = 3000;
@@ -20,5 +21,7 @@ app.post('/products', productsControllers.create);
 app.put('/products/:id', productsControllers.updateOne);
 
 app.delete('/products/:id', productsControllers.deleteOne);
+
+app.post('/sales', salesControllers.create);
 
 app.listen(PORT, console.log(`Servidor aberto na porta ${PORT}.`));
