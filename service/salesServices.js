@@ -8,13 +8,13 @@ const isValidSale = async(quantity) => {
   if (quantity <= zero || typeof quantity !== 'number') 
     return 'Wrong product ID or invalid quantity';
 
-  return true;
+  return undefined;
 };
 
 const newSale = async(sale) => {
   const notValid = await isValidSale(sale[0].quantity);
 
-  if (notValid !== true) throw new Error(notValid);
+  if (notValid !== undefined) throw new Error(notValid);
 
   const newSales = await sales.createSale(sale);
 
@@ -37,17 +37,25 @@ const getById = async (id) => {
 };
 
 const exclude = async (id) => {
-  // console.log(ObjectId.isValid(id));
   if (!ObjectId.isValid(id)) throw new Error('Wrong sale ID format');
   const excludeSales = await sales.exclude(id);
   // console.log(excludeSales);
-  // await sales.getById(id);
-  
+    
   return excludeSales;
+};
+
+const update = async (id, sale) => {
+  const notValid = await isValidSale(sale[0].quantity);
+  if(notValid) {
+    throw new Error(notValid);
+  }
+  const saleUpdate = await sales.update(id, sale);
+  return saleUpdate;
 };
 
 
 module.exports = {
+  update,
   newSale,
   getAll,
   getById,

@@ -15,6 +15,8 @@ Router.post('/sales', salesControl.create);
 Router.get('/sales', salesControl.getAll);
 Router.get('/sales/:id', salesControl.getSaleById);
 Router.delete('/sales/:id', salesControl.excludeSale);
+Router.put('/sales/:id', salesControl.updateSale);
+
 
 
 

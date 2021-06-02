@@ -64,7 +64,26 @@ const excludeSale = async(req, res) => {
   }
 };
 
+const updateSale = async (req, res) => {
+  try {
+    const sale = req.body;
+    const { id } = req.params;
+
+    const result = await service.update(id, sale);
+
+    res.status(deuBom).json(result);
+  } catch (e) {
+    res.status(deuRuim).json( {err: 
+      { 
+        code: 'invalid_data',
+        message: e.message
+      }
+    } );
+  }
+};
+
 module.exports = {
+  updateSale,
   excludeSale,
   create,
   getAll,

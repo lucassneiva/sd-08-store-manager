@@ -40,8 +40,16 @@ const exclude = async (id) => {
   return salesId;
 };
 
+const update = async ( id, sale ) => {
+  const db = await connection();
+  await  db.collection('sales')
+    .updateOne({ _id: id}, { $set: { itensSold: sale } });
+  return { _id: id, itensSold: sale};
+};
+
 
 module.exports = {
+  update,
   exclude,
   createSale, 
   getAll,
