@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const products = require('./controllers/productsController');
+const sales = require('./controllers/salesController');
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,6 +17,7 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', products);
+app.use('/sales', sales);
 
 app.listen(PORT, () => {
   console.log(`Ouvindo a porta ${PORT}`);
