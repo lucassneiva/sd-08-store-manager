@@ -28,19 +28,45 @@ const getOne = async(id)=>{
   try{
     const product = await conn().
       then(db=>db.collection('products').findOne( new ObjectId(id)));
-    if(!product) return 'null';
+    if(!product) return null;
     return product;
   }catch(err){
     return null;
   }  
 };
 const updateOne = async(id,body)=>{
-  return conn().
-    then(db=>db.collection('products')
-      .updateOne({'_id':ObjectId(id)},{$set:body}).toArray());
+  try{
+    const updated = await conn().
+      then(db=>db.collection('products')
+        .updateOne({'_id':ObjectId(id)},{$set:body}));
+    if (!updated.matchedCount) return null;
+    return {
+      _id: id,
+      ...updated
+    };
+  }catch(err){
+    return null;
+  }
+  
+};
+
+
+const deleteOne = async(id)=>{
+  try{
+    const isThere = await conn().
+      then(db=>db.collection('products')
+        .findOne({'_id':ObjectId(id)}));
+    if(!isThere) return 'found';
+    const deleted = await conn()
+      .then(db=>db.collection('products')
+        .deleteOne({_id:ObjectId(id)}));
+    return isThere;
+  }catch(err){
+    return null;
+  }
   
 };
 
 module.exports = {
-  addProduct,getAll,getOne,updateOne
+  addProduct,getAll,getOne,updateOne,deleteOne
 };

@@ -38,26 +38,54 @@ const addProduct = async (product) => {
 
 const getOne = async (id) => {
   const result = await productModel.getOne(id);
-  if (!result) return ({
-    err: {
-      code: 'invalid_data',
-      message: 'Wrong id format',
-    }
-  });
+  if (!result) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
+  }
   return result;
 };
 
 const getAll = async () => {
-  const result = await productModel.getAll();
-  return { result};
+  const products = await productModel.getAll();
+  return {products};
 };
 
 const updateOne = async (id,product) => {
   const result = await productModel.updateOne(id,product);
+
+  if (!result) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Id not found',
+      },
+    };
+  }
+
+  return result;
+};
+
+
+const deleteOne = async (id) => {
+  const result = await productModel.deleteOne(id);
+
+  if (result === 'found') {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
+  }
+
   return result;
 };
 
 
 module.exports = {
-  validProduct,addProduct,getOne,getAll,updateOne
+  validProduct,addProduct,getOne,getAll,updateOne,deleteOne
 };
