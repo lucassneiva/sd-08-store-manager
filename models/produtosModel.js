@@ -19,7 +19,19 @@ const add = async (produto) => {
   }
 };
 
+const getByName = async (name) => {
+  try {
+    const db = await Connection();
+    const result = await db.collection('products').findOne({ name });
+    
+    return result;
+  } catch (_error) {
+    return 'nAchei';
+  }
+};
+
 module.exports = {
   add,
   getAll,
+  getByName,
 };
