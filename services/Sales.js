@@ -9,49 +9,49 @@ const createSales = async (salesArr) =>  {
 };
 
 
-// const getAll = async () => {
-//   const products = await salesModel.getAll();
-//   return products;
-// };
+const getAll = async () => {
+  const products = await salesModel.getAll();
+  return products;
+};
 
-// const findById = async (id) => {
-//   const data = await salesModel.findById(id);
-//   if(data===null) return {err:{
-//     code:'not_found',
-//     message:'Sale not found'
-//   }
-//   };
+const findById = async (id) => {
+  const data = await salesModel.findById(id);
+  if(data===null) return {err:{
+    code:'not_found',
+    message:'Sale not found'
+  }
+  };
 
-//   return {data};
-// };
+  return {data};
+};
 
-// const updateSales = async(id, {salesArr}) => {
-//   const validation =  salesSchema.salesValidator(salesArr);
-//   if(validation.err) return validation;
-//   const data = await salesModel.updateSales(id, {salesArr});
-//   return {data}; 
-// };
+const updateSales = async(id, {salesArr}) => {
+  const validation =  salesSchema.salesValidator(salesArr);
+  if(validation.err) return validation;
+  const data = await salesModel.updateSales(id, {salesArr});
+  return {data}; 
+};
 
 
 
-// const deleteSale = async(id) => {
-//   const data = await salesModel.findById(id);
-//   if(data===null) return {err:{
-//     code:'invalid_data',
-//     message:'Wrong sale ID format'
-//   }
-//   };
+const deleteSale = async(id) => {
+  const data = await salesModel.findById(id);
+  if(data===null) return {err:{
+    code:'invalid_data',
+    message:'Wrong sale ID format'
+  }
+  };
 
-//   const info = await salesModel.deleteSale(id);
-//   return {info};
-// };
+  const info = await salesModel.deleteSale(id);
+  return {info};
+};
 
  
 module.exports = {
   createSales,
-  // findById, 
-  // getAll,
-  // updateSales,
-  // deleteSale
+  findById, 
+  getAll,
+  updateSales,
+  deleteSale
 
 };
