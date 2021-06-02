@@ -39,6 +39,23 @@ const findById = async (req, res) => {
   }
 };
 
+const updateSale = async (req, res) => {
+  try {
+    const sale = req.body;
+    const { id } = req.params;
+    const saleToUpdate = await service.updateSale(id, sale);
+    res.status(success2).json(saleToUpdate);
+  } catch (err) {
+    res.status(fail).json({
+      err: {
+        code: 'invalid_data',
+        message: err.message,
+      },
+    });
+  }
+};
+
+
 const deleteSale = async (req, res) => {
   try {
     const { id } = req.params;
@@ -62,4 +79,5 @@ module.exports = {
   getAllSales,
   findById,
   deleteSale,
+  updateSale,
 };

@@ -28,19 +28,17 @@ const deleteSale = async (id) => {
   // if (!saleById) {
   //   return false;
   // }
-  console.log('ida', await findById(id));
   await db.collection('sales').deleteOne({ _id: ObjectId(id) });
-  console.log('volta', await findById(id));
   // console.log(saleById);
   return saleById;
 };
 
 
-// const updateSale = async (id, name, quantity) => {
-//   const db = await connection();
-//   await db.collection('products').updateOne({ _id: id}, { $set: { name, quantity } });
-//   return { _id: id, name, quantity };
-// };
+const updateSale = async (id, sale) => {
+  const db = await connection();
+  await db.collection('sales').updateOne({ _id: id}, { $set: { itensSold: sale } });
+  return { _id: id, itensSold: sale };
+};
 
 // const findSale = async (sale) => {
 //   const db = await connection();
@@ -49,4 +47,4 @@ const deleteSale = async (id) => {
 // };
 
 
-module.exports = { createSale, getAllSales, findById, deleteSale };
+module.exports = { createSale, getAllSales, findById, deleteSale, updateSale };

@@ -34,6 +34,15 @@ const findById = async (id) => {
   return saleById;
 };
 
+const updateSale = async (id, sale) => {
+  const invalid = await validateSale(sale[0].quantity);
+  if (invalid) {
+    throw new Error(invalid);
+  }
+  return model.updateSale(id, sale);
+};
+
+
 const deleteSale = async (id) => {
   if (!ObjectId.isValid(id)) throw new Error('Wrong sale ID format');
   const deleteThisSale = await model.deleteSale(id);
@@ -46,4 +55,5 @@ module.exports = {
   getAllSales,
   findById,
   deleteSale,
+  updateSale,
 };
