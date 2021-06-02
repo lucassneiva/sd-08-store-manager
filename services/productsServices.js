@@ -18,8 +18,16 @@ const getProductById = async (id) => {
   return product;
 };
 
+const updateProduct = async (id, name, quantity) => {
+  if (!ObjectId.isValid(id)) throw new Error('Wrong id format');
+  const newProduct = await productsModel.updateProduct(id, name, quantity);
+
+  return newProduct;
+};
+
 module.exports = {
   createProduct,
   getAllProduct,
   getProductById,
+  updateProduct,
 };
