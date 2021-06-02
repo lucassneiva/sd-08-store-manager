@@ -6,6 +6,7 @@ const errorMsgs = {
   alreadyExists: 'Product already exists', 
   invalidQuantity: '"quantity" must be larger than or equal to 1',
   quantityNotNumber: '"quantity" must be a number',
+  wrongId: 'Wrong id format'
 };
 
 const errorMessage = (message) => (
@@ -19,7 +20,13 @@ const errorMessage = (message) => (
 
 const SHORTEST_NAME_ALLOWED = 6;
 const SMALLEST_QUANTITY_ALLOWED = 1;
-const {shortName, alreadyExists, invalidQuantity, quantityNotNumber} = errorMsgs;
+const {
+  shortName,
+  alreadyExists,
+  invalidQuantity,
+  quantityNotNumber,
+  wrongId
+} = errorMsgs;
 
 const addProduct = async(name, quantity) => {
   
@@ -39,6 +46,19 @@ const addProduct = async(name, quantity) => {
 
 };
 
+const getAllProducts = async() => {
+  const getAll = await ProductsModel.getAll();
+  return getAll;
+};
+
+const getProductById = async(id) => {
+  const getById = await ProductsModel.getById(id);
+  console.log(`id aqui: ${getById}`);
+  return getById || errorMessage(wrongId);
+};
+
 module.exports = {
-  addProduct
+  addProduct,
+  getAllProducts,
+  getProductById
 };
