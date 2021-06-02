@@ -36,7 +36,9 @@ const findById = async (saleId) => {
 const updateOne = async (saleId, changes) => {
   try {
     const db = await connection();
-    await db.collection(SALES).update({ _id: ObjectId(saleId) }, changes);
+    await db.collection(SALES)
+      .updateOne(
+        { _id: ObjectId(saleId) }, { $set: { itensSold: [...changes] } });
     return true;
   } catch (err) {
     return null;

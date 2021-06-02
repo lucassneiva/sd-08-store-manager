@@ -2,6 +2,7 @@ const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
 const PRODUCTS = 'products';
+const ZERO = 0;
 
 const create = async ({ name, quantity }) => {
   try {
@@ -41,10 +42,16 @@ const findById = async (productId) => {
   }
 };
 
-const updateOne = async (productId, changes) => {
+const updateOne = async (productId, { name, quantity }, operation=null, quant=ZERO) => {
   try {
     const db = await connection();
-    await db.collection(PRODUCTS).update({ _id: ObjectId(productId)}, changes);
+    if (operation === 'inc') {
+      await db.collection(PRODUCTS)
+        .updateOne({ _id: ObjectId(productId) }, { $inc: { quantity: quant } });
+      return true;
+    }
+    await db.collection(PRODUCTS)
+      .updateOne({ _id: ObjectId(productId)}, { $set: { name, quantity } });
     return true;
   } catch (err) {
     return err;

@@ -1,4 +1,5 @@
 const salesModel = require('../models/salesModels');
+const productsModel = require('../models/productsModels');
 
 const validSale = (sale) => {
   const err = {
@@ -12,6 +13,14 @@ const validSale = (sale) => {
     if (typeof quantity === 'string' || quantity < 1) return err;
   }
   return null;
+};
+
+const quantityUpdate = async (products, operation) => {
+  for(let index = 1; index <= products.length; index += 1) {
+    const id = products[index - 1].productId;
+    const quant = operation * products[index - 1].quantity;
+    await productsModel.updateOne(id, products[index - 1], 'inc', quant);
+  }
 };
 
 const create = async (sale) => {
@@ -64,4 +73,5 @@ module.exports =  {
   findById,
   updateOne,
   deleteOne,
+  quantityUpdate,
 };
