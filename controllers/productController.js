@@ -6,9 +6,9 @@ const CREATED = 201;
 const UNPROCESSABLE_ENTITY = 422;
 
 const getAll = async (_req, res) => {
-  const products = await ProductService.getAll();
+  const allProducts = await ProductService.getAll();
 
-  res.status(OK).json(products);
+  res.status(OK).json({ products: allProducts });
 };
 
 const create = async (req, res) => {
@@ -63,9 +63,24 @@ const update = async (req, res) => {
     .json(updatedProduct);
 };
 
+const exclude = async (req, res) => {
+  const { id } = req.params;
+
+  const products = await ProductService.exclude(id);
+
+  let statusCode = OK;
+
+  if (products.hasOwnProperty('err')) statusCode = UNPROCESSABLE_ENTITY;
+
+  res
+    .status(statusCode)
+    .json(products);
+};
+
 module.exports = {
   create,
   getAll,
   findById,
   update,
+  exclude,
 };

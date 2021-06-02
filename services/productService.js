@@ -1,5 +1,6 @@
 const ProductModel = require('../models/produtcModel');
 const ProductValidation = require('./productValidation');
+const ErrorMessages = require('../services/errorMessages');
 
 const ZERO = 0;
 
@@ -52,9 +53,23 @@ const update = async (id, newProduct) => {
   return await ProductModel.update(id, { name, quantity });
 };
 
+const exclude = async (id) => {
+  const produtcsData = await ProductModel.exclude(id);
+
+  if (!produtcsData) return {
+    err: {
+      code: 'invalid_data',
+      message: ErrorMessages.productNotFound,
+    }
+  };
+
+  return produtcsData;
+};
+
 module.exports = {
   create,
   getAll,
   findById,
   update,
+  exclude,
 };
