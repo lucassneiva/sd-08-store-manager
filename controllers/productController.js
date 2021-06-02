@@ -48,8 +48,22 @@ const addProduct = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  try {
+    const { name, quantity } = req.body;
+    const { id } = req.params;
+    const product = await productModel.updateProduct(id, name, quantity);
+
+    res.status(HTTP_STATUS_OK).json(product);
+  } catch (err) {
+    console.error(err.message);
+    res.status(INTERNAL_ERROR).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getAllProducts,
   addProduct,
-  getProductById
+  getProductById,
+  updateProduct
 };
