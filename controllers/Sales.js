@@ -5,12 +5,14 @@ const NOT_FOUND = 404;
 const UNPROCESSABLE_ENTITY = 422;
 
 const add = async (req, res) => {
-  const soldItems = req.body;
+  const itensSold = req.body;
 
-  const sales = await Sales.add(soldItems);
+  const sales = await Sales.add(itensSold);
 
   if (sales.err) {
-    return res.status(UNPROCESSABLE_ENTITY).json(sales);
+    return sales.err.code === 'stock_problem'
+      ? res.status(NOT_FOUND).json(sales)
+      : res.status(UNPROCESSABLE_ENTITY).json(sales);
   }
 
   return res.status(OK).json(sales);
@@ -46,8 +48,6 @@ const deleteById = async (req, res) => {
   const { id } = req.params;
 
   const sale = await Sales.deleteById(id);
-
-  console.log(sale, 'controller');
 
   if (sale.err) return res.status(UNPROCESSABLE_ENTITY).json(sale);
 

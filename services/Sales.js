@@ -4,11 +4,11 @@ const Products = require('../models/Products');
 
 const MIN_QNT = 0;
 
-const isValid = async (soldItems) => {
+const isValid = async (itensSold) => {
   const allProductsId = await Products.getAll().then((products) =>
     products.map((product) => ObjectId(product['_id']).toString()),
   );
-  const soldProductExists = soldItems.every(
+  const soldProductExists = itensSold.every(
     ({ quantity, productId }) =>
       !(
         quantity <= MIN_QNT
@@ -27,11 +27,23 @@ const isValid = async (soldItems) => {
   return 'validated';
 };
 
-const add = async (soldItems) => {
-  const validation = await isValid(soldItems);
+const add = async (itensSold) => {
+  const validation = await isValid(itensSold);
   if (validation.err) return validation;
 
-  return Sales.add(soldItems);
+  for (let item of itensSold) {
+    const product = await Products.getById(item.productId);
+    const newQuantity = product.quantity - item.quantity;
+    if (newQuantity <= MIN_QNT) return {
+      err: {
+        code: 'stock_problem',
+        message: 'Such amount is not permitted to sell',
+      },
+    };
+    Products.updateById(item.productId, {quantity: newQuantity});
+  }
+
+  return Sales.add(itensSold);
 };
 
 const getAll = async () => {
@@ -75,7 +87,6 @@ const updateById = async (id, updatedSale) => {
 const deleteById = async (id) => {
   const deletedSale = await Sales.getById(id);
   const sales = await Sales.deleteById(id);
-  console.log(sales, 'sevices');
 
   if (!sales || !sales.deletedCount) return {
     err: {
@@ -83,6 +94,14 @@ const deleteById = async (id) => {
       message: 'Wrong sale ID format',
     },
   };
+
+  const { itensSold } = deletedSale;
+
+  for (let item of itensSold) {
+    const product = await Products.getById(item.productId);
+    const newQuantity = product.quantity + item.quantity;
+    Products.updateById(item.productId, {quantity: newQuantity});
+  }
 
   return deletedSale;
 };

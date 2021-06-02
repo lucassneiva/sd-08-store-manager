@@ -1,9 +1,9 @@
 const connection = require('./connect');
 const { ObjectId } = require('mongodb');
 
-const add = async (soldItems) => {
+const add = async (itensSold) => {
   return connection()
-    .then((db) => db.collection('sales').insertOne({ itensSold: soldItems }))
+    .then((db) => db.collection('sales').insertOne({ itensSold }))
     .then((result) => result.ops[0]);
 };
 
