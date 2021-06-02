@@ -1,12 +1,12 @@
 const express = require('express');
-const route = express.Router();
+const router = express.Router();
 const middlewares = require('../middlewares');
 const ProductsController = require('../controllers/Products');
 
-route.post('/', middlewares.validateProduct ,ProductsController.create);
-route.get('/:id', ProductsController.getById);
-route.get('/', ProductsController.getAll);
-route.put('/:id', middlewares.validateProduct, ProductsController.edit);
-route.delete('/:id', ProductsController.remove);
+router.post('/', middlewares.validateProduct ,ProductsController.create);
+router.get('/:id', ProductsController.getById);
+router.get('/', ProductsController.getAll);
+router.put('/:id', middlewares.validateProduct, ProductsController.edit);
+router.delete('/:id', ProductsController.remove);
 
-module.exports = route;
+module.exports = router;

@@ -1,14 +1,6 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
-
-const saveMe = (callback) => async (...args) => {
-  try {
-    return callback(...args);
-  } catch (error) {
-    console.log(error.message);
-    process.exit(1);
-  }
-};
+const saveMe = require('../utils/saveMe');
 
 const create = saveMe(async (product) => {
   const db = await connection();

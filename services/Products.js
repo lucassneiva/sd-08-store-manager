@@ -1,4 +1,4 @@
-const ProductsModel = require('../models/Product');
+const ProductsModel = require('../models/Products');
 
 const create = async (product) => {
   const result = await ProductsModel.getByName(product.name);

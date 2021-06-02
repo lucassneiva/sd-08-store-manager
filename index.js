@@ -14,6 +14,7 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', require('./router/products'));
+app.use('/sales', require('./router/sales'));
 
 app.use(middlewares.error);
 
