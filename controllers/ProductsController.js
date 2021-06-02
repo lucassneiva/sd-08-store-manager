@@ -1,4 +1,9 @@
-const { addProduct, getAllProducts, getOneProduct } = require('../models/ProductsModel');
+const {
+  addProduct,
+  getAllProducts,
+  getOneProduct,
+  editProduct,
+} = require('../models/ProductsModel');
 const { results } = require('../services/ErrorMessage');
 
 module.exports = {
@@ -17,6 +22,12 @@ module.exports = {
     if (result.err !== undefined) {
       return res.status(results.unprocessable).json(result);
     }
+    res.status(results.ok).json(result);
+  },
+  edit: async (req, res) => {
+    const { name, quantity } = req.body;
+    const { id } = req.params;
+    const result = await editProduct(id, name, quantity);
     res.status(results.ok).json(result);
   },
 };

@@ -35,4 +35,18 @@ module.exports = {
     }
     return result;
   },
+  editProduct: async (id, name, quantity) => {
+    const db = await connection();
+    const result = await db.collection('products').updateOne(
+      {
+        _id: ObjectId(id),
+      },
+      { $set: { name, quantity } },
+    );
+    return {
+      id,
+      name,
+      quantity,
+    };
+  },
 };
