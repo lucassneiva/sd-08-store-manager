@@ -21,16 +21,14 @@ const readById = async (id) => connection()
   )
   .catch(console.log);
 
-const update = async(id, productId, quantity) => connection()
+const update = async(id, itensSold) => connection()
   .then((db) => db
     .collection(COLLECTION_NAME)
     .updateOne(
       { _id: ObjectId(id) },
       {
         $set: {
-          itensSold:{
-            productId, quantity
-          }
+          itensSold
         }
       }
     ));

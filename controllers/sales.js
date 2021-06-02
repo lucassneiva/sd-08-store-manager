@@ -68,12 +68,15 @@ const readById = async (req, res) => {
 
 const update = async (req, res) => {
   const { id } = req.params;
-  const { productId, quantity } = req.body;
+  const newItensSold = req.body;
 
-  SalesServices.update(id, productId, quantity)
-    .then((response) => res.status(STATUS_OK).json(response))
+  SalesServices.update(id, newItensSold)
+    .then((response) => {
+      console.log(response);
+      res.status(STATUS_OK).json(response);})
     .catch((err) => {
       console.log(err, 'update');
+      res.status(UNPROCESSABLE).json({err:'oi'});
     });
 };
 

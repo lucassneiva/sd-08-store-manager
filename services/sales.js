@@ -3,16 +3,18 @@ const ProductsModel = require('../models/products');
 
 const { ObjectId } = require('mongodb');
 
+const WRONG_PRODUCT_OR_ID = 'Wrong product ID or invalid quantity';
+
 const isQuantityInvalid = (quantity) => {
   const MIN_QUANTITY = 1;
 
-
+  console.log(quantity, 'quantity');
   if(typeof quantity !== 'number') {
-    throw new Error('Wrong product ID or invalid quantity');
+    throw new Error(WRONG_PRODUCT_OR_ID);
   }
 
   if(quantity < MIN_QUANTITY) {
-    throw new Error('Wrong product ID or invalid quantity');
+    throw new Error(WRONG_PRODUCT_OR_ID);
   }
 };
 
@@ -22,7 +24,7 @@ const create = async (itensSold) => {
   const products = await Promise.all(productPromise);
 
   if (products.some((product) => !product)) {
-    throw new Error('Wrong product ID or invalid quantity');
+    throw new Error(WRONG_PRODUCT_OR_ID);
   }
 
   itensSold.forEach((elem) => isQuantityInvalid(elem.quantity));
@@ -55,29 +57,36 @@ const readById = async (id) => {
   return sale;
 };
 
-const update = async (id, productId, quantity) => {
-  
+const update = async (id, itensSold) => {
+
+  console.log(id, ObjectId.isValid(id));
+
   if(!ObjectId.isValid(id)){
-    throw new Error('Sale not found');
+    throw new Error(WRONG_PRODUCT_OR_ID);
   }
 
-  const sale = await SalesMode.readById(id);
+  const sale = await SalesModel.readById(id);
 
   if(!sale) {
-    throw new Error('Wrong product ID or invalid quantity');
+    throw new Error(WRONG_PRODUCT_OR_ID);
   }
 
-  isQuantityInvalid(quantity);
+  const productPromise = itensSold.map((sale) => ProductsModel.readById(sale.productId));
+  const products = await Promise.all(productPromise);
 
-  await SalesModel.update(id, productId, quantity);
+  if (products.some((product) => !product)) {
+    throw new Error(WRONG_PRODUCT_OR_ID);
+  }
+
+  itensSold.forEach((elem) => isQuantityInvalid(elem.quantity));
+
+  const updated = await SalesModel.update(id, itensSold);
 
   return {
     _id: id,
-    itensSold: {
-      productId,
-      quantity,
-    }
+    itensSold,
   };
+
 };
 
 module.exports = {
