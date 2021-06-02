@@ -10,7 +10,7 @@ const getAll = async () => {
 const getSaleById = async (id) => {
   const db = await connection();
   if (!ObjectId.isValid(id)) return null;
-  return db.collection('products').findOne(ObjectId(id));
+  return db.collection('sales').findOne(ObjectId(id));
 };
 
 const addSale = async (productId, quantity) => {
@@ -31,7 +31,7 @@ const update = async (id, productId, quantity) => {
   const db = await connection();
   if (!ObjectId.isValid(id)) return null;
   const sale = await db
-    .collection('products')
+    .collection('sales')
     .updateOne({ _id: ObjectId(id) }, { $set: { productId, quantity } });
   if (!sale) return addSale(productId, quantity);
   return { id, productId, quantity };

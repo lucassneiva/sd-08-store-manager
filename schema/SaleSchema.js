@@ -18,7 +18,7 @@ const validateSale = (quantity) => {
     };
   }
 
-  if (typeof quantity === 'string') {
+  if (typeof quantity !== 'number') {
     return {
       code,
       err: {
@@ -27,6 +27,7 @@ const validateSale = (quantity) => {
       },
     };
   }
+  return {};
 };
 
 module.exports = {
