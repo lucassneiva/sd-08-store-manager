@@ -53,7 +53,6 @@ const getAllProducts = async() => {
 
 const getProductById = async(id) => {
   const getById = await ProductsModel.getById(id);
-  console.log(`id aqui: ${getById}`);
   return getById || errorMessage(wrongId);
 };
 
