@@ -1,22 +1,7 @@
 const ProductModel = require('../models/produtcModel');
-const ErrorMessages = require('./errorMessages');
+const ProductValidation = require('./productValidation');
 
-const MIN_LENGTH_NAME = 5;
-const MIN_QUANTITY = 1;
 const ZERO = 0;
-
-const isValid = async (name, quantity) => {
-  if (!name || typeof name !== 'string' || name.length < MIN_LENGTH_NAME)
-    return ErrorMessages.productName;
-
-  if (typeof quantity !== 'number') return ErrorMessages.productQuantityIsNotNumber;
-  
-  if ( Number(quantity) < MIN_QUANTITY) return ErrorMessages.productQuantityLength;
-    
-  if (await ProductModel.findByName(name)) return ErrorMessages.productAlreadyExists;
-
-  return {};
-};
 
 const findById = async (id) => {  
   const productData = await ProductModel.findById(id);
@@ -33,7 +18,7 @@ const getAll = async () => {
 };
 
 const create = async ({ name, quantity }) => {
-  const messageError = await isValid(name, quantity);
+  const messageError = await ProductValidation.isValid(name, quantity);
 
   if (messageError && Object.keys(messageError).length !== ZERO) return { 
     err: {
@@ -52,8 +37,24 @@ const create = async ({ name, quantity }) => {
   };
 };
 
+const update = async (id, newProduct) => {
+  const { name, quantity } = newProduct;
+
+  const messageError = await ProductValidation.isValidUpdate(name, quantity);
+
+  if (messageError && Object.keys(messageError).length !== ZERO) return { 
+    err: {
+      code: 'invalid_data',
+      message: messageError,
+    }
+  };
+
+  return await ProductModel.update(id, { name, quantity });
+};
+
 module.exports = {
   create,
   getAll,
   findById,
+  update,
 };

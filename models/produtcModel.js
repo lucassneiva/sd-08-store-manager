@@ -60,9 +60,28 @@ const create = async ({ name, quantity }) => {
   };
 };
 
+const update = async (id, newProduct) => {
+  try {
+    const productsCollection = await mongoConnection()
+      .then((db) => db.collection('products'));
+    
+    if (!ObjectId.isValid(id)) return null;
+
+    await productsCollection.updateOne({ _id: ObjectId(id) }, { $set: newProduct });
+        
+    return {
+      _id: id,
+      ...newProduct,
+    };
+  } catch (error) {
+    return null;
+  }
+};
+
 module.exports = {
   create,
   findByName,
   getAll,
   findById,
+  update,
 };
