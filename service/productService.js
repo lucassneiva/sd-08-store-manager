@@ -20,6 +20,19 @@ const validateProduct = async (name, quantity, product) => {
   return undefined;
 };
 
+const validateUpdate = async (name, quantity) => {
+  if (name.length <= NAME_LENGTH) {
+    return '"name" length must be at least 5 characters long';
+  }
+  if (quantity <= QUANTITY) {
+    return '"quantity" must be larger than or equal to 1';
+  }
+  if (typeof quantity !== 'number') {
+    return '"quantity" must be a number';
+  }
+  return undefined;
+};
+
 const createProduct = async (name, quantity) => {
   const findProduct = await product.findProduct(name);
   const invalid = await validateProduct(name, quantity, findProduct);
@@ -37,10 +50,19 @@ const getAllProducts = async () => {
 const findById = async (id) => {
   if (!ObjectId.isValid(id)) throw new Error('Wrong id format');
   const productById = await product.findById(id);
-  // if (!product) {
-  //   return 'Wrong id format';
+  // if (!product || !ObjectId.isValid(id)) {
+  //   throw new Error('Wrong id format');
   // }
   return productById;
 };
 
-module.exports = { createProduct, getAllProducts, findById };
+const updateProduct = async (id, name, quantity) => {
+  if (!ObjectId.isValid(id)) throw new Error('Wrong id format');
+  const invalid = await validateUpdate(name, quantity);
+  if (invalid) {
+    throw new Error(invalid);
+  }
+  return product.updateProduct(id, name, quantity);
+};
+
+module.exports = { createProduct, getAllProducts, findById, updateProduct };

@@ -23,8 +23,13 @@ const findById = async (id) => {
   // if (!ObjectId.isValid(id)) return null;
   const db = await connection();
   const product = await db.collection('products').findOne(new ObjectId(id));
-  console.log(product);
   return product;
 };
 
-module.exports = { createProduct, findProduct, getAllProducts, findById };
+const updateProduct = async (id, name, quantity) => {
+  const db = await connection();
+  await db.collection('products').updateOne({ _id: id}, { $set: { name, quantity } });
+  return { _id: id, name, quantity };
+};
+
+module.exports = { createProduct, findProduct, getAllProducts, findById, updateProduct };

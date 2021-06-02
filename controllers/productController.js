@@ -28,7 +28,6 @@ const findById = async (req, res) => {
   try {
     const { id } = req.params;
     const product = await service.findById(id);
-    console.log(product);
     res.status(success2).json(product);
   } catch (err) {
     res.status(fail).json({
@@ -40,4 +39,20 @@ const findById = async (req, res) => {
   }
 };
 
-module.exports = { createP, getAllProducts, findById };
+const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+    const productToUpdate = await service.updateProduct(id, name, quantity);
+    res.status(success2).json(productToUpdate);
+  } catch (err) {
+    res.status(fail).json({
+      err: {
+        code: 'invalid_data',
+        message: err.message,
+      },
+    });
+  }
+};
+
+module.exports = { createP, getAllProducts, findById, updateProduct };
