@@ -1,6 +1,7 @@
 const invalid_data_code = 422;
 const default_error_code = 400;
 const not_found = 404;
+const stock_problem = 404;
 
 const error = (err, _req, res, next) => {
   switch(err.code) {
@@ -8,6 +9,8 @@ const error = (err, _req, res, next) => {
     return res.status(invalid_data_code).json({err});
   case 'not_found':
     return res.status(not_found).json({err});
+  case 'stock_problem':
+    return res.status(stock_problem).json({err});
   default: return res.status(default_error_code).json({
     code: default_error_code,
     message: 'Algo de errado aconteceu',

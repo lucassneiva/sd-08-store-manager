@@ -1,6 +1,8 @@
 const SalesModel = require('../models/salesModel');
 const ProductsModel = require('../models/productsModel');
 
+const ZERO = 0;
+
 const productsValidation = async (sale) => {
   // Uso da função Promise.all, para aguardar todas as promises e coletar todos os resultados
   // Fonte: https://advancedweb.hu/how-to-use-async-functions-with-array-map-in-javascript/
@@ -22,14 +24,56 @@ const productsValidation = async (sale) => {
   return true;
 };
 
+const createQuantityObject = (sale) => {
+  const quantityObject = sale.reduce((obj, item) => {
+    const { productId, quantity } = item;
+    obj[productId] = (obj[productId] ? obj[productId] : ZERO) + quantity;
+    return obj;
+  },{});
+  return quantityObject;
+};
+
+const validateAndUpdateStock = async (sale, operation) => {
+  const quantityObject = createQuantityObject(sale);
+  const itensIdArray = Object.keys(quantityObject);
+  const soldQuantityArray = Object.values(quantityObject);
+  const productQuantityArray = await Promise.all(itensIdArray.map(async (itemId) => {
+    const { quantity } = await ProductsModel.getProductById(itemId);
+    return quantity;
+  }));
+  const validationArray = productQuantityArray.map((productQuantity, index) => {
+    if (operation === '-') return productQuantity - soldQuantityArray[index];
+    if (operation === '+') return productQuantity + soldQuantityArray[index];
+  });
+  const validation = validationArray.reduce((acc, value) => {
+    if (value < ZERO) acc = false;
+    return acc;
+  }, true);
+  if (!validation) return false;
+  await Promise.all(itensIdArray.map(async (itemId, index) => {
+    await ProductsModel.updateProductById(itemId, { quantity: validationArray[index] });
+  }));
+  return true;
+
+};
+
 const addNewSale = async (sale) => {
-  const validation = await productsValidation(sale);
-  if (!validation) return {
+  const dataValidation = await productsValidation(sale);
+  if (!dataValidation) return {
     err: {
       code: 'invalid_data',
       message: 'Wrong product ID or invalid quantity'
     }
   };
+
+  const stockValidation = await validateAndUpdateStock(sale, '-');
+  if (!stockValidation) return {
+    err: {
+      code: 'stock_problem',
+      message: 'Such amount is not permitted to sell'
+    }
+  };
+  
   const result = await SalesModel.addNewSale(sale);
   return result;
 };
@@ -88,6 +132,9 @@ const deleteSaleById = async (id) => {
       message: 'Wrong sale ID format'
     }
   };
+
+  const stockValidation = await validateAndUpdateStock(sale.itensSold, '+');
+
   await SalesModel.deleteSaleById(id);
   return sale;
 };
