@@ -31,9 +31,21 @@ const getAll = () => SalesModel.getAll();
 
 const edit = (id, updatedSale) => SalesModel.edit(id, updatedSale);
 
+const remove = async (id) => {
+  const result = await SalesModel.remove(id);
+  if (!result) return {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format'
+    }
+  };
+  return result;
+};
+
 module.exports = {
   create,
   getById,
   getAll,
-  edit
+  edit,
+  remove
 };

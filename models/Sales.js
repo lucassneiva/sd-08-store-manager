@@ -29,9 +29,18 @@ const edit = saveMe(async (id, updatedSale) => {
   return { _id: id, itensSold: updatedSale };
 });
 
+const remove = saveMe(async (id) => {
+  if (!ObjectId.isValid(id)) return false;
+  const db = await connection();
+  const sales = await getById(id);
+  await db.collection('sales').deleteOne({ _id: ObjectId(id) });
+  return sales;
+});
+
 module.exports = {
   create,
   getAll,
   getById,
-  edit
+  edit,
+  remove
 };
