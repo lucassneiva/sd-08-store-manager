@@ -47,9 +47,45 @@ const getProductById = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  try {
+    const { name, quantity } = req.body;
+    const { id } = req.params;
+
+    const result = await service.update(id, name, quantity);
+
+    res.status(deuBom).json(result);
+  } catch (e) {
+    res.status(deuRuim).json( {err: 
+      { 
+        code: 'invalid_data',
+        message: e.message
+      }
+    } );
+  }
+};
+
+const excludeProduct = async(req, res) => {
+  try {
+    const { id } = req.params;
+    const notProduct = await service.exclude(id);
+    res.status(deuBom).json(notProduct);
+  } catch (e) {
+    console.log(e);
+    res.status(deuRuim).send({err: 
+      { 
+        code: 'invalid_data',
+        message: e.message
+      }
+    } );
+  }
+};
+
 
 module.exports = {
+  excludeProduct,
   userController, 
   getProductById, 
-  getAllProducts
+  getAllProducts,
+  updateProduct
 };
