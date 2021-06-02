@@ -50,9 +50,21 @@ const updateProductModel = async (id, name, quantity) => {
   }
 };
 
+const deleteProductModel = async (id) => {
+  try {
+    const db = await connection();
+    const product = db.collection('products').findOne({ _id: ObjectId(id) });
+    await db.collection('products').deleteOne({ _id: ObjectId(id) });
+    return product;
+  } catch (error) {
+    return 'not deleted';
+  }
+};
+
 module.exports = {
   createProductModel,
   getAllProductsModel,
   getByIdProductsModel,
   updateProductModel,
+  deleteProductModel,
 };
