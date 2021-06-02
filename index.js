@@ -5,6 +5,7 @@ const PORT = 3000;
 
 app.use(bodyParser.json());
 app.use('/products', require('./controllers/productsController'));
+app.use('/sales', require('./controllers/salesController'));
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
