@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { STATUS_500 } = require('../statusCode');
+const { STATUS_500, DEU_ERRO } = require('../statusCode');
 
 const salesServices = require('../services/salesServices');
 
@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
     res.status(result.statusCode).json(result.json);
   } catch (error) {
     console.log(error);
-    res.status(STATUS_500).json({ message: 'algo deu errado' });
+    res.status(STATUS_500).json({ message: DEU_ERRO });
   }
 });
 
@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
     res.status(result.statusCode).json(result.json);
   } catch (error) {
     console.log(error);
-    res.status(STATUS_500).json({ message: 'algo deu errado' });
+    res.status(STATUS_500).json({ message: DEU_ERRO });
   }
 });
 
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
     res.status(result.statusCode).json(result.json);
   } catch (error) {
     console.log(error);
-    res.status(STATUS_500).json({ message: 'algo deu errado' });
+    res.status(STATUS_500).json({ message: DEU_ERRO });
   }
 });
 
@@ -42,7 +42,7 @@ router.put('/:id', async (req, res) => {
     res.status(result.statusCode).json(result.json);
   } catch (error) {
     console.log(error);
-    res.status(STATUS_500).json({ message: 'algo deu errado' });
+    res.status(STATUS_500).json({ message: DEU_ERRO });
   }
 });
 
@@ -53,7 +53,7 @@ router.delete('/:id', async (req, res) => {
     res.status(result.statusCode).json(result.json);
   } catch (error) {
     console.log(error);
-    res.status(STATUS_500).json({ message: 'algo deu errado' });
+    res.status(STATUS_500).json({ message: DEU_ERRO });
   }
 });
 
