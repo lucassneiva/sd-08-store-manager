@@ -19,4 +19,6 @@ app.post('/products', productsControllers.create);
 
 app.put('/products/:id', productsControllers.updateOne);
 
+app.delete('/products/:id', productsControllers.deleteOne);
+
 app.listen(PORT, console.log(`Servidor aberto na porta ${PORT}.`));

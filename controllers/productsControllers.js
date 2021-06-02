@@ -35,9 +35,17 @@ const updateOne = async (req, res) => {
   res.status(OK).json(result);
 };
 
+const deleteOne = async (req, res) => {
+  const { id } = req.params;
+  const result = await productsServices.deleteOne(id);
+  if (result.err) res.status(UNPROCEESSABLE_ENTITY).json(result);
+  res.status(OK).json(result);
+};
+
 module.exports = {
   create,
   getAll,
   findById,
   updateOne,
+  deleteOne,
 };
