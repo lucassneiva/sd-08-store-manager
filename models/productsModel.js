@@ -40,9 +40,22 @@ const findById = async (id) => {
   return product;
 };
 
+const updateProduct = async (id, product) => {
+  const productsCollection = await connection()
+    .then(db => db.collection('products'));
+
+  await productsCollection.updateOne({ _id: id }, product);
+
+  const updatedProduct = {
+    _id: id,
+    ...product,
+  };
+};
+
 module.exports = {
   create,
   findByName,
   findProducts,
-  findById
+  findById,
+  updateProduct,
 };

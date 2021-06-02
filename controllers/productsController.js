@@ -72,6 +72,14 @@ const listAllProducts = rescue(async(req, res) => {
   return res.status(OK).json(products);
 });
 
+const updateProduct = rescue(async (req, res) => {
+  const { id } = req.params;
+  const product = req.body;
+
+  const updatedProduct = await ProductsService.updateProduct(id, product);
+  res.status(OK).json(updatedProduct);
+});
+
 router.post('/products',
   validateProductName,
   productExists,
@@ -81,5 +89,11 @@ router.post('/products',
 
 router.get('/products/:id', findProductById);
 router.get('/products', listAllProducts);
+
+router.put('products/:id',
+  validateProductName,
+  validateProductQuantity,
+  updateProduct
+);
 
 module.exports = router;

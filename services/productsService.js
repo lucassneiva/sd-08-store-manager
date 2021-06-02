@@ -26,9 +26,18 @@ const listAllProducts = async () => {
   };
 };
 
+const updateProduct = async (id, product) => {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  };
+  const updatedProduct = await ProductModel.updateProduct;
+  return updatedProduct;
+};
+
 module.exports = {
   create,
   findByName,
   findById,
   listAllProducts,
+  updateProduct,
 };
