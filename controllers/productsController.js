@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { ObjectID } = require('bson');
+const { STATUS_200, STATUS_422, STATUS_500, STATUS_201,
+  DEU_ERRO } = require('../statusCode');
+const ZERO = 0;
 
 const productsModel = require('../models/productsModel');
 const { addProductValidation, nameValidation } = require('../validation');
@@ -12,24 +15,24 @@ router.post('/', async (req, res) => {
     const validationName = await nameValidation(name);
     const result = await productsModel.addProduct(name, quantity);
 
-    if(error) return res.status(422).json({
+    if(error) return res.status(STATUS_422).json({
       err: {
         code: 'invalid_data',
         message: error.details[0].message,
       }
     });
 
-    if(validationName.length !== 0) return res.status(422).json({
+    if(validationName.length !== ZERO) return res.status(STATUS_422).json({
       err: {
         code: 'invalid_data',
         message: 'Product already exists',
       }
     });
 
-    res.status(201).json(result);
+    res.status(STATUS_201).json(result);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Algo deu errado' });
+    res.status(STATUS_500).json({ message: DEU_ERRO });
   }
 });
 
@@ -37,12 +40,12 @@ router.get('/', async (_req, res) => {
   try {
     const getAllProducts = await productsModel.getAllProducts();
 
-    res.status(200).json({
+    res.status(STATUS_200).json({
       products: getAllProducts,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Algo deu errado' });
+    res.status(STATUS_500).json({ message: DEU_ERRO });
   }
 });
 
@@ -51,7 +54,7 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params;
     const idValid = ObjectID.isValid(id);
     
-    if(!idValid) return res.status(422).json({
+    if(!idValid) return res.status(STATUS_422).json({
       err: {
         code: 'invalid_data',
         message: 'Wrong id format'
@@ -59,10 +62,10 @@ router.get('/:id', async (req, res) => {
     });
     
     const result = await productsModel.findByIdProducts(id);
-    res.status(200).json(result[0]);
+    res.status(STATUS_200).json(result[0]);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Algo deu errado' });
+    res.status(STATUS_500).json({ message: DEU_ERRO });
   }
 });
 
@@ -72,7 +75,7 @@ router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const { error } = addProductValidation(req.body);
 
-    if(error) return res.status(422).json({
+    if(error) return res.status(STATUS_422).json({
       err: {
         code: 'invalid_data',
         message: error.details[0].message,
@@ -80,10 +83,29 @@ router.put('/:id', async (req, res) => {
     });
 
     const result = await productsModel.updateProducts(id, name, quantity);
-    res.status(200).json(result);
+    res.status(STATUS_200).json(result);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Algo deu errado' });
+    res.status(STATUS_500).json({ message: DEU_ERRO });
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await productsModel.deleteProducts(id);
+
+    if(!result) return res.status(STATUS_422).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    });
+    
+    res.status(STATUS_200).json(result.message);
+  } catch (error) {
+    console.log(error);
+    res.status(STATUS_500).json({ message: DEU_ERRO });
   }
 });
 

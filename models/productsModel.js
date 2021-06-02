@@ -1,4 +1,4 @@
-const { ObjectID } = require('bson');
+const { ObjectID, ObjectId } = require('bson');
 const connect = require('./connection');
 
 const addProduct = async (name, quantity) => {
@@ -37,10 +37,19 @@ const updateProducts = async (id, name, quantity) => {
   return result;
 };
 
+const deleteProducts = async (id) => {
+  const result = await connect()
+    .then((db) => ObjectId.isValid(id)
+      ? db.collection('products').findOneAndDelete({ _id: ObjectID(id) })
+      : null);
+  return result;
+};
+
 module.exports = {
   addProduct,
   findByNameProduct,
   getAllProducts,
   findByIdProducts,
   updateProducts,
+  deleteProducts,
 };
