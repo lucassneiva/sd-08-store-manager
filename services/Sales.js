@@ -28,4 +28,28 @@ const add = async (soldItems) => {
   return Sales.add(soldItems);
 };
 
-module.exports = { add };
+const getAll = async () => {
+  const sales = await Sales.getAll();
+
+  return { sales };
+};
+
+const getById = async (id) => {
+  const sales = await Sales.getById(id);
+
+  if (!sales)
+    return {
+      err: {
+        code: 'not_found',
+        message: 'Sale not found',
+      },
+    };
+
+  return sales;
+};
+
+module.exports = {
+  add,
+  getAll,
+  getById,
+};
