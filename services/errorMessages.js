@@ -3,6 +3,8 @@ const productQuantityLength  = '"quantity" must be larger than or equal to 1';
 const productQuantityIsNotNumber  = '"quantity" must be a number';
 const productAlreadyExists  = 'Product already exists';
 const productNotFound = 'Wrong id format';
+const saleProductInvalidIdOrQty = 'Wrong product ID or invalid quantity';
+const invalidData = 'invalid_data';
 
 module.exports = {
   productName,
@@ -10,4 +12,6 @@ module.exports = {
   productQuantityIsNotNumber,
   productAlreadyExists,
   productNotFound,
+  saleProductInvalidIdOrQty,
+  invalidData,
 };
