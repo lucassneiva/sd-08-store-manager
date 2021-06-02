@@ -12,7 +12,7 @@ const getProductById = async (id) => {
 
 const addProduct = async (name, quantity) => {
   const product = await ProductsModel.addProduct(name, quantity);
-  return { code: 201, product };
+  return product;
 };
 
 const updateProduct = async (id, name, quantity) => {

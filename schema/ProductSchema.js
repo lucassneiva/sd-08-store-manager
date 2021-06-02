@@ -6,10 +6,12 @@ const errors = {
   name_length: '"name" length must be at least 5 characters long',
   quantity_number: '"quantity" must be a number',
   quantity_larger: '"quantity" must be larger than or equal to 1',
+  wrong_id: 'Wrong id format',
 };
 
+const code = 422;
+
 const validate = (name, quantity) => {
-  const code = 422;
   if (name.length < FIVE) {
     return {
       code,

@@ -1,4 +1,3 @@
-
 const ProductSchema = require('../schema/ProductSchema');
 const ProductModel = require('../models/productsModel');
 
