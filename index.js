@@ -13,6 +13,7 @@ app.get('/', (_request, response) => {
 
 app.use(productsRouters);
 
+
 const PORT = 3000;
 
 app.listen(PORT, () => {
