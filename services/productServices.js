@@ -70,10 +70,11 @@ const updateOne = async (id,product) => {
 };
 
 
-const deleteOne = async (id) => {
+/* const deleteOne = async (id) => {
   const result = await productModel.deleteOne(id);
+  const deletedProduct = await productModel.getOne(id);
 
-  if (result === 'found') {
+  if (!result || !result.deletedCount) {
     return {
       err: {
         code: 'invalid_data',
@@ -82,9 +83,23 @@ const deleteOne = async (id) => {
     };
   }
 
-  return result;
-};
+  return deletedProduct;
+}; */
+const deleteOne = async (id) => {
+  const deletedProduct = await productModel.getOne(id);
+  const result = await productModel.deleteOne(id);
 
+  if (!result || !result.deletedCount) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
+  }
+
+  return deletedProduct;
+};
 
 module.exports = {
   validProduct,addProduct,getOne,getAll,updateOne,deleteOne

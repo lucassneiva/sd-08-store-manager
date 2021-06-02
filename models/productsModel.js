@@ -36,13 +36,15 @@ const getOne = async(id)=>{
 };
 const updateOne = async(id,body)=>{
   try{
+    const {name,quantity} = body;
     const updated = await conn().
       then(db=>db.collection('products')
-        .updateOne({'_id':ObjectId(id)},{$set:body}));
+        .updateOne({_id:ObjectId(id)},{$set:body}));
     if (!updated.matchedCount) return null;
     return {
       _id: id,
-      ...updated
+      name:name,
+      quantity:quantity
     };
   }catch(err){
     return null;
@@ -51,20 +53,32 @@ const updateOne = async(id,body)=>{
 };
 
 
-const deleteOne = async(id)=>{
-  try{
-    const isThere = await conn().
+/* const deleteOne = async(id)=>{
+  try{ */
+/*  const isThere = await conn().
       then(db=>db.collection('products')
-        .findOne({'_id':ObjectId(id)}));
-    if(!isThere) return 'found';
-    const deleted = await conn()
+        .findOne({'_id':ObjectId(id)})); */
+/*  if(!isThere) return 'found'; */
+/*     const deleted = await conn()
       .then(db=>db.collection('products')
         .deleteOne({_id:ObjectId(id)}));
-    return isThere;
+    return deleted;
   }catch(err){
     return null;
   }
   
+}; */
+
+const deleteOne = async (id) => {
+  try {
+    const product = await conn().then((db) =>
+      db.collection('products').deleteOne({_id: ObjectId(id)}),
+    );
+    console.log(product);
+    return product;
+  } catch (err) {
+    return null;
+  }
 };
 
 module.exports = {

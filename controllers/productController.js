@@ -40,14 +40,24 @@ const updateOne = async(req,res)=>{
   return res.status(statusOk).json(product);
 };
 
-const deleteOne = async(req,res)=>{
+/* const deleteOne = async(req,res)=>{
   const {id} = req.params;
   const product = await productServices.deleteOne(id);
   if (product.err) return res.status(err422).json(product);
   return res.status(statusOk).json(product);
+}; */
+
+const deleteOne = async (req, res) => {
+  const { id } = req.params;
+
+  const product = await productServices.deleteOne(id);
+
+  if (product.err) {
+    return res.status(err422).json(product);
+  }
+
+  return res.status(statusOk).json(product);
 };
-
-
 
 module.exports={
   addProducts,getAll,getOne,updateOne,deleteOne
