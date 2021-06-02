@@ -1,12 +1,18 @@
 const { ObjectId } = require('mongodb');
+const { RESPONSE } = require('../config/constant/returnMessage');
 const { connect } = require('./config/mongodb.config');
 
-exports.getAll = async () => connect().then((db) => db.collection('products')
-  .find().toArray());
+exports.getAll = async () => {
+
+  const products = await connect().then((db) => db.collection('products')
+    .find().toArray());
+  return {
+    products,
+  };
+};
 
 exports.getById = async (id) => {
-  if (!ObjectId.isValid(id)) return null;
-
+  if (!ObjectId.isValid(id)) throw new Error(RESPONSE.ID_INVALID);
   return connect().then((db) => db.collection('products').findOne(ObjectId(id)));
 };
 
