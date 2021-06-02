@@ -6,4 +6,6 @@ const create = async (name, quantity) => {
       .then(result => result.ops[0]));
 };
 
-create('TEST', 10);
+module.exports = {
+  create,
+};
