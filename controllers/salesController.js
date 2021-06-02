@@ -17,7 +17,7 @@ const getAllSales = async (req, res, next) => {
 const getSaleById = async (req, res, next) => {
   const { id } = req.params;
   const result = await SalesService.getSaleById(id);
-  if (result.err) next(result.err);
+  if (result.err) return next(result.err);
   res.status(ok).json(result);
 };
 
@@ -29,9 +29,17 @@ const updateSaleById = async (req, res, next) => {
   res.status(ok).json(result);
 };
 
+const deleteSaleById = async (req, res, next) => {
+  const { id } = req.params;
+  const result = await SalesService.deleteSaleById(id);
+  if (result.err) return next(result.err);
+  res.status(ok).json(result);
+};
+
 module.exports = {
   addNewSale,
   getAllSales,
   getSaleById,
   updateSaleById,
+  deleteSaleById,
 };
