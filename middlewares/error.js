@@ -1,14 +1,18 @@
-// const BAD_REQUEST = 400;
-const UNPROCESSABLE_ENTITY = 422;
+const ERRORS = {
+  'invalid_data': 422,
+  'not_found': 404,
+  'internal_server_error': 500
+};
 
 module.exports = (err, req, res, next) => {
   if (err.isJoi) {
-    return res.status(UNPROCESSABLE_ENTITY).json({
+    return res.status(ERRORS.invalid_data).json({
       err: {
         code: 'invalid_data',
         message: err.details[0].message 
       }
     });
   }
-  res.status(UNPROCESSABLE_ENTITY).json(err);
+  
+  res.status(ERRORS[err.err.code] || ERRORS.internal_server_error).json(err);
 };
