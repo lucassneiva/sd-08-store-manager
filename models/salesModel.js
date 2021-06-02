@@ -1,6 +1,9 @@
 const connection = require('./connection');
 const { ObjectId, ObjectID } = require('mongodb');
 
+const ProductModel = require('./productsModel');
+const SalesServices = require('../services/salesServices');
+
 const createSales = async (itens) => {
   try {
     const itensSold = itens;
@@ -75,10 +78,34 @@ const removeSale = async (id) => {
   }
 };
 
+const handleProductQuantity = async ({ productId, quantity }) => {
+  try {
+
+    const product = await ProductModel.getProductById(productId);
+    if (!product) return null;
+
+
+    await connection()
+      .then((db) => db.collection('products').updateOne(
+        { _id: new ObjectId(productId) },
+        { $set: { quantity: quantity } }
+      ));
+
+    const updatedProduct = await ProductModel.getProductById(productId);
+
+
+    return updatedProduct;
+  } catch (err) {
+    console.error(err);
+    return process.exit(1);
+  }
+};
+
 module.exports = {
   createSales,
   getSales,
   getSalesById,
   updateSale,
   removeSale,
+  handleProductQuantity,
 };

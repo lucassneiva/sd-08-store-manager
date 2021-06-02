@@ -14,6 +14,9 @@ router.post('/', async (req, res, _next) => {
   const validation = await SalesServices.verifySalesItens(itens);
   if (validation) return res.status(INVALID_CODE).json({ err: validation });
 
+  const updateProducts = await SalesServices.handleQuantitySale(null, itens);
+  if (updateProducts) return res.status(NOT_FOUND_CODE).json({ err: updateProducts });
+
   const response = await SalesModel.createSales(itens);
 
   res.status(SUCCESS_CODE).json(response);
@@ -46,6 +49,13 @@ router.put('/:id', async (req, res, _next) => {
   const validation = await SalesServices.verifySalesItens(itens);
   if (validation) return res.status(INVALID_CODE).json({ err: validation });
 
+  const sales = await SalesModel.getSalesById(id);
+  if (!sales) return res.status(INVALID_CODE)
+    .json({ err: 'Unable to update sale' });
+
+  const updateProducts = await SalesServices.handleQuantitySale(sales.itensSold, itens);
+  if (updateProducts) return res.status(NOT_FOUND_CODE).json({ err: updateProducts });
+
   const response = await SalesModel.updateSale(id, itens);
 
   if (!response) return res.status(INVALID_CODE)
@@ -58,11 +68,16 @@ router.put('/:id', async (req, res, _next) => {
 router.delete('/:id', async (req, res, _next) => {
   const { id } = req.params;
 
-  const response = await SalesModel.removeSale(id);
-
-  if (!response) return res.status(INVALID_CODE)
+  const sales = await SalesModel.getSalesById(id);
+  if (!sales) return res.status(INVALID_CODE)
     .json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
 
+  const returnedProducts = await SalesServices.handleQuantityReturned(sales.itensSold);
+  if (returnedProducts) return res.status(NOT_FOUND_CODE).json({ err: returnedProducts });
+
+  const response = await SalesModel.removeSale(id);
+  if (!response) return res.status(INVALID_CODE)
+    .json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
 
   res.status(SUCCESS_CODE).json(response);
 });
