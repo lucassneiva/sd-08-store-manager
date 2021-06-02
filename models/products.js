@@ -47,10 +47,21 @@ const update = async ( id, name, quantity ) => {
   };
 };
 
+const productDelete = async (id) => {
+  const produto = await connection().then((db) => {
+    return db
+      .collection(COLLECTION_NAME)
+      .deleteOne({_id: ObjectId(id) });
+  });
+
+  return produto;
+};
+
 module.exports = {
   create,
   read,
   readById,
   update,
+  productDelete,
 };
 

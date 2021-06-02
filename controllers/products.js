@@ -1,10 +1,12 @@
-const { json } = require('body-parser');
-const { response } = require('express');
 const ProductsService = require('../services/products');
 
 const STATUS_OK = 200;
 const STATUS_CREATED = 201;
 const UNPROCESSABLE = 422;
+
+// const catchError = (error, res) => (
+//   // posso passar o res pra cá?
+// )
 
 const create = async (req, res) => {
   const newProduct = req.body;
@@ -64,7 +66,31 @@ const update = async (req, res) => {
   ProductsService.update(id, name, quantity)
     .then(response => res.status(STATUS_OK).json(response))
     .catch((err) => {
-      console.log(err);
+      console.log('update', err);
+      res
+        .status(UNPROCESSABLE)
+        .json(
+          {
+            err: {
+              code: 'invalid_data',
+              message: err.message,
+            }
+          }
+        );
+    });
+};
+
+const productDelete = async (req, res) => {
+  const {id} = req.params;
+
+  ProductsService.productDelete(id)
+    .then(response => {
+      res
+        .status(STATUS_OK)
+        .json(response);
+    })
+    .catch((err) => {
+      console.log('delete', err);
       res
         .status(UNPROCESSABLE)
         .json(
@@ -83,4 +109,5 @@ module.exports = {
   read,
   readById,
   update,
+  productDelete,
 };
