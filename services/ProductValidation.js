@@ -1,20 +1,6 @@
 const ProductsModel = require('../models/ProductsModel');
-const results = {
-  shortName: '"name" length must be at least 5 characters long',
-  invalidQuantityValue: '"quantity" must be larger than or equal to 1',
-  invalidQuantityType: '"quantity" must be a number',
-  duplicateProduct: 'Product already exists',
-  unprocessable: 422,
-};
-
-const generateMessage = (message) => {
-  return {
-    err: {
-      code: 'invalid_data',
-      message,
-    },
-  };
-};
+const { ObjectId } = require('mongodb');
+const { results, generateMessage } = require('./ErrorMessage');
 
 exports.fieldsValidation = async (req, res, next) => {
   const { name, quantity } = req.body;
@@ -34,9 +20,13 @@ exports.fieldsValidation = async (req, res, next) => {
     return;
   }
   const findResult = await ProductsModel.getByName(name);
+  console.log(findResult);
   if (findResult) {
     res.status(results.unprocessable).json(generateMessage(results.duplicateProduct));
     return;
   }
   next();
+};
+exports.productNotFound = async () => {
+  return generateMessage(results.invalidId);
 };
