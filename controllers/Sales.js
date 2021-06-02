@@ -1,7 +1,6 @@
 const Sales = require('../services/Sales');
 
 const OK = 200;
-const CREATED = 201;
 const NOT_FOUND = 404;
 const UNPROCESSABLE_ENTITY = 422;
 
@@ -33,8 +32,19 @@ const getById = async (req, res) => {
   return res.status(OK).json(sales);
 };
 
+const updateById = async (req, res) => {
+  const { id } = req.params;
+  const updatedSale = req.body;
+  const sale = await Sales.updateById(id, updatedSale);
+
+  if (sale.err) return res.status(UNPROCESSABLE_ENTITY).json(sale);
+
+  return res.status(OK).json(sale);
+};
+
 module.exports = {
   add,
   getAll,
   getById,
+  updateById,
 };

@@ -22,5 +22,6 @@ app.delete('/products/:id', Products.deleteById);
 app.post('/sales', Sales.add);
 app.get('/sales', Sales.getAll);
 app.get('/sales/:id', Sales.getById);
+app.put('/sales/:id', Sales.updateById);
 
 app.listen(PORT, () => console.log(`Escutando na porta ${PORT}`));

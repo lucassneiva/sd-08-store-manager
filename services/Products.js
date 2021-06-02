@@ -72,20 +72,16 @@ const getById = async (id) => {
 };
 
 const updateById = async (id, updatedProduct) => {
-  const result = await Products.updateById(id, updatedProduct);
-
   const validation = isValid(updatedProduct);
-
   if (validation.err) return validation;
 
-  if (!result.matchedCount) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: 'Id not found',
-      },
-    };
-  }
+  const result = await Products.updateById(id, updatedProduct);
+  if (!result.matchedCount) return {
+    err: {
+      code: 'invalid_data',
+      message: 'Id not found',
+    },
+  };
 
   return {
     _id: id,

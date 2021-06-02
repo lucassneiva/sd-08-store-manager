@@ -4,19 +4,18 @@ const Products = require('../models/Products');
 
 const MIN_QNT = 0;
 
-const isValid = ({ productId, quantity }, allProductsId) => {
-  if (quantity <= MIN_QNT) return false;
-  if (!Number.isInteger(quantity)) return false;
-  if (!allProductsId.includes(productId)) return false;
-  return true;
-};
-
-const add = async (soldItems) => {
+const isValid = async (soldItems) => {
   const allProductsId = await Products.getAll().then((products) =>
     products.map((product) => ObjectId(product['_id']).toString()),
   );
-  const soldProductExists = soldItems.every((item) => isValid(item, allProductsId));
-
+  const soldProductExists = soldItems.every(
+    ({ quantity, productId }) =>
+      !(
+        quantity <= MIN_QNT
+        || !Number.isInteger(quantity)
+        || !allProductsId.includes(productId)
+      ),
+  );
   if (!soldProductExists)
     return {
       err: {
@@ -24,6 +23,13 @@ const add = async (soldItems) => {
         message: 'Wrong product ID or invalid quantity',
       },
     };
+
+  return 'validated';
+};
+
+const add = async (soldItems) => {
+  const validation = await isValid(soldItems);
+  if (validation.err) return validation;
 
   return Sales.add(soldItems);
 };
@@ -48,8 +54,27 @@ const getById = async (id) => {
   return sales;
 };
 
+const updateById = async (id, updatedSale) => {
+  const validation = await isValid(updatedSale);
+  if (validation.err) return validation;
+  const result = await Sales.updateById(id, updatedSale);
+
+  if (!result.matchedCount) return {
+    err: {
+      code: 'not_found',
+      message: 'Id not found',
+    },
+  };
+
+  return {
+    _id: id,
+    itensSold: updatedSale,
+  };
+};
+
 module.exports = {
   add,
   getAll,
   getById,
+  updateById,
 };

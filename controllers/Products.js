@@ -38,9 +38,7 @@ const updateById = async (req, res) => {
 
   const product = await Products.updateById(id, updatedProduct) ;
 
-  if (product.err) {
-    return res.status(UNPROCESSABLE_ENTITY).json(product);
-  }
+  if (product.err) res.status(UNPROCESSABLE_ENTITY).json(product);
 
   return res.status(OK).json(product);
 };
