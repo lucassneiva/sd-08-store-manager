@@ -25,9 +25,18 @@ const updateProduct = async (id, name, quantity) => {
   return newProduct;
 };
 
+const deleteProduct = async (id) => {
+  if (!ObjectId.isValid(id)) throw new Error('Wrong id format');
+  const getProduct = await getProductById(id);
+  if (!getProduct) throw new Error('Product already not exists');
+  await productsModel.deleteProduct(id);
+  return getProduct;
+};
+
 module.exports = {
   createProduct,
   getAllProduct,
   getProductById,
   updateProduct,
+  deleteProduct,
 };

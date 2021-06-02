@@ -22,7 +22,7 @@ const getAllProduct = async (_req, res) => {
     res.status(code_200).json(products);
   } catch (error) {
     console.error(error);
-    res.status(code_422).json({ message: 'Deu ruim!'});
+    res.status(code_422).json(messageError(error.message));
   }
 };
 
@@ -34,7 +34,7 @@ const getProductById = async (req, res) => {
   } catch (error) {
     const message = messageError(error.message);
     console.error(error.message);
-    res.status(code_422).json(message);
+    res.status(code_422).json(messageError(error.message));
   }
 };
 
@@ -46,7 +46,18 @@ const updateProduct = async (req, res) => {
     res.status(code_200).json(product);
   } catch (error) {
     console.error(error);
-    res.status(code_422).json({ message: 'Deu ruim!'});
+    res.status(code_422).json(messageError(error.message));
+  }
+};
+
+const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await productsServices.deleteProduct(id);
+    res.status(code_200).json(product);
+  } catch (error) {
+    console.error(error);
+    res.status(code_422).json(messageError(error.message));
   }
 };
 
@@ -55,4 +66,5 @@ module.exports = {
   getAllProduct,
   getProductById,
   updateProduct,
+  deleteProduct,
 };
