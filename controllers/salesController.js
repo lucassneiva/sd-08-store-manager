@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { STATUS_500 } = require('../statusCode');
 
 const salesServices = require('../services/salesServices');
 
@@ -9,7 +10,7 @@ router.post('/', async (req, res) => {
     res.status(result.statusCode).json(result.json);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'algo deu errado' });
+    res.status(STATUS_500).json({ message: 'algo deu errado' });
   }
 });
 
@@ -19,7 +20,7 @@ router.get('/', async (req, res) => {
     res.status(result.statusCode).json(result.json);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'algo deu errado' });
+    res.status(STATUS_500).json({ message: 'algo deu errado' });
   }
 });
 
@@ -30,7 +31,7 @@ router.get('/:id', async (req, res) => {
     res.status(result.statusCode).json(result.json);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'algo deu errado' });
+    res.status(STATUS_500).json({ message: 'algo deu errado' });
   }
 });
 
