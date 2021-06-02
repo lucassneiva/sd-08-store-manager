@@ -1,4 +1,5 @@
 const productsModel = require('../models/products');
+const { ObjectId } = require('mongodb');
 
 const MINIMUM_NAME_LENGTH = 5;
 const MINIMUM_STOCK = 1;
@@ -40,6 +41,51 @@ const create = async (name, quantity) => {
   };
 };
 
+const getAll = async (id) => {
+  const products = await productsModel.getAll();
+
+  return products;
+};
+
+const getById = async (id) => {
+  if (await !ObjectId.isValid(id)) return 'Wrong id format';
+
+  const { _id, name, quantity } = await productsModel.getById(id);
+
+  return {
+    _id,
+    name,
+    quantity,
+  };
+};
+
+const update = async (_id, name, quantity) => {
+  const isProductValid = isValid(name, quantity);
+  if (isProductValid) return isProductValid;
+
+  await productsModel.update(_id, name, quantity);
+
+  return {
+    _id,
+    name,
+    quantity,
+  };
+};
+
+const erase = async (_id) => {
+  if (await !ObjectId.isValid(id)) return 'Wrong id format';
+
+  await productsModel.erase(_id);
+
+  return {
+    _id,
+  };
+};
+
 module.exports = {
   create,
+  getAll,
+  getById,
+  update,
+  erase,
 };
