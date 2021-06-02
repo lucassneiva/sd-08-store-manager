@@ -3,6 +3,7 @@ const saleModel = require('../models/saleModel');
 const HTTP_STATUS_OK = 200;
 const INTERNAL_ERROR = 500;
 const UNPROCESSABLE_ENTITY = 422;
+const NOT_FOUNT = 404;
 
 const getAllSales = async (req, res) => {
   try {
@@ -26,7 +27,29 @@ const addSales = async (req, res) => {
   }
 };
 
+const getSaleById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await saleModel.getSaleById(id);
+
+    if(!result) {
+      return res.status(NOT_FOUNT).json({ 
+        err: {
+          code: 'not_found',
+          message: 'Sale not found'
+        }
+      });
+    }
+
+    res.status(HTTP_STATUS_OK).json(result);
+  } catch (err) {
+    console.error(err.message);
+    res.status(INTERNAL_ERROR).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getAllSales,
-  addSales
+  addSales,
+  getSaleById
 };
