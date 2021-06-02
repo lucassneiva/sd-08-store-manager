@@ -38,8 +38,22 @@ const getById = async (id) => {
   return { code: 200, result };
 };
 
+const updateSale = async (id, sales) => {
+  const indexZero = 0;
+  for (let index = indexZero; index < sales.length; index++) {
+    const { quantity } = sales[index];
+    const validation = validate(quantity);
+    if(validation.message) return validation;
+  }
+
+  const result = await salesModel.updateById(id, sales);
+  
+  return { code: 200, result };
+};
+
 module.exports = {
   addSalesProductValidated,
   getAll,
-  getById
+  getById,
+  updateSale
 };

@@ -52,4 +52,27 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.put('/:id', async (req, res) => {
+  const data = req.body;
+  const { id } = req.params;
+  try {
+    const { 
+      code, 
+      message, 
+      result 
+    } =  await SalesValidate.updateSale(id, data);
+    if (!result) {
+      return res.status(code).json({
+        err: {
+          code: 'invalid_data',
+          message,
+        }
+      });
+    }
+    res.status(code).json(result);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
 module.exports = router;
