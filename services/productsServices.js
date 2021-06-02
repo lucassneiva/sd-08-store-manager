@@ -32,11 +32,13 @@ const quantityNotIsString = (quantity) => {
 
 const productExists = async (name) => {
   // console.log(name);
-  const dataProducts = await ProductsModel.getAll();
-  // console.log(dataProducts);
-  const productCheck = dataProducts
-    .some((data) => data.name.includes(name));
-  return productCheck;
+  const dataProducts = await ProductsModel.getByName(name);
+  console.log(dataProducts);
+  if (dataProducts === null) return false;
+  return true;
+  // const productCheck = dataProducts
+  //   .some((data) => data.name.includes(name));
+  // return productCheck;
 };
 
 // const getAll = async () => {
@@ -50,8 +52,8 @@ const create = async (name, quantity) => {
   const isProductExists = await productExists(name);
   // console.log(isProductExists);
   // const isNameValid = nameValidation(name);
-  const isNameValid = true;
-  const existName = true;
+  const isNameValid = nameValidation(name);
+  // const existName = true;
 
   const isQuantityString = quantityNotIsString(quantity);
   const isQuantityValid = quantityValidation(quantity);
@@ -66,11 +68,6 @@ const create = async (name, quantity) => {
     message: '\"name\" length must be at least 5 characters long'
   };
 
-  if (!existName) return { 
-    code: 'invalid_data',
-    message: 'Product already exists'
-  };
-
   if (!isQuantityString) return { 
     code: 'invalid_data',
     message: '\"quantity\" must be a number'
@@ -78,14 +75,16 @@ const create = async (name, quantity) => {
 
   if (!isQuantityValid) return { 
     code: 'invalid_data',
-    message: '\"quantity\" must be at larger than or equal to 1'
+    message: '\"quantity\" must be larger than or equal to 1'
   };
 
+  console.log('linha 81 services', name, quantity);
   const newProducts = await ProductsModel
     .create(name, quantity);
+  console.log('linha 83 services', newProducts);
 
   return {
-    _id: newProducts._id,
+    // id: newProducts._id,
     name: newProducts.name,
     quantity: newProducts.quantity
   };
