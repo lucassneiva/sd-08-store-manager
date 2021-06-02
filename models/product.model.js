@@ -3,7 +3,6 @@ const { RESPONSE } = require('../config/constant/returnMessage');
 const { connect } = require('./config/mongodb.config');
 
 exports.getAll = async () => {
-
   const products = await connect().then((db) => db.collection('products')
     .find().toArray());
   return {
@@ -14,6 +13,12 @@ exports.getAll = async () => {
 exports.getById = async (id) => {
   if (!ObjectId.isValid(id)) throw new Error(RESPONSE.ID_INVALID);
   return connect().then((db) => db.collection('products').findOne(ObjectId(id)));
+};
+
+exports.existById = async (id) => {
+  const exist = await connect().then((db) => db.collection('products')
+    .findOne(ObjectId(id)));
+  return !!exist;
 };
 
 exports.existByName = async (name) => {
@@ -30,15 +35,14 @@ exports.add = async (entry) =>
     return product.ops[0];
   });
 
-exports.update = async (entry) =>
+exports.update = async (id, entry) =>
   connect().then(async (db) => {
-    const product = await db
-      .collection('products')
-      .updateOne({ _id: ObjectId(id) }, { $set: entry });
+    await db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: entry });
 
-    return { _id: id, name, age };
+    return { id, ...entry };
   });
 
-exports.exclude = async (id) =>
+exports.exclude = async (id) => {
   connect().then(async (db) => db.collection('products')
     .deleteOne({ _id: ObjectId(id) }));
+};

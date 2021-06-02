@@ -12,10 +12,13 @@ const valid = () => ({
   quantity: (quantity) => !!(quantity && +quantity >= MIN_SIZE_ONE)
 });
 
-const verifyFieldName = async (name) => {
+const verifyFieldName = (name) => {
   const isValid = valid().name(name);
-  if (await !productModel.existByName(name)) throw new Error(FORM.NAME_EXIST);
   if (!isValid) throw new Error(FORM.NAME_INVALID);
+};
+
+const verifyProduct = async (name) => {
+  if (await !productModel.existByName(name)) throw new Error(FORM.NAME_EXIST);
 };
 
 const verifyFieldQuantity = (quantity = '') => {
@@ -25,11 +28,22 @@ const verifyFieldQuantity = (quantity = '') => {
   if (!isValid) throw new Error(FORM.QUANTITY_INVALID);
 };
 
-exports.verifyForm = async (req, res, next) => {
+exports.verifyForm = (req, res, next) => {
   const { name, quantity } = req.body;
   try {
-    await verifyFieldName(name);
+    verifyFieldName(name);
     verifyFieldQuantity(quantity);
+    next();
+  } catch (error) {
+    const messageError = new HandleCustomerError(error.message);
+    res.status(HTTP_UNPROCESSABLE_ENTITY_STATUS).json(messageError.getMessageError());
+  }
+};
+
+exports.verifyExistProduct = async (req, res, next) => {
+  const { name } = req.body;
+  try {
+    await verifyProduct(name);
     next();
   } catch (error) {
     const messageError = new HandleCustomerError(error.message);

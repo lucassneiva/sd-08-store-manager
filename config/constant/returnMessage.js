@@ -6,6 +6,7 @@ module.exports = {
     QUANTITY_INVALID_TYPE: '"quantity" must be a number',
   },
   RESPONSE: {
-    ID_INVALID: 'Wrong id format'
+    ID_INVALID: 'Wrong id format',
+    PRODUCT_NOT_EXIST: 'Product already not exists',
   }
 };
