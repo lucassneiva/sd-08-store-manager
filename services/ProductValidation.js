@@ -2,15 +2,19 @@ const ProductsModel = require('../models/ProductsModel');
 const { ObjectId } = require('mongodb');
 const { results, generateMessage } = require('./ErrorMessage');
 
-exports.fieldsValidation = async (req, res, next) => {
-  const { name, quantity } = req.body;
+exports.name = async (req, res, next) => {
+  const { name } = req.body;
   const minimalLength = 5;
-  const minimalQuantity = 0;
 
   if (name.trim().length < minimalLength) {
     res.status(results.unprocessable).json(generateMessage(results.shortName));
     return;
   }
+  next();
+};
+exports.quantity = async (req, res, next) => {
+  const { quantity } = req.body;
+  const minimalQuantity = 0;
   if (quantity <= minimalQuantity) {
     res.status(results.unprocessable).json(generateMessage(results.invalidQuantityValue));
     return;
@@ -19,8 +23,11 @@ exports.fieldsValidation = async (req, res, next) => {
     res.status(results.unprocessable).json(generateMessage(results.invalidQuantityType));
     return;
   }
+  next();
+};
+exports.duplicate = async (req, res, next) => {
+  const { name } = req.body;
   const findResult = await ProductsModel.getByName(name);
-  console.log(findResult);
   if (findResult) {
     res.status(results.unprocessable).json(generateMessage(results.duplicateProduct));
     return;
