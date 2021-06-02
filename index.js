@@ -15,5 +15,5 @@ app.use('/products', router.productRouter);
 app.use(handleError.logError);
 
 app.listen(PORT, () => {
-  console.log('servidor rodando');
+  console.log(`Server Running on port ${PORT}`);
 });
