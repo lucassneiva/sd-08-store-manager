@@ -28,17 +28,22 @@ const {
   wrongId
 } = errorMsgs;
 
-const addProduct = async(name, quantity) => {
+const validateNameAndQuantity = (name, quantity) => {
   
   if (name.length < SHORTEST_NAME_ALLOWED ) return errorMessage(shortName);
+  
+  if (quantity < SMALLEST_QUANTITY_ALLOWED) return errorMessage(invalidQuantity);
+  
+  if (typeof quantity === 'string') return errorMessage(quantityNotNumber);
+};
 
+const addProduct = async(name, quantity) => {
+  const nameOrQuantityError = validateNameAndQuantity(name, quantity);
+  if(nameOrQuantityError) return nameOrQuantityError;
+  
   const productFound = await ProductsModel.getByName(name);
 
   if (productFound) return errorMessage(alreadyExists);
-
-  if (quantity < SMALLEST_QUANTITY_ALLOWED) return errorMessage(invalidQuantity);
-
-  if (typeof quantity === 'string') return errorMessage(quantityNotNumber);
 
   const added = await ProductsModel.add(name, quantity);
 
@@ -56,8 +61,18 @@ const getProductById = async(id) => {
   return getById || errorMessage(wrongId);
 };
 
+const updateProduct = async(id, name, quantity) => {
+  const nameOrQuantityError = validateNameAndQuantity(name, quantity);
+  if(nameOrQuantityError) return nameOrQuantityError;
+  
+  await ProductsModel.update(id, name, quantity);
+  const updatedProduct = await getProductById(id);
+  return updatedProduct;
+};
+
 module.exports = {
   addProduct,
   getAllProducts,
-  getProductById
+  getProductById,
+  updateProduct
 };

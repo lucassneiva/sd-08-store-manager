@@ -3,7 +3,8 @@ const router = express.Router();
 const { 
   addProduct,
   getAllProducts,
-  getProductById
+  getProductById,
+  updateProduct,
 } = require('../services/productServices');
 
 const UNPROCESSABLE = 422;
@@ -27,13 +28,23 @@ router.get('/', async (_req, res) => {
 
 router.get('/:id', async (req, res) => {
   const {id} = req.params;
-  console.log(id);
   const productById = await getProductById(id);
-  // console.log(productById);
+  
   if(productById.err) {
     return res.status(UNPROCESSABLE).json(productById);
   }
   res.status(OK).json(productById);
+});
+
+router.put('/:id', async(req, res) => {
+  const {id} = req.params;
+  const {name, quantity} = req.body;
+
+  const updatedProduct = await updateProduct(id, name, quantity);
+
+  if(updatedProduct.err) return res.status(UNPROCESSABLE).json(updatedProduct);
+  
+  res.status(OK).json(updatedProduct);
 });
 
 module.exports = router;
