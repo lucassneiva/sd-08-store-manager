@@ -8,7 +8,7 @@ const create = async ({ name, quantity }) => {
   const productsCollection = await connection()
     .then((db) => db.collection(COLLECTION_NAME));
   
-  const { insertedID: _id } = await productsCollection
+  const { insertedId: _id } = await productsCollection
     .insertOne({ name, quantity });
   
   return {

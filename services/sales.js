@@ -29,7 +29,7 @@ const create = async (itensSold) => {
 
   const newSale = { itensSold };
 
-  const { inserterId: _id } = await SalesModel.create(newSale);
+  const { insertedId: _id } = await SalesModel.create(newSale);
 
   return {
     _id,
