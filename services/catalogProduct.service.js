@@ -14,10 +14,6 @@ exports.registerProduct = async (entry) => {
 exports.editProduct = async (id, entry) => {
   if (!ObjectId.isValid(id)) throw new Error(RESPONSE.ID_INVALID);
 
-  // const nameProduct = entry.name;
-  // const existNameProduct = await productModel.existByName(nameProduct);
-  // if (existNameProduct) throw new Error(FORM.NAME_EXIST);
-
   const existProduct = await productModel.existById(id);
   if (!existProduct) throw new Error(RESPONSE.PRODUCT_NOT_EXIST);
   return await productModel.update(id, entry);
