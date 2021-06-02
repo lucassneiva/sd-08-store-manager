@@ -11,6 +11,18 @@ const create = async (sale) => {
   return insertedSale;
 };
 
+const read = async () => connection()
+  .then((db) => db.collection(COLLECTION_NAME).find().toArray());
+
+const readById = async (id) => connection()
+  .then((db) => db
+    .collection(COLLECTION_NAME)
+    .findOne(new ObjectId(id))
+  )
+  .catch(console.log);
+
 module.exports = {
   create,
+  read,
+  readById,
 };

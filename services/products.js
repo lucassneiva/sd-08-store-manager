@@ -50,8 +50,6 @@ const readById = async (id) => {
     throw new Error('Wrong id format');
   }
 
-  console.log('é valido');
-
   const product = await ProductsModel.readById(id);
   return product;
 };

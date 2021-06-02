@@ -1,7 +1,7 @@
 const SalesModel = require('../models/sales');
 const ProductsModel = require('../models/products');
 
-const { ObjectID } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 const isQuantityInvalid = (quantity) => {
   const MIN_QUANTITY = 1;
@@ -12,13 +12,6 @@ const isQuantityInvalid = (quantity) => {
   }
 
   if(quantity < MIN_QUANTITY) {
-    throw new Error('Wrong product ID or invalid quantity');
-  }
-};
-
-const isIdValid = (sale) => {
-
-  if( !ObjectID.isValid(sale._id) ){
     throw new Error('Wrong product ID or invalid quantity');
   }
 };
@@ -44,6 +37,26 @@ const create = async (itensSold) => {
   };
 };
 
+const read = async () => SalesModel.read();
+
+const readById = async (id) => {
+  console.log(id, ObjectId.isValid(id));
+
+  if(!ObjectId.isValid(id)){
+    throw new Error('Sale not found');
+  }
+
+  const sale = await SalesModel.readById(id);
+
+  if(!sale) {
+    throw new Error('Sale not found');
+  }
+
+  return sale;
+};
+
 module.exports = {
   create,
+  read,
+  readById,
 };
