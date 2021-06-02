@@ -109,4 +109,9 @@ router.put('/products/:id',
   updateProduct
 );
 
+router.delete('/products/:id',
+  productExists,
+  deletedProduct,
+);
+
 module.exports = router;
