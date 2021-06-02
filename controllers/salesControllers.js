@@ -1,7 +1,6 @@
 const rescue = require('express-rescue');
 const salesServices = require('../services/salesServices');
 const OK_STATUS = 200;
-const CREATED_STATUS = 201;
 
 const insertSale = rescue(async (req, res, next) => {
   const sale = req.body;
