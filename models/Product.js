@@ -43,10 +43,19 @@ const edit = saveMe(async (id, updatedProduct) => {
   return { _id: id, ...updatedProduct };
 });
 
+const remove = saveMe(async (id) => {
+  if (!ObjectId.isValid(id)) return false;
+  const db = await connection();
+  const product = await getById(id);
+  await db.collection('products').deleteOne({ _id: ObjectId(id) });
+  return product;
+});
+
 module.exports = {
   create,
   getById,
   getByName,
   getAll,
-  edit
+  edit,
+  remove
 };

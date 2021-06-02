@@ -28,9 +28,17 @@ const edit = async (req, res) => {
   res.json(result);
 };
 
+const remove = async (req, res, next) => {
+  const { id } = req.params;
+  const result = await ProductsService.remove(id);
+  if (result.err) return next(result);
+  res.json(result);
+};
+
 module.exports = {
   create,
   getById,
   getAll,
-  edit
+  edit,
+  remove
 };
