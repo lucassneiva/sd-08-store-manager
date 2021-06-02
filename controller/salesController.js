@@ -4,6 +4,8 @@ const rescue = require('express-rescue');
 const deuBom = 200;
 const deuBomTb = 201;
 const deuRuim = 422;
+const deuRuimTb = 404;
+
 
 const create = async(req, res) => {
   try {
@@ -22,6 +24,49 @@ const create = async(req, res) => {
   }
 };
 
+const getSaleById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const result = await service.getById(id);  
+
+    res.status(deuBom).json(result);
+
+  } catch (e) {
+    res.status(deuRuimTb).json({err: 
+      { 
+        code: 'not_found',
+        message: e.message
+      }
+    });
+  }
+};
+
+const getAll = rescue(async (_req, res) => {
+  const sales = await service.getAll();
+  res.status(deuBom).json({sales: sales});
+});
+
+const excludeSale = async(req, res) => {
+  try {
+    const { id } = req.params;
+    const notSale = await service.exclude(id);
+    // console.log(notSale);
+    res.status(deuBom).json(notSale);
+  } catch (e) {
+    // console.log(e);
+    res.status(deuRuim).json({err: 
+      { 
+        code: 'invalid_data',
+        message: e.message
+      }
+    } );
+  }
+};
+
 module.exports = {
+  excludeSale,
   create,
+  getAll,
+  getSaleById,
 };

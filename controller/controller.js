@@ -5,6 +5,7 @@ const rescue = require('express-rescue');
 const deuBom = 200;
 const deuBomTb = 201;
 const deuRuim = 422;
+const deuRuimTb = 404;
 
 const userController = async (req, res) => {
   const { name, quantity } = req.body;
@@ -56,7 +57,7 @@ const updateProduct = async (req, res) => {
 
     res.status(deuBom).json(result);
   } catch (e) {
-    res.status(deuRuim).json( {err: 
+    res.status(deuRuimTb).json( {err: 
       { 
         code: 'invalid_data',
         message: e.message
@@ -69,9 +70,10 @@ const excludeProduct = async(req, res) => {
   try {
     const { id } = req.params;
     const notProduct = await service.exclude(id);
+
     res.status(deuBom).json(notProduct);
   } catch (e) {
-    console.log(e);
+    // console.log(e);
     res.status(deuRuim).send({err: 
       { 
         code: 'invalid_data',

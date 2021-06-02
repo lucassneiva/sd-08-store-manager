@@ -3,7 +3,6 @@ const control = require('../controller/controller');
 const salesControl = require('../controller/salesController');
 const Router = express.Router();
 
-const ok = 200;
 
 Router.post('/products', control.userController);
 
@@ -13,6 +12,12 @@ Router.put('/products/:id', control.updateProduct);
 Router.delete('/products/:id', control.excludeProduct);
 
 Router.post('/sales', salesControl.create);
+Router.get('/sales', salesControl.getAll);
+Router.get('/sales/:id', salesControl.getSaleById);
+Router.delete('/sales/:id', salesControl.excludeSale);
+
+
+
 
 
 module.exports = Router;
