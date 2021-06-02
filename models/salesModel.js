@@ -25,9 +25,16 @@ const updateSale = async (id, productId, quantity) =>
     )
     .then((sale) => sale.matchedCount);
 
+const deleteSale = async (id) => {
+  const saleDeleted = await getSaleById(id);
+  connection().then((db) => db.collection(collectionName).deleteOne({_id: ObjectId(id)}));
+  return saleDeleted;
+};
+
 module.exports = {
   insertSale,
   getAllSales,
   getSaleById,
-  updateSale
+  updateSale,
+  deleteSale
 };

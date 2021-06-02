@@ -11,6 +11,8 @@ const objError = {
   },
 };
 
+const UNPROCESSED_ENTITY_STATUS = 422;
+
 const insertSale = async (saleArray) => {
   const validatingQuantity = saleArray.map((sale) => isValidQuantity(sale.quantity));
   if (validatingQuantity.some((validate) => validate.err))
@@ -39,9 +41,33 @@ const updateSale = async (id, productId, quantity) => {
   return { _id: id, itensSold: [{ productId, quantity }] };
 };
 
+const deleteSale = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format',
+        status: UNPROCESSED_ENTITY_STATUS,
+      },
+    };
+  }
+  const response = await salesModel.deleteSale(id);
+  if (!response) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format',
+        status: UNPROCESSED_ENTITY_STATUS,
+      },
+    };
+  }
+  return response;
+};
+
 module.exports = {
   insertSale,
   getAllSales,
   getSaleById,
   updateSale,
+  deleteSale,
 };
