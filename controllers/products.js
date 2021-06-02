@@ -28,12 +28,13 @@ const read = (_req, res) => {
 
 const readById = async (req, res) => {
   const { id } = req.params;
+  
   ProductsService.readById(id)
     .then(data => {
       res.status(STATUS_OK).json(data);
     })
-    .catch(err => {
-      console.log(err);
+    .catch((err) => {
+      console.log(err, 'ops, deu erro');
       res
         .status(UNPROCESSABLE)
         .json(

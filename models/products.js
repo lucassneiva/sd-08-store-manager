@@ -18,7 +18,6 @@ const create = async ({ name, quantity }) => {
   };
 };
 
-
 const read = async () => {
   const products = await connection().then((db) => {
     return db
@@ -35,10 +34,24 @@ const readById = async (id) =>
       .findOne(new ObjectId(id)))
     .catch(console.log);
 
+const update = async ( name, quantity ) => {
+  const product = await connection()
+    .then((db) => db
+      .collection(COLLECTION_NAME))
+    .updateOne(
+      new ObjectId(id),
+      {
+        $set: {
+          name, quantity
+        }
+      }
+    );
+};
 
 module.exports = {
   create,
   read,
   readById,
+  update,
 };
 

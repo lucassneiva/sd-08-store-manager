@@ -73,7 +73,6 @@ const isQuantityInvalid = (quantity) => {
 const create =  async ({name, quantity}) => {
 
   const invalidName = await isNameInvalid(name);
-
   if (invalidName) return invalidName;
 
   const invalidQuantity = isQuantityInvalid(quantity);
@@ -90,14 +89,19 @@ const read = () => ProductsModel.read();
 const readById = async (id) => {
 
   if(!ObjectID.isValid(id)) {
+    console.log('o id não é valido');
     throw new Error('Wrong id format');
   }
-  
+
   console.log('é valido');
 
   const product = await ProductsModel.readById(id);
   return product;
 };
+
+const update = () => {
+
+}
 
 module.exports = {
   create,
