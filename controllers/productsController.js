@@ -90,7 +90,7 @@ router.post('/products',
 router.get('/products/:id', findProductById);
 router.get('/products', listAllProducts);
 
-router.put('products/:id',
+router.put('/products/:id',
   validateProductName,
   validateProductQuantity,
   updateProduct

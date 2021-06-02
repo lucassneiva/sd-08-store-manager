@@ -27,10 +27,11 @@ const listAllProducts = async () => {
 };
 
 const updateProduct = async (id, product) => {
+  console.log('srvice product', product);
   if (!ObjectId.isValid(id)) {
     return null;
   };
-  const updatedProduct = await ProductModel.updateProduct;
+  const updatedProduct = await ProductModel.updateProduct(id, product);
   return updatedProduct;
 };
 

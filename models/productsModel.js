@@ -36,20 +36,25 @@ const findById = async (id) => {
     .then(db => db.collection('products'));
 
   const product = await productsCollection.findOne(new ObjectId(id));
-  console.log('productByid', product);
   return product;
 };
 
 const updateProduct = async (id, product) => {
+  const { name, quantity } = product;
   const productsCollection = await connection()
     .then(db => db.collection('products'));
 
-  await productsCollection.updateOne({ _id: id }, product);
+  const result = await productsCollection
+    .updateOne({ _id: ObjectId(id) }, { $set: {
+      name: name,
+      quantity: quantity
+    } });
 
   const updatedProduct = {
     _id: id,
     ...product,
   };
+  return updatedProduct;
 };
 
 module.exports = {
