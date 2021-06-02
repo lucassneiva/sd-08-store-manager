@@ -62,10 +62,25 @@ const validUpdateName = async (req, res, next) => {
   next();
 };
 
+const validQuantitySales = async (req, res, next) => {
+  const sales = req.body;
+  const MIN_QUANTITY = 1;
+  if(sales[0].quantity < MIN_QUANTITY || typeof sales[0].quantity != 'number') {
+    return res.status(UNPROCESSABLE_ENTITY).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      }
+    });
+  }
+  next();
+};
+
 
 
 module.exports = {
   validName,
   validQuantity,
-  validUpdateName
+  validUpdateName,
+  validQuantitySales
 };
