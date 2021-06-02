@@ -24,4 +24,8 @@ app.delete('/products/:id', productsControllers.deleteOne);
 
 app.post('/sales', salesControllers.create);
 
+app.get('/sales', salesControllers.getAll);
+
+app.get('/sales/:id', salesControllers.findById);
+
 app.listen(PORT, console.log(`Servidor aberto na porta ${PORT}.`));
