@@ -80,6 +80,19 @@ const updateProduct = rescue(async (req, res) => {
   res.status(OK).json(updatedProduct);
 });
 
+const deletedProduct = rescue(async (req, res) => {
+  const { id } = req.params;
+  const product = await ProductsService.findById(id);
+  if(!product) return res.status(INVALID_ERR).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format'
+    }
+  });
+  const deletedProduct = await ProductsService.deleteProduct(id);
+  res.status(OK).json(product);
+});
+
 router.post('/products',
   validateProductName,
   productExists,
