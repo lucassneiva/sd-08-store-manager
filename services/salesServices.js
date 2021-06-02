@@ -52,14 +52,58 @@ const findByIdSalesServices = async (id) => {
     }
   };
 
+  console.log(result);
+
   return {
     statusCode: 200,
     json: result[0],
   };
 };
 
+const updateSalesServices = async (id, data) => {
+  const error = addSalesValidation(data);
+
+  if (error) return {
+    statusCode: 422,
+    json: {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
+      }
+    }
+  };
+
+  const result = await salesModels.updateSales(id, data);
+  console.log(result);
+  return {
+    statusCode: 200,
+    json: result,
+  };
+};
+
+const deleteSalesServices = async (id) => {
+  const result = await salesModels.deleteSales(id);
+
+  if (!result) return {
+    statusCode: 422,
+    json: {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format',
+      }
+    }
+  };
+
+  return {
+    statusCode: 200,
+    json: result.value,
+  };
+};
+
 module.exports = {
   addSalesServices,
   getAllSalesServices,
-  findByIdSalesServices
+  findByIdSalesServices,
+  updateSalesServices,
+  deleteSalesServices
 };
