@@ -1,5 +1,6 @@
 const SalesModel = require('../models/salesModel');
 const ProductsModel = require('../models/productsModel');
+const { restore } = require('sinon');
 
 const ZERO = 0;
 
@@ -41,30 +42,22 @@ const validateStock = async (sale, operation) => {
   return validationArray;
 };
 
-const restoreStock = async (sale) => {
+const restoreStock = async (sale, newSaleInfo) => {
+  let shouldRestore = true;
   for(const item of sale) {
     const { productId, quantity } = item;
     const product = await ProductsModel.getProductById(item.productId);
     const newQuantity = product.quantity + quantity;
-    await ProductsModel
-      .updateProductById(productId, { quantity: newQuantity });
+    if (newSaleInfo[0].quantity > newQuantity) shouldRestore = false;  
+    else {
+      await ProductsModel
+        .updateProductById(productId, { quantity: newQuantity });
+    }
   };
+  return shouldRestore;
 };
 
 const updateStock = async (sale, operation) => {
-  // const validationArray = await Promise
-  //   .all(sale.map(async (item, index) => {
-  //     console.log(index);
-  //     const { productId, quantity } = item;
-  //     const product = await ProductsModel.getProductById(item.productId);
-  //     console.log(product);
-  //     console.log(quantity);
-  //     if (quantity > product.quantity) return false;
-  //     const newQuantity = product.quantity - quantity;
-  //     const result = await ProductsModel
-  //       .updateProductById(productId, { quantity: newQuantity });
-  //     console.log(result);
-  //   }));
   const validation = await validateStock(sale, operation);
   if (validation.includes(false)) return false;
   for(const item of sale) {
@@ -139,6 +132,16 @@ const updateSaleById = async (id, newSaleInfo) => {
     }
   };
 
+  const sale = await SalesModel.getSaleById(id);
+
+  const shouldRestoreStock = await restoreStock(sale.itensSold, newSaleInfo);
+  if(!shouldRestoreStock) return {
+    err: {
+      code: 'stock_problem',
+      message: 'Such amount is not permitted to sell'
+    }
+  };
+
   const result = await SalesModel.updateSaleById(id, newSaleInfo);
   if (!result) return {
     err: {
@@ -146,6 +149,16 @@ const updateSaleById = async (id, newSaleInfo) => {
       message: 'Sale not found'
     }
   };
+
+
+  const stockValidation = await updateStock(newSaleInfo, '-');
+  if (!stockValidation) return {
+    err: {
+      code: 'stock_problem',
+      message: 'Such amount is not permitted to sell'
+    }
+  };
+
   return result;
 };
 
