@@ -16,7 +16,7 @@ const addProduct = async (name, quantity) => {
 };
 
 const updateProduct = async (id, name, quantity) => {
-  const product = await ProductsModel.updateProduct(id, name, quantity);
+  const product = await ProductsModel.update(id, name, quantity);
   return product;
 };
 

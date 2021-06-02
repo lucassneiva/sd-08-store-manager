@@ -4,16 +4,17 @@ const {
   getAllProducts,
   addProduct,
   getProductById,
+  updateProduct,
 } = require('../services/ProductsServices');
 const {
   validateIfNameExists,
   validateProduct,
-  validateIfExists,
 } = require('../middlewares/ProductMiddleware');
 
 const OK = 200;
 const CREATED = 201;
 const UNPROCESSABLE_ENTITY = 422;
+const ERROR = 500;
 
 router.post('/', validateIfNameExists, validateProduct, async (req, res) => {
   const { name, quantity } = req.body;
@@ -39,6 +40,18 @@ router.get('/:id', async (req, res) => {
     });
   }
   return res.status(OK).json(product);
+});
+
+router.put('/:id', validateProduct, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+    const product = await updateProduct(id, name, quantity);
+    return res.status(OK).json(product);
+  } catch (err) {
+    return res.status(ERROR).json({ message: 'There is something wrong' });
+  }
+
 });
 
 module.exports = router;

@@ -23,24 +23,24 @@ const excludeProduct = async (id) => {
   const db = await connection();
   if (!ObjectId.isValid(id)) return null;
   const product = await getBytId(id);
-  await db.collection('products').deleteOne({ _id: ObjectID(id) });
+  await db.collection('products').deleteOne({ _id: ObjectId(id) });
   return product;
 };
 
-const updateProduct = async (id) => {
+const update = async (id, name, quantity) => {
   const db = await connection();
   if (!ObjectId.isValid(id)) return null;
   const product = await db
     .collection('products')
-    .updateOne({ _id: ObjectID(id) }, { $set: name, quantity });
-  if (!product) return add(name, quantity);
-  return product;
+    .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } });
+  if (!product) return addProduct(name, quantity);
+  return { id, name, quantity };
 };
 
 module.exports = {
   addProduct,
   getAll,
   getProductById,
-  updateProduct,
+  update,
   excludeProduct,
 };
