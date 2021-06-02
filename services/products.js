@@ -6,11 +6,11 @@ const MINIMUM_STOCK = 1;
 const isValid = (name, quantity) => {
   if (!name) return '"name" must be inform';
   if (name.length < MINIMUM_NAME_LENGTH)
-    return '"name" length must be at least 5 characters';
+    return '"name" length must be at least 5 characters long';
   if (typeof name !== 'string') return '"name" must be a string';
 
   if (quantity < MINIMUM_STOCK)
-    return '"quantity" must be larger than or equal 1';
+    return '"quantity" must be larger than or equal to 1';
   if (!quantity) return '"quantity" must be inform';
   if (typeof quantity !== 'number') return '"quantity" must be a number';
 
@@ -19,7 +19,6 @@ const isValid = (name, quantity) => {
 
 const alreadyExist = async (name) => {
   const product = await productsModel.getByName(name);
-  console.log(product);
   if (product) return 'Product already exists';
 
   return false;
