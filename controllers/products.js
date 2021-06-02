@@ -1,3 +1,5 @@
+const { json } = require('body-parser');
+const { response } = require('express');
 const ProductsService = require('../services/products');
 
 const STATUS_OK = 200;
@@ -55,8 +57,30 @@ const readById = async (req, res) => {
     });
 };
 
+const update = async (req, res) => {
+  const {id} = req.params;
+  const {name, quantity} = req.body;
+
+  ProductsService.update(id, name, quantity)
+    .then(response => res.status(STATUS_OK).json(response))
+    .catch((err) => {
+      console.log(err);
+      res
+        .status(UNPROCESSABLE)
+        .json(
+          {
+            err: {
+              code: 'invalid_data',
+              message: err.message,
+            }
+          }
+        );
+    });
+};
+
 module.exports = {
   create,
   read,
   readById,
+  update,
 };

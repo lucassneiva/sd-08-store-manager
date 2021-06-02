@@ -34,18 +34,17 @@ const readById = async (id) =>
       .findOne(new ObjectId(id)))
     .catch(console.log);
 
-const update = async ( name, quantity ) => {
-  const product = await connection()
-    .then((db) => db
-      .collection(COLLECTION_NAME))
-    .updateOne(
-      new ObjectId(id),
-      {
-        $set: {
-          name, quantity
-        }
-      }
-    );
+const update = async ( id, name, quantity ) => {
+  await connection().then((db) => {
+    return db
+      .collection(COLLECTION_NAME)
+      .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } });
+  });
+  return {
+    _id: id,
+    name,
+    quantity,
+  };
 };
 
 module.exports = {

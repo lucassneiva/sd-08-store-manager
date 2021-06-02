@@ -2,17 +2,17 @@ const ProductsModel = require('../models/products');
 
 const { ObjectID } = require('mongodb');
 
-const isNameInvalid = (name) => {
+const isNameInvalid = (name, veryfyLength = true, verifyExists = true) => {
   return ProductsModel.read()
     .then((data) => {
       const MIN_LENGTH_NAME = 6;
       const thisNameExists = data.some((product) => product.name === name);
   
-      if(name.length < MIN_LENGTH_NAME) {
+      if(name.length < MIN_LENGTH_NAME && veryfyLength) {
         throw new Error('\"name\" length must be at least 5 characters long'); 
       }
   
-      if(thisNameExists) {
+      if(thisNameExists && verifyExists) {
         throw new Error('Product already exists');
       }
     });
@@ -56,12 +56,17 @@ const readById = async (id) => {
   return product;
 };
 
-const update = () => {
+const update = async (id, name, quantity) => {
 
+  await isNameInvalid(name, true, false);
+  isQuantityInvalid(quantity);
+
+  return ProductsModel.update(id, name, quantity);
 };
 
 module.exports = {
   create,
   read,
   readById,
+  update,
 };
