@@ -10,7 +10,12 @@ const newSale = async (req, res) => {
 
     res.status(OK).json(sale);
   } catch (error) {
-    res.status(ERROR).json({ err: { code: 'invalid_data', message: error.message } });
+    if (error.message === 'Such amount is not permitted to sell'){
+      res.status(Notfound)
+        .json( { err: { code: 'stock_problem', message: error.message } } );
+    } else {
+      res.status(ERROR).json({ err: { code: 'invalid_data', message: error.message } });
+    }
   }
 };
 

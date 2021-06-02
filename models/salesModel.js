@@ -1,5 +1,6 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
+const productsModel = require('../models/productsModel');
 
 const validate = async (quantity) => {
   const zero = 0;
@@ -7,6 +8,36 @@ const validate = async (quantity) => {
     return 'Wrong product ID or invalid quantity';
 
   return undefined;
+};
+
+// const updateProduct = async ({productId, quantity}) => {
+//   const db = await connection();
+  
+//   const product = await db.collection('products').findOne(ObjectId(productId));
+//   console.log(product);
+  
+//   const newQuantity = product.quantity - quantity;
+  
+//   console.log(newQuantity);
+//   const productNw = await db.collection('products').updateOne(
+//     { _id: productId }, { $set: { quantity: newQuantity } }
+//   );
+
+//   const productNew = await db.collection('products').findOne(ObjectId(productId));
+
+//   console.log(productNew);
+// };
+
+const validateSale = async(sales) => {
+  const sale = sales[0];
+  const zero = 0;
+
+  const product = await productsModel.getById(sale.productId);
+  
+  const newQuantity = product.quantity - sale.quantity;
+  
+  if (newQuantity < zero)
+    return 'Such amount is not permitted to sell';
 };
 
 const newSale = async( sales ) => {
@@ -17,6 +48,11 @@ const newSale = async( sales ) => {
   if (notValid !== undefined) throw new Error(notValid);
 
   await db.collection('sales').insertOne({ itensSold: [...sales] });
+
+  const positiveAmount = await validateSale(sales);
+
+  if(positiveAmount) 
+    throw { code: positiveAmount, message: 'Such amount is not permitted to sell' };
 
   const allSales = await db.collection('sales').find().toArray();
 
