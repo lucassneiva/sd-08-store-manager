@@ -75,4 +75,22 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { code, message, result } = await SalesValidate.deleteSale(id);
+    if (!result) {
+      return res.status(code).json({
+        err: {
+          code: 'invalid_data',
+          message,
+        }
+      });
+    }
+    res.status(code).json(result);
+  } catch (e) {
+    console.error(e);
+  }
+});
+
 module.exports = router;
