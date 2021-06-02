@@ -8,6 +8,10 @@ const {
   deleteProductController,
 } = require('./controllers/productsCrontoller');
 
+const {
+  createSalesController,
+} = require('./controllers/salesController');
+
 const app = express();
 
 app.use(express.json());
@@ -28,6 +32,8 @@ app.get('/products', getAllProductsController);
 app.put('/products/:id', updateProductController);
 
 app.delete('/products/:id', deleteProductController);
+
+app.post('/sales', createSalesController);
 
 app.listen(PORT, () => {
   console.log(`Online na porta ${PORT}`);
