@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const salesModels = require('../models/salesModel');
 const productModels = require('../models/productsModel');
+const ZERO = 0;
 
 const addSalesValidation = (data) => {
   const schema = Joi.object({
@@ -56,7 +57,7 @@ const getAllSalesServices = async () => {
 
 const findByIdSalesServices = async (id) => {
   const result =  await salesModels.findByIdSales(id);
-  if (!result || result.length === 0) return {
+  if (!result || result.length === ZERO) return {
     statusCode: 404,
     json: {
       err: {

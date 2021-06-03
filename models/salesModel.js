@@ -1,14 +1,14 @@
 const { ObjectID, ObjectId } = require('bson');
 const connect = require('./connection');
 const productModel = require('./productsModel');
-const ZERO = 0;
+const MENOS_UM = -1;
 
 const addSales = async (data) => {
   const result = await connect()
     .then((db) => db.collection('sales').insertOne({ itensSold: data }));
 
   const newData = data.map(sale => ({...sale}));
-  newData[0].quantity = newData[0].quantity * -1;
+  newData[0].quantity = newData[0].quantity * MENOS_UM;
   await  productModel.updateQuantityProduct(newData);
 
   return {
