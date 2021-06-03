@@ -114,8 +114,8 @@ const noexistSD = async (req, res, next) => {
   if (!check) {
     return res.status(ERROR).json({
       err: {
-        code: 'not_found',
-        message: 'Sale not found',
+        code: 'invalid_data',
+        message: 'Wrong sale ID format',
       },
     });
   }
