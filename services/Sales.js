@@ -9,13 +9,14 @@ const validateProducts = async (itensSold) => {
 
   const invalidSale = sales.find((product) => product.err);
 
+  if (!invalidSale) return null;
+
   return invalidSale;
 };
 
 const validateQuantity = async (itensSold) => {
   const quantitiesPromises = itensSold.map(async (item) => {
     const product = await ProductService.getById(item.productId);
-    if (product.err) return product;
     return item.quantity <= product.quantity;
   });
 
@@ -108,9 +109,14 @@ const remove = async (id) => {
 };
 
 module.exports = {
+  validateProducts,
+  validateQuantity,
+  consolidate,
+  reduceSale,
   create,
   getById,
   getAll,
   edit,
+  returnToStock,
   remove
 };
