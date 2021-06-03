@@ -1,59 +1,29 @@
-const { ObjectId } = require('mongodb');
-const connect = require('./connection');
+const { PRODUCTS } = require('./constants');
+const {
+  getById, addNew, getAll, deleteById, getByKeysValues, update } = require('./functions');
 
-const getByName = async(nameToFind) => {
+const getProductByName = async(nameToFind) => (
+  await getByKeysValues({name: nameToFind}, PRODUCTS )
+);
 
-  const db = await connect();
-  const product = await db.collection('products').findOne({'name': nameToFind});
-  return product;
-};
+const addProduct = async(name, quantity) => await addNew({name, quantity}, PRODUCTS);
 
-const add = async(name, quantity) =>  {
-  const db = await connect();
-  const addedProduct = await db.collection('products').insertOne({name, quantity});
-  return addedProduct;
-};
+const getAllProducts = async() => await getAll(PRODUCTS);
 
-const getAll = async() => {
-  const db = await connect();
-  const allProducts = await db.collection('products').find().toArray();
-  return allProducts;
-};
+const getProductById = async(id) =>  await getById(id, PRODUCTS);
 
-const getById = async(id) => {
-  const db = await connect();
-  if (!ObjectId.isValid(id)) return null;
-  
-  const productById = await db.collection('products').findOne({'_id': ObjectId(id)});
-  return productById;
-};
+const deleteProductById = async(id) => await deleteById(id, PRODUCTS);
 
-const update = async(id, name, quantity) => {
-  const db = await connect();
-  const updatedProduct = await db.collection('products').updateOne(
-    {'_id': ObjectId(id)},
-    {$set: {
-      name,
-      quantity
-    }}
-  );
-};
-
-const deleteById = async(id) => {
-  
-  if (!ObjectId.isValid(id)) return null;
-  
-  const db = await connect();
-  const deletedProduct = await db.collection('products').deleteOne({'_id': ObjectId(id)});
-  return deletedProduct;
-};
+const updateProduct = async(id, name, quantity) => (
+  await update(id, {name, quantity}, PRODUCTS)
+); 
 
 module.exports = {
-  getByName,
-  add,
-  getAll,
-  getById,
-  update,
-  deleteById,
+  getProductByName,
+  addProduct,
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  deleteProductById,
 };
 

@@ -41,23 +41,23 @@ const addProduct = async(name, quantity) => {
   const nameOrQuantityError = validateNameAndQuantity(name, quantity);
   if(nameOrQuantityError) return nameOrQuantityError;
   
-  const productFound = await ProductsModel.getByName(name);
+  const productFound = await ProductsModel.getProductByName(name);
 
   if (productFound) return errorMessage(alreadyExists);
 
-  const added = await ProductsModel.add(name, quantity);
+  const added = await ProductsModel.addProduct(name, quantity);
 
   return added.ops[0];
 
 };
 
 const getAllProducts = async() => {
-  const getAll = await ProductsModel.getAll();
+  const getAll = await ProductsModel.getAllProducts();
   return getAll;
 };
 
 const getProductById = async(id) => {
-  const getById = await ProductsModel.getById(id);
+  const getById = await ProductsModel.getProductById(id);
   return getById || errorMessage(wrongId);
 };
 
@@ -65,17 +65,14 @@ const updateProduct = async(id, name, quantity) => {
   const nameOrQuantityError = validateNameAndQuantity(name, quantity);
   if(nameOrQuantityError) return nameOrQuantityError;
   
-  await ProductsModel.update(id, name, quantity);
+  await ProductsModel.updateProduct(id, name, quantity);
   const updatedProduct = await getProductById(id);
   return updatedProduct;
 };
 
 const deleteProduct = async(id) => {
-  const deleted = await ProductsModel.deleteById(id);
-
-  if (!deleted) return errorMessage(wrongId);
-  // console.log(deleted);
-  return deleted;
+  const deleted = await ProductsModel.deleteProductById(id);
+  return deleted || errorMessage(wrongId);
 };
 
 module.exports = {

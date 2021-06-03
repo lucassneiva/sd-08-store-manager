@@ -6,9 +6,11 @@ const {
   deleteProduct,
 } = require('../services/productServices');
 
-const UNPROCESSABLE = 422;
-const CREATED = 201;
-const OK = 200;
+const {
+  UNPROCESSABLE,
+  CREATED,
+  OK
+} = require('./constants');
 
 const addsProduct = async(req, res) => {
   const { name, quantity } = req.body;
