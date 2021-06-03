@@ -4,6 +4,7 @@ const results = {
   invalidQuantityType: '"quantity" must be a number',
   duplicateProduct: 'Product already exists',
   invalidId: 'Wrong id format',
+  salesNotNull: 'Wrong product ID or invalid quantity',
   unprocessable: 422,
   created: 201,
   ok: 200,
