@@ -1,16 +1,23 @@
 const express = require('express');
 
 const { productsController } = require('../controllers');
-const { productsMiddleware } = require('../middlewares');
+const {
+  productCreate,
+  productsReader,
+  productById,
+  productUpdate,
+} = productsController;
+const { productsServices } = require('../services');
+const {
+  checkNameAndQuantity,
+  productNotFoundAndValidFormat,
+} = productsServices;
 
 const products = express.Router();
 
-products.get('/products', productsController.productsReader);
-
-products.get('/products/:id',
-  productsMiddleware.productNotFoundAndValidFormat, productsController.productById);
-
-products.use(productsMiddleware.checkNameAndQuantity);
-products.post('/products', productsController.productCreate);
+products.post('/products', productCreate);
+products.get('/products', productsReader);
+products.get('/products/:id', productById);
+products.put('/products/:id', productUpdate);
 
 module.exports = products;

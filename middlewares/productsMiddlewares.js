@@ -66,16 +66,7 @@ const checkNameAndQuantity = async (req, res, next) => {
       }
     });
   }
-  const productsList = await productsServices.readProducts();
-  const productsListFind = productsList.find(product => product.name === name);
-  if (productsListFind) {
-    return res.status(UNPROCESSABLE).json({
-      err: {
-        code: CODE,
-        message: 'Product already exists',
-      }
-    });
-  }
+
   next();
 };
 
