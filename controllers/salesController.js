@@ -5,12 +5,12 @@ const {
   addSales,
   getAllSales,
   getSaleById,
+  updateSale,
 } = require('../services/SalesServices');
 
 const { validateSale } = require('../middlewares/SaleMiddleware');
 
 const OK = 200;
-// const UNPROCESSABLE_ENTITY = 422;
 const NOT_FOUND = 404;
 const ERROR = 500;
 const message = 'There is something wrong';
@@ -28,10 +28,8 @@ router.post('/', validateSale, async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const getSales = await getAllSales();
-    console.log(getSales);
     res.status(OK).json({ sales: getSales });
   } catch (err) {
-    console.log(err);
     res.status(ERROR).json({ message });
   }
 });
@@ -50,7 +48,18 @@ router.get('/:id', async (req, res) => {
     }
     res.status(OK).json({ getSales });
   } catch (err) {
-    console.log(err);
+    res.status(ERROR).json({ message });
+  }
+});
+
+router.put('/:id', validateSale, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const itensSold = req.body;
+    const updatedSales = await updateSale(id, itensSold);
+    // console.log(updatedSales);
+    res.status(OK).json(updatedSales);
+  } catch (err) {
     res.status(ERROR).json({ message });
   }
 });

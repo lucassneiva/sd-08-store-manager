@@ -15,9 +15,10 @@ const addSales = async (itensSold) => {
   return sale;
 };
 
-const updateSale = async (id) => {
-  const sale = await SalesModel.update(id);
-  return sale;
+const updateSale = async (id, sales) => {
+  const sale = await SalesModel.update(id, sales);
+  // console.log(sale.value);
+  return sale.value;
 };
 
 const deleteSale = async (id) => {
