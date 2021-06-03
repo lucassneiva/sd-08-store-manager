@@ -2,9 +2,9 @@ const { response } = require('express');
 const SalesServices = require('../services/sales');
 
 const STATUS_OK = 200;
-const STATUS_CREATED = 201;
 const UNPROCESSABLE = 422;
 const NOT_FOUND = 404;
+const AMOUNT_NOT_PERMITTED = 'Such amount is not permitted to sell';
 
 const create = async( req, res) => {
   const itensSold = req.body;
@@ -12,17 +12,29 @@ const create = async( req, res) => {
   SalesServices.create(itensSold)
     .then((response) => res.status(STATUS_OK).json(response))
     .catch((err) => {
-      console.log(err);
-      res
-        .status(UNPROCESSABLE)
-        .json(
-          {
-            err: {
-              code: 'invalid_data',
-              message: err.message
+      if (err.message === AMOUNT_NOT_PERMITTED) {
+        res
+          .status(NOT_FOUND)
+          .json(
+            {
+              err: {
+                code: 'stock_problem',
+                message: err.message
+              }
             }
-          }
-        );
+          );
+      } else {
+        res
+          .status(UNPROCESSABLE)
+          .json(
+            {
+              err: {
+                code: 'invalid_data',
+                message: err.message
+              }
+            }
+          );
+      }
     });
 };
 

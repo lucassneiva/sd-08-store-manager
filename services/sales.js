@@ -28,6 +28,15 @@ const create = async (itensSold) => {
     throw new Error(WRONG_PRODUCT_OR_ID);
   }
 
+  const MIN_PRODUCTS = 0;
+  console.log(products, itensSold);
+  const productWillBeNegative = products.some(
+    (prod, index) => prod.quantity - itensSold[index].quantity < MIN_PRODUCTS);
+
+  if(productWillBeNegative) {
+    throw new Error('Such amount is not permitted to sell');
+  }
+
   itensSold.forEach((elem) => isQuantityInvalid(elem.quantity));
 
   const newSale = { itensSold };
