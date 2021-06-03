@@ -108,4 +108,18 @@ const noexistS = async(req, res, next) => {
   next();
 };
 
-module.exports = { name, quantP, exist, noexist, quantS, noexistS };
+const deleteSale = async(req, res, next) => {
+  const { id } = req.params;
+  let check = await getSales(id);
+  if (!check) {
+    return res.status(ERROR).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format',
+      },
+    });
+  }
+  next();
+};
+
+module.exports = { name, quantP, exist, noexist, quantS, noexistS, deleteSale };
