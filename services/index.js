@@ -77,7 +77,7 @@ const exist = async(req, res, next) => {
   next();
 };
 
-const noexist = async(req, res, next) => {
+const noexist = async(req, res, next) => {git c
   const { id } = req.params;
   let check = await getProduct(id);
   if (!check) {

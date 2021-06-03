@@ -7,7 +7,6 @@ const CREATED = '201';
 const productsController = Router();
 
 productsController.get('/', async (_req, res) => {
-  // const obj = { products, year: 1996};
   const products = await models.getAll();
   console.log(products);
   res.status(OK).json({ products });
