@@ -46,7 +46,30 @@ const buscarProdutoPorId = async (req, res) => {
   }
 };
 
+const atualizarProdutoPorId = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const produto = req.body;
+    const novosDadosProduto = {
+      id,
+      ...produto
+    };
+    var produtoAtualizado = await productService.atualizarProdutoPorId(novosDadosProduto);
+    res.status(httpStatusCodeSucess).json(produtoAtualizado);
+  } catch (err) {
+    res.status(httpStatusCodeErro).json(
+      {
+        err: {
+          code: 'invalid_data',
+          message: err.message
+        }
+      });
+    
+  }
+};
+
 module.exports = { 
   cadastrarProduto,
   listarProdutos,
-  buscarProdutoPorId };
+  buscarProdutoPorId,
+  atualizarProdutoPorId };

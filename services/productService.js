@@ -3,7 +3,7 @@ const { ObjectId } = require('bson');
 const CARACTERES_MINIMO = 5;
 const QUANTIDADE_MINIMA = 0;
 
-const validar = async (produto) => {
+const validarPropriedades = async (produto) => {
   const {name, quantity} = produto;
   if(name.length < CARACTERES_MINIMO)
     throw new Error('"name" length must be at least 5 characters long');
@@ -11,14 +11,25 @@ const validar = async (produto) => {
     throw new Error('"quantity" must be a number');
   if(quantity <= QUANTIDADE_MINIMA)
     throw new Error('"quantity" must be larger than or equal to 1');
+};
 
+const validarExistencia = async (produto) => {
   const produtoBuscado = await productModel.buscarProdutoPorNome(produto);
   if(produtoBuscado)
     throw new Error('Product already exists');
 };
 
+const validarInsercao = async (produto) => {
+  await validarPropriedades(produto);
+  await validarExistencia(produto);
+};
+
+const validarAtualizacao = async (produto) => {
+  await validarPropriedades(produto);
+};
+
 const criar = async (produto) => {
-  await validar(produto);
+  await validarInsercao(produto);
   const result = await productModel.cadastrarProduto(produto);
 
   return result;
@@ -36,9 +47,14 @@ const buscarProdutoPorId = async (id) => {
   return produtosId;
 };
 
+const atualizarProdutoPorId = async (produto) => {
+  await validarAtualizacao(produto);
+  return await productModel.atualizarProdutoPorId(produto);
+};
+
 module.exports = {
-  validar,
   listarProdutos,
   criar,
   buscarProdutoPorId,
+  atualizarProdutoPorId
 };

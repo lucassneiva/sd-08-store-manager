@@ -30,9 +30,23 @@ const buscarProdutoPorId = async (id) => {
   return produto;
 };
 
+const atualizarProdutoPorId = async ({id, name, quantity}) => {
+  const db = await connection();
+  await db.collection('products').updateOne(
+    {'_id': ObjectId(id)},
+    {$set: {
+      name,
+      quantity
+    }}
+  );
+  return await buscarProdutoPorId(id);
+};
+
+
 module.exports = {
   cadastrarProduto,
   buscarProdutoPorNome,
   listarProdutos,
   buscarProdutoPorId,
+  atualizarProdutoPorId
 };

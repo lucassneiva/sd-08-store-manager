@@ -17,6 +17,9 @@ app.get('/products', productController.listarProdutos);
 
 app.get('/products/:id', productController.buscarProdutoPorId);
 
+app.put('/products/:id', productController.atualizarProdutoPorId);
+
+
 app.listen(PORT, () => {
   console.log('Online');
 });
