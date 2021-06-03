@@ -1,38 +1,8 @@
-const { MIN_LENGTH, MIN_QUANTITY, STATUS_422, STATUS_400 } = require('../utils/consts');
-
-const error = {
-  eEmpty: {
-    status: STATUS_400,
-    err: {
-      code: 'invalid_data',
-      message: 'product name or quantity can not be empty' },
-  },
-
-  eLength: {
-    status: STATUS_422,
-    err: {
-      code: 'invalid_data',
-      message: `\"name\" length must be at least ${MIN_LENGTH} characters long` },
-  },
-
-  eZero: {
-    status: STATUS_422,
-    err: {
-      code: 'invalid_data',
-      message: '\"quantity\" must be larger than or equal to 1' },
-  },
-
-  eString: {
-    status: STATUS_422,
-    err: {
-      code: 'invalid_data',
-      message: '\"quantity\" must be a number' },
-  },
-};
+const { MIN_LENGTH, MIN_QUANTITY, ERROR_TYPES } = require('../utils/consts');
 
 module.exports = (req, res, next) => {
   const { name, quantity } = req.body;
-  const { eEmpty, eLength, eZero, eString } = error;
+  const { eEmpty, eLength, eZero, eString } = ERROR_TYPES;
   switch(true) {
   case (!name): return res
     .status(eEmpty.status)

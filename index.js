@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { create, searchByName } = require('./controllers/Products');
+const { create, searchById, getAll } = require('./controllers/Products');
 const { DEFAULT_PORT } = require('./utils/consts');
 const prodValidMiddle = require('./middlewares/productValidadeMiddleware');
 const reqValidMiddle = require('./middlewares/requestValidateMiddleware');
@@ -12,7 +12,9 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.get('/products/:name', searchByName);
+// app.get('/products/:id', searchById);
+app.get('/products/:id', searchById);
+app.get('/products/', getAll);
 
 app.post('/products', reqValidMiddle, prodValidMiddle, create);
 

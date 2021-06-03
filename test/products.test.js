@@ -137,7 +137,7 @@ describe('1 - Crie um endpoint para o cadastro de produtos', () => {
   });
 });
 
-describe.skip('2 - Crie um endpoint para listar os produtos', () => {
+describe('2 - Crie um endpoint para listar os produtos', () => {
   let connection;
   let db;
 
