@@ -13,11 +13,21 @@ router.post('/', async (req, res) => {
       message, 
       result 
     } = await SalesValidate.addSalesProductValidated(data);
+    const stockProblem = await SalesValidate.updateQuantity(data);
+    console.log(stockProblem);
     if (!result) {
       return res.status(code).json({
         err: {
           code: 'invalid_data',
           message,
+        }
+      });
+    }
+    if (stockProblem) {
+      return res.status(stockProblem.code).json({
+        err: {
+          code: 'stock_problem',
+          message: stockProblem.message,
         }
       });
     }
@@ -73,12 +83,13 @@ router.put('/:id', async (req, res) => {
   } catch (e) {
     console.error(e);
   }
-});
+}); 
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  try {
+  try {    
     const { code, message, result } = await SalesValidate.deleteSale(id);
+    // await SalesValidate.productAfterDeleteSale(id);
     if (!result) {
       return res.status(code).json({
         err: {

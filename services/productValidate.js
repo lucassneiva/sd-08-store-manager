@@ -45,9 +45,9 @@ const updateProduct = async (id, name, quantity) => {
   const validation = validate(name, quantity);
   if(validation.message) return validation;
 
-  if (await ProductModel.nameExists(name)) {
-    return { code: 422, message: 'Product already exists'};
-  }
+  // if (await ProductModel.nameExists(name)) {
+  //   return { code: 422, message: 'Product already exists'};
+  // }
 
   const result = await ProductModel.updateById(id, name, quantity);
   
