@@ -35,5 +35,21 @@ module.exports = {
     } catch (err) {
       return response.status(HTTP_BAD_REQUEST_STATUS).send(err);
     }
+  },
+
+  async update(request, response) {
+    try {
+      const { id } = request.params;
+      const { name, quantity } = request.body;
+
+      const product = await Product.findByIdAndUpdate(id, {
+        name,
+        quantity,
+      }, { new: true });
+
+      return response.status(HTTP_OK_STATUS).send(product);
+    } catch (err) {
+      return response.status(HTTP_BAD_REQUEST_STATUS).send(err);
+    }
   }
 };

@@ -15,7 +15,7 @@ module.exports = async (request, response, next) => {
     });
   };
 
-  const product = await Product.findOne({ _id: id });
+  const product = await Product.findById(id);
 
   if (!product) {
     return response.status(HTTP_UNPROCESSABLE_ENTITY_STATUS).send({
