@@ -4,6 +4,7 @@ const {
   readProducts,
   readProductsById,
   updateProductById,
+  deleteProductById,
 } = productsServices;
 
 const CREATED = 201;
@@ -67,9 +68,23 @@ const productUpdate = async (req, res) => {
   }
 };
 
+const productDelete = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await deleteProductById(id);
+    if (result.err) {
+      return res.status(UNPROCESSABLE).json(result);
+    }
+    res.status(SUCESS).json(result);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   productCreate,
   productsReader,
   productById,
   productUpdate,
+  productDelete,
 };

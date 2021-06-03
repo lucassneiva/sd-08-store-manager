@@ -6,6 +6,7 @@ const {
   findProduct,
   findProductById,
   getProductToUpdate,
+  deleteById,
 } = productsModel;
 
 const UNPROCESSABLE = 422;
@@ -100,10 +101,19 @@ const productNFVF = async (id) => {
   return product;
 };
 
+const deleteProductById = async (id) => {
+  const validation2 = await productNFVF(id);
+  if (validation2.err) return validation2;
+
+  const product = await deleteById(id);
+  return product;
+};
+
 module.exports = {
   readProducts,
   createProduct,
   readProductsById,
   updateProductById,
   checkNameAndQuantity,
+  deleteProductById,
 };
