@@ -3,6 +3,7 @@ const boom = require('@hapi/boom');
 const ProductService = require('../services/Product');
 
 const CREATED = 201;
+const OK = 200;
 
 const create = rescue(async (req, res, next) => {
   const { name, quantity } = req.body;
@@ -11,6 +12,21 @@ const create = rescue(async (req, res, next) => {
   res.status(CREATED).json(newProduct);
 });
 
+const getAll = rescue(async (_req, res, _next) => {
+  const result = await ProductService.getAll();
+  res.status(OK).json(result);
+});
+
+const findById = rescue(async (req, res, _next) => {
+  const { id } = req.params;
+  const result = await ProductService.findById(id);
+  if (!result) throw boom.badData('Wrong id format');
+
+  res.status(OK).json(result);
+});
+
 module.exports = {
   create,
+  getAll,
+  findById,
 };
