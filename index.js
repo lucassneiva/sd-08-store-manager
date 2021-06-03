@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const products = require('./controller/productController');
+const sales = require('./controller/salesController');
 
 const app = express();
 app.use(bodyParser.json());
@@ -13,6 +14,10 @@ app.route('/products/:id')
   .get(products.getById)
   .put(products.updateProduct)
   .delete(products.deleteProduct);
+
+
+app.route('/sales')
+  .post(sales.addSale);
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Online port: ${PORT}`));
