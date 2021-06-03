@@ -1,5 +1,7 @@
 const {
   createSalesModel,
+  getAllSalesModel,
+  getByIdSalesModel,
 } = require('../models/salesModel');
 
 const salesValidation = (sales) => {
@@ -25,7 +27,25 @@ const createSalesService = async (sales) => {
   });
 };
 
+const getAllSalesService = async () => {
+  const sales = await getAllSalesModel();
+  return sales;
+};
+
+const getByIdSalesService = async (id) => {
+  const sale = await getByIdSalesModel(id);
+  if (!sale) return ({
+    err: {
+      code: 'not_found',
+      message: 'Sale not found'
+    }
+  });
+  return sale;
+};
+
 module.exports = {
   salesValidation,
   createSalesService,
+  getAllSalesService,
+  getByIdSalesService,
 };

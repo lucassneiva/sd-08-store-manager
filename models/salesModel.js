@@ -12,6 +12,29 @@ const createSalesModel = async (sales) => {
   }
 };
 
+const getAllSalesModel = async () => {
+  try {
+    const db = await connection();
+    const sales = await db.collection('sales').find().toArray();
+    const result = { sales: [...sales] };
+    return result;
+  } catch (error) {
+    return error;
+  }
+};
+
+const getByIdSalesModel = async (id) => {
+  try {
+    const db = await connection();
+    const sale = await db.collection('sale').findOne(ObjectId(id));
+    return sale;
+  } catch (error) {
+    return null;
+  }
+};
+
 module.exports = {
   createSalesModel,
+  getAllSalesModel,
+  getByIdSalesModel,
 };
