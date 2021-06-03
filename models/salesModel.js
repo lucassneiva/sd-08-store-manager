@@ -52,28 +52,10 @@ const removeSale = async (id) => {
   return sale;
 };
 
-const handleProductQuantity = async ({ productId, quantity }) => {
-  const product = await ProductModel.getProductById(productId);
-  if (!product) return null;
-
-
-  await connection()
-    .then((db) => db.collection('products').updateOne(
-      { _id: new ObjectId(productId) },
-      { $set: { quantity: quantity } }
-    ));
-
-  const updatedProduct = await ProductModel.getProductById(productId);
-
-
-  return updatedProduct;
-};
-
 module.exports = {
   createSales,
   getSales,
   getSalesById,
   updateSale,
   removeSale,
-  handleProductQuantity,
 };

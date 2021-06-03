@@ -10,9 +10,17 @@ app.use(express.json());
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/products', productsController);
+app.post('/products', productsController.create);
+app.get('/products', productsController.getAll);
+app.get('/products/:id', productsController.getById);
+app.put('/products/:id', productsController.update);
+app.delete('/products/:id', productsController.remove);
 
-app.use('/sales', salesController);
+app.post('/sales', salesController.create);
+app.get('/sales', salesController.getAll);
+app.get('/sales/:id', salesController.getById);
+app.put('/sales/:id', salesController.update);
+app.delete('/sales/:id', salesController.remove);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {

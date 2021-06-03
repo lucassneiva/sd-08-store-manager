@@ -238,23 +238,4 @@ describe('Sales Models', () => {
       expect(response).to.have.a.property('_id');
     });
   });
-
-  describe('handle quantity with success', async () => {
-    it('Returns an object with _id property', async () => {
-      const respOne = await ProductsModel.createProduct(mockedProducts[ 0 ]);
-      mockedId = respOne._id;
-
-      const response = await SalesModel.handleProductQuantity({ productId: mockedId, quantity: 50 });
-
-      expect(response).to.be.a('object');
-      expect(response).to.have.a.property('_id');
-    });
-
-    it('Returns a null if id not found', async () => {
-
-      const response = await SalesModel.handleProductQuantity({ productId: '99999', quantity: 50 });
-      expect(response).to.be.a('null');
-    });
-  });
-
 });

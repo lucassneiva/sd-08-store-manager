@@ -2,7 +2,6 @@ const express = require('express');
 
 const ProductModel = require('../models/productsModel');
 const ProductService = require('../services/productsServices');
-const router = express.Router();
 
 const SUCCESS_CODE = 200;
 const CREATED_CODE = 201;
@@ -71,17 +70,11 @@ const remove = async (req, res, _next) => {
   res.status(SUCCESS_CODE).json(response);
 };
 
-router.post('/', create);
-router.get('/', getAll);
-router.get('/:id', getById);
-router.put('/:id', update);
-router.delete('/:id', remove);
-
 module.exports = {
   create,
   getAll,
   getById,
   update,
   remove,
-  router
+  // router
 };
