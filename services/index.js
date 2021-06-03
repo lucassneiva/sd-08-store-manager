@@ -43,7 +43,7 @@ const quantP = (req, res, next) => {
 };
 
 const quantS = (req, res, next) => {
-  const { itensSold } = req.body;
+  const  itensSold  = req.body;
   const zero = 0;
   if (typeof itensSold[0].quantity !== 'number') return res.status(ERROR)
     .json({
