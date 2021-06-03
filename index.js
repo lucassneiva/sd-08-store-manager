@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const controller = require('./controllers/productController');
+const product = require('./controllers/productController');
+const sale = require('./controllers/saleController');
 const errorMiddleware = require('./middlewares/error');
 
 const app = express();
@@ -9,11 +10,16 @@ const app = express();
 app.use(bodyParser.json());
 
 app.get('/', (_request, response) => {response.send();});
-app.post('/products', controller.create);
-app.get('/products', controller.readAll);
-app.get('/products/:id', controller.readById);
-app.put('/products/:id', controller.update);
-app.delete('/products/:id', controller.destroy);
+
+app.post('/products', product.create);
+app.get('/products', product.readAll);
+app.get('/products/:id', product.readById);
+app.put('/products/:id', product.update);
+app.delete('/products/:id', product.destroy);
+
+app.post('/sales', sale.create);
+app.get('/sales', sale.readAll);
+app.get('/sales/:id', sale.readById);
 
 app.use(errorMiddleware);
 
