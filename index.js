@@ -1,15 +1,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
-const DEFAULT_PORT = 8082;
+const { create, searchByName } = require('./controllers/Products');
+const { DEFAULT_PORT } = require('./utils/consts');
+const prodValidMiddle = require('./middlewares/productValidadeMiddleware');
+const reqValidMiddle = require('./middlewares/requestValidateMiddleware');
 const app = express();
 app.use(bodyParser.json());
-
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.send();
 });
+
+app.get('/products/:name', searchByName);
+
+app.post('/products', reqValidMiddle, prodValidMiddle, create);
+
 
 const port = process.env.PORT || DEFAULT_PORT;
 
