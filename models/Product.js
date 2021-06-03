@@ -23,14 +23,14 @@ const getAll = async () => {
   return conn.collection(PRODUCTS_COLLECTION).find().toArray();
 };
 
-const findyById = async (id) => {
+const findById = async (id) => {
   if (!ObjectId.isValid(id)) return null;
   const conn = await connection();
   return conn.collection(PRODUCTS_COLLECTION).findOne(ObjectId(id));
 };
 
 const update = async (id, product) => {
-  if (!(await findyById(id))) return null;
+  if (!(await findById(id))) return null;
   const conn = await connection();
   return conn
     .collection(PRODUCTS_COLLECTION)
@@ -38,7 +38,7 @@ const update = async (id, product) => {
 };
 
 const remove = async (id) => {
-  const findId = await findyById(id);
+  const findId = await findById(id);
   if (!findId) return null;
   await (await connection())
     .collection(PRODUCTS_COLLECTION)
@@ -50,7 +50,7 @@ module.exports = {
   create,
   findByName,
   getAll,
-  findyById,
+  findById,
   update,
   remove,
 };

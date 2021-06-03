@@ -10,4 +10,6 @@ router.get('/:id', SaleController.findById);
 
 router.get('/', SaleController.getAll);
 
+router.put('/:id', middleware.isSaleValid, SaleController.update);
+
 module.exports = router;

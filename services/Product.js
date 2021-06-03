@@ -13,7 +13,7 @@ const create = async (newProduct) => {
 const getAll = async () => ({ products: await ProductModel.getAll() });
 
 const findById = async (id) => {
-  const result = await ProductModel.findyById(id);
+  const result = await ProductModel.findById(id);
   if (!result) return null;
   return result;
 };

@@ -30,7 +30,7 @@ const update = rescue(async (req, res, _next) => {
   const { name, quantity } = req.body;
 
   const product = await ProductService.update(id, { name, quantity });
-  if (!product) throw boom.badData('Não é possivel atualizar produto com id inválido');
+  if (!product) throw boom.notFound('Unable to update product with invalid id');
 
   res.status(OK).json(product);
 });

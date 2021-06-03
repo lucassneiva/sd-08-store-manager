@@ -28,8 +28,20 @@ const findById = rescue(async (req, res, _next) => {
   res.status(OK).json(sale);
 });
 
+const update = rescue(async (req, res, _next) => {
+  const { id } = req.params;
+  const updateSale = req.body;
+
+  const updatedSale = await SaleService.update(id, updateSale);
+
+  if (!updatedSale) throw boom.notFound('Unable to update product with invalid id');
+
+  res.status(OK).json(updatedSale);
+});
+
 module.exports = {
   create,
   getAll,
   findById,
+  update,
 };
