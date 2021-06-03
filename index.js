@@ -17,7 +17,11 @@ app.route('/products/:id')
 
 
 app.route('/sales')
-  .post(sales.addSale);
+  .post(sales.addSale)
+  .get(sales.getAll);
+
+app.route('/sales/:id')
+  .get(sales.getAll);
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Online port: ${PORT}`));

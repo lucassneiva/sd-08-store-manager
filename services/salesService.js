@@ -10,6 +10,18 @@ async function addSale(req){
   return data;
 }
 
+async function getAll(req){
+  const { id } = req.params;
+  const data = await sales.getAll(req);
+  if(!id) return data;
+  if(!data) return {
+    err: {
+      code: 'not_found',
+      message: 'Sale not found'}
+  };
+  return data;
+}
+
 module.exports = {
-  addSale
+  addSale, getAll
 };
