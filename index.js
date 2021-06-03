@@ -2,12 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const ProductsController = require('./controllers/productsControllers');
+const SalesController = require('./controllers/salesControllers');
 
 const app = express();
 
 app.use(bodyParser.json());
 
 app.use('/products', ProductsController);
+app.use('/sales', SalesController);
 
 const PORT_NUMBER = 3000;
 
