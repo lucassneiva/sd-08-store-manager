@@ -15,46 +15,57 @@ const create = async (name, quantity) =>
   });
 
 
-const getAll = async () => {
-  // const dataProducts = await [{ name: 'Bola de futebol' }, { name: 'raquete'}];
-  // return dataProducts;
+const getAll = async () =>
   connect().then((db) => db.collection('products').find().toArray());
-};
+
 
 const getByName = async (nome) => {
-  const productExists = connect()
+  const productExists = await connect()
     .then((db) => db.collection('products').findOne({name: nome}));
   return productExists;
 };
 
 
-// const getById = async (id) => {
-//   await ObjectId.isValid(id);
-//   const people = connect().then((db) => db.collection('people').findOne(ObjectId(id)));
-//   return people;
-// };
+const getById = async (id) => {
+  try {
+    await ObjectId.isValid(id);
+    const productsById = await connect()
+      .then((db) => db.collection('products').findOne({ _id: ObjectId(id) }));
+    console.log('linha 33 models', productsById);
+    return productsById;
+  } catch (error) {
+    return null;
+  }
+};
 
-// const update = async (id, name, age) =>
-//   connect().then(async (db) =>
-//     (await getById(id))
-//       ? db
-//         .collection('people')
-//         .updateOne({ _id: ObjectId(id) }, { $set: { name, age } })
-//       : add(name, age)
-//   );
+const update = async (id, name, quantity) => {
+  const updateProducts = await connect().then((db) => 
+    db
+      .collection('products')
+      .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
+      
+ 
+  console.log('linha 48 models', updateProducts);
+  return updateProducts;
+};
 
-// const exclude = async (id) =>
-//   connect().then(async (db) => {
-//     const person = await getById(id);
-//     db.collection('people').deleteOne({ _id: ObjectId(id) });
-//     if (await person) return person;
-//   });
+const exclude = async (id) => {
+  try {
+    await connect().then(async (db) => {
+      const productsById = await getById(id);
+      db.collection('products').deleteOne({ _id: ObjectId(id) });
+      if (await productsById) return productsById;
+    });
+  } catch (error) {
+    return null;
+  }
+};
 
 module.exports = { 
   create,
   getAll,
   getByName,
-  // getById,
-  // update,
-  // exclude
+  getById,
+  update,
+  exclude
 };

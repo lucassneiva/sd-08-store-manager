@@ -1,10 +1,33 @@
 const ProductsModel = require('../models/productsModels');
 
-// const getNewMovie = (movieData) => {
-//   const { id, title, directedBy, releaseYear } = movieData;
+const getAllProducts = (productsData) => {
+  const { name, quantity } = productsData;
 
-//   return { id, title, directedBy, releaseYear };
-// };
+  return { name, quantity };
+};
+
+const getAll = async () => {
+  const productsData = await ProductsModel
+    .getAll();
+
+  // console.log('linha 45 services', productsData);
+  return productsData;
+  // return productsData.map(getAllProducts);
+};
+
+const getByIdService = async (id) => {
+  const productsById = await ProductsModel
+    .getById(id);
+  console.log('linha 21 services', productsById);
+  if( productsById === null) return {
+    code: 'invalid_data',
+    message: 'Wrong id format'
+  };
+  return productsById;
+
+  // return productsById;
+  // // return productsData.map(getAllProducts);
+};
 
 const nameValidation = (name) => {
   const minOfCharactersName = 5;
@@ -36,17 +59,7 @@ const productExists = async (name) => {
   console.log(dataProducts);
   if (dataProducts === null) return false;
   return true;
-  // const productCheck = dataProducts
-  //   .some((data) => data.name.includes(name));
-  // return productCheck;
 };
-
-// const getAll = async () => {
-//   const moviesData = await MoviesModel
-//     .getAll();
-
-//   return moviesData.map(getNewMovie);
-// };
 
 const create = async (name, quantity) => {
   const isProductExists = await productExists(name);
@@ -84,13 +97,78 @@ const create = async (name, quantity) => {
   console.log('linha 83 services', newProducts);
 
   return {
-    // id: newProducts._id,
-    name: newProducts.name,
-    quantity: newProducts.quantity
+    _id: newProducts._id,
+    name: name,
+    quantity: quantity
+  };
+};
+
+const update = async (id, name, quantity) => {
+  // const isProductExists = await productExists(name);
+  // console.log(isProductExists);
+  // const isNameValid = nameValidation(name);
+  const isNameValid = nameValidation(name);
+  // const existName = true;
+
+  const isQuantityString = quantityNotIsString(quantity);
+  const isQuantityValid = quantityValidation(quantity);
+
+  // if (isProductExists) return { 
+  //   code: 'invalid_data',
+  //   message: 'Product already exists'
+  // };
+
+  if (!isNameValid) return { 
+    code: 'invalid_data',
+    message: '\"name\" length must be at least 5 characters long'
+  };
+
+  if (!isQuantityString) return { 
+    code: 'invalid_data',
+    message: '\"quantity\" must be a number'
+  };
+
+  if (!isQuantityValid) return { 
+    code: 'invalid_data',
+    message: '\"quantity\" must be larger than or equal to 1'
+  };
+
+  console.log('linha 81 services', name, quantity);
+  const updateProducts = await ProductsModel
+    .update(id, name, quantity);
+  console.log('linha 139 services', updateProducts);
+
+  return {
+    _id: id,
+    name: name,
+    quantity: quantity
+  };
+};
+
+const exclude = async (id) => {
+  const productsById = await ProductsModel
+    .getById(id);
+  console.log('linha 21 services', productsById);
+
+  const updateProducts = await ProductsModel
+    .exclude(id);
+  console.log('linha 139 services', updateProducts);
+  if( updateProducts === null) return {
+    code: 'invalid_data',
+    message: 'Wrong id format'
+  };
+
+  return {
+    _id: id,
+    name: productsById.name,
+    quantity: productsById.quantity
   };
 };
 
 module.exports = {
   create,
-  // getAll,
+  getAll,
+  getByIdService,
+  update,
+  exclude,
 };
