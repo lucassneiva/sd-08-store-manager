@@ -48,5 +48,17 @@ module.exports = {
     } catch (err) {
       return response.status(HTTP_BAD_REQUEST_STATUS).send(err);
     }
+  },
+
+  async delete(request, response) {
+    try {
+      const { id } = request.params;
+
+      const sale = await Sale.findByIdAndRemove(id);
+
+      return response.status(HTTP_OK_STATUS).send(sale);
+    } catch (err) {
+      return response.status(HTTP_BAD_REQUEST_STATUS).send(err);
+    }
   }
 };
