@@ -353,7 +353,7 @@ O retorno da API de um produto cadastrado com sucesso deverá ser:
 
 #### Requisição de Cadastro de Produtos:
 
-O projeto deve rodar na porta `http://localhost/3000`
+O projeto deve rodar na porta `http://localhost:3000`
 
 ![Criar produtos](./public/criarProdutos.png)
 
@@ -488,7 +488,7 @@ O projeto deve rodar na porta `http://localhost/3000`
 
 **O que será verificado:**
 
-- Será validado que não é possível deletar um produto com sucesso
+- Será validado que é possível deletar um produto com sucesso
 
   - Se o produto deletado com sucesso, o resultado retornado deverá ser conforme exibido abaixo, com status http `200`:
 
