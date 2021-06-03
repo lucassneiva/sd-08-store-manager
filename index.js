@@ -9,6 +9,7 @@ app.use(express.json());
 app.get('/products', productsController.getProducts);
 app.get('/products/:id', productsController.findProduct);
 app.post('/products', productsController.createProduct);
+app.post('/products/:id', productsController.updateProduct);
 
 app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
 

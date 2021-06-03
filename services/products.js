@@ -31,7 +31,7 @@ const userIsValid = async (name, quantity) => {
     return { err: { code: 'invalid_data', message: '"quantity" must be a number' } };
   }
 
-  return await productsModel.createProduct(name, quantity);
+  return {name, quantity};
 };
 
 const idIsValid = async (id) => {

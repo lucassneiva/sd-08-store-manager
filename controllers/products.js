@@ -12,8 +12,9 @@ const getProducts = async (req, res) => {
 const createProduct = async (req, res) => {
   const { name, quantity } = req.body;
 
-  const newProduct = await productsService.userIsValid(name, quantity);
-  if (newProduct.err) return res.status(INVALID_DATA_STATUS).json(newProduct);
+  const isValid = await productsService.userIsValid(name, quantity);
+  if (isValid.err) return res.status(INVALID_DATA_STATUS).json(isValid);
+  const newProduct = await productsModel.createProduct(isValid.name, isValid.quantity);
 
   return res.status(CREATED_STATUS).json(newProduct);
 };
@@ -27,8 +28,19 @@ const findProduct = async (req, res) => {
   return res.status(OK_STATUS).json(product);
 };
 
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  const isValid = await productsService.userIsValid(name, quantity);
+  if (isValid.err) return res.status(INVALID_DATA_STATUS).json(isValid);
+  const editedProduct = await productsModel.updateProduct(id, name, quantity);
+  
+  return res.status(OK_STATUS).json(editedProduct);
+};
+
 module.exports = {
   getProducts,
   createProduct,
   findProduct,
+  updateProduct
 };
