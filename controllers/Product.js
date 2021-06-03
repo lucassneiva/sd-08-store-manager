@@ -25,7 +25,7 @@ const findById = rescue(async (req, res, _next) => {
   res.status(OK).json(result);
 });
 
-const update = rescue(async (req, res, next) => {
+const update = rescue(async (req, res, _next) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
 
@@ -35,9 +35,18 @@ const update = rescue(async (req, res, next) => {
   res.status(OK).json(product);
 });
 
+const remove = rescue(async (req, res, _next) => {
+  const { id } = req.params;
+  const removedProduct = await ProductService.remove(id);
+  if (!removedProduct) throw boom.badData('Wrong id format');
+
+  res.status(OK).json(removedProduct);
+});
+
 module.exports = {
   create,
   getAll,
   findById,
   update,
+  remove,
 };

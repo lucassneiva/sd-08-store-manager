@@ -37,10 +37,20 @@ const update = async (id, product) => {
     .updateOne({ _id: ObjectId(id) }, { $set: product });
 };
 
+const remove = async (id) => {
+  const findId = await findyById(id);
+  if (!findId) return null;
+  await (await connection())
+    .collection(PRODUCTS_COLLECTION)
+    .deleteOne({ _id: ObjectId(id) });
+  return findId;
+};
+
 module.exports = {
   create,
   findByName,
   getAll,
   findyById,
   update,
+  remove,
 };
