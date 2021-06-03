@@ -16,12 +16,19 @@ module.exports = async (err, _req, res, _next) => {
   if (err.isBoom) {
     const { statusCode, payload } = err.output;
     const { message } = payload;
-    return res.status(statusCode).json({
-      err: {
-        code: 'invalid_data',
-        message,
-      },
-    });
+    return statusCode === UNPROCESSABLE_ENTITY
+      ? (res.status(statusCode).json({
+        err: {
+          code: 'invalid_data',
+          message,
+        },
+      }))
+      : res.status(statusCode).json({
+        err: {
+          code: 'not_found',
+          message,
+        },
+      });
   }
 
   res.status(INTERNAL_SERVER_ERROR).json(err);

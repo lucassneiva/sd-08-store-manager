@@ -12,14 +12,23 @@ const create = async (itensSold) => {
 
   if (productsIdIsInvalid) return null;
 
-  const result = await SaleModel.create(itensSold);
+  const _id = await SaleModel.create(itensSold);
 
-  return {
-    _id: result,
-    itensSold,
-  };
+  return { _id, itensSold };
+};
+
+const getAll = async () => SaleModel.getAll();
+
+const findById = async (id) => {
+  const sale = await SaleModel.findById(id);
+
+  if (!sale) return null;
+
+  return sale;
 };
 
 module.exports = {
   create,
+  getAll,
+  findById,
 };
