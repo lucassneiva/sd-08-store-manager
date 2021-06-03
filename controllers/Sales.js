@@ -24,4 +24,12 @@ salesController.get('/:id', noexistS, async (req, res) => {
   res.status(OK).json(sales.ops[0]);
 });
 
+salesController.put('/:id', quantS, async (req, res) => {
+  const { id } = req.params;
+  const arr = req.body;
+  const sales = await models.updateSales(id, arr);
+  sales.result.ok ? result = await models.getSales(id) : '';
+  res.status(OK).json(result);
+});
+
 module.exports = salesController;

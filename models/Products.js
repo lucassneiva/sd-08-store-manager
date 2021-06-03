@@ -31,4 +31,11 @@ const update = async (id, name, quantity) =>
     .then((db) => db.collection('products')
       .updateOne({_id: ObjectId(id)}, {$set: {name: name, quantity: quantity}}));
 
-module.exports  = { create, getAll, getProduct, update, del, findName };   
+module.exports  = {
+  create,
+  getAll,
+  getProduct,
+  update,
+  del,
+  findName
+};   
