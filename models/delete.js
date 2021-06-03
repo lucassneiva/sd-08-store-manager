@@ -2,10 +2,10 @@ const connection = require('./connection');
 const {ObjectId} = require('mongodb');
 const deleteOne = async (id , collection ) => {
   const result = await  connection()
-    .then((db) =>  db.collection(collection).deleteOne(ObjectId(id)));
+    .then((db) =>  db.collection(collection).deleteOne({_id: ObjectId(id)}));
   if (!result) return null;
-    
-  return result;
+  console.log(result);
+  return ;
 };
 
-module.exports = {deleteOne};
+module.exports = deleteOne;
