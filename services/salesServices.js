@@ -1,5 +1,30 @@
 const salesModel = require('../models/salesModel');
-const productsModel = require('../models/productsModel');
+
+const valid = async(sale) => {
+  const err = {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    }
+  };
+  for(let index = 1; index <= sale.length; index += 1) {
+    const { quantity } = sale[index - 1];
+    if (typeof quantity === 'string' || quantity < 1){
+      return err;
+    }
+  }
+  return false;
+}; 
+
+const add = async(sale) => {
+
+  const saleId = await salesModel.add(sale);
+  if (!saleId) return null;
+  return ({
+    _id: saleId,
+    itensSold: [...sale],
+  });
+};
 
 const getAll = async () => {
   const allSales = await salesModel.getAll();
@@ -17,10 +42,20 @@ const getById = async (id) => {
     };
 
   return sales;
+}; 
+
+const updateOne = async(id,data)=>{
+  await salesModel.updateOne(id,data); 
+  return({
+    _id:id,
+    itensSold:[...data]
+  });
 };
 
 
 
+
+
 module.exports =  {
-  getAll,getById,
+  getAll,getById,add,valid,updateOne
 };

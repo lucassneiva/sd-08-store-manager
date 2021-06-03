@@ -1,11 +1,21 @@
 const salesServices = require('../services/salesServices');
 
-const statusOK = 200;
+const unproceesableEntry = 422;
+const statusOk = 200;
 const notFound = 404;
+
+const add = async (req, res) => {
+  const sale = req.body;
+  const validSale = await salesServices.valid(sale);
+  if (validSale.err) res.status(unproceesableEntry).json(validSale);
+  const result = await salesServices.add(sale);
+  res.status(statusOk).json(result);
+
+};
 
 const getAll = async(req,res)=>{
   const allProd = await salesServices.getAll();
-  res.status(statusOK).json(allProd);
+  res.status(statusOk).json(allProd);
 };
 const getById = async (req, res) => {
   const { id } = req.params;
@@ -14,8 +24,22 @@ const getById = async (req, res) => {
 
   if (sales.err) return res.status(notFound).json(sales);
 
-  return res.status(statusOK).json(sales);
-};
+  return res.status(statusOk).json(sales);
+}; 
+
+const updateOne = async (req, res) => {
+  const { id } = req.params;
+  const data = req.body;
+  const isValid = await salesServices.valid(data);
+  if(isValid) res.status(unproceesableEntry).json(isValid);
+
+  const updated = await salesServices.updateOne(id,data);
+
+  return res.status(statusOk).json(updated);
+}; 
+
+
+
 module.exports = {
-  getAll,getById
+  getById,getAll,add,updateOne
 };
