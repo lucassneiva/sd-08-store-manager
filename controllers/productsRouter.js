@@ -5,8 +5,6 @@ const readProductById = require('../services/readProductById');
 const readProduct = require('../services/readProduct');
 const updateProduct = require('../services/updateProduct');
 const deleteProduct = require('../services/deleteProduct');
-const mongodb = require('mongodb');
-const HTTP_OK_STATUS = 201;
 router.get('/:id', async (req, res, next)=>{
   const id = (req.params.id);
   await readProductById(id ,res,next);

@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const productsRouter = require('./controllers/productsRouter');
-// const salesRouter = require('./controllers/salesRoutes');
+const salesRouter = require('./controllers/salesRoutes');
 
 
 
@@ -16,7 +16,7 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-// app.use('/sales', salesRouter );
+app.use('/sales', salesRouter );
 app.use('/products', productsRouter );
 
 app.listen(PORT, () => {
