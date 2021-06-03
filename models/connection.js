@@ -7,8 +7,11 @@ const OPTIONS = {
   useUnifiedTopology: true,
 };
 
-const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
-/* const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager'; // teste remoto */
+/* conection local */
+/* const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager'; */
+
+/* conection remote */
+const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 
 let db = null;
 
