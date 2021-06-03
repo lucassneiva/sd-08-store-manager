@@ -24,4 +24,10 @@ const findSold = async (id) => {
   return connection().then((db) => db.collection('sale').findOne(new ObjectId(id)));
 };
 
-module.exports = { create, getAll, getSale, update, findSold };
+const del = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return connection()
+    .then((db) => db.collection('sales') .deleteOne({ _id: ObjectId(id) }));
+};
+
+module.exports = { create, getAll, getSale, update, findSold, del };

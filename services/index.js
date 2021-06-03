@@ -108,6 +108,20 @@ const noexistS = async (req, res, next) => {
   next();
 };
 
+const noexistSD = async (req, res, next) => {
+  const { id } = req.params;
+  let check = await getSale(id);
+  if (!check) {
+    return res.status(ERROR).json({
+      err: {
+        code: 'not_found',
+        message: 'Sale not found',
+      },
+    });
+  }
+  next();
+};
+
 const updS = async (req, res, next) => {
   const arr = req.body;
   const zero = 0;
@@ -135,5 +149,6 @@ module.exports = {
   noexist,
   quantS,
   noexistS,
-  updS
+  updS,
+  noexistSD
 };
