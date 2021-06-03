@@ -4,6 +4,8 @@ const {
   getById,
 } = require('../models/produtosModel');
 
+const QDD = 422;
+
 const getAllProdutos = async () => {
   const produtos = await getAll();
   return produtos;
@@ -15,13 +17,7 @@ const addProdutos = async ({ name, quantity }) => {
 };
 
 const getByIdProdutos = async ({id}) => {
-  // validar meu id 
-  // se for null retorna obj
   const produto = await getById(id);
-  console.log(produto);
-  // if (produto === {}) {
-  //   return err = { produto };
-  // }
   return produto;
 };
 

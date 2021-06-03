@@ -1,7 +1,11 @@
-const validaName = require('./validaName');
+const validaNome = require('./validaNome');
 const validaNumero = require('./validaNumero');
+const middlewareError = require('./middlewareError');
+const validaId = require('./validaId');
 
 module.exports = {
-  validaName,
+  validaNome,
   validaNumero,
+  middlewareError,
+  validaId,
 };

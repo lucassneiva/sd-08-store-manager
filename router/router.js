@@ -7,12 +7,16 @@ const {
   getByIdProducts,
 } = require('../controllers/produtoController');
 
-const { validaName, validaNumero } = require('../middlewares');
+const {
+  validaNome,
+  validaNumero,
+  validaId,
+ } = require('../middlewares');
 
 router.get('/', getAllProducts);
 
-router.post('/', validaName, validaNumero, addProducts);
+router.post('/', validaNome, validaNumero, addProducts);
 
-router.get('/:id', getByIdProducts);
+router.get('/:id', validaId, getByIdProducts);
 
 module.exports = router;

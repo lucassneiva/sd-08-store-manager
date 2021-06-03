@@ -1,5 +1,4 @@
-const express = require('express');
-const router = express.Router();
+const rescue = require('express-rescue');
 
 const {
   getAllProdutos,
@@ -7,36 +6,23 @@ const {
   getByIdProdutos,
 } = require('../services/produtoServices');
 
-const SUCESSO = 201;
-const GET200 = 200;
-const ERRO_CONEXAO = 500;
+const DZU = 201;
+const DOO = 200;
 
-const getAllProducts = async (_req, res) => {
-  try {
-    const products = await getAllProdutos();
-    res.status(GET200).json({ products });
-  } catch (error) {
-    res.status(ERRO_CONEXAO).json({ message: 'Fatal Error 500' });
-  }
-};
+const getAllProducts = rescue(async (_req, res) => {
+  const products = await getAllProdutos();
+  res.status(DOO).json({ products });
+});
 
-const addProducts = async (req, res) => {
-  try {
-    const produto = await addProdutos(req.body);
-    res.status(SUCESSO).json(produto);
-  } catch (error) {
-    res.status(ERRO_CONEXAO).json({ message: 'Fatal Error 500' });
-  }
-};
+const addProducts = rescue(async (req, res) => {
+  const produto = await addProdutos(req.body);
+  res.status(DZU).json(produto);
+});
 
-const getByIdProducts = async (req, res) => {
-  try {
-    const products = await getByIdProdutos(req.params);
-    res.status(GET200).json(products);
-  } catch (error) {
-    res.status(ERRO_CONEXAO).json({ message: 'Fatal Error 500' });
-  }
-};
+const getByIdProducts = rescue(async (req, res) => {
+  const products = await getByIdProdutos(req.params);
+  res.status(DOO).json(products);
+});
 
 module.exports = {
   getAllProducts,

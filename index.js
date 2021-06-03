@@ -1,5 +1,6 @@
 const express = require('express');
-const Router = require('./controllers/router');
+const Router = require('./router/router');
+const { middlewareError } = require('./middlewares');
 
 const PORT = 3000;
 const app = express();
@@ -11,5 +12,7 @@ app.use('/products', Router);
 app.get('/', (_request, response) => {
   response.send();
 });
+
+app.use(middlewareError);
 
 app.listen(PORT, () => console.log(`Funcionando na porta ${PORT}`));
