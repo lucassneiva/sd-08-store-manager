@@ -39,9 +39,19 @@ const update = rescue(async (req, res, _next) => {
   res.status(OK).json(updatedSale);
 });
 
+const remove = rescue(async (req, res, _next) => {
+  const { id } = req.params;
+
+  const deletedSale = await SaleService.remove(id);
+  if (!deletedSale) throw boom.badData('Wrong sale ID format');
+
+  res.status(OK).json(deletedSale);
+});
+
 module.exports = {
   create,
   getAll,
   findById,
   update,
+  remove,
 };

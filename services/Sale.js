@@ -35,9 +35,12 @@ const update = async (id, updateSale) => {
   return { _id: id, itensSold: updateSale };
 };
 
+const remove = (id) => SaleModel.remove(id);
+
 module.exports = {
   create,
   getAll,
   findById,
   update,
+  remove,
 };
