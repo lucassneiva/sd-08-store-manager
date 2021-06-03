@@ -40,6 +40,7 @@ const updateOne = async (req, res) => {
 const deleteOne = async(req,res)=>{
   const {id} = req.params;
   const deletedOne = await salesServices.deleteOne(id);
+  if(deletedOne.err) res.status(unproceesableEntry).json(deletedOne);
   res.status(statusOk).json(deletedOne);
 };
 
