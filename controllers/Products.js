@@ -8,7 +8,6 @@ const productsController = Router();
 
 productsController.get('/', async (_req, res) => {
   const products = await models.getAll();
-  console.log(products);
   res.status(OK).json({ products });
 });
 
