@@ -72,9 +72,24 @@ const update = async(id, name, quantity) => {
   return updateProduct;
 };
 
+const destroy = async(id) => {
+  const productDeleted = await model.destroy(id);
+
+  if (!productDeleted) {
+    return {
+      status: UNPROCESSABLE_ENTITY,
+      code: 'invalid_data',
+      error: { message: 'Wrong id format' }
+    };
+  }
+
+  return productDeleted;
+};
+
 module.exports = {
   create,
   readAll,
   readById,
-  update
+  update,
+  destroy
 };

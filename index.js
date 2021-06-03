@@ -13,6 +13,7 @@ app.post('/products', controller.create);
 app.get('/products', controller.readAll);
 app.get('/products/:id', controller.readById);
 app.put('/products/:id', controller.update);
+app.delete('/products/:id', controller.destroy);
 
 app.use(errorMiddleware);
 
