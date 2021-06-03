@@ -26,7 +26,7 @@ const verifyQuantity = async (quantity) => {
   const one = 1;
   if (typeof quantity !== 'number') {
     err.message = '"quantity" must be a number';
-    throw new Error(err.message);
+    throw new Error(err. message);
   }
 
   if (quantity < one) {
