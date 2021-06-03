@@ -18,10 +18,8 @@ const create = async (name, quantity) => {
 const getAll = async () => connect()
   .then((db) => db.collection('products').find().toArray());
 
-const getById = async (id) => {
-  const people = connect().then((db) => db.collection('products').findOne(ObjectId(id)));
-  return people;
-};
+const getById = async (id) => connect()
+  .then((db) => db.collection('products').findOne(ObjectId(id)));
 
 const getByName = async (name) => connect()
   .then((db) => db.collection('products').findOne({ name }));

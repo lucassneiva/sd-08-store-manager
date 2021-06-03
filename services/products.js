@@ -41,11 +41,7 @@ const create = async (name, quantity) => {
   };
 };
 
-const getAll = async (id) => {
-  const products = await productsModel.getAll();
-
-  return products;
-};
+const getAll = async () => await productsModel.getAll();
 
 const getById = async (id) => {
   if (await !ObjectId.isValid(id)) return 'Wrong id format';

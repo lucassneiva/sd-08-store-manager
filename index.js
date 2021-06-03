@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const productsControllers = require('./controllers/products');
+const salesControllers = require('./controllers/sales');
 
 const app = express();
 
@@ -22,5 +23,15 @@ app.get('/products/:id', productsControllers.getById);
 app.put('/products/:id', productsControllers.update);
 
 app.delete('/products/:id', productsControllers.erase);
+
+app.post('/sales', salesControllers.create);
+
+app.get('/sales', salesControllers.getAll);
+
+app.get('/sales/:id', salesControllers.getById);
+
+app.put('/sales/:id', salesControllers.update);
+
+app.delete('/sales/:id', salesControllers.erase);
 
 app.listen(PORT, () => console.log('App funcionando'));
