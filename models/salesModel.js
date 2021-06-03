@@ -46,7 +46,9 @@ const updateOne = async(id,data)=>{
 
 const deleteOne = async(id)=>{
   try{
-    const sale = await connection().then(db=>db.collection('sales').findOne({_id:ObjectId(id)})); 
+    const sale = await connection()
+      .then(db=>db.collection('sales')
+        .findOne({_id:ObjectId(id)})); 
     await connection().then(db=>db.collection('sales').deleteOne({_id:ObjectId(id)}));
     return sale;
 
