@@ -12,6 +12,7 @@ const {
   createSalesController,
   getByIdSalesController,
   getAllSalesController,
+  updateSalesController,
 } = require('./controllers/salesController');
 
 const app = express();
@@ -40,6 +41,8 @@ app.post('/sales', createSalesController);
 app.get('/sales', getAllSalesController);
 
 app.get('/sales/:id', getByIdSalesController);
+
+app.put('/sales/:id', updateSalesController);
 
 app.listen(PORT, () => {
   console.log(`Online na porta ${PORT}`);

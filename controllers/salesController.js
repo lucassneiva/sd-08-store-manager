@@ -3,6 +3,7 @@ const {
   salesValidation,
   getAllSalesService,
   getByIdSalesService,
+  updateSalesService,
 } = require('../services/salesService');
 
 const OK = 200;
@@ -29,8 +30,18 @@ const getByIdSalesController = async (req, res) => {
   res.status(OK).json(sale);
 };
 
+const updateSalesController = async (req, res) => {
+  const sales = req.body;
+  const { id } = req.params;
+  const validation = salesValidation(sales);
+  if (validation.err) return res.status(UNPROCESSABLE_ENTITY).json(validation);
+  const sale = await updateSalesService(id, sales);
+  res.status(OK).json(sale);
+};
+
 module.exports = {
   createSalesController,
   getAllSalesController,
   getByIdSalesController,
+  updateSalesController,
 };

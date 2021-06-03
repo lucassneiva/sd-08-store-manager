@@ -26,8 +26,19 @@ const getAllSalesModel = async () => {
 const getByIdSalesModel = async (id) => {
   try {
     const db = await connection();
-    const sale = await db.collection('sale').findOne(ObjectId(id));
+    const sale = await db.collection('sales').findOne(ObjectId(id));
     return sale;
+  } catch (error) {
+    return null;
+  }
+};
+
+const updateSalesModel = async (id, sales) => {
+  try {
+    const db = await connection();
+    await db.collection('sales')
+      .updateOne({ _id: ObjectId(id) }, sales );
+    return true;
   } catch (error) {
     return null;
   }
@@ -37,4 +48,5 @@ module.exports = {
   createSalesModel,
   getAllSalesModel,
   getByIdSalesModel,
+  updateSalesModel,
 };
