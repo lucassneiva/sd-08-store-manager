@@ -5,15 +5,14 @@ const OPTIONS = {
   useUnifiedTopology: true,
 };
 // Para o AVALIADOR funcionar altere a conexão do banco para:
-const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
+// const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 // A conexão do banco LOCAL deverá conter os seguintes parâmetros:
-// const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
+const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
 const DB_NAME = 'StoreManager';
 
 let db = null;
 
 const connection = () => {
-  console.log('abriu o connection');
   return db
     ? Promise.resolve(db)
     : MongoClient.connect(MONGO_DB_URL, OPTIONS)

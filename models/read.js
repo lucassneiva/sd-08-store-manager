@@ -2,12 +2,12 @@ const connection = require('./connection');
 const {ObjectId} = require('mongodb');
 const getAll = async (collection) => {
   const result = await  connection()
-    .then((db) =>  db.collection(collection).find(),toArray());
+    .then((db) =>  db.collection(collection).find().toArray());
   if (!result) return null;
     
   return result;
 };
-const findById = async (id , collection) => {
+const findById = async ( collection , id) => {
   const result = await  connection()
     .then((db) =>  db.collection(collection).findOne(ObjectId(id)));
   if (!result) return null;
@@ -21,4 +21,5 @@ const listByValue = async (collection, value) =>{
     
   return result;
 };
+// https://stackoverflow.com/questions/32845280/mongodb-return-array-of-values-into-a-variable
 module.exports = {getAll , findById , listByValue};
