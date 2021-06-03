@@ -12,7 +12,6 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-// app.get('/products/:id', searchById);
 app.get('/products/:id', searchById);
 app.get('/products/', getAll);
 

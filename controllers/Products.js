@@ -17,7 +17,7 @@ const searchById = rescue(async (req, res) => {
 
 const getAll = rescue(async (_req, res) => {
   const search = await Product.getAll();
-  return res.status(STATUS_200).json(search);
+  return res.status(STATUS_200).json({ products: search });
 });
 
 module.exports = {
