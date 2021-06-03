@@ -13,7 +13,6 @@ productsController.get('/', async (_req, res) => {
 
 productsController.post('/', nameCheck, quantP, exist, async (req, res) => {
   const { name, quantity } = req.body;
-  console.log(name, quantity);
   const product = await models.create(name, quantity);
   res.status(CREATED).json(product.ops[0]);
 });

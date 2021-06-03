@@ -1,5 +1,5 @@
 const { findName, getProduct } = require('../models/Products');
-const { getSale } = require('../models/sales');
+const { getSale } = require('../models/Sales');
 const ERROR = 422;
 
 const nameCheck = (req, res, next) => {
@@ -107,6 +107,26 @@ const noexistS = async (req, res, next) => {
   next();
 };
 
+const updS = async (req, res, next) => {
+  const arr = req.body;
+  const zero = 0;
+  if (typeof arr[0].quantity !== 'number')
+    return res.status(ERROR).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
+      },
+    });
+  if (+arr[0].quantity < 1 || +arr[0].quantity == zero)
+    return res.status(ERROR).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
+      },
+    });
+  next();
+};
+
 module.exports = {
   nameCheck,
   quantP,
@@ -114,4 +134,5 @@ module.exports = {
   noexist,
   quantS,
   noexistS,
+  updS
 };

@@ -1,5 +1,5 @@
 const models = require('../models/Sales');
-const { quantS, noexistS } = require('../services');
+const { quantS, noexistS, updS } = require('../services');
 const { Router } = require('express');
 const OK = '200';
 const CREATED = '201';
@@ -19,8 +19,17 @@ salesController.post('/', quantS, async (req, res) => {
 
 salesController.get('/:id', noexistS, async (req, res) => {
   const { id } = req.params;
-  const product = await models.getSale(id);
-  res.status(OK).json(product);
+  const sale = await models.getSale(id);
+  res.status(OK).json(sale);
+});
+
+salesController.put('/:id', updS, async (req, res) => {
+  let result = '';
+  const { id } = req.params;
+  const arr = req.body;
+  const sale = await models.update(id, arr);
+  sale.result.ok ? (result = await models.getSale(id)) : '';
+  res.status(OK).json(result);
 });
 
 module.exports = salesController;
