@@ -11,4 +11,6 @@ router.get('/products/:id', ProductsController.getOne);
 router.put('/products/:id', name, quantity, ProductsController.edit);
 router.delete('/products/:id', ProductsController.remove);
 router.post('/sales', salesNotNull, SalesController.add);
+router.get('/sales', SalesController.getAll);
+router.get('/sales/:id', SalesController.getOne);
 module.exports = router;
