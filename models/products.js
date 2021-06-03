@@ -1,6 +1,7 @@
 const connection = require('./connection');
 
 const { ObjectId } = require('mongodb');
+const { sandbox } = require('sinon');
 
 const COLLECTION_NAME = 'products';
 
@@ -57,11 +58,24 @@ const productDelete = async (id) => {
   return produto;
 };
 
+const updateQuantity = async (id, increment) => 
+  connection()
+    .then((db) => db
+      .collection(COLLECTION_NAME)
+      .updateOne(
+        {_id: ObjectId(id)},
+        {
+          $inc: {
+            quantity: increment
+          }
+        }
+      ));
+
 module.exports = {
   create,
   read,
   readById,
   update,
   productDelete,
+  updateQuantity,
 };
-

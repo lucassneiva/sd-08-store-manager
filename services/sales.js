@@ -31,8 +31,15 @@ const create = async (itensSold) => {
   itensSold.forEach((elem) => isQuantityInvalid(elem.quantity));
 
   const newSale = { itensSold };
-
   const { insertedId: _id } = await SalesModel.create(newSale);
+
+  const subtractProductQuantity = 
+  products.map(async(prod, index) => {
+    const { result } = await ProductsModel
+      .updateQuantity(prod._id, -itensSold[index].quantity);
+    return result;
+  });
+  await Promise.all(subtractProductQuantity);
 
   return {
     _id,
@@ -98,18 +105,24 @@ const deleteSale = async (id) => {
 
   const sale = await SalesModel.readById(id);
 
-  console.log(sale, 'sale');
-
   if(!sale){
     throw new Error(WRONG_SALE_ID);
   }
 
   const deletion = await SalesModel.deleteSale(id);
-
   console.log(deletion.result, 'deletion');
 
+  const incrementProductQuantity = 
+  sale.itensSold.map(async(prod) => {
+    console.log(prod);
+    const { result } = await ProductsModel
+      .updateQuantity(prod.productId, prod.quantity);
+    return result;
+  });
+  const incremented = await Promise.all(incrementProductQuantity);
+  console.log(incremented);
+
   return sale;
-  // return deletion;
 };
 
 module.exports = {
