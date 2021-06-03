@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const productsRouter = require('./routes/productsRouter');
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,7 +13,7 @@ app.get('/', (_request, response) => {
 });
 
 
-app.use('/products', require('./controllers/productsController'));
+app.use('/products', productsRouter);
 
 app.listen(PORT, () => {
   console.log(`Ouvindo a porta ${PORT}`);
