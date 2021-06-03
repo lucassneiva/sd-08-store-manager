@@ -12,7 +12,12 @@ const createProduct = async (name, quantity) => {
     .catch((err) => err);
 };
 
+const findProduct = async (id) => {
+  return connection().then((db) => db.collection('products').findOne(new ObjectId(id)));
+};
+
 module.exports = {
   getProducts,
   createProduct,
+  findProduct
 };

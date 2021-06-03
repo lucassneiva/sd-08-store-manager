@@ -1,8 +1,10 @@
 const productsModel = require('../models/products');
 const MIN_CHARACTERS = 5;
 const MIN_QUANTITY = 0;
+const MIN_ID_LENGTH = 16;
+const MAX_ID_LENGTH = 24;
 
-const isValid = async (name, quantity) => {
+const userIsValid = async (name, quantity) => {
   if (name.length < MIN_CHARACTERS) {
     return {
       err: {
@@ -32,6 +34,23 @@ const isValid = async (name, quantity) => {
   return await productsModel.createProduct(name, quantity);
 };
 
+const idIsValid = async (id) => {
+  if (id.length === MIN_ID_LENGTH || id.length === MAX_ID_LENGTH) {
+    const product = await productsModel.findProduct(id);
+    if (product === null) {
+      return {
+        err: { code: 'invalid_data', message: 'Wrong id format' },
+      };
+    }
+    return product;
+  }
+
+  return {
+    err: { code: 'invalid_data', message: 'Wrong id format' },
+  };
+};
+
 module.exports = {
-  isValid,
+  userIsValid,
+  idIsValid,
 };

@@ -7,6 +7,7 @@ const PORT = 3000;
 app.use(express.json());
 
 app.get('/products', productsController.getProducts);
+app.get('/products/:id', productsController.findProduct);
 app.post('/products', productsController.createProduct);
 
 app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));

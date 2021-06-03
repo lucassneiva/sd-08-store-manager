@@ -6,19 +6,29 @@ const INVALID_DATA_STATUS = 422;
 
 const getProducts = async (req, res) => {
   const products = await productsModel.getProducts();
-  return res.status(OK_STATUS).json(products);
+  return res.status(OK_STATUS).json({products});
 };
 
 const createProduct = async (req, res) => {
   const { name, quantity } = req.body;
 
-  const isValid = await productsService.isValid(name, quantity);
-  if (isValid.err) return res.status(INVALID_DATA_STATUS).json(isValid);
+  const newProduct = await productsService.userIsValid(name, quantity);
+  if (newProduct.err) return res.status(INVALID_DATA_STATUS).json(newProduct);
 
-  return res.status(CREATED_STATUS).json(isValid);
+  return res.status(CREATED_STATUS).json(newProduct);
+};
+
+const findProduct = async (req, res) => {
+  const { id } = req.params;
+
+  const product = await productsService.idIsValid(id);
+  if(product.err) return res.status(INVALID_DATA_STATUS).json(product);
+
+  return res.status(OK_STATUS).json(product);
 };
 
 module.exports = {
   getProducts,
   createProduct,
+  findProduct,
 };
