@@ -3,6 +3,7 @@ const {
   getAllSalesModel,
   getByIdSalesModel,
   updateSalesModel,
+  deleteSalesModel,
 } = require('../models/salesModel');
 
 const salesValidation = (sales) => {
@@ -52,10 +53,22 @@ const updateSalesService = async (id, sales) => {
   });
 };
 
+const deleteSalesService = async (id) => {
+  const sale = await deleteSalesModel(id);
+  if (sale == 'not deleted') return ({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format'
+    }
+  });
+  return sale;
+};
+
 module.exports = {
   salesValidation,
   createSalesService,
   getAllSalesService,
   getByIdSalesService,
   updateSalesService,
+  deleteSalesService,
 };

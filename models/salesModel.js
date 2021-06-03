@@ -37,10 +37,21 @@ const updateSalesModel = async (id, sales) => {
   try {
     const db = await connection();
     await db.collection('sales')
-      .updateOne({ _id: ObjectId(id) }, sales );
+      .updateOne({ _id: ObjectId(id) }, { $set: { sales } });
     return true;
   } catch (error) {
     return null;
+  }
+};
+
+const deleteSalesModel = async (id) => {
+  try {
+    const db = await connection();
+    const sale = db.collection('sales').findOne({ _id: ObjectId(id) });
+    await db.collection('sales').deleteOne({ _id: ObjectId(id) });
+    return sale;
+  } catch (error) {
+    return 'not deleted';
   }
 };
 
@@ -49,4 +60,5 @@ module.exports = {
   getAllSalesModel,
   getByIdSalesModel,
   updateSalesModel,
+  deleteSalesModel,
 };

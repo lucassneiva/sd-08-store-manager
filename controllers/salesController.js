@@ -4,6 +4,7 @@ const {
   getAllSalesService,
   getByIdSalesService,
   updateSalesService,
+  deleteSalesService,
 } = require('../services/salesService');
 
 const OK = 200;
@@ -39,9 +40,17 @@ const updateSalesController = async (req, res) => {
   res.status(OK).json(sale);
 };
 
+const deleteSalesController = async (req, res) => {
+  const { id } = req.params;
+  const sale = await deleteSalesService(id);
+  if (sale.err) return res.status(UNPROCESSABLE_ENTITY).json(sale);
+  res.status(OK).json(sale);
+};
+
 module.exports = {
   createSalesController,
   getAllSalesController,
   getByIdSalesController,
   updateSalesController,
+  deleteSalesController
 };
