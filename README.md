@@ -1,4 +1,4 @@
-### Termos e acordos
+### Termos e acordos :)
 
 Ao iniciar este projeto, você concorda com as diretrizes do Código de Ética e Conduta e do Manual da Pessoa Estudante da Trybe
 
@@ -41,7 +41,7 @@ Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu
     - [10 - Valide a quantidade de produtos](#10---valide-a-quantidade-de-produtos)
 
     `Bônus`
-    
+
     - [11 - Escreva testes para seus models](#11---escreva-testes-para-seus-models)
     - [12 - Escreva testes para seus services](#12---escreva-testes-para-seus-services)
     - [13 - Escreva testes para seus controllers](#13---escreva-testes-para-seus-controllers)
