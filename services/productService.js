@@ -1,5 +1,5 @@
 const productModel = require('../models/productModel');
-
+const { ObjectId } = require('bson');
 const CARACTERES_MINIMO = 5;
 const QUANTIDADE_MINIMA = 0;
 
@@ -24,7 +24,21 @@ const criar = async (produto) => {
   return result;
 };
 
+const listarProdutos = async () => {
+  const listaProduto = await productModel.listarProdutos();
+  return listaProduto;
+};
+
+const buscarProdutoPorId = async (id) => {
+  if (!ObjectId.isValid(id))
+    throw new Error('Wrong id format');
+  const produtosId = await productModel.buscarProdutoPorId(id);
+  return produtosId;
+};
+
 module.exports = {
   validar,
+  listarProdutos,
   criar,
+  buscarProdutoPorId,
 };

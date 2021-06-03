@@ -13,6 +13,10 @@ app.get('/', (_request, response) => {
 
 app.post('/products', productController.cadastrarProduto);
 
+app.get('/products', productController.listarProdutos);
+
+app.get('/products/:id', productController.buscarProdutoPorId);
+
 app.listen(PORT, () => {
   console.log('Online');
 });

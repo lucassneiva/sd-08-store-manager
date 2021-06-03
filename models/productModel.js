@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const { ObjectId } = require('bson');
 
 const buscarProdutoPorNome = async ({name}) =>{
   const db = await connection();
@@ -17,8 +18,21 @@ const cadastrarProduto = async ({name, quantity}) =>{
   return result;
 };
 
+const listarProdutos = async () => {
+  const db = await connection();
+  const listaProduto = await db.collection('products').find().toArray();
+  if(listaProduto) return listaProduto;
+};
+
+const buscarProdutoPorId = async (id) => {
+  const db = await connection();
+  const produto = await db.collection('products').findOne(new ObjectId(id));
+  return produto;
+};
 
 module.exports = {
   cadastrarProduto,
-  buscarProdutoPorNome
+  buscarProdutoPorNome,
+  listarProdutos,
+  buscarProdutoPorId,
 };
