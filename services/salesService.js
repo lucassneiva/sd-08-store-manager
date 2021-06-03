@@ -17,11 +17,11 @@ const salesValidation = (sales) => {
 };
 
 const createSalesService = async (sales) => {
-  const id = await createSalesModel(sales);
-  if (id == 'not created') return null;
+  const insertedId = await createSalesModel(sales);
+  if (insertedId == 'not created') return null;
   return ({
-    _id: id,
-    itemsSold: [...sales]
+    _id: insertedId,
+    itensSold: [...sales]
   });
 };
 

@@ -5,7 +5,7 @@ const createSalesModel = async (sales) => {
   try {
     const db = await connection();
     const { insertedId } = await db.collection('sales')
-      .insertOne({ itemsSold: [...sales] });
+      .insertOne({ itensSold: [...sales] });
     return insertedId;
   } catch (error) {
     return 'not created';
