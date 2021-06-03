@@ -2,6 +2,7 @@ const mongoose = require('../database');
 
 const SalesSchema = new mongoose.Schema({
   itensSold: [{
+    _id: false,
     productId: {
       type: String,
       require: true,
