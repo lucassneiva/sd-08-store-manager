@@ -2,10 +2,12 @@ require('dotenv').config();
 const express = require('express');
 const middlewares = require('./middlewares');
 const products = require('./routes/products');
-const app = express();
+const sales = require('./routes/sales');
 
 const DEFAULT_PORT = 3000;
 const PORT = process.env.PORT || DEFAULT_PORT;
+
+const app = express();
 
 app.use(express.json());
 
@@ -15,6 +17,8 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', products);
+
+app.use('/sales', sales);
 
 app.use(middlewares.error);
 
