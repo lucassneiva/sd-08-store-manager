@@ -9,10 +9,10 @@ const CREATED_CODE = 201;
 const INVALID_CODE = 422;
 const NOT_FOUND_CODE = 404;
 
-router.post('/', async (req, res, _next) => {
+const create = async (req, res, _next) => {
   const { name, quantity } = req.body;
 
-  const validation = await ProductService.validateNewProduct({ name, quantity });
+  const validation = ProductService.validateNewProduct({ name, quantity });
   if (validation) return res.status(INVALID_CODE).json({ err: validation });
 
   const productExists = await ProductService.verifyIfExists(name);
@@ -21,17 +21,17 @@ router.post('/', async (req, res, _next) => {
   const response = await ProductModel.createProduct({ name, quantity });
 
   res.status(CREATED_CODE).json(response);
-});
+};
 
-router.get('/', async (_req, res, _next) => {
+const getAll = async (_req, res, _next) => {
   const response = await ProductModel.getProducts();
 
   if (!response) return res.status(NOT_FOUND_CODE).json({ err: 'None product in DB' });
 
   res.status(SUCCESS_CODE).json({ products: response });
-});
+};
 
-router.get('/:id', async (req, res, _next) => {
+const getById = async (req, res, _next) => {
   const { id } = req.params;
 
   const response = await ProductModel.getProductById(id);
@@ -41,9 +41,9 @@ router.get('/:id', async (req, res, _next) => {
 
 
   res.status(SUCCESS_CODE).json(response);
-});
+};
 
-router.put('/:id', async (req, res, _next) => {
+const update = async (req, res, _next) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
 
@@ -57,9 +57,9 @@ router.put('/:id', async (req, res, _next) => {
 
 
   res.status(SUCCESS_CODE).json(response);
-});
+};
 
-router.delete('/:id', async (req, res, _next) => {
+const remove = async (req, res, _next) => {
   const { id } = req.params;
 
   const response = await ProductModel.removeProduct(id);
@@ -69,7 +69,19 @@ router.delete('/:id', async (req, res, _next) => {
 
 
   res.status(SUCCESS_CODE).json(response);
-});
+};
 
+router.post('/', create);
+router.get('/', getAll);
+router.get('/:id', getById);
+router.put('/:id', update);
+router.delete('/:id', remove);
 
-module.exports = router;
+module.exports = {
+  create,
+  getAll,
+  getById,
+  update,
+  remove,
+  router
+};
