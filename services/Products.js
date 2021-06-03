@@ -26,8 +26,14 @@ const findById = async (id) => {
   return productById;
 };
 
+const updateById = async (id, name, quantity ) => {
+  const updateProduct = await Products.create(id, name, quantity);
+  return updateProduct;
+};
+
 module.exports = {
   create,
   findAll,
   findById,
+  updateById,
 };

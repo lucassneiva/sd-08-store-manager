@@ -26,4 +26,11 @@ routes.get('/:id', validateId, async (req, res) => {
   return res.status(status.OK).json(product);
 });
 
+routes.put('/:id', validateName, validateQuantity, async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  await services.updateById(id, name, quantity);
+  return res.status(status.OK).json({ _id: id, name, quantity });
+});
+
 module.exports = routes;
