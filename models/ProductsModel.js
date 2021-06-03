@@ -24,7 +24,7 @@ module.exports = {
     const result = { products: productsList };
     return result;
   },
-  getOneProduct: async (id) => {
+  getOneProduct: async function (id) {
     const db = await connection();
     let result = null;
     if (ObjectId.isValid(id)) {
@@ -48,5 +48,9 @@ module.exports = {
       name,
       quantity,
     };
+  },
+  removeProduct: async (id) => {
+    const result = this.getOneProduct(id);
+    console.log(result);
   },
 };

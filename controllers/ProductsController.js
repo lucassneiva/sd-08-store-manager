@@ -3,6 +3,7 @@ const {
   getAllProducts,
   getOneProduct,
   editProduct,
+  removeProduct,
 } = require('../models/ProductsModel');
 const { results } = require('../services/ErrorMessage');
 
@@ -29,5 +30,9 @@ module.exports = {
     const { id } = req.params;
     const result = await editProduct(id, name, quantity);
     res.status(results.ok).json(result);
+  },
+  remove: async (req, res) => {
+    const { id } = req.params;
+    const result = await removeProduct(id);
   },
 };
