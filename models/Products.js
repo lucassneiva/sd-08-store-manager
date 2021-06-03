@@ -1,15 +1,20 @@
-const connection = require('./connection');
+const { connection } = require('./connection');
 const { ObjectId } = require('mongodb');
 const saveMe = require('../utils/saveMe');
 
-const create = saveMe(async (product) => {
+// A função de insert do mongodb injeta o _id no objeto que é passado
+// como argumento. Resultado, durante os testes o mock utilizado para o
+// produto pode ser usado no primeiro insert, mas no segundo é gerado
+// um erro de dup key. go0dD4m mut4t10nS :poop: :poop: :poop:
+const create = saveMe(async ({ name, quantity }) => {
   const db = await connection();
-  const { insertedId } = await db.collection('products').insertOne(product);
-  return { _id: insertedId, ...product };
+  const { insertedId } = await db.collection('products')
+    .insertOne({ name, quantity });
+  return { _id: insertedId, name, quantity };
 });
 
 const getById = saveMe(async (id) => {
-  if (!ObjectId.isValid(id)) return false;
+  if (!ObjectId.isValid(id)) return null;
   const db = await connection();
   const result = await db.collection('products').findOne(ObjectId(id));
   return result;
@@ -28,15 +33,16 @@ const getAll = saveMe(async () => {
 });
 
 const edit = saveMe(async (id, updatedProduct) => {
-  if (!ObjectId.isValid(id)) return false;
+  if (!ObjectId.isValid(id)) return null;
   const db = await connection();
-  await db.collection('products')
+  const { modifiedCount } = await db.collection('products')
     .updateOne({ _id: ObjectId(id) }, { $set: updatedProduct });
+  if (!modifiedCount) return null;
   return { _id: id, ...updatedProduct };
 });
 
 const remove = saveMe(async (id) => {
-  if (!ObjectId.isValid(id)) return false;
+  if (!ObjectId.isValid(id)) return null;
   const db = await connection();
   const product = await getById(id);
   await db.collection('products').deleteOne({ _id: ObjectId(id) });
