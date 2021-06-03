@@ -15,12 +15,11 @@ const create = async (req, res, next) => {
 const readAll = async (_req, res, _next) => {
   const all = await service.readAll();
 
-  res.status(OK).json(all);
+  res.status(OK).json({ products: all });
 };
 
 const readById = async (req, res, next) => {
   const { id } = req.params;
-
   const product = await service.readById(id);
 
   if (product.error) return next(product);
@@ -28,8 +27,19 @@ const readById = async (req, res, next) => {
   res.status(OK).json(product);
 };
 
+const update = async (req, res, next) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  const updateProduct = await service.update(id, name, quantity);
+
+  if (updateProduct.error) return next(updateProduct);
+
+  res.status(OK).json(updateProduct);
+};
+
 module.exports = {
   create,
   readAll,
-  readById
+  readById,
+  update
 };
