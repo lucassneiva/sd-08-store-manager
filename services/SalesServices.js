@@ -5,8 +5,8 @@ const getAllSales = async () => {
   return sales;
 };
 
-const getsaleById = async (id) => {
-  const sale = await SalesModel.getsaleById(id);
+const getSaleById = async (id) => {
+  const sale = await SalesModel.getSaleById(id);
   return sale;
 };
 
@@ -27,7 +27,7 @@ const deleteSale = async (id) => {
 
 module.exports = {
   getAllSales,
-  getsaleById,
+  getSaleById,
   addSales,
   updateSale,
   deleteSale,

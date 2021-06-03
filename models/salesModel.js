@@ -10,7 +10,7 @@ const getAll = async () => {
 const getSaleById = async (id) => {
   const db = await connection();
   if (!ObjectId.isValid(id)) return null;
-  return db.collection('sales').findOne(ObjectId(id));
+  return db.collection('sales').findOne({ _id: ObjectId(id) });
 };
 
 const addSale = async (sales) => {
