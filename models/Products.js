@@ -20,6 +20,7 @@ const getProduct = async (id) => {
   return connection()
     .then ((db) => db.collection('products').findOne(new ObjectId(id)));
 };
+
 const findName = async (name) => {
   return connection()
     .then ((db) => db.collection('products').findOne({ name: name }));
