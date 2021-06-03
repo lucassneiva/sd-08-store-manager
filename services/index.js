@@ -1,5 +1,8 @@
 const { findName, getProduct } = require('../models/Products');
+const { getSales } = require('../models/Sales');
+
 const ERROR = 422;
+const notFound = 404;
 
 const name = (req, res, next) => {
   const MIN_NAME_LENGHT = 5;
@@ -91,4 +94,18 @@ const noexist = async(req, res, next) => {
   next();
 };
 
-module.exports = { name, quantP, exist, noexist, quantS };
+const noexistS = async(req, res, next) => {
+  const { id } = req.params;
+  let check = await getSales(id);
+  if (!check) {
+    return res.status(notFound).json({
+      err: {
+        code: 'not_found',
+        message: 'Sale not found',
+      },
+    });
+  }
+  next();
+};
+
+module.exports = { name, quantP, exist, noexist, quantS, noexistS };
