@@ -25,8 +25,19 @@ const findById = rescue(async (req, res, _next) => {
   res.status(OK).json(result);
 });
 
+const update = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+
+  const product = await ProductService.update(id, { name, quantity });
+  if (!product) throw boom.badData('Não é possivel atualizar produto com id inválido');
+
+  res.status(OK).json(product);
+});
+
 module.exports = {
   create,
   getAll,
   findById,
+  update,
 };

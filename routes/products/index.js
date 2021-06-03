@@ -10,4 +10,6 @@ router.get('/:id', ProductController.findById);
 
 router.get('/', ProductController.getAll);
 
+router.put('/:id', middlewares.isProductValid, ProductController.update);
+
 module.exports = router;
