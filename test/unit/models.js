@@ -281,3 +281,119 @@ describe('É possível pegar todas as vendas do BD', () => {
     })
   })
 })
+
+describe('É possível editar uma venda', () => {
+  let saleId;
+  let productId;
+
+  const setup = async () => {
+    const db = await connectionMock.db(process.env.DB_NAME);
+
+    const { insertedId } = await db.collection('product')
+      .insertOne({ ...productMock });
+
+    productId = insertedId;
+
+    const itensSold = [
+      { productId, quantity: 15 },
+      { productId, quantity: 5 }
+    ]
+    
+    const { insertedId: insertedIdSale } = await db.collection('sales')
+      .insertOne({ itensSold: [ ...itensSold ] });
+
+    saleId = insertedIdSale;
+  }
+
+  describe('Quando o ID da venda é inválido', () => {
+    it('retorna null', async () => {
+      const result = await SalesModel.edit('InvalidID', []);
+      expect(result).to.be.null;
+    })
+  })
+
+  describe('Quando editar com sucesso', () => {
+    beforeEach(setup);
+
+    it('retorna um objeto', async () => {
+      const result = await SalesModel.edit(saleId, []);
+      expect(result).to.be.a('object');
+    })
+
+    it('o objeto deve ter as propriedades _id e itensSold atualizadas', async () => {
+      const newSale = [
+        { productId, quantity: 99 },
+        { productId, quantity: 999 },
+      ]
+
+      const result = await SalesModel.edit(saleId, newSale);
+      const { itensSold } = result;
+
+      expect(result).to.have.all.keys(['_id', 'itensSold']);
+      expect(itensSold).to.have.lengthOf(2);
+      expect(itensSold[0].productId.toString()).to.equal(productId.toString());
+      expect(itensSold[0].quantity).to.equal(99);
+      expect(itensSold[1].productId.toString()).to.equal(productId.toString());
+      expect(itensSold[1].quantity).to.equal(999);
+    })
+  })
+})
+
+describe('É possível remover uma venda', () => {
+  let productId;
+  let saleId;
+
+  const setup = async () => {
+    const db = await connectionMock.db(process.env.DB_NAME);
+
+    const { insertedId } = await db.collection('product')
+      .insertOne({ ...productMock });
+      
+    productId = insertedId;
+    
+    const itensSold = [
+      { productId, quantity: 15 },
+      { productId, quantity: 5 }
+    ]
+    
+    const { insertedId: insertedIdSale } = await db.collection('sales')
+      .insertOne({ itensSold: [ ...itensSold ] });
+
+    saleId = insertedIdSale;
+  }
+
+  describe('Quando o ID é inválido', () => {
+    it('retorna null', async () => {
+      const result = await SalesModel.remove('InvalidID');
+      expect(result).to.be.null;
+    })
+  })
+
+  describe('Quando não há nenhuma venda com o ID', () => {
+    it('retorna null', async () => {
+      const result = await SalesModel.remove(ObjectId());
+      expect(result).to.be.null;
+    })
+  })
+
+  describe('Quando remover com sucesso', () => {
+    beforeEach(setup);
+
+    it('retorna um objeto', async () => {
+      const result = await SalesModel.remove(saleId);
+      expect(result).to.be.a('object');
+    })
+
+    it('o objeto deve ter as chaves _id e itensSold e ser referente a venda removida', async () => {
+      const result = await SalesModel.remove(saleId);
+      const { itensSold } = result;
+      expect(result).to.have.all.keys(['_id', 'itensSold']);
+      expect(result._id.toString()).to.equal(saleId.toString());
+      expect(itensSold).to.have.lengthOf(2);
+      expect(itensSold[0].productId.toString()).to.be.equal(productId.toString());
+      expect(itensSold[0].quantity).to.be.equal(15);
+      expect(itensSold[1].productId.toString()).to.be.equal(productId.toString());
+      expect(itensSold[1].quantity).to.be.equal(5);
+    })
+  })
+})
