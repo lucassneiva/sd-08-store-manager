@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { ObjectID } = require('bson');
-const { STATUS_200, STATUS_422, STATUS_500, STATUS_201,
-  DEU_ERRO } = require('../statusCode');
+const { DEU_ERRO, STATUS_500 } = require('../statusCode');
 const ZERO = 0;
 
 const productsModel = require('../models/productsModel');
