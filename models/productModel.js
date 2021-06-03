@@ -5,7 +5,7 @@ const createProduct = async (name, quantity) => {
   const product = await connection()
     .then((db) => db.collection('products')
       .insertOne({ name, quantity }))
-    .then(result => result.ops[0]);
+    .then(result => result.ops[0]); // dica do Moreira
 
   const response = {
     _id: product._id,

@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const productsRouters = require('./routers/productsRouters');
+const salesRouters = require('./routers/salesRouters');
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.get('/', (_request, response) => {
 });
 
 app.use(productsRouters);
+app.use(salesRouters);
 
 
 const PORT = 3000;

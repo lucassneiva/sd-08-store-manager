@@ -1,10 +1,10 @@
-const errors = {
+const errors = { // dica do professor do course
   invalid_data: 'invalid_data',
   name_length: '"name" length must be at least 5 characters long',
   quantity_not_number: '"quantity" must be a number',
   quantity_number: '"quantity" must be larger than or equal to 1',
 };
-
+// tive ajuda do meu amigo Ediberto para estruturar os retornos de erros pra passar no teste
 const messageError = (message) => ({
   err: {
     code: 'invalid_data',

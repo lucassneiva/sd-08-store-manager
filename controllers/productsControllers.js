@@ -32,7 +32,6 @@ const getProductById = async (req, res) => {
     const product = await productsServices.getProductById(id);
     return res.status(code_200).json(product);
   } catch (error) {
-    const message = messageError(error.message);
     console.error(error.message);
     res.status(code_422).json(messageError(error.message));
   }

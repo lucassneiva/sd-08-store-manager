@@ -2,7 +2,6 @@ const productsModel = require('../models/productModel');
 const { ObjectId } = require('mongodb');
 
 const createProduct = async (name, quantity) => {
-
   const product = await productsModel.createProduct(name, quantity);
   return product;
 };
