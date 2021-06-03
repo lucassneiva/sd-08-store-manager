@@ -1,5 +1,5 @@
 const models = require('../models/Products');
-const { name, quantP, exist, noexist } = require('../services');
+const { nameCheck, quantP, exist, noexist } = require('../services');
 const { Router } = require('express');
 const OK = '200';
 const CREATED = '201';
@@ -11,7 +11,7 @@ productsController.get('/', async (_req, res) => {
   res.status(OK).json({ products });
 });
 
-productsController.post('/', name, quantP, exist, async (req, res) => {
+productsController.post('/', nameCheck, quantP, exist, async (req, res) => {
   const { name, quantity } = req.body;
   console.log(name, quantity);
   const product = await models.create(name, quantity);
@@ -28,17 +28,16 @@ productsController.delete('/:id', noexist, async (req, res) => {
   const { id } = req.params;
   const product = await models.getProduct(id);
   const response = await models.del(id);
-  response.result.ok ? res.status(OK).json(product) : '';
+  response.result.ok ? res.status(OK).json(product) : null;
 });
 
-productsController.put('/:id', name, quantP, async (req, res) => {
+productsController.put('/:id', nameCheck, quantP, async (req, res) => {
   let result = '';
   const { id } = req.params;
   const { name, quantity } = req.body;
   const product = await models.update(id, name, quantity);
-  product.result.ok ? result = await models.getProduct(id): '';
+  product.result.ok ? (result = await models.getProduct(id)) : '';
   res.status(OK).json(result);
 });
 
-
-module.exports = productsController ;
+module.exports = productsController;
