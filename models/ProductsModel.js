@@ -24,7 +24,7 @@ module.exports = {
     const result = { products: productsList };
     return result;
   },
-  getOneProduct: async function (id) {
+  getOneProduct: async (id) => {
     const db = await connection();
     let result = null;
     if (ObjectId.isValid(id)) {
@@ -37,7 +37,7 @@ module.exports = {
   },
   editProduct: async (id, name, quantity) => {
     const db = await connection();
-    const result = await db.collection('products').updateOne(
+    await db.collection('products').updateOne(
       {
         _id: ObjectId(id),
       },
@@ -50,7 +50,9 @@ module.exports = {
     };
   },
   removeProduct: async (id) => {
-    const result = this.getOneProduct(id);
-    console.log(result);
+    const db = await connection();
+    await db.collection('products').deleteOne({
+      _id: ObjectId(id),
+    });
   },
 };

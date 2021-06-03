@@ -33,6 +33,11 @@ module.exports = {
   },
   remove: async (req, res) => {
     const { id } = req.params;
-    const result = await removeProduct(id);
+    let result = await getOneProduct(id);
+    if (result._id !== undefined) {
+      await removeProduct(id);
+      return res.status(results.ok).json(result);
+    }
+    res.status(results.unprocessable).json(result);
   },
 };
