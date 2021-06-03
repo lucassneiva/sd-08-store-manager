@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const salesModels = require('../models/salesModel');
+const productModels = require('../models/productsModel');
 
 const addSalesValidation = (data) => {
   const schema = Joi.object({
@@ -14,6 +15,19 @@ const addSalesValidation = (data) => {
 
 const addSalesServices = async (data) => {
   const error = addSalesValidation(data);
+  const validateQuantinty = await productModels.findByIdProducts(data[0].productId);
+
+  if (validateQuantinty[0].quantity < data[0].quantity) {
+    return {
+      statusCode: 404,
+      json: {
+        err: {
+          code: 'stock_problem',
+          message: 'Such amount is not permitted to sell',
+        }
+      }
+    };
+  }
 
   if (error) return {
     statusCode: 422,
@@ -42,7 +56,7 @@ const getAllSalesServices = async () => {
 
 const findByIdSalesServices = async (id) => {
   const result =  await salesModels.findByIdSales(id);
-  if (!result) return {
+  if (!result || result.length === 0) return {
     statusCode: 404,
     json: {
       err: {
@@ -51,8 +65,6 @@ const findByIdSalesServices = async (id) => {
       }
     }
   };
-
-  console.log(result);
 
   return {
     statusCode: 200,
@@ -74,7 +86,6 @@ const updateSalesServices = async (id, data) => {
   };
 
   const result = await salesModels.updateSales(id, data);
-  console.log(result);
   return {
     statusCode: 200,
     json: result,
