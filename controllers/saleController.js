@@ -26,8 +26,29 @@ const readById = async (req, res, next) => {
   res.status(OK).json(sale);
 };
 
+const update = async (req, res, next) => {
+  const { id } = req.params;
+  const item = req.body;
+  const updateSale = await service.update(id, item);
+
+  if (updateSale.error) return next(updateSale);
+
+  res.status(OK).json(updateSale);
+};
+
+const destroy = async(req, res, next) => {
+  const { id } = req.params;
+  const saleDeleted = await service.destroy(id);
+
+  if (saleDeleted.error) return next(saleDeleted);
+
+  res.status(OK).json(saleDeleted);
+};
+
 module.exports = {
   create,
   readAll,
-  readById
+  readById,
+  update,
+  destroy
 };

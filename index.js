@@ -20,6 +20,8 @@ app.delete('/products/:id', product.destroy);
 app.post('/sales', sale.create);
 app.get('/sales', sale.readAll);
 app.get('/sales/:id', sale.readById);
+app.put('/sales/:id', sale.update);
+app.delete('/sales/:id', sale.destroy);
 
 app.use(errorMiddleware);
 

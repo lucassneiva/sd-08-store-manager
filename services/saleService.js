@@ -46,8 +46,40 @@ const readById = async (id) => {
   return sale;
 };
 
+const update = async(id, item) => {
+  const { error } = validateSale.validate(item);
+
+  if (error) { 
+    return {
+      status: UNPROCESSABLE_ENTITY,
+      code: 'invalid_data',
+      error: { message: 'Wrong product ID or invalid quantity' }
+    };
+  };
+
+  const updateSale = await model.update(id, item);
+
+  return updateSale;
+};
+
+const destroy = async(id) => {
+  const saleDeleted = await model.destroy(id);
+
+  if (!saleDeleted) {
+    return {
+      status: UNPROCESSABLE_ENTITY,
+      code: 'invalid_data',
+      error: { message: 'Wrong sale ID format' }
+    };
+  }
+
+  return saleDeleted;
+};
+
 module.exports = {
   create,
   readAll,
-  readById
+  readById,
+  update,
+  destroy
 };
