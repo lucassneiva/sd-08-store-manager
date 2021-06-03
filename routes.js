@@ -10,6 +10,7 @@ const DeleteProduct = require('./middlewares/DeleteProduct');
 
 const CreateSale = require('./middlewares/CreateSale');
 const ShowSale = require('./middlewares/ShowSale');
+const UpdateSale = require('./middlewares/UpdateSale');
 
 routes.get('/products', ProductsController.index);
 routes.get('/products/:id', ShowProduct, ProductsController.indexOne);
@@ -20,5 +21,6 @@ routes.delete('/products/:id', DeleteProduct, ProductsController.delete);
 routes.get('/sales', SalesController.index);
 routes.get('/sales/:id', ShowSale, SalesController.indexOne);
 routes.post('/sales', CreateSale, SalesController.create);
+routes.put('/sales/:id', UpdateSale, SalesController.update);
 
 module.exports = routes;
