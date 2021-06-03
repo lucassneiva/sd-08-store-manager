@@ -41,14 +41,24 @@ const updateOne = async(id,data)=>{
     return true;
   }catch(err){
     return null;
+  }
+};
+
+const deleteOne = async(id)=>{
+  try{
+    const sale = await connection().then(db=>db.collection('sales').findOne({_id:ObjectId(id)})); 
+    await connection().then(db=>db.collection('sales').deleteOne({_id:ObjectId(id)}));
+    return sale;
+
+  }catch(err){
+    return null;
 
   }
-
 };
  
 
 
 
 module.exports = {
-  getById,getAll,add,updateOne
+  getById,getAll,add,updateOne,deleteOne
 };

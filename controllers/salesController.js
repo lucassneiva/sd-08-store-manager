@@ -37,9 +37,13 @@ const updateOne = async (req, res) => {
 
   return res.status(statusOk).json(updated);
 }; 
-
+const deleteOne = async(req,res)=>{
+  const {id} = req.params;
+  const deletedOne = await salesServices.deleteOne(id);
+  res.status(statusOk).json(deletedOne);
+};
 
 
 module.exports = {
-  getById,getAll,add,updateOne
+  getById,getAll,add,updateOne,deleteOne
 };

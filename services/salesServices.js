@@ -52,10 +52,21 @@ const updateOne = async(id,data)=>{
   });
 };
 
+const deleteOne = async(id)=>{
+  const deleted = await salesModel.deleteOne(id);
+  if(!deleted) return ({
+    err:{
+      code:'invalid_data',
+      message:'Wrong sale ID format'
+    }
+  });
+  return deleted;
+};
+
 
 
 
 
 module.exports =  {
-  getAll,getById,add,valid,updateOne
+  getAll,getById,add,valid,updateOne,deleteOne
 };
