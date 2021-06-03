@@ -87,9 +87,32 @@ const update = async (req, res) => {
     });
 };
 
+const deleteSale = (req, res) => {
+  const { id } = req.params;
+
+  SalesServices.deleteSale(id)
+    .then(response => {
+      res
+        .status(STATUS_OK)
+        .json(response);
+    })
+    .catch(err => {
+      console.log(err, 'delete');
+      res
+        .status(UNPROCESSABLE)
+        .json({
+          err: {
+            code: 'invalid_data',
+            message: err.message
+          }
+        });
+    });
+};
+
 module.exports = {
   create,
   read,
   readById,
   update,
+  deleteSale,
 };

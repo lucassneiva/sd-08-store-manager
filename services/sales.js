@@ -4,6 +4,7 @@ const ProductsModel = require('../models/products');
 const { ObjectId } = require('mongodb');
 
 const WRONG_PRODUCT_OR_ID = 'Wrong product ID or invalid quantity';
+const WRONG_SALE_ID = 'Wrong sale ID format';
 
 const isQuantityInvalid = (quantity) => {
   const MIN_QUANTITY = 1;
@@ -86,7 +87,29 @@ const update = async (id, itensSold) => {
     _id: id,
     itensSold,
   };
+};
 
+const deleteSale = async (id) => {
+  console.log(id, ObjectId.isValid(id), 'deleteSale');
+
+  if(!ObjectId.isValid(id)){
+    throw new Error(WRONG_SALE_ID);
+  }
+
+  const sale = await SalesModel.readById(id);
+
+  console.log(sale, 'sale');
+
+  if(!sale){
+    throw new Error(WRONG_SALE_ID);
+  }
+
+  const deletion = await SalesModel.deleteSale(id);
+
+  console.log(deletion.result, 'deletion');
+
+  return sale;
+  // return deletion;
 };
 
 module.exports = {
@@ -94,4 +117,5 @@ module.exports = {
   read,
   readById,
   update,
+  deleteSale,
 };
