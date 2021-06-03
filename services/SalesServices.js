@@ -10,13 +10,13 @@ const getsaleById = async (id) => {
   return sale;
 };
 
-const addSales = async (productId, quantity) => {
-  const sale = await SalesModel.addSale(productId, quantity);
+const addSales = async (itensSold) => {
+  const sale = await SalesModel.addSale(itensSold);
   return sale;
 };
 
-const updateSale = async (id, productId, quantity) => {
-  const sale = await SalesModel.update(id, productId, quantity);
+const updateSale = async (id) => {
+  const sale = await SalesModel.update(id);
   return sale;
 };
 

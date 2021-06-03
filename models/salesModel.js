@@ -13,10 +13,11 @@ const getSaleById = async (id) => {
   return db.collection('sales').findOne(ObjectId(id));
 };
 
-const addSale = async (productId, quantity) => {
+const addSale = async (sales) => {
   const db = await connection();
-  const sale = await db.collection('sales').insertOne({ productId, quantity });
-  return sale;
+  const sale = await db.collection('sales')
+    .insertOne({ itensSold: sales });
+  return sale.ops[0];
 };
 
 const deleteId = async (id) => {
@@ -27,13 +28,13 @@ const deleteId = async (id) => {
   return sale;
 };
 
-const update = async (id, productId, quantity) => {
+const update = async (id, sales) => {
   const db = await connection();
   if (!ObjectId.isValid(id)) return null;
   const sale = await db
     .collection('sales')
-    .updateOne({ _id: ObjectId(id) }, { $set: { productId, quantity } });
-  if (!sale) return addSale(productId, quantity);
+    .updateOne({ _id: ObjectId(id) }, { $set: { sales } });
+  if (!sale) return addSale(sales);
   return { id, productId, quantity };
 };
 

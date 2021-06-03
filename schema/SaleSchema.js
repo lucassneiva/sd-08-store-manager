@@ -7,7 +7,8 @@ const errors = {
 
 const code = 422;
 
-const validateSale = (quantity) => {
+const validateSale = (itensSold) => {
+  const quantity = itensSold;
   if (quantity < ONE) {
     return {
       code,
