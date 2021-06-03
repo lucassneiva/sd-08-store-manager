@@ -12,9 +12,9 @@ salesController.get('/', async (_req, res) => {
 });
 
 salesController.post('/', quantS, async (req, res) => {
-  const { itensSold } = req.body;
+  const itensSold = req.body;
   const sales = await models.create(itensSold);
-  res.status(CREATED).json(sales.ops[0]);
+  res.status(OK).json(sales.ops[0]);
 });
 
 module.exports = salesController;
