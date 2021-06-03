@@ -1,7 +1,8 @@
 const SalesServices = require('../services/Sales');
 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   const result = await SalesServices.create(req.body);
+  if (result.err) return next(result);
   res.json(result);
 };
 
