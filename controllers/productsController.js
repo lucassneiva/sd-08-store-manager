@@ -1,5 +1,10 @@
-const { getAll, add, getById } = require('../models/ProductsModel');
-const { verifyName, verifyQuantity } = require('../services/productService');
+const { ObjectId } = require('mongodb');
+const { getAll, add, getById, update, exclude } = require('../models/ProductsModel');
+const {
+  verifyName,
+  verifyQuantity,
+  verifyProductExists
+} = require('../services/productService');
 
 const SUCCESS = 200;
 const CREATED = 201;
@@ -42,6 +47,7 @@ const addProduct = async (req, res) => {
     const { name, quantity } = req.body;
 
     await verifyName(name);
+    await verifyProductExists(name);
     await verifyQuantity(quantity);
 
     const newProduct = await add(name, quantity);
@@ -54,4 +60,47 @@ const addProduct = async (req, res) => {
   }
 };
 
-module.exports = { getAllProducts, addProduct, getByIdProduct };
+const updateProduct = async (req, res) => {
+  try {
+	  const { name, quantity } = req.body;
+    const { id } = req.params;
+
+    await verifyName(name);
+    await verifyQuantity(quantity);
+
+	  const product = await update(id, name, quantity);
+
+	  res.status(SUCCESS).json(product);
+  } catch (err) {
+	  console.error(err.message);
+	  error.err.message = err.message;
+    res.status(UNPROCESSABLE).json(error);
+  }
+};
+
+const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!ObjectId.isValid(id)) {
+      error.err.message = 'Wrong id format';
+      return res.status(UNPROCESSABLE).json(error);
+    };
+
+    await exclude(id);
+
+    res.status(SUCCESS).end();
+  } catch (err) {
+    console.error(err.message);
+    error.err.message = err.message;
+    res.status(UNPROCESSABLE).json(error);
+  }
+};
+
+module.exports = {
+  getAllProducts,
+  addProduct,
+  getByIdProduct,
+  updateProduct,
+  deleteProduct
+};
