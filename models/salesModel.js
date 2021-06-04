@@ -15,6 +15,14 @@ const createSale = async (sale) => {
   };
 };
 
+const listAllSales = async () => {
+  const salesCollection = await connection()
+    .then((db) => db.collection('sales'));
+
+  const salesList = await salesCollection.find().toArray();
+  return salesList;
+};
+
 
 module.exports = {
   createSale,
