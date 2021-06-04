@@ -9,10 +9,7 @@ const NONE = 0;
 
 const checkSalesProductsIds = async (salesArray) => {
   const productsIds = salesArray.map(({ productId }) => findById(productId));
-  console.log(productsIds);
-
   const returnedIds = await Promise.all(productsIds);
-
   const isIdInvalid = returnedIds.some((productId) => !productId);
   if(isIdInvalid) return false;
   return true;
@@ -26,12 +23,11 @@ const checkSalesQuantity = (salesArray) => {
 
 const createSale = rescue(async (req, res) => {
   const sale = req.body;
-  console.log('sale', sale);
   if(!checkSalesProductsIds(sale) || !checkSalesQuantity(sale)) return res
     .status(INVALID_ERR).json({
       err: {
         code: 'invalid_data',
-        message: ' Wrong product ID or invalid quantity'
+        message: 'Wrong product ID or invalid quantity'
       }
     });
   const newSale = await SalesService.createSale(sale);
