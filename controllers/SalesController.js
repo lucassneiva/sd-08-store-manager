@@ -78,9 +78,17 @@ module.exports = {
     try {
       const { id } = request.params;
 
-      const sale = await Sale.findByIdAndRemove(id);
+      const sale = await Sale.findById(id);
 
-      return response.status(HTTP_OK_STATUS).send(sale);
+      const product = await Product.findById(sale.itensSold[0].productId);
+
+      await Product.findByIdAndUpdate(product._id, {
+        quantity: product.quantity + sale.itensSold[0].quantity
+      }, { new: true });
+
+      const deleteSale = await Sale.findByIdAndRemove(id);
+
+      return response.status(HTTP_OK_STATUS).send(deleteSale);
     } catch (err) {
       return response.status(HTTP_BAD_REQUEST_STATUS).send(err);
     }
