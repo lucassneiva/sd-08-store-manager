@@ -15,6 +15,15 @@ const searchById = rescue(async (req, res) => {
   return res.status(ERROR_TYPES.eSaleId.status).json({err: ERROR_TYPES.eSaleId.err});
 });
 
+const updateById = rescue(async (req, res) => {
+  const { id } = req.params;
+  const newInfos = req.body[0];
+  const { productId, quantity } = newInfos;
+  const update = await Sale.updateById(id, productId, quantity);
+  if (update !== null) return res.status(STATUS_200).json(update);
+  return res.status(ERROR_TYPES.eSaleId.status).json({err: ERROR_TYPES.eSaleId.err});
+});
+
 const getAll = rescue(async (_req, res) => {
   const search = await Sale.getAll();
   return res.status(STATUS_200).json({ sales: search });
@@ -23,5 +32,6 @@ const getAll = rescue(async (_req, res) => {
 module.exports = {
   create,
   searchById,
+  updateById,
   getAll,
 };

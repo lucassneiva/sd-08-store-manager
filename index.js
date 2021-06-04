@@ -27,6 +27,7 @@ app.delete('/products/:id', Products.deleteById);
 app.post('/sales', SaleReqValidMiddle, Sales.create);
 app.get('/sales/', Sales.getAll);
 app.get('/sales/:id', Sales.searchById);
+app.put('/sales/:id', SaleReqValidMiddle, Sales.updateById);
 
 const port = process.env.PORT || DEFAULT_PORT;
 
