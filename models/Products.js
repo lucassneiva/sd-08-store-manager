@@ -22,6 +22,25 @@ const searchById = async (id) => {
       .then(result => result));
 };
 
+const updateById = async (id, name, quantity) => {
+  console.log(id);
+  console.log(name);
+  console.log(quantity);
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+  const productId = new ObjectId(id);
+  const newDetails = { name, quantity };
+
+  return connection()
+    .then((db) => db.collection('products')
+      .findOneAndUpdate(
+        { _id: productId },
+        { $set: newDetails },
+        { returnOriginal: false })
+      .then(result => result.value));
+};
+
 const getAll = async () => {
   return connection()
     .then((db) => db.collection('products').find().toArray()
@@ -32,5 +51,6 @@ module.exports = {
   create,
   searchByName,
   searchById,
+  updateById,
   getAll,
 };
