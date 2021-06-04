@@ -32,8 +32,18 @@ const getSaleById = async (req, res) => {
     const sale = await salesServices.getSaleById(id);
     return res.status(code_200).json(sale);
   } catch (error) {
-    console.error(error.message);
     res.status(code_404).json(messageError_Not_found(error.message));
+  }
+};
+
+const deleteSale = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const sale = await salesServices.deleteSale(id);
+    res.status(code_200).json(sale);
+  } catch (error) {
+    //console.error(error);
+    res.status(code_422).json(messageError(error.message));
   }
 };
 
@@ -41,4 +51,5 @@ module.exports = {
   createSale,
   getAllSales,
   getSaleById,
+  deleteSale,
 };
