@@ -377,3 +377,39 @@ describe('É possível remover uma venda', () => {
     })
   })
 })
+
+describe('É possível recuperar todos as vendas', () => {
+  const sales = [];
+
+  before(() => sinon.stub(SalesModel, 'getAll').resolves(sales));
+
+  after(() => SalesModel.getAll.restore());
+  
+  it('retorna todas as vendas', async () => {
+    const result = await SalesService.getAll();
+    expect(result).to.equal(sales);
+  })
+})
+
+describe('É possível editar uma venda', () => {
+  const editMock = {};
+  const id = ObjectId();
+  const updatedSale = {};
+
+  before(() => sinon.stub(SalesModel, 'edit').resolves(editMock));
+
+  after(() => SalesModel.edit.restore());
+
+  it('Os argumentos devem ser passados para o Model (Proxy)', async () => {
+    
+    await SalesService.edit(id, updatedSale);
+    const { args } = SalesModel.edit;
+    expect(args[0][0]).to.equal(id);
+    expect(args[0][1]).to.equal(updatedSale);
+  })
+
+  it('retorna o resultado do model', async () => {
+    const result = await SalesService.edit(id, updatedSale);
+    expect(result).to.equal(editMock);
+  })
+})
