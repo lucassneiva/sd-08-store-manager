@@ -1,5 +1,6 @@
 const express = require('express');
 const productsController = require('./controllers/products');
+const salesController = require('./controllers/sales');
 const app = express();
 
 const PORT = 3000;
@@ -11,6 +12,9 @@ app.get('/products/:id', productsController.findProduct);
 app.post('/products', productsController.createProduct);
 app.put('/products/:id', productsController.updateProduct);
 app.delete('/products/:id', productsController.deleteProduct);
+
+app.get('/sales', salesController.getSales);
+app.post('/sales', salesController.createSale);
 
 app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
 
