@@ -57,6 +57,14 @@ const ERROR_TYPES = {
       message: 'Wrong id format',
     },
   },
+
+  eSaleIdQnt: {
+    status: STATUS_422,
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity',
+    },
+  },
 };
 
 module.exports = {

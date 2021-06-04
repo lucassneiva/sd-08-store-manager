@@ -1,4 +1,4 @@
-const { MIN_LENGTH, MIN_QUANTITY, ERROR_TYPES } = require('../utils/consts');
+const { MIN_LENGTH, MIN_QUANTITY, ERROR_TYPES } = require('../../utils/consts');
 
 module.exports = (req, res, next) => {
   const { name, quantity } = req.body;

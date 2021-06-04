@@ -1,5 +1,5 @@
-const Product = require('../services/Products');
-const { ERROR_TYPES } = require('../utils/consts');
+const Product = require('../../services/Products');
+const { ERROR_TYPES } = require('../../utils/consts');
 
 module.exports = async (req, res, next) => {
   const {name} = req.body;
