@@ -1,4 +1,5 @@
 const Product = require('../models/Products');
+const Sale = require('../models/Sales');
 
 const HTTP_OK_STATUS = 200;
 const HTTP_CREATED_STATUS = 201;
@@ -19,7 +20,7 @@ module.exports = {
     try {
       const { id } = request.params;
 
-      const product = await Product.findOne({ _id: id });
+      let product = await Product.findOne({ _id: id });
 
       return response.status(HTTP_OK_STATUS).send(product);
     } catch (err) {
