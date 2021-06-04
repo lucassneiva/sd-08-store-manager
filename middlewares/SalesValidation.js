@@ -1,5 +1,6 @@
 const rescue = require('express-rescue');
 const { status, message, code } = require('../schema/status');
+const services = require('../services/Sales');
 
 const validateQuantity = rescue((req, res, next) => {
   const itensSold = req.body;
@@ -17,7 +18,18 @@ const validateQuantity = rescue((req, res, next) => {
   next();
 });
 
+const validateId = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const idLength = 24;
+  if (!id || id.length !== idLength) {
+    return res.status(status.notFound)
+      .json({ err: { code: code.notFound, message: message.saleNotFound } });
+  }
+  next();
+});
+
 
 module.exports = {
   validateQuantity,
+  validateId,
 };

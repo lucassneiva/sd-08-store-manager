@@ -6,6 +6,18 @@ const register = async (itensSold) => {
   return registerSale;
 };
 
+const findAll = async () => {
+  const soldProducts = await Sales.findAll();
+  return ({ sales: soldProducts });
+};
+
+const findById = async (id) => {
+  const soldProductsById = await Sales.findById(id);
+  return soldProductsById;
+};
+
 module.exports = {
   register,
+  findAll,
+  findById,
 };

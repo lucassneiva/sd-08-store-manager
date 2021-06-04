@@ -2,6 +2,7 @@ const status = {
   created: 201,
   unprocessable: 422,
   OK: 200,
+  notFound: 404,
 };
 
 const message = {
@@ -11,10 +12,12 @@ const message = {
   quantityType: '"quantity" must be a number',
   wrongIdFormat: 'Wrong id format',
   invalidQuantity: 'Wrong product ID or invalid quantity',
+  saleNotFound: 'Sale not found',
 };
 
 const code = {
   invalidData: 'invalid_data',
+  notFound: 'not_found',
 };
 
 module.exports = {
