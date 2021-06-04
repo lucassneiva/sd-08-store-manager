@@ -37,8 +37,12 @@ exports.add = async (entry) =>
 
 exports.update = async (id, entry) =>
   connect().then(async (db) => {
-    await db.collection('sales').updateOne({ _id: ObjectId(id) }, { $set: entry });
-    return { id, ...entry };
+    await db.collection('sales')
+      .updateOne({ _id: ObjectId(id) }, { $set:{ itensSold: entry }});
+    return {
+      _id: id,
+      itensSold: entry
+    };
   });
 
 exports.exclude = async (id) => {
