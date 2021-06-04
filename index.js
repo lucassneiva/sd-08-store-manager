@@ -123,13 +123,11 @@ app.put('/products/:id', rescue(async (req, res) => {
 const getProduct = async (idParam) => {
   const db = await connection();
   const product = await db.collection('products').findOne(ObjectId(idParam));
-  console.log(product);
   return product;
 };
 
 const findProduct = async (req, res) => {
   const { params } = req;
-  console.log(params.id);
   if (params.id.length !== ID_LENGTH) {
     return res.status(UNPROCESSABE_ENTITY).json({err: {
       code: 'invalid_data',
@@ -148,7 +146,6 @@ app.get('/products/:id', rescue(async (req, res) => {
 const getAllProducts = async () => {
   const db = await connection();
   const allProducts = await db.collection('products').find().toArray();
-  console.log(allProducts);
   return allProducts;
 };
 
@@ -171,7 +168,6 @@ const deleteProduct = async (idParam) => {
 
 const findToDelete = async (req, res, callback) => {
   const { params, body } = req;
-  console.log(params.id);
   if (params.id.length !== ID_LENGTH) {
     return res.status(UNPROCESSABE_ENTITY).json({err: {
       code: 'invalid_data',
@@ -186,3 +182,32 @@ app.delete('/products/:id', rescue(async (req, res) => {
   const end = await findToDelete(req, res, deleteProduct );
   return end;
 }));
+
+// 5 - Crie um endpoint para cadastrar vendas
+
+const addSale = async (req, res) => {
+  const { body } = req;
+  const irregularQuantity = body.some(
+    ({ quantity }) =>
+      validAmount(quantity) === 'IsNaN' || validAmount(quantity) === 'IsLessOrEqual0'  );
+  if (irregularQuantity) {
+    return res.status(UNPROCESSABE_ENTITY).json({err: {
+      code: 'invalid_data',
+      message: 'Wrong product ID or invalid quantity'
+    }});
+  }
+  const db = await connection();
+  const insertion = await db.collection('sales').insertOne({'itensSold': body});
+  console.log(insertion.ops[0]);
+  return res.status(OK).json(insertion.ops[0]);
+};
+
+app.post('/sales', rescue(async (req, res) => {
+  const end = await addSale(req, res);
+  return end;
+}));
+
+// var document = {name:'David', title:'About MongoDB'};
+// collection.insert(document, {w: 1}, function(err, records){
+//   console.log('Record added as '+records[0]._id);
+// });
