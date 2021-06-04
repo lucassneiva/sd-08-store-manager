@@ -4,6 +4,11 @@ const { ObjectId } = require('mongodb');
 const getAll = async () =>
   getCollections('products').then(db => db.find().toArray());
 
+const getById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return getCollections('products').then(db => db.findOne(ObjectId(id)));
+};
+
 const create = async (name, quantity) => {
   const product = await getCollections('products').then(db =>
     db.insertOne({ name, quantity })
@@ -14,4 +19,5 @@ const create = async (name, quantity) => {
 module.exports = {
   getAll,
   create,
+  getById,
 };

@@ -1,6 +1,20 @@
 const model = require('../models/productModel');
+const { ObjectId } = require('mongodb');
 
 const getAll = async () => model.getAll();
+
+const getById = async (id) => {
+  const product = await model.getAll(id);
+  if(!product) {
+    throw {
+      'err': {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    };
+  }
+  return product;
+};
 
 const create = async ({name, quantity}) => {
   const object = await getAll();
@@ -52,5 +66,6 @@ const create = async ({name, quantity}) => {
 
 module.exports = {
   getAll,
+  getById,
   create,
 };
