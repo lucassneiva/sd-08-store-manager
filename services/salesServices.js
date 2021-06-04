@@ -2,13 +2,13 @@ const salesModel = require('../models/salesModel');
 const { ObjectId, ObjectID } = require('mongodb');
 
 const createSale = async (itemSale) => {
-  const product = await salesModel.createSale(itemSale);
-  return product;
+  const sale = await salesModel.createSale(itemSale);
+  return sale;
 };
 
 const getAllSales = async () => {
-  const product = await salesModel.getAllSales();
-  return product;
+  const sale = await salesModel.getAllSales();
+  return sale;
 };
 
 const getSaleById = async (id) => {
@@ -16,6 +16,13 @@ const getSaleById = async (id) => {
   const sale = await salesModel.getSaleById(id);
 
   return sale;
+};
+
+const updateSale = async (id, itensSold) => {
+  if (!ObjectId.isValid(id)) throw new Error('Wrong id format');
+  const newSale = await salesModel.updateSale(id, itensSold);
+
+  return newSale;
 };
 
 const deleteSale = async (id) => {
@@ -28,5 +35,6 @@ module.exports = {
   createSale,
   getAllSales,
   getSaleById,
+  updateSale,
   deleteSale,
 };
