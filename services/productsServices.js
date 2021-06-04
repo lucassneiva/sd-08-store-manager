@@ -9,7 +9,6 @@ const {
   deleteById,
 } = productsModel;
 
-const UNPROCESSABLE = 422;
 const CODE = 'invalid_data';
 
 const readProducts = async () => {

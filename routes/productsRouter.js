@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { productsController } = require('../controllers');
+const { productsController, salesController } = require('../controllers');
 const {
   productCreate,
   productsReader,
@@ -8,6 +8,9 @@ const {
   productUpdate,
   productDelete,
 } = productsController;
+const {
+  salesCreate,
+} = salesController;
 
 const products = express.Router();
 
@@ -16,5 +19,7 @@ products.get('/products', productsReader);
 products.get('/products/:id', productById);
 products.put('/products/:id', productUpdate);
 products.delete('/products/:id', productDelete);
+
+products.post('/sales', salesCreate);
 
 module.exports = products;
