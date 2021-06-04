@@ -3,6 +3,7 @@ const ErrorMessages = require('./errorMessages');
 const CustomError = require('../services/customErro');
 const { ObjectId } = require('mongodb');
 
+const NOT_FOUND = 404;
 const UNPROCESSABLE_ENTITY = 422;
 const MIN_QUANTITY = 1;
 
@@ -55,6 +56,28 @@ const prductsValidations = async (products) => {
   }
 };
 
+const validateSaleId = (id) => {
+  if (!ObjectId.isValid((id))) {    
+    throw new CustomError(
+      'not_found',
+      ErrorMessages.saleNotFound,
+      NOT_FOUND
+    );
+  }
+};
+
+const validateSaleNotFound = (sale) => {
+  if (!sale) {    
+    throw new CustomError(
+      'not_found',
+      ErrorMessages.saleNotFound,
+      NOT_FOUND
+    );
+  }
+};
+
 module.exports = {
   prductsValidations,
+  validateSaleId,
+  validateSaleNotFound,
 };

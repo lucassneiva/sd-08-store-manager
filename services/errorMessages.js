@@ -4,6 +4,7 @@ const productQuantityIsNotNumber  = '"quantity" must be a number';
 const productAlreadyExists  = 'Product already exists';
 const productNotFound = 'Wrong id format';
 const saleProductInvalidIdOrQty = 'Wrong product ID or invalid quantity';
+const saleNotFound = 'Sale not found';
 const invalidData = 'invalid_data';
 
 module.exports = {
@@ -13,5 +14,6 @@ module.exports = {
   productAlreadyExists,
   productNotFound,
   saleProductInvalidIdOrQty,
+  saleNotFound,
   invalidData,
 };
