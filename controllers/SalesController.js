@@ -1,4 +1,6 @@
-const { addSales, getAllSales, getOneSale, editSale } = require('../models/SalesModel');
+const {
+  addSales,
+  getAllSales, getOneSale, editSale, removeSale } = require('../models/SalesModel');
 const { results } = require('../services/ErrorMessage');
 module.exports = {
   add: async (req, res) => {
@@ -21,5 +23,14 @@ module.exports = {
     const { id } = req.params;
     const result = await editSale(id, req.body);
     res.status(results.ok).json(result);
+  },
+  remove: async (req, res) => {
+    const { id } = req.params;
+    let result = await getOneSale(id, true);
+    if (result._id !== undefined) {
+      await removeSale(id);
+      return res.status(results.ok).json(result);
+    }
+    res.status(results.unprocessable).json(result);
   },
 };

@@ -17,13 +17,18 @@ module.exports = {
     const result = { sales: salesList };
     return result;
   },
-  getOneSale: async (id) => {
+  getOneSale: async (id, invalid) => {
     const db = await connection();
     let result = null;
     if (ObjectId.isValid(id)) {
       result = await db.collection('sales').findOne({ _id: ObjectId(id) });
     }
+    console.log(invalid);
     if (result === null) {
+      if (invalid !== undefined) {
+        console.log('Entrou');
+        return generateMessage(results.invalidSale);
+      }
       return generateMessage(results.saleNotFound, 'not_found');
     }
     return result;
@@ -43,5 +48,11 @@ module.exports = {
       _id: id,
       itensSold: itens,
     };
+  },
+  removeSale: async (id) => {
+    const db = await connection();
+    await db.collection('sales').deleteOne({
+      _id: ObjectId(id),
+    });
   },
 };

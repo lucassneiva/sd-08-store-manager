@@ -6,6 +6,7 @@ const results = {
   invalidId: 'Wrong id format',
   salesNotNull: 'Wrong product ID or invalid quantity',
   saleNotFound: 'Sale not found',
+  invalidSale: 'Wrong sale ID format',
   unprocessable: 422,
   created: 201,
   ok: 200,
