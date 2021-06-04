@@ -3,6 +3,8 @@ const Product = require('../models/Products');
 
 const HTTP_OK_STATUS = 200;
 const HTTP_BAD_REQUEST_STATUS = 400;
+const HTTP_NOT_FOUND_STATUS = 404;
+const MIN_QUANTITY = 0;
 
 module.exports = {
   async index(_request, response) {
@@ -33,6 +35,8 @@ module.exports = {
     try {
       const sale = await Sale.insertMany({ itensSold: [...request.body] });
 
+      const product = await Product.findById(productId);
+
       let total = await Sale.aggregate(
         [
           {
@@ -48,13 +52,20 @@ module.exports = {
         ]
       );
 
-      const product = await Product.findById(productId);
+      if (product.quantity - total[0].quantity > MIN_QUANTITY) {
+        await Product.findByIdAndUpdate(productId, {
+          quantity: product.quantity - total[0].quantity
+        }, { new: true });
 
-      await Product.findByIdAndUpdate(productId, {
-        quantity: product.quantity - total[0].quantity
-      }, { new: true });
+        return response.status(HTTP_OK_STATUS).send(...sale);
+      }
 
-      return response.status(HTTP_OK_STATUS).send(...sale);
+      return response.status(HTTP_NOT_FOUND_STATUS).send({
+        err: {
+          code: 'stock_problem',
+          message: 'Such amount is not permitted to sell'
+        }
+      });
     } catch (err) {
       return response.status(HTTP_BAD_REQUEST_STATUS).send(err);
     }
