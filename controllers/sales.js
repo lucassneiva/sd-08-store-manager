@@ -7,7 +7,7 @@ const NOT_FOUND_STATUS = 404;
 
 const getSales = async (req, res) => {
   const sales = await salesModel.getSales();
-  return res.status(OK_STATUS).json({sales});
+  return res.status(OK_STATUS).json({ sales });
 };
 
 const findSale = async (req, res) => {
@@ -27,8 +27,20 @@ const createSale = async (req, res) => {
   return res.status(OK_STATUS).json(newSale);
 };
 
+const updateSale = async (req, res) => {
+  const { id } = req.params;
+  const sale = req.body;
+
+  const isValid = salesService.updateSaleIsValid(sale);
+  if (isValid.err) return res.status(INVALID_DATA_STATUS).json(isValid);
+  const updatedSale = await salesModel.updateSale(id, isValid);
+
+  return res.status(OK_STATUS).json(updatedSale);
+};
+
 module.exports = {
   getSales,
   findSale,
   createSale,
+  updateSale
 };

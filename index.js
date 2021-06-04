@@ -16,6 +16,7 @@ app.delete('/products/:id', productsController.deleteProduct);
 app.get('/sales', salesController.getSales);
 app.get('/sales/:id', salesController.findSale);
 app.post('/sales', salesController.createSale);
+app.put('/sales/:id', salesController.updateSale);
 
 app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
 

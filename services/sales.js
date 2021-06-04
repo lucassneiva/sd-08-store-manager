@@ -19,6 +19,8 @@ const saleIsValid = (sales) => {
   }
   const _sales = { itensSold: sales };
 
+  if (sales.itensSold) return sales;
+
   return _sales;
 };
 
@@ -38,7 +40,24 @@ const idIsValid = async (id) => {
   };
 };
 
+const updateSaleIsValid = (sales) => {
+  if (Array.isArray(sales) === false) sales = [sales];
+  if (
+    sales.every(({ id, quantity }) => {
+      const product = productsModel.findProduct(id);
+      return product === null || quantity <= MIN_QUANTITY || typeof quantity !== 'number';
+    })
+  ) {
+    return {
+      err: { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' },
+    };
+  }
+
+  return sales;
+};
+
 module.exports = {
   saleIsValid,
-  idIsValid
+  idIsValid,
+  updateSaleIsValid
 };
