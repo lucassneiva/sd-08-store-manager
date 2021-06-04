@@ -22,10 +22,17 @@ const searchById = async (id) => {
       .then(result => result));
 };
 
+const deleteById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+  const productId = new ObjectId(id);
+  return connection()
+    .then((db) => db.collection('products').findOneAndDelete({_id: productId})
+      .then(result => result));
+};
+
 const updateById = async (id, name, quantity) => {
-  console.log(id);
-  console.log(name);
-  console.log(quantity);
   if (!ObjectId.isValid(id)) {
     return null;
   }
@@ -52,5 +59,6 @@ module.exports = {
   searchByName,
   searchById,
   updateById,
+  deleteById,
   getAll,
 };

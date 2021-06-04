@@ -15,6 +15,13 @@ const searchById = rescue(async (req, res) => {
   return res.status(ERROR_TYPES.eId.status).json({err: ERROR_TYPES.eId.err});
 });
 
+const deleteById = rescue(async (req, res) => {
+  const { id } = req.params;
+  const deleteProduct = await Product.deleteById(id);
+  if (deleteProduct !== null) return res.status(STATUS_200).json(deleteProduct);
+  return res.status(ERROR_TYPES.eId.status).json({err: ERROR_TYPES.eId.err});
+});
+
 const updateById = rescue(async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
@@ -32,5 +39,6 @@ module.exports = {
   create,
   searchById,
   updateById,
+  deleteById,
   getAll,
 };
