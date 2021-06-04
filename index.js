@@ -11,6 +11,7 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
+app.use('/sales', router.saleRouter);
 app.use('/products', router.productRouter);
 app.use(handleError.logError);
 

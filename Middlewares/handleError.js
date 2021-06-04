@@ -2,15 +2,15 @@ const {
   responseStatus: { HTTP_INTERNAL_SERVER_ERROR_STATUS },
 } = require('../config/constant');
 
-function HandleCustomerError(message, status) {
+function HandleCustomerError(message, code = 'invalid_data') {
   this.name = 'HandleCustomerError';
-  this.status = status;
+  this.code = code;
   this.message = message || '';
   this.stack = new Error().stack;
   return {
     getMessageError: () => ({
       err: {
-        code: 'invalid_data',
+        code: this.code,
         message: this.message,
       },
     }),

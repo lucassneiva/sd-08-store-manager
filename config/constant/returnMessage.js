@@ -7,6 +7,9 @@ module.exports = {
   },
   RESPONSE: {
     ID_INVALID: 'Wrong id format',
-    PRODUCT_NOT_EXIST: 'Product already not exists',
+    PRODUCT_OUR_QUANTITY_INVALID: 'Wrong product ID or invalid quantity',
+    REGISTER_NOT_EXIST: 'Product already not exists',
+    SALE_NOT_FOUND: 'Sale not found',
+    ID_SALE_INVALID: 'Wrong sale ID format'
   }
 };
