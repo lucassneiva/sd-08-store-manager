@@ -34,8 +34,24 @@ const findById = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const newProducts = req.body;
+    
+    const updatedSale = await SaleService
+      .update(id, newProducts);
+    
+    res.status(OK).json(updatedSale);
+  } catch (error) {
+    const { code, message } = error;
+    res.status(code).json(message);
+  }  
+};
+
 module.exports = {
   create,
   getAll,
   findById,
+  update,
 };

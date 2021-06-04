@@ -76,8 +76,19 @@ const validateSaleNotFound = (sale) => {
   }
 };
 
+const validateUpdateSaleId = (id) => {
+  if (!ObjectId.isValid((id))) {    
+    throw new CustomError(
+      ErrorMessages.invalidData,
+      ErrorMessages.saleWrongFormat,
+      UNPROCESSABLE_ENTITY
+    );
+  }
+};
+
 module.exports = {
   prductsValidations,
   validateSaleId,
   validateSaleNotFound,
+  validateUpdateSaleId,
 };

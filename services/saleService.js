@@ -18,7 +18,7 @@ const getAll = async () => {
 };
 
 const findById = async (id) => {  
-  await SaleValidation.validateSaleId(id);
+  SaleValidation.validateSaleId(id);
 
   const saleData = await SaleModel.findById(id);
   
@@ -27,8 +27,16 @@ const findById = async (id) => {
   return saleData;
 };
 
+const update = async (id, newProducts) => {
+  SaleValidation.validateUpdateSaleId(id);
+  await SaleValidation.prductsValidations(newProducts);
+
+  return await SaleModel.update(id, newProducts);
+};
+
 module.exports = {
   create,
   getAll,
   findById,
+  update,
 };
