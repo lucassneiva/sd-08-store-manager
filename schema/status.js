@@ -13,6 +13,7 @@ const message = {
   wrongIdFormat: 'Wrong id format',
   invalidQuantity: 'Wrong product ID or invalid quantity',
   saleNotFound: 'Sale not found',
+  wrongSaleIdFormat: 'Wrong sale ID format',
 };
 
 const code = {

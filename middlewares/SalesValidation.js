@@ -1,6 +1,5 @@
 const rescue = require('express-rescue');
 const { status, message, code } = require('../schema/status');
-const services = require('../services/Sales');
 
 const validateQuantity = rescue((req, res, next) => {
   const itensSold = req.body;
@@ -27,7 +26,6 @@ const validateId = rescue(async (req, res, next) => {
   }
   next();
 });
-
 
 module.exports = {
   validateQuantity,

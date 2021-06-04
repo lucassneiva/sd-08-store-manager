@@ -1,7 +1,7 @@
 const express = require('express');
 const services = require('../services/Sales');
 
-const { status } = require('../schema/status');
+const { status, code, message } = require('../schema/status');
 const { validateQuantity, validateId } = require('../middlewares/SalesValidation');
 
 const routes = express.Router();
@@ -32,6 +32,20 @@ routes.put('/:id', validateQuantity, async (req, res) => {
   const itensSold = req.body;
   await services.updateById(id, itensSold);
   return res.status(status.OK).json({ _id: id, itensSold });
+});
+
+routes.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const idLength = 24;
+  if(id.length !== idLength) {
+    return res.status(status.unprocessable)
+      .json({ err: { code: code.invalidData, message: message.wrongSaleIdFormat }});
+  }
+  const sale = await services.findById(id);
+  if (!sale) return res.status(status.notFound)
+    .json({ err: { code: code.notFound, message: message.saleNotFound }});
+  await services.deleteById(id);
+  return res.status(status.OK).json(sale);
 });
 
 module.exports = routes;

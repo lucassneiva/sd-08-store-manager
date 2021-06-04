@@ -21,9 +21,15 @@ const updateById = async (id, itensSold) => {
   return updateSale;
 };
 
+const deleteById = async (id) => {
+  const deleteSale = await Sales.deleteById(id);
+  return deleteSale;
+};
+
 module.exports = {
   register,
   findAll,
   findById,
   updateById,
+  deleteById,
 };
