@@ -10,6 +10,13 @@ const messageError = (message) => ({
   },
 });
 
+const messageError_Not_found = (message) => ({
+  err: {
+    code: 'not_found',
+    message,
+  },
+});
+
 const isValid = (quantity ) => {
   const ZERO = 0;
   if (typeof quantity !== 'number'
@@ -21,4 +28,5 @@ const isValid = (quantity ) => {
 module.exports = {
   isValid,
   messageError,
+  messageError_Not_found,
 };
