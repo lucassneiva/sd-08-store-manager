@@ -46,9 +46,21 @@ const update = async (id, newProducts) => {
   };
 };
 
+const exclude = async (id) => {
+  const salesCollection = await mongoConnection()
+    .then((db) => db.collection('sales'));
+  
+  const sale = await findById(id);
+  
+  await salesCollection.deleteOne({ _id: ObjectId(id) });
+  
+  return sale;
+};
+
 module.exports = {
   create,
   getAll,
   findById,
   update,
+  exclude,
 };

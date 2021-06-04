@@ -17,13 +17,13 @@ const getAll = async () => {
   };
 };
 
-const findById = async (id) => {  
+const findById = async (id) => {
   SaleValidation.validateSaleId(id);
-
+  
   const saleData = await SaleModel.findById(id);
   
-  await SaleValidation.validateSaleNotFound(sale);
-
+  await SaleValidation.validateSaleNotFound(saleData);
+  
   return saleData;
 };
 
@@ -34,9 +34,18 @@ const update = async (id, newProducts) => {
   return await SaleModel.update(id, newProducts);
 };
 
+const exclude = async (id) => {
+  SaleValidation.validateUpdateSaleId(id);
+  
+  const SaleDataDeleted = await SaleModel.exclude(id);
+  
+  return SaleDataDeleted;
+};
+
 module.exports = {
   create,
   getAll,
   findById,
   update,
+  exclude,
 };
