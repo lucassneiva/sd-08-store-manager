@@ -5,6 +5,7 @@ const {
   findAllSales,
   findSalesById,
   getSalesToUpdate,
+  deleteById,
 } = salesModel;
 
 const CODE = 'invalid_data';
@@ -24,7 +25,6 @@ const createSales = async (itensSold) => {
 
 const checkItensSold = async (itensSold) => {
   const QTD = 0;
-  const NUMBER_NAME = 5;
 
   for (const index in itensSold) {
     if (itensSold[index].quantity <= QTD
@@ -60,9 +60,35 @@ const updateSalesById = async (id, itensSold) => {
   return { _id: id, itensSold };
 };
 
+const deleteSalesById = async (id) => {
+  const validation = await salesNFVF(id);
+  if (validation.err) return validation;
+
+  const sales = await deleteById(id);
+  return sales;
+};
+
+const salesNFVF = async (id) => {
+  const sales = await findSalesById(id);
+  if (!ObjectID.isValid(id)) return {
+    err: {
+      code: CODE,
+      message: 'Wrong sale ID format',
+    }
+  };
+  if (!sales) return {
+    err: {
+      code: CODE,
+      message: 'Sales not found',
+    }
+  };
+  return sales;
+};
+
 module.exports = {
   readSales,
   createSales,
   readSalesById,
   updateSalesById,
+  deleteSalesById,
 };

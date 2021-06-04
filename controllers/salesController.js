@@ -4,6 +4,7 @@ const {
   readSales,
   readSalesById,
   updateSalesById,
+  deleteSalesById,
 } = salesServices;
 
 const UNPROCESSABLE = 422;
@@ -68,9 +69,23 @@ const salesUpdate = async (req, res) => {
   }
 };
 
+const salesDelete = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await deleteSalesById(id);
+    if (result.err) {
+      return res.status(UNPROCESSABLE).json(result);
+    }
+    res.status(SUCESS).json(result);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   salesCreate,
   salesReader,
   salesReaderById,
   salesUpdate,
+  salesDelete,
 };

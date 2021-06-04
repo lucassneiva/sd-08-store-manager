@@ -54,9 +54,24 @@ const getSalesToUpdate = async (id, itensSold) => {
   }
 };
 
+const deleteById = async (id) => {
+  try {
+    const product = await connection().then((db) => {
+      return db
+        .collection(NAME_COLLECTION)
+        .deleteOne({ _id: ObjectId(id) });
+    });
+    return product;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
+};
+
 module.exports = {
   addSales,
   findAllSales,
   findSalesById,
   getSalesToUpdate,
+  deleteById,
 };
