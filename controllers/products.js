@@ -12,7 +12,7 @@ const getProducts = async (req, res) => {
 const createProduct = async (req, res) => {
   const { name, quantity } = req.body;
 
-  const isValid = await productsService.userIsValid(name, quantity);
+  const isValid = await productsService.productIsValid(name, quantity);
   if (isValid.err) return res.status(INVALID_DATA_STATUS).json(isValid);
   const newProduct = await productsModel.createProduct(isValid.name, isValid.quantity);
 
@@ -31,7 +31,7 @@ const findProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
-  const isValid = await productsService.userIsValid(name, quantity);
+  const isValid = await productsService.updateProductIsValid(name, quantity);
   if (isValid.err) return res.status(INVALID_DATA_STATUS).json(isValid);
   const editedProduct = await productsModel.updateProduct(id, name, quantity);
   

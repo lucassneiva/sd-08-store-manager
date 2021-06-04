@@ -4,7 +4,7 @@ const MIN_QUANTITY = 0;
 const MIN_ID_LENGTH = 16;
 const MAX_ID_LENGTH = 24;
 
-const userIsValid = async (name, quantity) => {
+const productIsValid = async (name, quantity) => {
   if (name.length < MIN_CHARACTERS) {
     return {
       err: {
@@ -31,7 +31,7 @@ const userIsValid = async (name, quantity) => {
     return { err: { code: 'invalid_data', message: '"quantity" must be a number' } };
   }
 
-  return {name, quantity};
+  return { name, quantity };
 };
 
 const idIsValid = async (id) => {
@@ -50,7 +50,34 @@ const idIsValid = async (id) => {
   };
 };
 
+const updateProductIsValid = (name, quantity) => {
+  if (name.length < MIN_CHARACTERS) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: '"name" length must be at least 5 characters long',
+      },
+    };
+  }
+
+  if (quantity <= MIN_QUANTITY) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1',
+      },
+    };
+  }
+
+  if (typeof quantity !== 'number') {
+    return { err: { code: 'invalid_data', message: '"quantity" must be a number' } };
+  }
+
+  return { name, quantity };
+};
+
 module.exports = {
-  userIsValid,
+  productIsValid,
   idIsValid,
+  updateProductIsValid
 };
