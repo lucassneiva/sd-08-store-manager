@@ -28,4 +28,20 @@ module.exports = {
     }
     return result;
   },
+  editSale: async (id, itens) => {
+    const db = await connection();
+    const sale = {
+      itensSold: itens,
+    };
+    await db.collection('sales').updateOne(
+      {
+        _id: ObjectId(id),
+      },
+      { $set: { itensSold: itens } },
+    );
+    return {
+      _id: id,
+      itensSold: itens,
+    };
+  },
 };

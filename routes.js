@@ -13,4 +13,5 @@ router.delete('/products/:id', ProductsController.remove);
 router.post('/sales', salesNotNull, SalesController.add);
 router.get('/sales', SalesController.getAll);
 router.get('/sales/:id', SalesController.getOne);
+router.put('/sales/:id', salesNotNull, SalesController.edit);
 module.exports = router;

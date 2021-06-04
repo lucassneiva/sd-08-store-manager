@@ -1,4 +1,4 @@
-const { addSales, getAllSales, getOneSale } = require('../models/SalesModel');
+const { addSales, getAllSales, getOneSale, editSale } = require('../models/SalesModel');
 const { results } = require('../services/ErrorMessage');
 module.exports = {
   add: async (req, res) => {
@@ -15,6 +15,11 @@ module.exports = {
     if (result.err !== undefined) {
       return res.status(results.notFound).json(result);
     }
+    res.status(results.ok).json(result);
+  },
+  edit: async (req, res) => {
+    const { id } = req.params;
+    const result = await editSale(id, req.body);
     res.status(results.ok).json(result);
   },
 };
