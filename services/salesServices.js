@@ -1,8 +1,10 @@
+const { ObjectID, ObjectId } = require('mongodb');
 const { salesModel } = require('../models');
 const {
   addSales,
   findAllSales,
   findSalesById,
+  getSalesToUpdate,
 } = salesModel;
 
 const CODE = 'invalid_data';
@@ -40,9 +42,6 @@ const checkItensSold = async (itensSold) => {
 };
 
 const readSalesById = async (id) => {
-  // const validation = await productNFVF(id);
-  // if (validation.err) return validation;
-
   const result = await findSalesById(id);
   if (!result) return {
     err: {
@@ -53,12 +52,17 @@ const readSalesById = async (id) => {
   return result;
 };
 
-// Será validado que todas as vendas estão sendo retornadas (31 ms)
-// Será validado que é possível listar uma determinada venda (23 ms)
-// Será validado que não é possível listar uma venda inexistente (9 ms)
+const updateSalesById = async (id, itensSold) => {
+  const validation = await checkItensSold(itensSold);
+  if (validation.err) return validation;
+
+  await getSalesToUpdate(id, itensSold);
+  return { _id: id, itensSold };
+};
 
 module.exports = {
   readSales,
   createSales,
   readSalesById,
+  updateSalesById,
 };

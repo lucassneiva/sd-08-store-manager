@@ -3,6 +3,7 @@ const {
   createSales,
   readSales,
   readSalesById,
+  updateSalesById,
 } = salesServices;
 
 const UNPROCESSABLE = 422;
@@ -53,8 +54,23 @@ const salesReaderById = async (req, res) => {
   }
 };
 
+const salesUpdate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const itensSold = req.body;
+    const result = await updateSalesById(id, itensSold);
+    if (result.err) {
+      return res.status(UNPROCESSABLE).json(result);
+    }
+    res.status(SUCESS).json(result);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   salesCreate,
   salesReader,
   salesReaderById,
+  salesUpdate,
 };
