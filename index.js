@@ -87,12 +87,6 @@ app.post('/products', rescue(async (req, res) => {
 const updateProduct = async (req, res) => {
   const { body, params } = req;
   const quantity = validAmount(body.quantity);
-  // if (await existProduct(body['name'])) {
-  //   return res.status(UNPROCESSABE_ENTITY).json({err: {
-  //     code: 'invalid_data',
-  //     message: 'Product already exists'
-  //   }});
-  // } 
   if (!validLength(body['name'])) {
     return res.status(UNPROCESSABE_ENTITY).json({err: {
       code: 'invalid_data',
@@ -165,5 +159,30 @@ const findAllProduct = async (res) => {
 
 app.get('/products', rescue(async (_req, res) => {
   const end = await findAllProduct(res);
+  return end;
+}));
+
+// 4 - Crie um endpoint para deletar um produto
+
+const deleteProduct = async (idParam) => {
+  const db = await connection();
+  await db.collection('products').deleteOne({ _id: ObjectId(idParam) });
+};
+
+const findToDelete = async (req, res, callback) => {
+  const { params, body } = req;
+  console.log(params.id);
+  if (params.id.length !== ID_LENGTH) {
+    return res.status(UNPROCESSABE_ENTITY).json({err: {
+      code: 'invalid_data',
+      message: 'Wrong id format'
+    }});
+  }
+  await callback(params.id);
+  return res.status(OK).json(body);
+};
+
+app.delete('/products/:id', rescue(async (req, res) => {
+  const end = await findToDelete(req, res, deleteProduct );
   return end;
 }));
