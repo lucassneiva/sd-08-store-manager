@@ -6,6 +6,7 @@ const MIN_QUANTITY = 0;
 const STATUS_200 = 200;
 const STATUS_201 = 201;
 const STATUS_400 = 400;
+const STATUS_404 = 404;
 const STATUS_422 = 422;
 const STATUS_500 = 500;
 const OPTIONS = {
@@ -14,13 +15,6 @@ const OPTIONS = {
 };
 
 const ERROR_TYPES = {
-  eEmpty: {
-    status: STATUS_400,
-    err: {
-      code: 'invalid_data',
-      message: 'product name or quantity can not be empty' },
-  },
-
   eLength: {
     status: STATUS_422,
     err: {
@@ -63,6 +57,14 @@ const ERROR_TYPES = {
     err: {
       code: 'invalid_data',
       message: 'Wrong product ID or invalid quantity',
+    },
+  },
+
+  eSaleId: {
+    status: STATUS_404,
+    err: {
+      code: 'not_found',
+      message: 'Sale not found',
     },
   },
 };
