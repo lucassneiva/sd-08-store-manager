@@ -28,9 +28,16 @@ const updateSale = (id, sales) => {
     .then(() => ({ _id: id, itensSold: sales }));
 };
 
+const deleteSale = (id) => {
+  return connection()
+    .then((db) => db.collection('sales').deleteOne({ _id: new ObjectId(id) }))
+    .then((result) => result);
+};
+
 module.exports = {
   createSale,
   getSales,
   findSale,
-  updateSale
+  updateSale,
+  deleteSale
 };

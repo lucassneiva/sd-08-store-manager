@@ -38,9 +38,22 @@ const updateSale = async (req, res) => {
   return res.status(OK_STATUS).json(updatedSale);
 };
 
+const deleteSale = async (req, res) => {
+  const { id } = req.params;
+
+  const isValid = await salesService.deleteIdIsValid(id);
+  if (isValid.err) return res.status(INVALID_DATA_STATUS).json(isValid);
+
+  const deletedSale = await salesModel.findSale(id);
+  await salesModel.deleteSale(id);
+
+  return res.status(OK_STATUS).json(deletedSale);
+};
+
 module.exports = {
   getSales,
   findSale,
   createSale,
-  updateSale
+  updateSale,
+  deleteSale
 };

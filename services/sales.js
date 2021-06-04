@@ -2,8 +2,7 @@ const productsModel = require('../models/products');
 const salesModel = require('../models/sales');
 
 const MIN_QUANTITY = 0;
-const MIN_ID_LENGTH = 16;
-const MAX_ID_LENGTH = 24;
+const REQUIRED_LENGTH = 24;
 
 const saleIsValid = (sales) => {
   if (Array.isArray(sales) === false) sales = [sales];
@@ -25,7 +24,7 @@ const saleIsValid = (sales) => {
 };
 
 const idIsValid = async (id) => {
-  if (id.length === MIN_ID_LENGTH || id.length === MAX_ID_LENGTH) {
+  if (id.length === REQUIRED_LENGTH) {
     const sales = await salesModel.findSale(id);
     if (sales === null) {
       return {
@@ -37,6 +36,22 @@ const idIsValid = async (id) => {
 
   return {
     err: { code: 'not_found', message: 'Sale not found' },
+  };
+};
+
+const deleteIdIsValid = async (id) => {
+  if (id.length === REQUIRED_LENGTH ) {
+    const sales = await salesModel.findSale(id);
+    if (sales === null) {
+      return {
+        err: { code: 'invalid_data', message: 'Wrong sale ID format' },
+      };
+    }
+    return sales;
+  }
+
+  return {
+    err: { code: 'invalid_data', message: 'Wrong sale ID format' },
   };
 };
 
@@ -59,5 +74,6 @@ const updateSaleIsValid = (sales) => {
 module.exports = {
   saleIsValid,
   idIsValid,
-  updateSaleIsValid
+  updateSaleIsValid,
+  deleteIdIsValid
 };
