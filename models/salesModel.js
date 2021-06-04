@@ -26,4 +26,5 @@ const listAllSales = async () => {
 
 module.exports = {
   createSale,
+  listAllSales
 };
