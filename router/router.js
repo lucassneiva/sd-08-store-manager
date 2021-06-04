@@ -11,7 +11,7 @@ const {
   validaNome,
   validaNumero,
   validaId,
- } = require('../middlewares');
+} = require('../middlewares');
 
 router.get('/', getAllProducts);
 
