@@ -59,7 +59,7 @@ const exclude = async (req, res) => {
       .status(OK)
       .json(sale);
   } catch (error) {
-    const { code, message } = error;
+    const { code, message } = error;    
     res.status(code).json(message);
   }
 };

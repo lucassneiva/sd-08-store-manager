@@ -7,6 +7,17 @@ const NOT_FOUND = 404;
 const UNPROCESSABLE_ENTITY = 422;
 const MIN_QUANTITY = 1;
 
+const checkStock = async (id, quantity) => {
+  const product = await ProductModel.findById(id);
+  if (product.quantity < quantity) {
+    throw new CustomError(
+      ErrorMessages.stockProblem,
+      ErrorMessages.productInvalidQty,
+      NOT_FOUND
+    );
+  }
+};
+
 const validateProductId = (productId) => {
   if (!ObjectId.isValid((productId))) {
     throw new CustomError(
@@ -46,13 +57,14 @@ const productAlreadyExists = async (productId) => {
   }
 };
 
-const prductsValidations = async (products) => {  
+const prductsValidations = async (products) => {
   for (const product of products) {
     const { productId, quantity } = product;
 
     validateProductId(productId);
     validateQuantity(quantity);
     await productAlreadyExists(productId);
+    await checkStock(productId, quantity);
   }
 };
 
@@ -91,4 +103,5 @@ module.exports = {
   validateSaleId,
   validateSaleNotFound,
   validateUpdateSaleId,
+  checkStock,
 };
