@@ -33,9 +33,9 @@ const update = async (id, sales) => {
   if (!ObjectId.isValid(id)) return null;
   const sale = await db
     .collection('sales')
+    // findOneAndUpdate visto aqui -> https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
     .findOneAndUpdate({ _id: ObjectId(id) },{ $set: { itensSold: sales } },
       { returnOriginal: false });
-  // findOneAndUpdate visto aqui -> https://docs.mongodb.com/manual/reference/method/db.collection.findOneAndUpdate/
   // returnOriginal encontrado aqui -> https://stackoverflow.com/questions/35626040/findoneandupdate-used-with-returnnewdocumenttrue-returns-the-original-document
   // e aqui -> https://intellipaat.com/community/27883/mongoose-findoneandupdate-doesnt-return-updated-document
   const { value } = sale;

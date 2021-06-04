@@ -6,12 +6,14 @@ const {
   getAllSales,
   getSaleById,
   updateSale,
+  deleteSale,
 } = require('../services/SalesServices');
 
 const { validateSale } = require('../middlewares/SaleMiddleware');
 
 const OK = 200;
 const NOT_FOUND = 404;
+const UNPROCESSABLE_ENTITY = 422;
 const ERROR = 500;
 const message = 'There is something wrong';
 
@@ -57,8 +59,26 @@ router.put('/:id', validateSale, async (req, res) => {
     const { id } = req.params;
     const itensSold = req.body;
     const updatedSales = await updateSale(id, itensSold);
-    // console.log(updatedSales);
     res.status(OK).json(updatedSales);
+  } catch (err) {
+    res.status(ERROR).json({ message });
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const getSaleId = await getSaleById(id);
+    if (!getSaleId) {
+      return res.status(UNPROCESSABLE_ENTITY).json({
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong sale ID format'
+        },
+      });
+    }
+    const deleteSaleId = await deleteSale(id);
+    res.status(OK).json(deleteSaleId);
   } catch (err) {
     res.status(ERROR).json({ message });
   }
