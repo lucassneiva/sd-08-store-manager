@@ -3,10 +3,19 @@ const salesService = require('../services/sales');
 const OK_STATUS = 200;
 const CREATED_STATUS = 201;
 const INVALID_DATA_STATUS = 422;
+const NOT_FOUND_STATUS = 404;
 
 const getSales = async (req, res) => {
   const sales = await salesModel.getSales();
-  return res.status(OK_STATUS).json(sales);
+  return res.status(OK_STATUS).json({sales});
+};
+
+const findSale = async (req, res) => {
+  const { id } = req.params;
+  const sale = await salesService.idIsValid(id);
+  if (sale.err) return res.status(NOT_FOUND_STATUS).json(sale);
+
+  return res.status(OK_STATUS).json(sale);
 };
 
 const createSale = async (req, res) => {
@@ -20,5 +29,6 @@ const createSale = async (req, res) => {
 
 module.exports = {
   getSales,
+  findSale,
   createSale,
 };
