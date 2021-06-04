@@ -10,6 +10,7 @@ app.get('/products', productsController.getProducts);
 app.get('/products/:id', productsController.findProduct);
 app.post('/products', productsController.createProduct);
 app.put('/products/:id', productsController.updateProduct);
+app.delete('/products/:id', productsController.deleteProduct);
 
 app.listen(PORT, () => console.log(`Rodando na porta ${PORT}`));
 

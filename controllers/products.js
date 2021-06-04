@@ -38,9 +38,20 @@ const updateProduct = async (req, res) => {
   return res.status(OK_STATUS).json(editedProduct);
 };
 
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  const isValid = await productsService.idIsValid(id);
+  if(isValid.err) return res.status(INVALID_DATA_STATUS).json(isValid);
+  const deletedProduct = await productsModel.findProduct(id);
+  await productsModel.deleteProduct(id);
+
+  return res.status(OK_STATUS).json(deletedProduct);
+};
+
 module.exports = {
   getProducts,
   createProduct,
   findProduct,
-  updateProduct
+  updateProduct,
+  deleteProduct
 };
