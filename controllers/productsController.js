@@ -1,5 +1,3 @@
-const express = require('express');
-const router = express.Router();
 const rescue = require('express-rescue');
 const ProductsService = require('../services/productsService');
 
@@ -93,25 +91,13 @@ const deletedProduct = rescue(async (req, res) => {
   res.status(OK).json(product);
 });
 
-router.post('/products',
+module.exports = {
   validateProductName,
   productExists,
   validateProductQuantity,
   createProduct,
-);
-
-router.get('/products/:id', findProductById);
-router.get('/products', listAllProducts);
-
-router.put('/products/:id',
-  validateProductName,
-  validateProductQuantity,
-  updateProduct
-);
-
-router.delete('/products/:id',
-  productExists,
+  findProductById,
+  listAllProducts,
+  updateProduct,
   deletedProduct,
-);
-
-module.exports = router;
+};
