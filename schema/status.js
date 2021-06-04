@@ -10,6 +10,7 @@ const message = {
   quanitityLength: '"quantity" must be larger than or equal to 1',
   quantityType: '"quantity" must be a number',
   wrongIdFormat: 'Wrong id format',
+  invalidQuantity: 'Wrong product ID or invalid quantity',
 };
 
 const code = {
