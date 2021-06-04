@@ -3,7 +3,7 @@ const {ObjectId} = require('mongodb');
 const updateOne = async (id , collection ,data) => {
   const result = await  connection()
     .then((db) =>  db.collection(collection).updateOne({_id: ObjectId(id)},
-      {$set: {data}},
+      {$set: {...data}},
       {upsert: true},
     ));
   if (!result) return null;
