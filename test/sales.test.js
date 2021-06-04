@@ -343,7 +343,7 @@ describe('6 - Crie um endpoint para listar as vendas', () => {
   });
 });
 
-describe.only('7 - Crie um endpoint para atualizar uma venda', () => {
+describe('7 - Crie um endpoint para atualizar uma venda', () => {
   let connection;
   let db;
 
@@ -568,7 +568,7 @@ describe.only('7 - Crie um endpoint para atualizar uma venda', () => {
   });
 });
 
-describe('8 - Crie um endpoint para deletar uma venda', () => {
+describe.only('8 - Crie um endpoint para deletar uma venda', () => {
   let connection;
   let db;
 

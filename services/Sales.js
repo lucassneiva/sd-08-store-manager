@@ -16,8 +16,14 @@ const findById = async (id) => {
   return soldProductsById;
 };
 
+const updateById = async (id, itensSold) => {
+  const updateSale = await Sales.register(id, itensSold);
+  return updateSale;
+};
+
 module.exports = {
   register,
   findAll,
   findById,
+  updateById,
 };
