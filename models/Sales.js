@@ -27,7 +27,17 @@ const updateById = async (id, productId, quantity) => {
         { _id: new ObjectId(id),  'itensSold.productId': `${productId}` },
         { $set: {'itensSold.$.quantity': quantity } },
         { returnOriginal: false })
-      .then(result => console.log(result) || result.value));
+      .then(result => result.value));
+};
+
+const deleteById = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+  const saleId = new ObjectId(id);
+  return connection()
+    .then((db) => db.collection('sales').findOneAndDelete({_id: saleId})
+      .then(result => result));
 };
 
 const getAll = async () => {
@@ -39,6 +49,7 @@ const getAll = async () => {
 module.exports = {
   create,
   searchById,
+  deleteById,
   updateById,
   getAll,
 };

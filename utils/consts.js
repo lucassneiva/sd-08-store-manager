@@ -67,6 +67,14 @@ const ERROR_TYPES = {
       message: 'Sale not found',
     },
   },
+
+  eDel: {
+    status: STATUS_422,
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    },
+  },
 };
 
 module.exports = {
