@@ -18,7 +18,7 @@ const createOne = rescue(async (req, res, next) => {
 
   if (product.error) return res.status(INVALID_DATA).json(product.error);
 
-  res.status(CREATED).json(product);
+  return res.status(CREATED).json(product);
 });
 
 module.exports = {

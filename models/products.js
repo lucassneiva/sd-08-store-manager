@@ -5,7 +5,7 @@ const tryCatch = (callback) => async (...args) => {
     return callback(...args);
   } catch (error) {
     console.log(error.message);
-    process.exit(1);
+    return process.exit(1);
   }
 };
 
