@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const productsRouter = require('./routes/productsRouter');
+const {productsRouter, salesRouter } = require('./routes');
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,6 +14,7 @@ app.get('/', (_request, response) => {
 
 
 app.use('/products', productsRouter);
+app.use('/sales', salesRouter);
 
 app.listen(PORT, () => {
   console.log(`Ouvindo a porta ${PORT}`);

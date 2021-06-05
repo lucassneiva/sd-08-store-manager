@@ -3,7 +3,8 @@ const errorMsgs = {
   alreadyExists: 'Product already exists', 
   invalidQuantity: '"quantity" must be larger than or equal to 1',
   quantityNotNumber: '"quantity" must be a number',
-  wrongId: 'Wrong id format'
+  wrongId: 'Wrong id format',
+  wrongIdOrQuantity: 'Wrong product ID or invalid quantity',
 };
 
 const generateError = (message) => (
