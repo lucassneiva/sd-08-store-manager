@@ -1,16 +1,19 @@
 const ProductsService = require('../services/productsService');
 
+const CREATED = 201;
+const UNPROCESSABLE_ENTRY = 422;
+
 const create = async (req, res) => {
   const { name, quantity } = req.body;
 
-  const productInserted = await ProductsService
+  const { status, err, productInserted } = await ProductsService
     .create({name, quantity});
 
-  if (!movie) {
-    return res.status(400).json({ message: 'Dados inválidos' });
+  if (status !== CREATED) {
+    return res.status(status).json({ err });
   }
-
-  res.status(200).json(productInserted);
+  console.log(productInserted);
+  res.status(status).json(productInserted);
 };
 
 module.exports = {

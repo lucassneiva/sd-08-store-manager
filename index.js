@@ -13,7 +13,7 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.get('/products', ProductsController.create);
+app.post('/products', ProductsController.create);
 
 app.listen(PORT, () => {
   console.log(`Escutando na porta ${PORT}`);

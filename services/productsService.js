@@ -1,19 +1,50 @@
 const ProductsModel = require('../models/productsModel');
 
-const isValid = (name, quantity) => {
-  const minNameLength = 6;
-  const minQuantity = 1;
-  if (typeof name !== string || name.length < minNameLength) return false;
-  if (typeof quantity !== number || quantity < minQuantity) return false;
-};
+const CREATED = 201;
+const UNPROCESSABLE_ENTRY = 422;
 
 const create = async ({name, quantity}) => {
-  const isProductValid = isValid(name, quantity);
+  // Será validado que não é possível criar um produto com o nome menor que 5 caracteres
+  const minNameLength = 5;
+  if (name.length < minNameLength) return ({
+    status: UNPROCESSABLE_ENTRY,
+    err: {
+      code: 'invalid_data',
+      message: '"name" length must be at least 5 characters long',
+    }
+  });
 
-  if (!isProductValid) return false;
+  // Será validado que não é possível criar um produto com o mesmo nome de outro já existente
 
+  // Será validado que não é possível criar um produto com quantidade menor que zero
+  // Será validado que não é possível criar um produto com quantidade igual a zero
+  const minQuantity = 1;
+  if (quantity < minQuantity) return ({
+    status: UNPROCESSABLE_ENTRY,
+    err: {
+      code: 'invalid_data',
+      message: '"quantity" must be larger than or equal to 1',
+    }
+  });
+
+
+  // Será validado que não é possível criar um produto com uma string no campo quantidade
+  if (typeof quantity !== 'number') return ({
+    status: UNPROCESSABLE_ENTRY,
+    err: {
+      code: 'invalid_data',
+      message: '"quantity" must be a number',
+    }
+  });
+
+  // Será validado que é possível criar um produto com sucesso
   const productCreated = await ProductsModel
     .create({name, quantity});
+
+  return {
+    status: CREATED,
+    productCreated,
+  };
 };
 
 module.exports = {
