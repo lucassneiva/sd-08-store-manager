@@ -17,6 +17,9 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
+app.get('/products', products.getAllProducts);
+app.get('/products/:id', products.getById);
+
 app.post('/products', products.createOne);
 
 app.use(errorMiddleware);

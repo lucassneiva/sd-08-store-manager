@@ -1,4 +1,5 @@
 const connection = require('./connection');
+const { ObjectId } = require('mongodb');
 
 const tryCatch = (callback) => async (...args) => {
   try {
@@ -17,17 +18,38 @@ const createOne = tryCatch(async (product) => {
   return { _id: insertedId, ...product };
 });
 
-const getProduct = tryCatch(async (product) => {
+const getByName = tryCatch(async (product) => {
   const db = await connection();
 
-  const {name} = product;
+  const { name } = product;
 
-  const result = await db.collection('products').findOne({name: name});
+  const result = await db.collection('products').findOne({ name: name });
+
+  return result;
+});
+
+const getAllProducts = tryCatch(async () => {
+  const db = await connection();
+
+  const result = await db.collection('products').find().toArray();
+
+  // console.log('models/products result', result);
+  return result;
+});
+
+const getById = tryCatch(async (id) => {
+  const db = await connection();
+
+  // const { _id } = product;
+
+  const result = await db.collection('products').findOne({ _id: ObjectId(id) });
 
   return result;
 });
 
 module.exports = {
   createOne,
-  getProduct
+  getByName,
+  getAllProducts,
+  getById
 };
