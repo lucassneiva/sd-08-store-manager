@@ -35,6 +35,18 @@ router.get('/:id', rescue (async (req, res, next) => {
   res.status(code).json(message);
 }));
 
+router.put('/:id', rescue (async (req, res, next) => {
+  const { id } = req.params;
+  const updateProduct = req.body;
+  
+  const update = await productServices.updateProduct(updateProduct, id);
+  const { message, code, erro } = update;
+
+  if (erro) return next(erro);
+
+  res.status(code).json(message);
+}));
+
 router.use((erro, _req, res, _next) => {
   const { err, code } =erro;
   res.status(code).json({ err });

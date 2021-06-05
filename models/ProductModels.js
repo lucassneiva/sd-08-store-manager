@@ -1,6 +1,6 @@
 const connect = require('./Connect');
 
-const { ObjectId } = require('mongodb');
+const { ObjectId, ObjectID } = require('mongodb');
 
 const TABELA_PRODUCTS = 'products';
 
@@ -36,9 +36,18 @@ const findOneProductById = async (id) => {
   return findById;
 };
 
+const updateOneProductById = async (name, quantity, id) => {
+  const updateById = await connect()
+    .then((db) => db.collection(TABELA_PRODUCTS)
+      .updateOne({ _id: ObjectID(id)}, { $set: { name, quantity } }))
+    .catch((_err) => []);
+  return updateById;
+};
+
 module.exports = {
   addProduct,
   findOneProduct,
   findOneProductById,
   getAll,
+  updateOneProductById,
 };

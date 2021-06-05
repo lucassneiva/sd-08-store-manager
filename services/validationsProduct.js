@@ -40,7 +40,7 @@ const quantityValidations = (quantity) => {
     };
   };
 
-  if (quantity < NUMBER_ZERO || !quantity) {
+  if (quantity <= NUMBER_ZERO || !quantity) {
     return {
       err: {
         code: 'invalid_data',
