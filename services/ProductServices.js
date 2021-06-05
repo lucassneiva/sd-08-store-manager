@@ -46,7 +46,8 @@ const updateProduct = async ({ name, quantity }, id) => {
   const findByIds = await productsModels.findOneProductById(id);
 
   return { message: findByIds, code: 200 };
-}
+};
+
 module.exports = {
   resAddProduct,
   getAllProducts,
