@@ -8,7 +8,7 @@ const errorMiddleware = require('./middlewares/error');
 
 const app = express();
 
-const PORT_3000 = process.env.PORT;
+const PORT_3000 = 3000;
 
 app.use(bodyParser.json());
 // não remova esse endpoint, e para o avaliador funcionar
