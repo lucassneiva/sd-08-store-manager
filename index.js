@@ -18,6 +18,8 @@ app.post('/products', ProductsController.create);
 app.get('/products', ProductsController.getAll);
 app.get('/products/:id', ProductsController.getById);
 
+app.put('/products/:id', ProductsController.updateById);
+
 app.listen(PORT, () => {
   console.log(`Escutando na porta ${PORT}`);
 });

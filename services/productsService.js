@@ -1,5 +1,6 @@
 const ProductsModel = require('../models/productsModel');
 
+const SUCCESS = 200;
 const CREATED = 201;
 const UNPROCESSABLE_ENTRY = 422;
 
@@ -78,8 +79,49 @@ const getById = async (id) => {
   return product;
 };
 
+const updateById = async (id, name, quantity) => {
+  // Será validado que não é possível atualizar um produto com o nome menor que 5 caracteres
+  const minNameLength = 5;
+  if (name.length < minNameLength) return ({
+    status: UNPROCESSABLE_ENTRY,
+    err: {
+      code: 'invalid_data',
+      message: '"name" length must be at least 5 characters long',
+    }
+  });
+
+  // Será validado que não é possível atualizar um produto com quantidade menor que zero
+  // Será validado que não é possível atualizar um produto com quantidade igual a zero
+  const minQuantity = 1;
+  if (quantity < minQuantity) return ({
+    status: UNPROCESSABLE_ENTRY,
+    err: {
+      code: 'invalid_data',
+      message: '"quantity" must be larger than or equal to 1',
+    }
+  });
+
+  //  Será validado que não é possível atualizar um produto com uma string no campo quantidade
+  if (typeof quantity !== 'number') return ({
+    status: UNPROCESSABLE_ENTRY,
+    err: {
+      code: 'invalid_data',
+      message: '"quantity" must be a number',
+    }
+  });
+
+  const update = await ProductsModel
+    .updateById(id, name, quantity);
+
+  return {
+    status: SUCCESS,
+    update,
+  };
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  updateById,
 };
