@@ -1,4 +1,4 @@
-const {INVALID_DATA, INTERNAL_SERVER_ERROR} = require('../constants');
+const { INVALID_DATA, INTERNAL_SERVER_ERROR } = require('../constants');
 
 // middlewares/error.js
 module.exports = (err, req, res, _next) => {
@@ -28,5 +28,5 @@ module.exports = (err, req, res, _next) => {
   const status = statusByErrorCode[err.code] || INTERNAL_SERVER_ERROR;
 
   // Por último, retornamos o status e a mensagem de erro para o client
-  res.status(status).json({ error: { message: err.message } });
+  return res.status(status).json({ error: { message: err.message } });
 };

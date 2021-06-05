@@ -1,13 +1,11 @@
 const rescue = require('express-rescue');
-const service = require('../services/products');
 const Joi = require('joi');
+const service = require('../services/products');
 
-const CREATED = 201;
-const INVALID_DATA = 422;
-const MIN_STR_LENGTH = 5;
+const { CREATED, INVALID_DATA, MIN_STR_LENGTH } = require('../constants');
 
 const createOne = rescue(async (req, res, next) => {
-  const {error} = Joi.object({
+  const { error } = Joi.object({
     name: Joi.string().min(MIN_STR_LENGTH).required(),
     quantity: Joi.number().min(1).strict().required()
   }).validate(req.body);
