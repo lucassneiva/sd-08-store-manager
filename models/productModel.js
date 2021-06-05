@@ -8,7 +8,10 @@ const create = async ({ name = '', quantity = '' }) => {
     }
     const productCollection = await connectionDb()
       .then((db) => db.collection('products'));
-    const setNewProduct = await productCollection.insertOne({ name, quantity });
+    const setNewProduct = await productCollection.insertOne({
+      name,
+      quantity,
+    });
     return setNewProduct.ops[0];
   } catch (err) {
     return err;
@@ -17,12 +20,10 @@ const create = async ({ name = '', quantity = '' }) => {
 
 const getByKey = async (getKey) => {
   try {
-    if(!getKey) throw new Error('{ key: value } não informado!');
+    if (!getKey) throw new Error('{ key: value } não informado!');
     let [key, value] = Object.entries(getKey)[0];
     value = key === '_id' ? ObjectId(value) : value;
-    const getCollection = await connectionDb()
-      .then((db) => db.collection('products'));
-
+    const getCollection = await connectionDb().then((db) => db.collection('products'));
     const result = await getCollection.findOne({ [key]: value });
     return result;
   } catch (err) {

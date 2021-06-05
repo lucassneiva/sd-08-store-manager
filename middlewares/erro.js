@@ -1,6 +1,6 @@
 const rescue = require('express-rescue');
 
-module.exports = async (error, req, res, next) => {
+module.exports = async (error, _req, res, _next) => {
   if (error.err && error.status) {
     return res.status(error.status).json({ err: error.err });
   }
