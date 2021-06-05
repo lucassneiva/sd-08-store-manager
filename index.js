@@ -9,7 +9,7 @@ const errorMiddleware = require('./middlewares/error');
 const app = express();
 
 const DEFAULT_PORT = 3000;
-const DB_PORT = 27017;
+// const DB_PORT = 27017;
 
 app.use(bodyParser.json());
 // não remova esse endpoint, e para o avaliador funcionar
