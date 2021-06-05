@@ -19,6 +19,7 @@ app.listen(PORT, () => {
 });
 
 const UNPROCESSABE_ENTITY = 422;
+const NOT_FOUND = 404;
 const CREATED = 201;
 const OK = 200;
 const ID_LENGTH = 24;
@@ -207,7 +208,43 @@ app.post('/sales', rescue(async (req, res) => {
   return end;
 }));
 
-// var document = {name:'David', title:'About MongoDB'};
-// collection.insert(document, {w: 1}, function(err, records){
-//   console.log('Record added as '+records[0]._id);
-// });
+// 6 - Crie um endpoint para listar as vendas
+
+const getSales = async (idParam) => {
+  const db = await connection();
+  const sales = await db.collection('products').findOne(ObjectId(idParam));
+  return sales;
+};
+
+const findSales = async (req, res) => {
+  const { params } = req;
+  if (params.id.length !== ID_LENGTH) {
+    return res.status(NOT_FOUND).json({err: {
+      code: 'not_found',
+      message: 'Sale not found'
+    }});
+  }
+  const sales = await getSales(params.id);
+  return res.status(OK).json(sales);
+};
+
+app.get('/sales/:id', rescue(async (req, res) => {
+  const end = await findSales(req, res);
+  return end;
+}));
+
+const getAllSales = async () => {
+  const db = await connection();
+  const allSales = await db.collection('sales').find().toArray();
+  return allSales;
+};
+
+const findAllSales = async (res) => {
+  const allSales = await getAllSales();
+  return res.status(OK).json({sales: allSales});
+};
+
+app.get('/sales', rescue(async (_req, res) => {
+  const end = await findAllSales(res);
+  return end;
+}));
