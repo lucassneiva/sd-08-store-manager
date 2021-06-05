@@ -15,7 +15,8 @@ app.get('/', (_request, response) => {
 
 app.post('/products', ProductsController.create);
 
-app.get('/products');
+app.get('/products', ProductsController.getAll);
+app.get('/products/:id', ProductsController.getById);
 
 app.listen(PORT, () => {
   console.log(`Escutando na porta ${PORT}`);
