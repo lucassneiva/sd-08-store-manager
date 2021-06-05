@@ -119,9 +119,28 @@ const updateById = async (id, name, quantity) => {
   };
 };
 
+const deleteById = async (id) => {
+  const deleted = await ProductsModel
+    .deleteById(id);
+
+  if (!deleted) return ({
+    status: UNPROCESSABLE_ENTRY,
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format'
+    }
+  });
+
+  return {
+    status: SUCCESS,
+    deleted,
+  };
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   updateById,
+  deleteById,
 };

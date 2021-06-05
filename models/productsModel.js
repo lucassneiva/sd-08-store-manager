@@ -57,8 +57,22 @@ const updateById = async (id, name, quantity) => {
 
   const update = await productsCollection
     .findOneAndUpdate({ _id: newId }, { $set: newData }, { returnOriginal: false });
-    
+
   return update.value;
+};
+
+const deleteById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  const newId = new ObjectId(id);
+
+  const productsCollection = await connection()
+    .then((db) => db.collection('products'));
+
+  const deleted = await productsCollection
+    .findOneAndDelete({_id: newId});
+
+  return deleted.value;
 };
 
 module.exports = {
@@ -67,4 +81,5 @@ module.exports = {
   getAll,
   getById,
   updateById,
+  deleteById,
 };
