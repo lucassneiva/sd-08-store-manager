@@ -4,6 +4,7 @@ const {
   getAllProdutos,
   addProdutos,
   getByIdProdutos,
+  updateByIdProducts,
 } = require('../services/produtoServices');
 
 const DZU = 201;
@@ -20,12 +21,20 @@ const addProducts = rescue(async (req, res) => {
 });
 
 const getByIdProducts = rescue(async (req, res) => {
-  const products = await getByIdProdutos(req.params);
-  res.status(DOO).json(products);
+  const produto = await getByIdProdutos(req.params);
+  res.status(DOO).json(produto);
+});
+
+const updateById = rescue(async (req, res) => {
+  const id = req.params;
+  const body = req.body;
+  const produto = await updateByIdProducts(id, body);
+  res.status(DOO).json(produto);
 });
 
 module.exports = {
   getAllProducts,
   addProducts,
   getByIdProducts,
+  updateById,
 };

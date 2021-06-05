@@ -21,13 +21,16 @@ const getByName = async (name) => {
 };
 
 const getById = async (ids) => {
-  try {
-    const db = await Connection();
-    const result = await db.collection('products').findOne({_id: ObjectId(ids) });
-    return result;
-  } catch (err) {
-    return null;
-  }
+  if (!ObjectId.isValid(ids)) return null;
+  const db = await Connection();
+  return await db.collection('products').findOne({_id: ObjectId(ids) });
+};
+
+const updateById = async (ids, produto) => {
+  if (!(await findById(ids))) return null;
+  const db = await Connection();
+  return db.collection('products')
+    .updateOne({ _id: ObjectId(ids) }, { $set: produto });
 };
 
 module.exports = {
@@ -35,4 +38,5 @@ module.exports = {
   getAll,
   getByName,
   getById,
+  updateById,
 };
