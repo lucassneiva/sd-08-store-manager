@@ -1,5 +1,6 @@
-/* eslint-disable no-magic-numbers */
-// hello-msc/middlewares/error.js
+const {INVALID_DATA, INTERNAL_SERVER_ERROR} = require('../constants');
+
+// middlewares/error.js
 module.exports = (err, req, res, _next) => {
   // Qualquer erro será recebido sempre por esse middleware, então a primeira coisa que fazemos
   // é identificar qual o tipo do erro.
@@ -8,7 +9,7 @@ module.exports = (err, req, res, _next) => {
   if (err.isJoi) {
     console.log(err);
     // Logo, respondemos com o status 400 Bad Request
-    return res.status(422)
+    return res.status(INVALID_DATA)
       // E com a mensagem gerada pelo Joi
       .json({ err: { message: err.details[0].message, code: 'invalid_data' } });
   }
@@ -24,7 +25,7 @@ module.exports = (err, req, res, _next) => {
   // Buscamos o status adequado para o erro que estamos tratando.
   // Caso não haja um status para esse código, assumimos que é
   // um erro desconhecido e utilizamos o status 500 Internal Server Error
-  const status = statusByErrorCode[err.code] || 500;
+  const status = statusByErrorCode[err.code] || INTERNAL_SERVER_ERROR;
 
   // Por último, retornamos o status e a mensagem de erro para o client
   res.status(status).json({ error: { message: err.message } });

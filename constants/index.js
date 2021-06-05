@@ -1,0 +1,11 @@
+const CREATED = 201;
+const INVALID_DATA = 422;
+const INTERNAL_SERVER_ERROR = 500;
+const MIN_STR_LENGTH = 5;
+
+module.exports ={
+  CREATED,
+  INVALID_DATA,
+  MIN_STR_LENGTH,
+  INTERNAL_SERVER_ERROR
+};
