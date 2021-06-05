@@ -16,7 +16,7 @@ const findOneProduct = async (name) => {
       .find({ name }).toArray())
     .catch((_err) => []);
   return find;
-}
+};
 
 module.exports = {
   addProduct,

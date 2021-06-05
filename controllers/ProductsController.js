@@ -18,5 +18,6 @@ router.post('/', rescue (async (req, res, next) => {
 router.use((erro, _req, res, _next) => {
   const { err, code } =erro;
   res.status(code).json({ err });
-})
+});
+
 module.exports = router;

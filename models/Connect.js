@@ -20,6 +20,6 @@ const connection = () => {
     : MongoClient.connect(MONGO_DB_URL, OPTIONS)
       .then((conn) => db = conn.db(DB_NAME))
       .catch((_err) => console.log('Falhou no banco de dados'));
-}
+};
 
 module.exports = connection;
