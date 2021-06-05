@@ -5,12 +5,17 @@ const errorMsgs = {
   quantityNotNumber: '"quantity" must be a number',
   wrongId: 'Wrong id format',
   wrongIdOrQuantity: 'Wrong product ID or invalid quantity',
+  saleNotFound: 'Sale not found'
 };
 
-const generateError = (message) => (
+const errorCodes = {
+  NOT_FOUND_ERR: 'not_found',
+};
+
+const generateError = (message, code = 'invalid_data') => (
   {
     err: {
-      code: 'invalid_data',
+      code: code,
       message
     }
   }
@@ -19,4 +24,5 @@ const generateError = (message) => (
 module.exports = {
   errorMsgs,
   generateError,
+  errorCodes,
 };

@@ -1,5 +1,5 @@
-const { addSales } = require('../services/saleServices');
-const { UNPROCESSABLE, OK } = require('./constants');
+const { addSales, getAllSales, getSaleById } = require('../services/saleServices');
+const { UNPROCESSABLE, OK, NOT_FOUND } = require('./constants');
 
 const addsSales = async(req, res) => {
   
@@ -13,6 +13,20 @@ const addsSales = async(req, res) => {
 
 };
 
+const getsAllSales = async(_req, res) => {
+  const allSales = await getAllSales();
+  res.status(OK).json({sales: allSales});
+};
+
+const getsSale = async(req, res) => {
+  const id = req.params;
+  const foundSale = await getSaleById(id);
+  if(foundSale.err) return res.status(NOT_FOUND).json(foundSale);
+  return res.status(OK).json(foundSale);
+};
+
 module.exports = {
-  addsSales
+  addsSales,
+  getsAllSales,
+  getsSale
 };

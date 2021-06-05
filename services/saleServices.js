@@ -1,7 +1,8 @@
 const SalesModel = require('../models/salesModel');
-const { generateError, errorMsgs } = require('./errors');
+const { generateError, errorMsgs, errorCodes } = require('./errors');
 
-const {wrongIdOrQuantity} = errorMsgs;
+const { wrongIdOrQuantity, saleNotFound } = errorMsgs;
+const { NOT_FOUND_ERR } = errorCodes;
 
 const addSales = async(sale) => {
 
@@ -18,6 +19,15 @@ const addSales = async(sale) => {
   return added.ops[0];
 };
 
+const getAllSales = async() => await SalesModel.getAllSales();
+
+const getSaleById = async(id) => {
+  const saleFound = await SalesModel.getSaleById(id);
+  return saleFound || generateError(saleNotFound, NOT_FOUND_ERR);  
+};
+
 module.exports = {
   addSales,
+  getAllSales,
+  getSaleById,
 };
