@@ -18,6 +18,9 @@ const salesCreate = async (req, res) => {
     const itensSold = req.body;
     const result = await createSales(itensSold);
     if (result.err) {
+      if (result.err.code === STOCK_PROBLEM) {
+        return res.status(NOT_FOUND).json(result);  
+      }
       return res.status(UNPROCESSABLE).json(result);
     }
     return res.status(SUCESS).json(result);

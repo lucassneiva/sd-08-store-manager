@@ -66,6 +66,20 @@ const getProductToUpdate = async (id, name, quantity) => {
   }
 };
 
+const updateProductByIdDelete = async (id, quantity) => {
+  try {
+    const product = await connection().then((db) => {
+      return db
+        .collection(NAME_COLLECTION)
+        .updateOne({ _id: ObjectId(id) }, {$set: { quantity } });
+    });
+    return product;
+  } catch (error) {
+    console.log(error.message);
+    return null;
+  }
+};
+
 const deleteById = async (id) => {
   try {
     const product = await connection().then((db) => {
@@ -87,4 +101,5 @@ module.exports = {
   findProductById,
   getProductToUpdate,
   deleteById,
+  updateProductByIdDelete,
 };
