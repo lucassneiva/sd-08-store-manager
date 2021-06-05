@@ -47,8 +47,20 @@ router.put('/:id', rescue (async (req, res, next) => {
   res.status(code).json(message);
 }));
 
+router.delete('/:id', rescue (async (req, res, next) => {
+  const { id } = req.params;
+  
+  const deleteProducts = await productServices.deleteProduct(id);
+  const { message, code, erro } = deleteProducts;
+
+  if (erro) return next(erro);
+
+  res.status(code).json(message);
+}));
+
 router.use((erro, _req, res, _next) => {
-  const { err, code } =erro;
+  const { err, code } = erro;
+
   res.status(code).json({ err });
 });
 

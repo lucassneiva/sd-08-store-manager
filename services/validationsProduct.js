@@ -1,3 +1,5 @@
+const { ObjectId, ObjectID } = require('mongodb');
+
 const findModels = require('../models/ProductModels');
 
 const NUMBER_FIVE = 5;
@@ -62,7 +64,17 @@ const validAddNewProduct = (name, quantity) => {
 const getById = async (id) => {
   const byId = await findModels.findOneProductById(id);
 
-  if (byId.length === NUMBER_ZERO) {
+  if (!ObjectID.isValid(id)) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+      code: 422,
+    };
+  };
+
+  if (byId === null) {
     return {
       err: {
         code: 'invalid_data',

@@ -48,9 +48,22 @@ const updateProduct = async ({ name, quantity }, id) => {
   return { message: findByIds, code: 200 };
 };
 
+const deleteProduct = async (id) => {
+  const findByIdIsValid = await validations.getById(id);
+
+  if (findByIdIsValid) return { erro: findByIdIsValid };
+
+  const findByIds = await productsModels.findOneProductById(id);
+
+  await productsModels.deleteProductById(id);
+
+
+  return { message: findByIds, code: 200 };
+};
 module.exports = {
   resAddProduct,
   getAllProducts,
   findById,
   updateProduct,
+  deleteProduct,
 };
