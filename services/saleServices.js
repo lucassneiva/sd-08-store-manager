@@ -26,8 +26,24 @@ const getSaleById = async(id) => {
   return saleFound || generateError(saleNotFound, NOT_FOUND_ERR);  
 };
 
+const updateSale = async(id, toUpdate) => {
+
+  if (toUpdate.find(product => product.quantity < 1)) {
+    return generateError(wrongIdOrQuantity);
+  }
+
+  if (toUpdate.find(product => typeof product.quantity === 'string')) {
+    return generateError(wrongIdOrQuantity);
+  }
+
+  await SalesModel.updateSale(id, toUpdate);
+  const updatedSale = await getSaleById(id);
+  return updatedSale;
+};
+
 module.exports = {
   addSales,
   getAllSales,
   getSaleById,
+  updateSale,
 };
