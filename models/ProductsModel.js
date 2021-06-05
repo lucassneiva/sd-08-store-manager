@@ -55,4 +55,13 @@ module.exports = {
       _id: ObjectId(id),
     });
   },
+  updateQuantity: async (id, sellQuantity) => {
+    const db = await connection();
+    await db.collection('products').updateOne(
+      {
+        _id: ObjectId(id),
+      },
+      { $inc: { quantity: sellQuantity } },
+    );
+  }
 };

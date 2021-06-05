@@ -1,6 +1,7 @@
 const connection = require('../db');
 const { ObjectId } = require('mongodb');
 const { results, generateMessage } = require('../services/ErrorMessage');
+const { updateQuantity } = require('../models/ProductsModel');
 
 module.exports = {
   addSales: async (itens) => {
@@ -8,6 +9,7 @@ module.exports = {
     const sale = {
       itensSold: itens,
     };
+    sale.itensSold.forEach((item) => updateQuantity(item.productId, -item.quantity));
     const result = await db.collection('sales').insertMany([sale]);
     return result.ops[0];
   },
@@ -38,6 +40,16 @@ module.exports = {
     const sale = {
       itensSold: itens,
     };
+    const updateQtd = await db.collection('sales').findOne({ _id: ObjectId(id) });
+    sale.itensSold.forEach((item, index) => {
+      if (updateQtd.itensSold[index].quantity < item.quantity) {
+        updateQuantity(
+          item.productId, item.quantity - updateQtd.itensSold[index].quantity);
+      } else {
+        updateQuantity(
+          item.productId, updateQtd.itensSold[index].quantity - item.quantity);
+      }
+    });
     await db.collection('sales').updateOne(
       {
         _id: ObjectId(id),
@@ -51,6 +63,8 @@ module.exports = {
   },
   removeSale: async (id) => {
     const db = await connection();
+    const updateQtd = await db.collection('sales').findOne({ _id: ObjectId(id) });
+    updateQtd.itensSold.forEach((item) => updateQuantity(item.productId, item.quantity));
     await db.collection('sales').deleteOne({
       _id: ObjectId(id),
     });
