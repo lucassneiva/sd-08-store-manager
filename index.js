@@ -8,7 +8,7 @@ const errorMiddleware = require('./middlewares/error');
 
 const app = express();
 
-const PORT = process.env.PORT;
+const PORT_3000 = process.env.PORT;
 
 app.use(bodyParser.json());
 // não remova esse endpoint, e para o avaliador funcionar
@@ -20,4 +20,7 @@ app.post('/products', products.createOne);
 
 app.use(errorMiddleware);
 
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+app.listen(
+  process.env.PORT || PORT_3000,
+  () => console.log(`Server listening on port ${process.env.PORT || PORT_3000}`)
+);
