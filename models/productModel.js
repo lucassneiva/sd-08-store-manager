@@ -1,6 +1,6 @@
 const getCollections = require('./connections');
 const { ObjectId } = require('mongodb');
-const { get } = require('../controllers/productController');
+// const { get } = require('../controllers/productController');
 
 const getAll = async () =>
   getCollections('products').then(db => db.find().toArray());
