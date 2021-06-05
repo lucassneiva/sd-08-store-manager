@@ -15,6 +15,27 @@ const resAddProduct = async ({ name, quantity }) => {
   return { message: res[0], code: 201 };
 };
 
+const getAllProducts = async () => {
+  const getAll = await productsModels.getAll();
+  const resp = {
+    products: [...getAll],
+  };
+
+  return { message: resp, code: 200 };
+};
+
+const findById = async (id) => {
+  const findByIdIsValid = await validations.getById(id);
+
+  if (findByIdIsValid) return { erro: findByIdIsValid };
+
+  const findByIds = await productsModels.findOneProductById(id);
+
+  return { message: findByIds, code: 200 };
+};
+
 module.exports = {
   resAddProduct,
+  getAllProducts,
+  findById,
 };

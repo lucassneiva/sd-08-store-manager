@@ -59,7 +59,22 @@ const validAddNewProduct = (name, quantity) => {
   if (quantityIsValid) return { erro: quantityIsValid };
 };
 
+const getById = async (id) => {
+  const byId = await findModels.findOneProductById(id);
+
+  if (byId.length === NUMBER_ZERO) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+      code: 422,
+    };
+  };
+};
+
 module.exports = {
   validAddNewProduct,
   findOne,
+  getById,
 };
