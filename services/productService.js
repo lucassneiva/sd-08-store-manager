@@ -5,7 +5,7 @@ const getAll = async () => model.getAll();
 
 const getById = async (id) => {
   const product = await model.getAll(id);
-  if(!product) {
+  if(!ObjectId.isValid(id)) {
     throw {
       'err': {
         code: 'invalid_data',

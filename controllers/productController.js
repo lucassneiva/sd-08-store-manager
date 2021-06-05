@@ -11,6 +11,23 @@ router.get('/', rescue(async (_req, res) => {
   res.status(STATUS_200).json(result);
 }));
 
+router.get('/:id', rescue (async (req, res) => {
+  const STATUS_422 = 422;
+  const STATUS_200 = 200;
+  const STATUS_500 = 500;
+  try {
+    const { id } = req.params;
+    const [product] = await service.getById(id);
+    res.status(STATUS_200).json(product);
+  } catch (err) {
+    if (err.err.code === 'invalid_data') {
+      return res.status(STATUS_422).json(err);
+    }
+    console.log(err);
+    res.status(STATUS_500).json({ message: 'Algo deu errado' });
+  }
+}));
+
 router.post('/', rescue(async (req, res) => {
   const STATUS_201 = 201;
   const STATUS_422 = 422;
@@ -24,24 +41,6 @@ router.post('/', rescue(async (req, res) => {
       return res.status(STATUS_422).json(err);
     }
     console.error(err);
-    res.status(STATUS_500).json({ message: 'Algo deu errado' });
-  }
-}));
-
-router.get('/:id', rescue (async (req, res) => {
-  const STATUS_422 = 422;
-  const STATUS_200 = 200;
-  const STATUS_500 = 500;
-  try {
-    const { id } = req.params;
-    const [product] = await service.getById(id);
-    res.status(STATUS_200).json(product);
-  } catch (err) {
-    console.error(err.err);
-    if (err.err.code === 'invalid_data') {
-      return res.status(STATUS_422).json(err);
-    }
-    console.log(err);
     res.status(STATUS_500).json({ message: 'Algo deu errado' });
   }
 }));
