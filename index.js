@@ -8,7 +8,7 @@ const errorMiddleware = require('./middlewares/error');
 
 const app = express();
 
-const PORT_3000 = 3000;
+const DEFAULT_PORT = 3000;
 const DB_PORT = 27017;
 
 app.use(bodyParser.json());
@@ -22,6 +22,6 @@ app.post('/products', products.createOne);
 app.use(errorMiddleware);
 
 app.listen(
-  process.env.PORT || DB_PORT,
-  () => console.log(`Server listening on port ${process.env.PORT || DB_PORT}`)
+  process.env.PORT || DEFAULT_PORT,
+  () => console.log(`Server listening on port ${process.env.PORT || DEFAULT_PORT}`)
 );
