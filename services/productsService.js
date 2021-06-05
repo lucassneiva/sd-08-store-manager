@@ -15,6 +15,14 @@ const create = async ({name, quantity}) => {
   });
 
   // Será validado que não é possível criar um produto com o mesmo nome de outro já existente
+  const products = await ProductsModel.searchByName(name);
+  if(products) return ({
+    status: UNPROCESSABLE_ENTRY,
+    err: {
+      code: 'invalid_data',
+      message: 'Product already exists',
+    }
+  });
 
   // Será validado que não é possível criar um produto com quantidade menor que zero
   // Será validado que não é possível criar um produto com quantidade igual a zero
