@@ -1,3 +1,4 @@
+// require('dotenv').config();
 const { MongoClient } = require('mongodb');
 
 const OPTIONS = {
@@ -5,10 +6,13 @@ const OPTIONS = {
   useUnifiedTopology: true,
 };
 
+const DB_URL = 'mongodb://localhost:27017/StoreManager';
+const DB_NAME = 'StoreManager';
+
 const connection = async () => {
   return MongoClient
-    .connect(process.env.DB_URL, OPTIONS)
-    .then((conn) => conn.db(process.env.DB_NAME))
+    .connect(DB_URL, OPTIONS)
+    .then((conn) => conn.db(DB_NAME))
     .catch((err) => {
       console.error(err);
       process.exit(1);
