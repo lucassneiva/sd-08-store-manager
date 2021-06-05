@@ -1,22 +1,5 @@
 const ProductsModel = require('../models/productsModel');
-
-
-const errorMsgs = {
-  shortName: '"name" length must be at least 5 characters long',
-  alreadyExists: 'Product already exists', 
-  invalidQuantity: '"quantity" must be larger than or equal to 1',
-  quantityNotNumber: '"quantity" must be a number',
-  wrongId: 'Wrong id format'
-};
-
-const errorMessage = (message) => (
-  {
-    err: {
-      code: 'invalid_data',
-      message
-    }
-  }
-);
+const {generateError, errorMsgs} = require('./errors');
 
 const SHORTEST_NAME_ALLOWED = 6;
 const SMALLEST_QUANTITY_ALLOWED = 1;
@@ -30,11 +13,11 @@ const {
 
 const validateNameAndQuantity = (name, quantity) => {
   
-  if (name.length < SHORTEST_NAME_ALLOWED ) return errorMessage(shortName);
+  if (name.length < SHORTEST_NAME_ALLOWED ) return generateError(shortName);
   
-  if (quantity < SMALLEST_QUANTITY_ALLOWED) return errorMessage(invalidQuantity);
+  if (quantity < SMALLEST_QUANTITY_ALLOWED) return generateError(invalidQuantity);
   
-  if (typeof quantity === 'string') return errorMessage(quantityNotNumber);
+  if (typeof quantity === 'string') return generateError(quantityNotNumber);
 };
 
 const addProduct = async(name, quantity) => {
@@ -43,7 +26,7 @@ const addProduct = async(name, quantity) => {
   
   const productFound = await ProductsModel.getProductByName(name);
 
-  if (productFound) return errorMessage(alreadyExists);
+  if (productFound) return generateError(alreadyExists);
 
   const added = await ProductsModel.addProduct(name, quantity);
 
@@ -58,7 +41,7 @@ const getAllProducts = async() => {
 
 const getProductById = async(id) => {
   const getById = await ProductsModel.getProductById(id);
-  return getById || errorMessage(wrongId);
+  return getById || generateError(wrongId);
 };
 
 const updateProduct = async(id, name, quantity) => {
@@ -72,7 +55,7 @@ const updateProduct = async(id, name, quantity) => {
 
 const deleteProduct = async(id) => {
   const deleted = await ProductsModel.deleteProductById(id);
-  return deleted || errorMessage(wrongId);
+  return deleted || generateError(wrongId);
 };
 
 module.exports = {
