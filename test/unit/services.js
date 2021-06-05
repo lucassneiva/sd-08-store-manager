@@ -40,8 +40,6 @@ describe('Teste do "service.productCreate"', () => {
   it('Inserindo novo produto', async () => {
       const res = await ProductModel.create({ name: 'TV LCD LED SONY 73`', quantity: 10 });
       const res2 = await ProductModel.create({ name: 'TV LCD LED SONY 73`', quantity: 10 });
-      console.log(res);
-      console.log(res2);
   }); 
 
   });
