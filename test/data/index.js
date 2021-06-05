@@ -1,30 +1,35 @@
-const data = [
+const { ObjectId } = require('mongodb');
+const product = [
   {
-    "name": "Produto do Batista",
-    "quantity": 100,
+  "_id": ObjectId("60b94246571f2b7f873e6de6"),
+  "name": "SAMSUNG TV 40`",
+  "quantity": 47
   },
   {
-    "name": "TV",
-    "quantity": 10,
+  "_id": ObjectId("60b94259571f2b7f873e6de7"),
+  "name": "CANETA BIC AZUL",
+  "quantity": 97
   },
   {
-    "name": "Caneta",
-    "quantity": 35,
+  "_id": ObjectId("60b94271571f2b7f873e6de8"),
+  "name": "COMPUTADOR CORE i3",
+  "quantity": 13
   },
   {
-    "name": "Computador",
-    "quantity": 21,
+  "_id": ObjectId("60b9427e571f2b7f873e6de9"),
+  "name": "CADEIRA GAMER",
+  "quantity": 3
   },
   {
-    "name": "Cadeira",
-    "quantity": 3,
+  "_id": ObjectId("60b94294571f2b7f873e6dea"),
+  "name": "JOGO DE PRATO",
+  "quantity": 71
   },
   {
-    "name": "Prato",
-    "quantity": 102,
-  },
-  {
-    "name": "Pilha AAA",
-    "quantity": 10,
+  "_id": ObjectId("60b942a6571f2b7f873e6deb"),
+  "name": "PILHA AAA",
+  "quantity": 17
   }
 ];
+
+module.exports = product;

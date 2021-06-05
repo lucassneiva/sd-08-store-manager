@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand",
-    "test:mocha": "nyc --reporter=html --all --include models --include services --include controllers mocha test/unit/*.js --exit",
+    "test:mocha": "nyc --all --include models --include services --include controllers mocha test/unit/*.js --exit",
     "start": "nodemon index.js",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js, .jsx"
   },
@@ -41,6 +41,7 @@
     "mocha": "^8.4.0",
     "mongodb-memory-server": "^6.9.6",
     "nyc": "^15.1.0",
+    "rewire": "^5.0.0",
     "sinon": "^11.1.1"
   }
 }

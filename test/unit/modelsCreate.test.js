@@ -1,11 +1,12 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectID, ObjectId } = require('mongodb');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const Connection = require('../../models/connection');
 const ProductModel = require('../../models/productModel');
-const data = require('../data');
+const dataBaseFake = require('../data');
+const { stub } = require('sinon');
 
 
 describe('Insere um novo produto no BD', () => {
@@ -14,9 +15,8 @@ describe('Insere um novo produto no BD', () => {
     "quantity": 100,
   }
 
+  let DBServer = new MongoMemoryServer();
   before(async () => {
-    
-    const DBServer = new MongoMemoryServer();
     const URLMock = await DBServer.getUri();
     const connectionMock = await MongoClient
       .connect(URLMock, {
@@ -29,6 +29,7 @@ describe('Insere um novo produto no BD', () => {
 
   after(() => {
     MongoClient.connect.restore();
+    DBServer.stop();
   });
 
   describe('Quando é inserido com sucesso', async () => {
@@ -39,7 +40,7 @@ describe('Insere um novo produto no BD', () => {
 
     it('retorna o "id" do novo produto inserido', async () => {
       const response = await ProductModel.create({ ...newProduct });
-      expect(response).to.have.a.property('id');
+      expect(response).to.have.a.property('_id');
     });
   });
 
