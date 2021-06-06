@@ -1,12 +1,11 @@
 const getCollections = require('./connections');
 const { ObjectId } = require('mongodb');
-// const { get } = require('../controllers/productController');
 
 const getAll = async () =>
   getCollections('products').then(db => db.find().toArray());
 
 const getById = async (id) => {
-  if (!ObjectId.isValid(id)) return;
+  if (!ObjectId.isValid(id)) return false;
   return getCollections('products').then(db => db.findOne(ObjectId(id)));
 };
 

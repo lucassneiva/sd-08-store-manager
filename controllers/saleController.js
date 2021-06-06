@@ -2,8 +2,6 @@ const { Router } = require('express');
 const service = require('../services/saleService');
 const rescue = require('express-rescue');
 
-const model = require('../models/saleModel');
-
 const router = Router();
 
 router.get('/', rescue(async (_req, res) => {
