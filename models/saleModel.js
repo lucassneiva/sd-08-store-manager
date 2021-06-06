@@ -7,7 +7,7 @@ const getAll = async () =>
 const getById = async(id) => {
   if (!ObjectId.isValid(id)) return;
 
-  return getCollections('sales').then((db) => db.findOne(ObjectId(id)));
+  return getCollections('sales').then((db) => db.findOne({ _id: ObjectId(id) }));
 };
 
 const create = async (productId, quantity) => {
