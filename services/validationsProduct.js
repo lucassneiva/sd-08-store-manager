@@ -90,7 +90,7 @@ const getByIdArray = async (sale) => {
   const getIdsArray = sale
     .every(({ productId }) => {
       const find = findModels.findOneProductById(productId);
-    return find;
+      return find;
     });
 
   if (!getIdsArray) {
@@ -106,21 +106,21 @@ const getByIdArray = async (sale) => {
 
 const validateQuantityArray = (sale) => {
   const quantitiesMoreThan = sale.some(({ quantity }) => {
-    return quantity <= 0;
+    return quantity <= NUMBER_ZERO;
   });
   const quantitiesIsNumber = sale.some(({ quantity }) => {
     return typeof quantity !== 'number';
   });
 
-   if (quantitiesMoreThan || quantitiesIsNumber) {
-     return {
-       err: {
-         code: 'invalid_data',
-         message: 'Wrong product ID or invalid quantity',
-       },
-       code: 422,
-     };
-   };
+  if (quantitiesMoreThan || quantitiesIsNumber) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
+      },
+      code: 422,
+    };
+  };
 };
 
 module.exports = {
