@@ -15,7 +15,15 @@ const getAll = rescue(async(req, res, next) => {
   return res.status(resultService.status).json(resultService.result);
 });
 
+const getById = rescue(async(req, res, next) => {
+  const { id } = req.params;
+  const resultService = await salesService.getById(id);
+  if(resultService.err) return next(resultService);
+  return res.status(resultService.status).json(resultService.result);
+});
+
 module.exports = {
   create,
   getAll,
+  getById,
 };

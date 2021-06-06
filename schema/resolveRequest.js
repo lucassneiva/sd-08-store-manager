@@ -22,7 +22,7 @@ const resolveRequestSales = (res) => {
       }
     };
   }
-  if (res.sales && res.sales.err === 'get') {
+  if (res.sales && (res.sales.err === 'get' || res.sales.idInvalid)) {
     return {
       status: status.notFound,
       err: {

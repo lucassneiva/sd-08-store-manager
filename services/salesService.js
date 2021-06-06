@@ -49,7 +49,14 @@ const getAll = async () => {
   return resolveRequestSales({ sales: { getAll: true, result: getAllSales } });
 };
 
+const getById = async (id) => {
+  const getOneSale = await modelSales.getById(ObjectId(id));
+  if(!getOneSale) return resolveRequestSales({sales: { err: 'get' } });
+  return resolveRequestSales({ sales: { getOne: true, result: getOneSale[0] } });
+};
+
 module.exports = {
   create,
   getAll,
+  getById,
 };

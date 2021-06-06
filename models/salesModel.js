@@ -23,7 +23,19 @@ const getAll = async () => {
   }
 };
 
+const getById = async (id) => {
+  try {
+    const getAllCollection = await connectionDb()
+      .then((db) => db.collection('sales'))
+      .then((getCollection) => getCollection.find({ _id: id }));
+    return getAllCollection.toArray();
+  } catch (err) {
+    return err;
+  }
+};
+
 module.exports = {
   create,
   getAll,
+  getById,
 };
