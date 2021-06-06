@@ -34,6 +34,12 @@ const createSale = rescue(async (req, res) => {
   return res.status(OK).json(newSale);
 });
 
+const listAllSales = rescue(async (_req, res) => {
+  const allSales = await SalesService.listAllSales();
+  res.status(OK).json(allSales);
+});
+
 module.exports = {
   createSale,
+  listAllSales
 };
