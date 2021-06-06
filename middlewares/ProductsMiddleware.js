@@ -34,8 +34,18 @@ const createProduct = async(request, response) => {
   response.status(STATUS_SUBMIT).json(product);
 };
 
+const updateProduct = async(request, response) => {
+  const { id } = request.params;
+  const { name, quantity } = request.body;
+
+  const product = await ProductService.update(id, name, quantity);
+
+  response.status(STATUS_OK).json(product);
+};
+
 module.exports = {
   getAllProducts,
   findByIdProduct,
   createProduct,
+  updateProduct,
 };
