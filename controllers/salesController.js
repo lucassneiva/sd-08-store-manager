@@ -57,6 +57,7 @@ const getSaleById = rescue(async (req, res) => {
 const deleteSale = rescue(async (req, res) => {
   const { id } = req.params;
   const sale = await SalesService.getSaleById(id);
+  console.log('Sales Controller - delete', sale);
   if(!sale) return res.status(INVALID_ERR).json({
     err: {
       code: 'invalid_data',
