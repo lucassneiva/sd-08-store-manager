@@ -3,6 +3,7 @@ const {
   add,
   getById,
   updateById,
+  deleteById,
 } = require('../models/produtosModel');
 
 const QDD = 422;
@@ -27,9 +28,15 @@ const updateByIdProducts = async ({ id }, produto) => {
   return produtoAtualizdo;
 };
 
+const deleteByIdProducts = async ({ id }, produto) => {
+  const produtoAtualizdo = await deleteById(id, produto);
+  return produtoAtualizdo;
+};
+
 module.exports = {
   getAllProdutos,
   addProdutos,
   getByIdProdutos,
   updateByIdProducts,
+  deleteByIdProducts,
 };

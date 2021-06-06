@@ -6,6 +6,7 @@ const {
   addProducts,
   getByIdProducts,
   updateById,
+  deleteById,
 } = require('../controllers/produtoController');
 
 const {
@@ -22,5 +23,7 @@ router.post('/', validaNome, validaExiste, validaNumero, addProducts);
 router.get('/:id', validaId, getByIdProducts);
 
 router.put('/:id', validaNome, validaNumero, validaId, updateById);
+
+router.delete('/:id', validaId, deleteById);
 
 module.exports = router;

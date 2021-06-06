@@ -28,14 +28,18 @@ const getById = async (ids) => {
 };
 
 const updateById = async (ids, produto) => {
-  // if (!(await getById(ids))) {
-  //   console.log(ids);
-  //   return null;
-  // }
   const db = await Connection();
   await db.collection('products')
     .updateOne({ _id: ObjectId(ids) }, { $set: produto });
   const result = await getById(ids);
+  return result;
+};
+
+const deleteById = async (ids) => {
+  const result = await getById(ids);
+  const db = await Connection();
+  await db.collection('products')
+    .deleteOne({ _id: ObjectId(ids) });
   return result;
 };
 
@@ -45,4 +49,5 @@ module.exports = {
   getByName,
   getById,
   updateById,
+  deleteById,
 };

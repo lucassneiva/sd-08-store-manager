@@ -5,6 +5,7 @@ const {
   addProdutos,
   getByIdProdutos,
   updateByIdProducts,
+  deleteByIdProducts,
 } = require('../services/produtoServices');
 
 const DZU = 201;
@@ -32,9 +33,16 @@ const updateById = rescue(async (req, res) => {
   res.status(DOO).json(produto);
 });
 
+const deleteById = rescue(async (req, res) => {
+  const id = req.params;
+  const produto = await deleteByIdProducts(id);
+  res.status(DOO).json(produto);
+});
+
 module.exports = {
   getAllProducts,
   addProducts,
   getByIdProducts,
   updateById,
+  deleteById,
 };
