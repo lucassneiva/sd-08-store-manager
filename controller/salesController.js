@@ -23,6 +23,13 @@ const updateSale = async (req, res) => {
   return res.status(success).json(data);
 };
 
+const deleteSale = async (req, res) => {
+  const { id } = req.params;
+  const data = await sales.deleteSale(id);
+  if(data.err) return res.status(error).json(data);
+  return res.status(success).json(data);
+};
+
 module.exports = {
-  addSale, getAll, updateSale
+  addSale, getAll, updateSale, deleteSale
 };

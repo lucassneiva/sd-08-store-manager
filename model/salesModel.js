@@ -40,6 +40,18 @@ async function updateSale(req){
   };
 }
 
+async function deleteSale(id){
+  if(!ObjectId.isValid(id)) return null;
+  const data = await connection().then((db) =>
+    db.collection('sales').findOne(new ObjectId(id)));
+  if(!data) return null;
+  await connection().then((db) =>
+    db.collection('sales').deleteOne(
+      {_id: ObjectId(id)}
+    ));
+  return data;
+}
+
 module.exports = {
-  addSale, getAll, updateSale
+  addSale, getAll, updateSale, deleteSale
 };

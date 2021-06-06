@@ -35,6 +35,19 @@ async function updateSale(req){
   return data;
 }
 
+async function deleteSale(id){
+  const data = await sales.deleteSale(id);
+  if(!data){
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }
+    };
+  }
+  return data;
+}
+
 module.exports = {
-  addSale, getAll, updateSale
+  addSale, getAll, updateSale, deleteSale
 };

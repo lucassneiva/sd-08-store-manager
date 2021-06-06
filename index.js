@@ -22,7 +22,8 @@ app.route('/sales')
 
 app.route('/sales/:id')
   .get(sales.getAll)
-  .put(sales.updateSale);
+  .put(sales.updateSale)
+  .delete(sales.deleteSale);
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Online port: ${PORT}`));
