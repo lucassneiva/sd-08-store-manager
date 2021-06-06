@@ -24,6 +24,10 @@ app.delete('/products/:id', productController.deletarProdutoPorId);
 
 app.post('/sales', salesController.cadastraVenda);
 
+app.get('/sales', salesController.listarVendas);
+
+app.get('/sales/:id', salesController.buscarVendaPorId);
+
 app.listen(PORT, () => {
   console.log('Online');
 });

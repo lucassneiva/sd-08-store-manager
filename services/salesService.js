@@ -1,4 +1,5 @@
 const salesModel = require('../models/salesModel');
+const { ObjectId } = require('bson');
 
 const QUANTIDADE_MINIMA = 0;
 
@@ -17,6 +18,22 @@ const cadastraVenda = async (sale) => {
   return salesModel.cadastraVenda(sale);
 };
 
+const listarVendas = async () => {
+  const listaVenda = await salesModel.listarVendas();
+  return listaVenda;
+};
+
+const buscarVendaPorId = async (id) => {
+  if (!ObjectId.isValid(id))
+    throw new Error('Sale not found');
+  const vendaId = await salesModel.buscarVendaPorId(id);
+  if(!vendaId)
+    throw new Error('Sale not found');
+  return vendaId;
+};
+
 module.exports = {
   cadastraVenda,
+  listarVendas,
+  buscarVendaPorId,
 };
