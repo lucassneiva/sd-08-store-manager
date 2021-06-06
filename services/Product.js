@@ -69,9 +69,25 @@ const update = async (id, name, quantity) => {
     };
   };
 
-  const productID = await Product.update(id, name, quantity);
+  const updateProduct = await Product.update(id, name, quantity);
 
-  return productID;
+  return updateProduct;
+};
+
+const exclude = async (id) => {
+  const productID = await Product.findById(id);
+
+  if (!productID) {
+    return {
+      code: 'invalid_data',
+      error: { message: 'Wrong id format' },
+      status: HTTP_Unprocessable_Entity
+    };
+  }
+
+  const excludeProduct = await Product.exclude(id);
+
+  return excludeProduct;
 };
 
 module.exports = {
@@ -79,4 +95,5 @@ module.exports = {
   findById,
   create,
   update,
+  exclude,
 };

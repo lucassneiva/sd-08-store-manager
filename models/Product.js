@@ -25,16 +25,22 @@ const create = async (name, quantity) => connection()
 const update = async ( id, name, quantity ) => {
   if (!ObjectId.isValid(id)) return null;
 
-  const product = await connection()
+  const updateProduct = await connection()
     .then((db) =>	db.collection('products').updateOne({
       _id: ObjectId(id) }, { $set: { name, quantity }
     })
       .then((result) => ({ _id: result.insertedId, name, quantity }))
     );
 
-  if (!product) return null;
+  if (!updateProduct) return null;
 
-  return product;
+  return updateProduct;
+};
+
+const exclude = async (id) => {
+  return await connection().then(db => db.collection('products').deleteOne(
+    { _id: ObjectId(id) }
+  ));
 };
 
 const findByName = async (name) => {
@@ -51,5 +57,6 @@ module.exports = {
   findById,
   create,
   update,
+  exclude,
   findByName,
 };

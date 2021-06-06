@@ -41,9 +41,20 @@ const update = rescue(async (req, res, next) => {
   res.status(HTTP_OK).json(updateProduct);
 });
 
+const exclude = rescue(async (req, res, next) => {
+	const { id } = req.params;
+
+	const excludeProduct = await Product.exclude(id);
+
+	if (excludeProduct.error) return next(excludeProduct);
+
+  res.status(HTTP_OK).json(excludeProduct);
+});
+
 module.exports = {
   getAll,
   findById,
   create,
   update,
+  exclude,
 };
