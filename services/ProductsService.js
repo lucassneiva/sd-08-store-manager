@@ -8,9 +8,12 @@ const create = async(name, quantity) => await Product.create(name, quantity);
 
 const update = async(id, name, quantity) => await Product.update(id, name, quantity);
 
+const remove = async(id) => await Product.remove(id);
+
 module.exports = {
   getAll,
   findById,
   create,
   update,
+  remove
 };

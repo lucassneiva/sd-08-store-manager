@@ -18,8 +18,8 @@ const create = async(name, quantity) => {
   };
 };
 
-const update = (id, name, quantity) => {
-  connection().then((db) => db.collection('products').updateOne(
+const update = async(id, name, quantity) => {
+  await connection().then((db) => db.collection('products').updateOne(
     { _id: ObjectId(id) },
     { $set: { name, quantity } }
   ));
@@ -27,9 +27,13 @@ const update = (id, name, quantity) => {
   return { _id: ObjectId(id), name, quantity };
 };
 
+const remove = async(id) => await connection().then(
+  (db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
+
 module.exports = {
   getAll,
   findById,
   create,
   update,
+  remove
 };

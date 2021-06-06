@@ -43,9 +43,24 @@ const updateProduct = async(request, response) => {
   response.status(STATUS_OK).json(product);
 };
 
+const removeProduct = async(request, response) => {
+  try {
+    const { id } = request.params;
+    
+    const product = await ProductService.remove(id);
+  
+    response.status(STATUS_OK).json(product);  
+  } catch (error) {
+    return response.status(STATUS_ERROR).json({
+      err: { code: 'invalid_data', message: 'Wrong id format'}
+    });
+  }
+};
+
 module.exports = {
   getAllProducts,
   findByIdProduct,
   createProduct,
   updateProduct,
+  removeProduct
 };
