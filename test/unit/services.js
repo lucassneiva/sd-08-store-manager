@@ -6,7 +6,7 @@ const rewire = require('rewire');
 
 const productService = rewire('../../services/productService');
 const ProductModel = rewire('../../models/productModel.js');
-const schema = require('../../schema/internalErrors');
+const schema = require('../../schema/resolveRequest');
 const dataBaseFake = require('../data');
 
 describe('SERVICE', () => {

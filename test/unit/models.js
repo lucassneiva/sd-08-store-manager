@@ -110,8 +110,8 @@ describe('MODEL', () => {
     };
 
     const DBServer = new MongoMemoryServer();
-    const connDb = { url: '', db: '' };
     before(async () => {
+      const connDb = { url: '', db: '' };
       connDb.url = await DBServer.getUri();
       connDb.db = await DBServer.getDbName();
 
@@ -123,6 +123,7 @@ describe('MODEL', () => {
       await connectionMock.db(connDb.db).createCollection('products');
       await connectionMock.db(connDb.db).collection('products').insertMany(dataBaseFake);
       const connStub = sinon.stub(MongoClient, 'connect').resolves(connectionMock.db(connDb.db));
+      // const connStub = connectionMock.db(connDb.db)
       ProductModel.__set__({ connectionDb: connStub });
     });
 

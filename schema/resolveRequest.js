@@ -1,4 +1,5 @@
 const status = {
+  ok: 200,
   created: 201,
   unProcessableEntity: 422,
   unexpected: 500,
@@ -9,17 +10,17 @@ const code = {
   500: 'Internal Server Error',
 };
 
-module.exports = (err) => {
-  if (err.error) {
+module.exports = (res) => {
+  if (res.error) {
     return {
       status: status.unProcessableEntity,
       err: {
         code: code[status.unProcessableEntity],
-        message: err.error.details[0].message,
+        message: res.error.details[0].message,
       }
     };
   }
-  if (err === 'product_exists') {
+  if (res === 'product_exists') {
     return {
       status: status.unProcessableEntity,
       err: {
@@ -28,7 +29,7 @@ module.exports = (err) => {
       }
     };
   }
-  if (err === 'unexpected') {
+  if (res === 'unexpected') {
     return {
       status: status.unexpected,
       err: {
@@ -37,10 +38,33 @@ module.exports = (err) => {
       }
     };
   }
-  if (err.value && !err.error) {
+  if (res === 'invalid_id') {
+    return {
+      status: status.unProcessableEntity,
+      err: {
+        code: code[status.unProcessableEntity],
+        message: 'Wrong id format'
+      }
+    };
+  }
+  if (res.value && !res.error) {
     return {
       status: status.created,
-      result: err.value,
+      result: res.value,
+    };
+  }
+  if (res.ok) {
+    return {
+      status: status.ok,
+      result: res.result
+    };
+  }
+  if (res.all) {
+    return {
+      status: status.ok,
+      result: {
+        products: res.result
+      }
     };
   }
 }; 

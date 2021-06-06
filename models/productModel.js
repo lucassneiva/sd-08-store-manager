@@ -31,7 +31,18 @@ const getByKey = async (getKey) => {
   }
 };
 
+const getAll = async () => {
+  try {
+    const getCollection = await connectionDb().then((db) => db.collection('products'));
+    const result = await getCollection.find();
+    return result.toArray();
+  } catch (err) {
+    return err;
+  }
+};
+
 module.exports = {
   create,
   getByKey,
+  getAll,
 };
