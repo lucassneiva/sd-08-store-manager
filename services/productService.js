@@ -4,7 +4,7 @@ const { ObjectId } = require('mongodb');
 const getAll = async () => model.getAll();
 
 const getById = async (id) => {
-  const product = await model.getAll(id);
+  const product = await model.getById(id);
   if(!ObjectId.isValid(id)) {
     throw {
       'err': {
