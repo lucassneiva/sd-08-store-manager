@@ -74,10 +74,21 @@ const updateById = rescue(async (req, res, next) => {
   return res.status(SUCCESS).json(result);
 });
 
+const deleteById = rescue(async (req, res, next) => {
+  const { id } = req.params;
+
+  const saleToDelete = await Sales.deleteById(id);
+
+  if (saleToDelete.error) return res.status(INVALID_DATA).json(saleToDelete.error);
+
+  return res.status(SUCCESS).json(saleToDelete);
+});
+
 
 module.exports = {
   registerSale,
   getAllSales,
   getById,
-  updateById
+  updateById,
+  deleteById
 };

@@ -30,6 +30,7 @@ app.put('/products/:id', products.updateById);
 app.put('/sales/:id', sales.updateById);
 
 app.delete('/products/:id', products.deleteById);
+app.delete('/sales/:id', sales.deleteById);
 
 app.use(errorMiddleware);
 
