@@ -1,16 +1,15 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-const tryCatch =
-  (callback) =>
-    async (...args) => {
-      try {
-        return callback(...args);
-      } catch (error) {
-        console.log(error.message);
-        return process.exit(1);
-      }
-    };
+const tryCatch = (callback) =>
+  async (...args) => {
+    try {
+      return callback(...args);
+    } catch (error) {
+      console.log(error.message);
+      return process.exit(1);
+    }
+  };
 
 const createOne = tryCatch(async (product) => {
   const db = await connection();
