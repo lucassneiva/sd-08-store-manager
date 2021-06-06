@@ -71,7 +71,15 @@ const notFoundSales = {
   }
 };
 
-
+const InvalidObjectIDSale = {
+  code: 422,
+  message: {
+    'err': {
+      'code': 'invalid_data',
+      'message': 'Wrong sale ID format'
+    }
+  }
+};
 
 module.exports = {
   lessThanFive,
@@ -81,4 +89,5 @@ module.exports = {
   InvalidObjectID,
   quantityInvalidNumber,
   notFoundSales,
+  InvalidObjectIDSale,
 };

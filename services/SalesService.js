@@ -1,6 +1,6 @@
 const SalesModel = require('../models/SalesModel');
 const SalesSchema = require('../schemas/SalesSchema');
-const { notFoundSales } = require('../schemas/errorMessages');
+const { notFoundSales, InvalidObjectIDSale } = require('../schemas/errorMessages');
 
 // const ZERO = 0;
 
@@ -40,8 +40,26 @@ const getSalesByID = async (id) => {
   return saleId[0];
 };
 
+const updateSaleByID = async (id, quantity, productId) => {
+  const validate = SalesSchema.validateEntries(quantity);
+
+  if(validate) return validate;
+
+  const updateSale = await SalesModel.updateSaleByID(id, quantity, productId);
+  return updateSale[0];
+};
+
+const deleteSaleByID = async (id) => {
+  const saleId = await SalesModel.deleteSaleByID(id);
+  
+  if(!saleId) return InvalidObjectIDSale;
+  return saleId[0];
+};
+
 module.exports = {
   registerSale,
   getAllSales,
   getSalesByID,
+  updateSaleByID,
+  deleteSaleByID
 };
