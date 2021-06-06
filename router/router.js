@@ -12,11 +12,12 @@ const {
   validaNome,
   validaNumero,
   validaId,
+  validaExiste,
 } = require('../middlewares');
 
 router.get('/', getAllProducts);
 
-router.post('/', validaNome, validaNumero, addProducts);
+router.post('/', validaNome, validaExiste, validaNumero, addProducts);
 
 router.get('/:id', validaId, getByIdProducts);
 

@@ -23,14 +23,20 @@ const getByName = async (name) => {
 const getById = async (ids) => {
   if (!ObjectId.isValid(ids)) return null;
   const db = await Connection();
-  return await db.collection('products').findOne({_id: ObjectId(ids) });
+  const result = await db.collection('products').findOne({_id: ObjectId(ids) });
+  return result;
 };
 
 const updateById = async (ids, produto) => {
-  if (!(await findById(ids))) return null;
+  // if (!(await getById(ids))) {
+  //   console.log(ids);
+  //   return null;
+  // }
   const db = await Connection();
-  return db.collection('products')
+  await db.collection('products')
     .updateOne({ _id: ObjectId(ids) }, { $set: produto });
+  const result = await getById(ids);
+  return result;
 };
 
 module.exports = {
