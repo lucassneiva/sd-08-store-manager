@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 const modelProduct = require('../models/productModel');
 const modelSales = require('../models/salesModel');
 const schemaProduct = require('../schema/product');
-const resolveRequest = require('../schema/resolveRequest');
+const { resolveRequestSales } = require('../schema/resolveRequest');
 const schemaSale = require('../schema/sales');
 
 const searchForProductInStorage = async (productId) => modelProduct
@@ -33,16 +33,23 @@ const checkStockForNewSale = async (product) => {
 
 const create = async (newSale) => {
   const validNewSale = schemaSale.validSale(newSale);
-  if(!validNewSale) return resolveRequest({ sales: { err: true } });
+  if(!validNewSale) return resolveRequestSales({ sales: { err: 'create' } });
   const itensSold = await Promise.all(newSale.map(checkStockForNewSale));
   if(itensSold.every((el) => typeof el === 'object')) {
     await Promise.all(itensSold.map(updateNowStockProduct));
     const returnSaleCreated = await modelSales.create(newSale);
-    return resolveRequest({ sales: { ok: true, result: returnSaleCreated } });
+    return resolveRequestSales({ sales: { ok: true, result: returnSaleCreated } });
   }
-  return resolveRequest({ sales: { err: true } });
+  return resolveRequestSales({ sales: { err: 'create' } });
+};
+
+const getAll = async () => {
+  const getAllSales = await modelSales.getAll();
+  if(!getAllSales) return resolveRequestSales({sales: { err: 'get' } });
+  return resolveRequestSales({ sales: { getAll: true, result: getAllSales } });
 };
 
 module.exports = {
   create,
+  getAll,
 };

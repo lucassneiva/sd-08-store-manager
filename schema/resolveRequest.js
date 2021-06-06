@@ -3,14 +3,57 @@ const status = {
   created: 201,
   unProcessableEntity: 422,
   unexpected: 500,
+  notFound: 404,
 };
 
 const code = {
   422: 'invalid_data',
   500: 'Internal Server Error',
+  404: 'not_found',
 };
 
-module.exports = (res) => {
+const resolveRequestSales = (res) => {
+  if (res.sales && res.sales.err === 'create') {
+    return {
+      status: status.unProcessableEntity,
+      err: {
+        code: code[status.unProcessableEntity],
+        message: 'Wrong product ID or invalid quantity'
+      }
+    };
+  }
+  if (res.sales && res.sales.err === 'get') {
+    return {
+      status: status.notFound,
+      err: {
+        code: code[status.notFound],
+        message: 'Sale not found',
+      }
+    };
+  };
+  if (res.sales && res.sales.ok) {
+    return {
+      status: status.ok,
+      result: res.sales.result
+    };
+  }
+  if (res.sales && res.sales.getAll) {
+    return {
+      status: status.ok,
+      result: {
+        sales: res.sales.result
+      }
+    };
+  }
+  if (res.sales && res.sales.getOne) {
+    return {
+      status: status.ok,
+      result: res.sales.result
+    };
+  }
+}; 
+
+const resolveRequestProduct = (res) => {
   if (res.error) {
     return {
       status: status.unProcessableEntity,
@@ -47,15 +90,6 @@ module.exports = (res) => {
       }
     };
   }
-  if (res.sales && res.sales.err) {
-    return {
-      status: status.unProcessableEntity,
-      err: {
-        code: code[status.unProcessableEntity],
-        message: 'Wrong product ID or invalid quantity'
-      }
-    };
-  }
   if (res.value && !res.error) {
     return {
       status: status.created,
@@ -76,10 +110,9 @@ module.exports = (res) => {
       }
     };
   }
-  if (res.sales.ok) {
-    return {
-      status: status.ok,
-      result: res.sales.result
-    };
-  }
-}; 
+};
+
+module.exports = {
+  resolveRequestProduct,
+  resolveRequestSales
+};

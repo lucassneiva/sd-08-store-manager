@@ -10,7 +10,7 @@ const create = async ({ name = '', quantity = '' }) => {
       .then((db) => db.collection('products'));
     const setNewProduct = await productCollection.insertOne({
       name,
-      quantity,
+      quantity: Number(quantity),
     });
     return setNewProduct.ops[0];
   } catch (err) {
