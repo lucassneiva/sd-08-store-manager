@@ -20,6 +20,46 @@ const registerSales = async (sale) => {
   return register;
 };
 
+const getAllSales = async () => {
+  const allSales = await Sales.getAllSales();
+
+  if (!allSales) {
+    return {
+      error: {
+        err: {
+          code: 'not_found',
+          message: 'Sale not found',
+        },
+      },
+    };
+  }
+
+  return allSales;
+};
+
+const getById = async (id) => {
+  let sale;
+
+  if (id.length === MIN_ID_LENGTH) {
+    sale = await Sales.getById(id);
+  }
+
+  if (!sale || id.length !== MIN_ID_LENGTH) {
+    return {
+      error: {
+        err: {
+          code: 'not_found',
+          message: 'Sale not found',
+        },
+      },
+    };
+  }
+
+  return sale;
+};
+
 module.exports = {
-  registerSales
+  registerSales,
+  getAllSales,
+  getById
 };

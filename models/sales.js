@@ -19,6 +19,24 @@ const registerSale = tryCatch(async (sale) => {
   return { _id: insertedId, itensSold: sale };
 });
 
+const getAllSales = tryCatch(async () => {
+  const db = await connection();
+
+  const result = await db.collection('sales').find().toArray();
+
+  return result;
+});
+
+const getById = tryCatch(async (id) => {
+  const db = await connection();
+
+  const result = await db.collection('sales').findOne({ _id: ObjectId(id) });
+
+  return result;
+});
+
 module.exports = {
-  registerSale
+  registerSale,
+  getAllSales,
+  getById
 };

@@ -20,6 +20,8 @@ app.get('/', (_request, response) => {
 
 app.get('/products', products.getAllProducts);
 app.get('/products/:id', products.getById);
+app.get('/sales', sales.getAllSales);
+app.get('/sales/:id', sales.getById);
 
 app.post('/products', products.createOne);
 app.post('/sales', sales.registerSale);

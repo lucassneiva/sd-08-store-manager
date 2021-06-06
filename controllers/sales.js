@@ -2,7 +2,9 @@ const rescue = require('express-rescue');
 const Joi = require('joi');
 const Sales = require('../services/sales');
 
-const { SUCCESS, CREATED, INVALID_DATA, MIN_STR_LENGTH } = require('../constants');
+const {
+  SUCCESS, CREATED, NOT_FOUND, INVALID_DATA, MIN_STR_LENGTH
+} = require('../constants');
 
 const registerSale = rescue(async (req, res, next) => {
   const { error } = Joi.array().items(
@@ -28,6 +30,27 @@ const registerSale = rescue(async (req, res, next) => {
   return res.status(SUCCESS).json(product);
 });
 
+const getAllSales = rescue(async (req, res, next) => {
+  const result = await Sales.getAllSales();
+
+  if (result.error) return res.status(NOT_FOUND).json(result.error);
+
+  return res.status(SUCCESS).json({ sales: result });
+});
+
+const getById = rescue(async (req, res, next) => {
+  const { id } = req.params;
+
+  const result = await Sales.getById(id);
+
+  if (result.error) return res.status(NOT_FOUND).json(result.error);
+
+  return res.status(SUCCESS).json(result);
+});
+
+
 module.exports = {
-  registerSale
+  registerSale,
+  getAllSales,
+  getById
 };
