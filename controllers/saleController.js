@@ -2,6 +2,8 @@ const { Router } = require('express');
 const service = require('../services/saleService');
 const rescue = require('express-rescue');
 
+const model = require('../models/saleModel');
+
 const router = Router();
 
 router.get('/', rescue(async (_req, res) => {
@@ -46,6 +48,23 @@ router.post('/', rescue(async (req, res) => {
       res.status(STATUS_422).json(err);
     }
     console.error(err);
+    res.status(STATUS_500).json({ message: 'Algo deu errado' });
+  }
+}));
+
+router.delete('/:id', rescue( async(req, res) => {
+  const STATUS_200 = 200;
+  const STATUS_500 = 500;
+  const STATUS_422 = 422;
+  try {
+    const { id } = req.params;
+    const sale = await service.remove(id);
+    res.status(STATUS_200).json(sale);
+  } catch (erro) {
+    if (erro.err.code === 'invalid_data') {
+      res.status(STATUS_422).json(erro);
+    }
+    console.error(erro);
     res.status(STATUS_500).json({ message: 'Algo deu errado' });
   }
 }));

@@ -73,7 +73,6 @@ router.delete('/:id', rescue(async (req, res) => {
     res.status(STATUS_200).json(product);
   } catch (err) {
     if (err.err.code === 'invalid_data') {
-      console.log(err);
       return res.status(STATUS_422).json(err);
     }
     console.log(err);

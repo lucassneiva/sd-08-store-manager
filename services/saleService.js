@@ -45,8 +45,22 @@ const create = async ({productId, quantity}) => {
   return model.create(productId, quantity);
 };
 
+const remove = async (id) => {
+  const sale = await model.remove(id);
+  if (!sale) {
+    throw {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }
+    };
+  };
+  return sale;
+};
+
 module.exports = {
   getAll,
   getById,
   create,
+  remove,
 };
