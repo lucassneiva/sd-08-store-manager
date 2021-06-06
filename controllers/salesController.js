@@ -37,7 +37,9 @@ const createSale = rescue(async (req, res) => {
 
 const listAllSales = rescue(async (_req, res) => {
   const allSales = await SalesService.listAllSales();
-  res.status(OK).json(allSales);
+  res.status(OK).json({
+    sales: allSales
+  });
 });
 
 const getSaleById = rescue(async (req, res) => {
