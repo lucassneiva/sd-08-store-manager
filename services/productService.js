@@ -52,9 +52,16 @@ const atualizarProdutoPorId = async (produto) => {
   return await productModel.atualizarProdutoPorId(produto);
 };
 
+const deletarProdutoPorId = async (id) => {
+  if (!ObjectId.isValid(id))
+    throw new Error('Wrong id format');
+  return productModel.deletarProdutoPorId(id);
+};
+
 module.exports = {
   listarProdutos,
   criar,
   buscarProdutoPorId,
-  atualizarProdutoPorId
+  atualizarProdutoPorId,
+  deletarProdutoPorId,
 };

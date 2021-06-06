@@ -19,6 +19,8 @@ app.get('/products/:id', productController.buscarProdutoPorId);
 
 app.put('/products/:id', productController.atualizarProdutoPorId);
 
+app.delete('/products/:id', productController.deletarProdutoPorId);
+
 
 app.listen(PORT, () => {
   console.log('Online');

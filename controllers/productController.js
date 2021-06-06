@@ -54,7 +54,8 @@ const atualizarProdutoPorId = async (req, res) => {
       id,
       ...produto
     };
-    var produtoAtualizado = await productService.atualizarProdutoPorId(novosDadosProduto);
+    const produtoAtualizado =
+    await productService.atualizarProdutoPorId(novosDadosProduto);
     res.status(httpStatusCodeSucess).json(produtoAtualizado);
   } catch (err) {
     res.status(httpStatusCodeErro).json(
@@ -64,6 +65,23 @@ const atualizarProdutoPorId = async (req, res) => {
           message: err.message
         }
       });
+  }
+};
+
+const deletarProdutoPorId = async (req, res) => {
+  try {
+    const {id} = req.params;
+    const deleteProduto = await productService.deletarProdutoPorId(id);
+    res.status(httpStatusCodeSucess).json(deleteProduto);
+  } catch (err) {
+    res.status(httpStatusCodeErro).json(
+      {
+        err: {
+          code: 'invalid_data',
+          message: err.message
+        }
+      }
+    );
     
   }
 };
@@ -72,4 +90,6 @@ module.exports = {
   cadastrarProduto,
   listarProdutos,
   buscarProdutoPorId,
-  atualizarProdutoPorId };
+  atualizarProdutoPorId,
+  deletarProdutoPorId,
+};

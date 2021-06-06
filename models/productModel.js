@@ -42,11 +42,19 @@ const atualizarProdutoPorId = async ({id, name, quantity}) => {
   return await buscarProdutoPorId(id);
 };
 
+const deletarProdutoPorId = async(id) => {
+  const db = await connection();
+  const produto = await db.collection('products').findOne( new ObjectId(id));
+  await db.collection('products').deleteOne({ _id: ObjectId(id) });
+  return produto;
+};
+
 
 module.exports = {
   cadastrarProduto,
   buscarProdutoPorNome,
   listarProdutos,
   buscarProdutoPorId,
-  atualizarProdutoPorId
+  atualizarProdutoPorId,
+  deletarProdutoPorId,
 };
