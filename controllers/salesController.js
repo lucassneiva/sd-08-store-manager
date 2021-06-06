@@ -54,5 +54,6 @@ const getSaleById = rescue(async (req, res) => {
 
 module.exports = {
   createSale,
-  listAllSales
+  listAllSales,
+  getSaleById,
 };
