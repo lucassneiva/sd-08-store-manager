@@ -5,7 +5,7 @@ module.exports = (err, _req, res, _next) => {
       message: err.error.message
     }
   };
-
+  
   res.status(err.status).json(errorMessage);
 };
 

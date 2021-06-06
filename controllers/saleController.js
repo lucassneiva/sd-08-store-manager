@@ -2,7 +2,7 @@ const service = require('../services/saleService');
 
 const OK = 200;
 
-const create = async (req, res, next) => {
+async function create(req, res, next) {
   const items = req.body;
   const newSale = await service.create(items);
 
@@ -11,22 +11,22 @@ const create = async (req, res, next) => {
   res.status(OK).json(newSale);
 };
 
-const readAll = async (_req, res, _next) => {
+async function readAll(_req, res, _next) {
   const all = await service.readAll();
 
   res.status(OK).json({ sales: all });
 };
 
-const readById = async (req, res, next) => {
+async function readById(req, res, next) {
   const { id } = req.params;
   const sale = await service.readById(id);
 
   if (sale.error) return next(sale);
-  
+
   res.status(OK).json(sale);
 };
 
-const update = async (req, res, next) => {
+async function update(req, res, next) {
   const { id } = req.params;
   const item = req.body;
   const updateSale = await service.update(id, item);
@@ -36,12 +36,12 @@ const update = async (req, res, next) => {
   res.status(OK).json(updateSale);
 };
 
-const destroy = async(req, res, next) => {
+async function destroy(req, res, next) {
   const { id } = req.params;
   const saleDeleted = await service.destroy(id);
 
   if (saleDeleted.error) return next(saleDeleted);
-
+  
   res.status(OK).json(saleDeleted);
 };
 

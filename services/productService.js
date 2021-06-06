@@ -9,7 +9,7 @@ const validateProduct = Joi.object({
   quantity: Joi.number().min(1).required(),
 });
 
-const create = async (name, quantity) => {
+async function create(name, quantity) {
   const { error } = validateProduct.validate({ name, quantity });
 
   if (error) { 
@@ -36,13 +36,13 @@ const create = async (name, quantity) => {
   return newProduct;
 };
 
-const readAll = async () => {
+async function readAll() {
   const products = await model.readAll();
 
   return products;
 };
 
-const readById = async (id) => {
+async function readById(id) {
   const product = await model.readById(id);
 
   if (!product) {
@@ -56,7 +56,7 @@ const readById = async (id) => {
   return product;
 };
 
-const update = async(id, name, quantity) => {
+async function update(id, name, quantity) {
   const { error } = validateProduct.validate({ name, quantity });
 
   if (error) { 
@@ -72,7 +72,7 @@ const update = async(id, name, quantity) => {
   return updateProduct;
 };
 
-const destroy = async(id) => {
+async function destroy(id) {
   const productDeleted = await model.destroy(id);
 
   if (!productDeleted) {
@@ -82,7 +82,7 @@ const destroy = async(id) => {
       error: { message: 'Wrong id format' }
     };
   }
-
+  
   return productDeleted;
 };
 

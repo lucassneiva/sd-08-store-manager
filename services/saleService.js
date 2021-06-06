@@ -5,13 +5,12 @@ const stock = require('../models/productModel');
 
 const NOT_FOUND = 404;
 const UNPROCESSABLE_ENTITY = 422;
-
 const validateSale = Joi.array().items({
   productId: Joi.string().required(),
   quantity: Joi.number().min(1).required()
 });
 
-const create = async (items) => {
+async function create(items) {
   const { error } = validateSale.validate(items);
 
   if (error) { 
@@ -41,13 +40,13 @@ const create = async (items) => {
   return newSale;
 };
 
-const readAll = async () => {
+async function readAll() {
   const sales = await model.readAll();
 
   return sales;
 };
 
-const readById = async (id) => {
+async function readById(id) {
   const sale = await model.readById(id);
 
   if (!sale) {
@@ -61,7 +60,7 @@ const readById = async (id) => {
   return sale;
 };
 
-const update = async(id, item) => {
+async function update(id, item) {
   const { error } = validateSale.validate(item);
 
   if (error) { 
@@ -77,7 +76,7 @@ const update = async(id, item) => {
   return updateSale;
 };
 
-const destroy = async(id) => {
+async function destroy(id) {
   const saleDeleted = await model.destroy(id);
 
   if (!saleDeleted) {
@@ -92,7 +91,7 @@ const destroy = async(id) => {
   const product = await stock.readById(productId);
   const itemQuantity = product.quantity + quantity;
   await stock.update(productId, product.name, itemQuantity);
-
+  
   return saleDeleted;
 };
 

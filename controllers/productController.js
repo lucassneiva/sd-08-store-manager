@@ -3,7 +3,7 @@ const service = require('../services/productService');
 const OK = 200;
 const CREATED = 201;
 
-const create = async (req, res, next) => {
+async function create(req, res, next) {
   const { name, quantity } = req.body;
   const newProduct = await service.create(name, quantity);
 
@@ -12,22 +12,22 @@ const create = async (req, res, next) => {
   res.status(CREATED).json(newProduct);
 };
 
-const readAll = async (_req, res, _next) => {
+async function readAll(_req, res, _next) {
   const all = await service.readAll();
 
   res.status(OK).json({ products: all });
 };
 
-const readById = async (req, res, next) => {
+async function readById(req, res, next) {
   const { id } = req.params;
   const product = await service.readById(id);
 
   if (product.error) return next(product);
-  
+
   res.status(OK).json(product);
 };
 
-const update = async (req, res, next) => {
+async function update(req, res, next) {
   const { id } = req.params;
   const { name, quantity } = req.body;
   const updateProduct = await service.update(id, name, quantity);
@@ -37,12 +37,12 @@ const update = async (req, res, next) => {
   res.status(OK).json(updateProduct);
 };
 
-const destroy = async(req, res, next) => {
+async function destroy(req, res, next) {
   const { id } = req.params;
   const productDeleted = await service.destroy(id);
 
   if (productDeleted.error) return next(productDeleted);
-
+  
   res.status(OK).json(productDeleted);
 };
 
