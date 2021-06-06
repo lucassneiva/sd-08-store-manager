@@ -35,8 +35,26 @@ const getById = tryCatch(async (id) => {
   return result;
 });
 
+const updateById = tryCatch(async (id, data) => {
+  const db = await connection();
+
+  const updateProduct = await db
+    .collection('sales')
+    .updateOne(
+      { _id: ObjectId(id) },
+      { $set: {
+        itensSold: [{ productId: data[0].productId, quantity: data[0].quantity }]
+      }  }
+    );
+
+  const result = await db.collection('sales').findOne({ _id: ObjectId(id) });
+
+  return result;
+});
+
 module.exports = {
   registerSale,
   getAllSales,
-  getById
+  getById,
+  updateById
 };

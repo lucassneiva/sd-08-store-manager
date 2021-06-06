@@ -27,6 +27,7 @@ app.post('/products', products.createOne);
 app.post('/sales', sales.registerSale);
 
 app.put('/products/:id', products.updateById);
+app.put('/sales/:id', sales.updateById);
 
 app.delete('/products/:id', products.deleteById);
 

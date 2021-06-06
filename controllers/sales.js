@@ -48,9 +48,36 @@ const getById = rescue(async (req, res, next) => {
   return res.status(SUCCESS).json(result);
 });
 
+const updateById = rescue(async (req, res, next) => {
+  const { id } = req.params;
+
+  const { error } = Joi.array().items(
+    Joi.object({
+      productId: Joi.string().required(),
+      quantity: Joi.number().min(1).strict().required(),
+    })
+  ).validate(req.body);
+
+  if (error) {
+    return res.status(INVALID_DATA).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
+      },
+    });
+  }
+
+  const result = await Sales.updateById(id, req.body);
+
+  // if (result.error) return res.status(NOT_FOUND).json(result.error);s
+
+  return res.status(SUCCESS).json(result);
+});
+
 
 module.exports = {
   registerSale,
   getAllSales,
-  getById
+  getById,
+  updateById
 };
