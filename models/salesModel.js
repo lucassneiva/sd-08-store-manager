@@ -27,7 +27,7 @@ const getSaleById = async(id) => {
   const salesCollection = await connection()
     .then((db) => db.collection('sales'));
 
-  const sale = await salesCollection.findOne({ _id: ObjectId(id) });
+  const sale = await salesCollection.findOne(new ObjectId(id));
   return sale;
 };
 
