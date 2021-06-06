@@ -7,6 +7,7 @@ const results = {
   salesNotNull: 'Wrong product ID or invalid quantity',
   saleNotFound: 'Sale not found',
   invalidSale: 'Wrong sale ID format',
+  stockError: 'Such amount is not permitted to sell',
   unprocessable: 422,
   created: 201,
   ok: 200,
