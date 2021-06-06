@@ -1,9 +1,11 @@
 const sales = require('../services/salesService');
+const { refreshProductQuantity } = require('../services/productService');
 const {error, update, success, notFound} = require('../services/responseType');
 const { checkSale } = require('../middlewares/checkSale');
 
 const addSale = async (req, res) => {
   checkSale(req, res);
+  await refreshProductQuantity(req.body, 'add');
   const data = await sales.addSale(req);
   return data.err ? res.status(error).json(data) : res.status(success).json(data);
 };
@@ -18,6 +20,7 @@ const getAll = async (req, res) => {
 
 const updateSale = async (req, res) => {
   checkSale(req, res);
+  await refreshProductQuantity(req.body, 'add');
   const data = await sales.updateSale(req);
   if(data.err) return res.status(error).json(data);
   return res.status(success).json(data);
@@ -26,6 +29,7 @@ const updateSale = async (req, res) => {
 const deleteSale = async (req, res) => {
   const { id } = req.params;
   const data = await sales.deleteSale(id);
+  await refreshProductQuantity(data.itensSold, 'del');
   if(data.err) return res.status(error).json(data);
   return res.status(success).json(data);
 };

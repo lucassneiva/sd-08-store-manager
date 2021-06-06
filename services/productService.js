@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const products = require('../model/productModel');
 
 async function createProduct(name, quantity){
@@ -49,6 +50,27 @@ async function deleteProduct(id){
   }
   return data;
 }
+
+async function refreshProductQuantity(content, mode){
+  const zero = 0;
+  if(content){
+    const data = content.forEach(async ({quantity, productId}) => {
+      const dataQty = await products.getById(ObjectId(productId));
+      if(dataQty.quantity - quantity < zero && mode){
+        return {
+          err:{
+            code: 'stock problem',
+            message: 'Such amount is not permitted to sell'
+          }
+        };
+      }
+      if(dataQty){
+        await products.refreshProductQuantity(dataQty._id, quantity, mode);
+      }
+    });
+    return data;
+  }
+}
 module.exports = {
-  createProduct, getAll, getById, updateProduct, deleteProduct
+  createProduct, getAll, getById, updateProduct, deleteProduct, refreshProductQuantity
 };
