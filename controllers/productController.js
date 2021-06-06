@@ -67,7 +67,8 @@ const atualizarProdutoPorId = async (req, res) => {
       });
   }
 };
-
+const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
+// 
 const deletarProdutoPorId = async (req, res) => {
   try {
     const {id} = req.params;

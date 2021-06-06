@@ -1,5 +1,6 @@
 const express = require('express');
 const productController = require('./controllers/productController');
+const salesController = require('./controllers/salesController');
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -21,6 +22,7 @@ app.put('/products/:id', productController.atualizarProdutoPorId);
 
 app.delete('/products/:id', productController.deletarProdutoPorId);
 
+app.post('/sales', salesController.cadastraVenda);
 
 app.listen(PORT, () => {
   console.log('Online');
