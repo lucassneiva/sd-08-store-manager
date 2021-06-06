@@ -16,6 +16,13 @@ const getAll = async (req, res) => {
   return res.status(success).json(data);
 };
 
+const updateSale = async (req, res) => {
+  checkSale(req, res);
+  const data = await sales.updateSale(req);
+  if(data.err) return res.status(error).json(data);
+  return res.status(success).json(data);
+};
+
 module.exports = {
-  addSale, getAll
+  addSale, getAll, updateSale
 };

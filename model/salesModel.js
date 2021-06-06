@@ -26,6 +26,20 @@ async function getAll(req){
   return !data ? null : data;
 }
 
+async function updateSale(req){
+  const [info] = req.body;
+  const {id} = req.params;
+  if(!ObjectId.isValid(id)) return null;
+  await connection().then((db) => db.collection('sales').updateOne(
+    {_id: ObjectId(id)},
+    {$set: {itensSold: [info]}}
+  ));
+  return {
+    _id: id,
+    itensSold: [info]
+  };
+}
+
 module.exports = {
-  addSale, getAll
+  addSale, getAll, updateSale
 };

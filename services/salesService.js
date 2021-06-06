@@ -22,6 +22,19 @@ async function getAll(req){
   return data;
 }
 
+async function updateSale(req){
+  const data = await sales.updateSale(req);
+  if(!data){
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      }
+    };
+  }
+  return data;
+}
+
 module.exports = {
-  addSale, getAll
+  addSale, getAll, updateSale
 };
