@@ -29,8 +29,22 @@ const getAll = async () => {
   return resolveRequest('invalid_id');
 };
 
+const update = async (product) => {
+  const { id, name, quantity } = product;
+  const isValid = schema({ name, quantity });
+  if (isValid.error) return resolveRequest(isValid);
+  const productExist = await modelProduct.getByKey({ _id: new ObjectId(id) });
+  if (!productExist) return resolveRequest('invalid_id');
+  const resultUpdate = await modelProduct.update(
+    {_id: new ObjectId(id), name, quantity }
+  );
+  if (resultUpdate) return resolveRequest({ ok: true, result: resultUpdate });
+  return resolveRequest('invalid_id');
+};
+
 module.exports = {
   productCreate,
   getById,
   getAll,
+  update,
 };

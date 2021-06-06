@@ -9,5 +9,6 @@ const middlewares = require('../middlewares');
 Router.get('/products/:id', [middlewares.isValidId, controllerProduct.getById]);
 Router.get('/products', controllerProduct.getAll);
 Router.post('/products', controllerProduct.create);
+Router.put('/products/:id', [middlewares.isValidId, controllerProduct.update]);
 
 module.exports = Router;
