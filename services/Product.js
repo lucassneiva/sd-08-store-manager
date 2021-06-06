@@ -58,8 +58,25 @@ const create = async (name, quantity) => {
   return Product.create(name, quantity);
 };
 
+const update = async (id, name, quantity) => {
+  const { error } = schema.validate({ name, quantity });
+
+  if (error) { 
+    return {
+      code: 'invalid_data',
+      error,
+      status: HTTP_Unprocessable_Entity
+    };
+  };
+
+  const productID = await Product.update(id, name, quantity);
+
+  return productID;
+};
+
 module.exports = {
   getAll,
   findById,
   create,
+  update,
 };

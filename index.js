@@ -18,6 +18,7 @@ app.get('/', (_request, response) => {
 app.get('/products', Product.getAll);
 app.get('/products/:id', Product.findById);
 app.post('/products', Product.create);
+app.put('/products/:id', Product.update);
 
 // app.get('/sales', Sale.getAll);
 // app.post('/sales', Sale.create);

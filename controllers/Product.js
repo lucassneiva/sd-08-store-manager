@@ -30,8 +30,20 @@ const create = rescue(async (req, res, next) => {
   res.status(HTTP_Created).json(newProduct);
 });
 
+const update = rescue(async (req, res, next) => {
+  const { name, quantity } = req.body;
+  const { id } = req.params;
+
+  const updateProduct = await Product.update(id, name, quantity);
+
+  if (updateProduct.error) return next(updateProduct);
+
+  res.status(HTTP_OK).json(updateProduct);
+});
+
 module.exports = {
   getAll,
   findById,
   create,
+  update,
 };
