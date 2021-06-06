@@ -10,6 +10,11 @@ const listAllSales = async () => {
   return salesList;
 };
 
+const getSaleById = async (id) => {
+  const sale = await SalesModel.getSaleById(id);
+  return sale;
+};
+
 module.exports = {
   createSale,
   listAllSales

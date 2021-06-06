@@ -2,10 +2,11 @@ const rescue = require('express-rescue');
 const SalesService = require('../services/salesService');
 const { findById } = require('../services/productsService');
 
-const INVALID_ERR = 422;
+const NONE = 0;
 const OK = 200;
 const CREATED = 201;
-const NONE = 0;
+const INVALID_ERR = 422;
+const NOT_FOUND = 404;
 
 const checkSalesProductsIds = async (salesArray) => {
   const productsIds = salesArray.map(({ productId }) => findById(productId));
@@ -37,6 +38,18 @@ const createSale = rescue(async (req, res) => {
 const listAllSales = rescue(async (_req, res) => {
   const allSales = await SalesService.listAllSales();
   res.status(OK).json(allSales);
+});
+
+const getSaleById = rescue(async (req, res) => {
+  const { id } = req.params;
+  const sale = await SalesService.getSaleById(id);
+  if(!sale) return res.status(NOT_FOUND).json({
+    err: {
+      code: 'not_found',
+      message: 'Sale not found'
+    }
+  });
+  res.status(OK).json(sale);
 });
 
 module.exports = {

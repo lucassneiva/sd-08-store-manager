@@ -23,8 +23,17 @@ const listAllSales = async () => {
   return salesList;
 };
 
+const getSaleById = async(id) => {
+  const salesCollection = await connection()
+    .then((db) => db.collection('sales'));
+
+  const sale = await salesCollection.findOne({ _id: ObjectId(id) });
+  return sale;
+};
+
 
 module.exports = {
   createSale,
-  listAllSales
+  listAllSales,
+  getSaleById,
 };
