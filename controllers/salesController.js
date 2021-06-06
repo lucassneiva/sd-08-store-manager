@@ -54,8 +54,20 @@ const getSaleById = rescue(async (req, res) => {
   res.status(OK).json(sale);
 });
 
+const deleteSale = rescue(async (req, res) => {
+  const { id } = req.params;
+  const sale = await SalesService.getSaleById(id);
+  if(!sale) return res.status(INVALID_ERR).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format'
+    }
+  });
+});
+
 module.exports = {
   createSale,
   listAllSales,
   getSaleById,
+  deleteSale
 };
