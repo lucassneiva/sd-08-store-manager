@@ -20,6 +20,9 @@ const getSaleById = async (id) => {
 };
 
 const deleteSale = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  };
   const deletedSaled = await SalesModel.deleteSale(id);
   return deleteSale;
 };
