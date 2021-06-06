@@ -50,10 +50,14 @@ const updateSaleByID = async (id, quantity, productId) => {
 };
 
 const deleteSaleByID = async (id) => {
+
+  const sale = await SalesModel.getSalesByID(id);
+
   const saleId = await SalesModel.deleteSaleByID(id);
   
   if(!saleId) return InvalidObjectIDSale;
-  return saleId[0];
+  
+  return sale[0];
 };
 
 module.exports = {

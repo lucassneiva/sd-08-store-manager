@@ -46,6 +46,7 @@ const deleteSaleByID = async (req, resp) => {
   resp.status(HTTP_STATUS_OK).json(response);
 };
 
+
 module.exports = {
   registerSale,
   getAllSales,

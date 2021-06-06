@@ -48,13 +48,9 @@ const updateSaleByID = async (id, quantity, productId) => {
 
 const deleteSaleByID = async (id) => {
   try {
-    const sale = await connection()
-      .then((db) => ObjectId.isValid(id)? db.collection('sales')
-        .find({_id: ObjectId(id)}).toArray() : null);
-
-    connection().then((db) => db.collection('sales').deleteOne({_id: ObjectId(id)}));
-
-    return sale;
+    await connection().then((db) => db.collection('sales')
+      .deleteOne({_id: ObjectId(id)})).then((sale) => sale);
+    return true;
   } catch (error) {
     console.error(error);
   }
