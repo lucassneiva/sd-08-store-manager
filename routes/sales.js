@@ -6,7 +6,7 @@ const {
   getSaleById } = require('../controllers/salesController');
 
 router.post('/', createSale);
-router.get('/', getSaleById);
+router.get('/:id', getSaleById);
 router.get('/', listAllSales);
 
 module.exports = router;

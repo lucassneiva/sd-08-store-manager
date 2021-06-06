@@ -27,7 +27,6 @@ const findProducts = async () => {
     .then(db => db.collection('products'));
 
   const products = await productsCollection.find().toArray();
-  console.log('findProducts - Model', products);
   return products;
 };
 
