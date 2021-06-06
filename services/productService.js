@@ -36,10 +36,18 @@ const update = async (product) => {
   const productExist = await modelProduct.getByKey({ _id: new ObjectId(id) });
   if (!productExist) return resolveRequest('invalid_id');
   const resultUpdate = await modelProduct.update(
-    {_id: new ObjectId(id), name, quantity }
+    { _id: new ObjectId(id), name, quantity }
   );
   if (resultUpdate) return resolveRequest({ ok: true, result: resultUpdate });
   return resolveRequest('invalid_id');
+};
+
+const deleteProduct = async (id) => {
+  const product_exists = await modelProduct.getByKey({ _id: new ObjectId(id) });
+  if(!product_exists) return resolveRequest('invalid_id');
+  const result = await modelProduct.deleteProduct({ _id: ObjectId(id) });
+  if(!result.deletedCount) return resolveRequest('invalid_id');
+  return resolveRequest({ ok: true, result:  product_exists });
 };
 
 module.exports = {
@@ -47,4 +55,5 @@ module.exports = {
   getById,
   getAll,
   update,
+  deleteProduct,
 };

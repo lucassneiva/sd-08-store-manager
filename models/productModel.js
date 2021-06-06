@@ -56,9 +56,20 @@ const update = async (product) => {
   }
 };
 
+const deleteProduct = async (idProduct) => {
+  try {
+    const getCollection = await connectionDb().then((db) => db.collection('products'));
+    const result = await getCollection.deleteOne(idProduct);
+    return { deletedCount: result.deletedCount }; 
+  } catch (err) {
+    return err;
+  }
+};
+
 module.exports = {
   create,
   getByKey,
   getAll,
   update,
+  deleteProduct
 };
