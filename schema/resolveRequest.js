@@ -47,6 +47,15 @@ module.exports = (res) => {
       }
     };
   }
+  if (res.sales && res.sales.err) {
+    return {
+      status: status.unProcessableEntity,
+      err: {
+        code: code[status.unProcessableEntity],
+        message: 'Wrong product ID or invalid quantity'
+      }
+    };
+  }
   if (res.value && !res.error) {
     return {
       status: status.created,
@@ -65,6 +74,12 @@ module.exports = (res) => {
       result: {
         products: res.result
       }
+    };
+  }
+  if (res.sales.ok) {
+    return {
+      status: status.ok,
+      result: res.sales.result
     };
   }
 }; 

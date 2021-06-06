@@ -8,7 +8,8 @@ module.exports = async (error, _req, res, _next) => {
   return res.status(error.status || code_default).json({
     err:{
       code: 'notFound',
-      message: 'Unknown error'
+      message: error.message ? error.message : 'Unknown error',
+      error: error
     }
   });
 };

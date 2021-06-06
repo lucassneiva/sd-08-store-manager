@@ -43,13 +43,16 @@ const getAll = async () => {
 
 const update = async (product) => {
   try {
-    const { _id, name, quantity } = product;
+    const { _id } = product;
+    delete product._id;
+    console.log(product);
     const getCollection = await connectionDb().then((db) => db.collection('products'));
     await getCollection
       .updateOne(
         { _id: new ObjectId(_id) },
-        { $set: { name, quantity } }
+        { $set: { ...product } }
       );
+    product._id = _id;
     return product;
   } catch (err) {
     return err;

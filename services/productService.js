@@ -4,7 +4,8 @@ const resolveRequest = require('../schema/resolveRequest');
 const { ObjectId } = require('mongodb');
 
 const productCreate = async (newProduct) => {
-  const isValid = schema(newProduct);
+  const isValid = schema.validProduct(newProduct);
+  console.log(isValid);
   if (isValid.error) return resolveRequest(isValid);
   const productExists = await modelProduct.getByKey({
     name: newProduct.name 
@@ -31,7 +32,7 @@ const getAll = async () => {
 
 const update = async (product) => {
   const { id, name, quantity } = product;
-  const isValid = schema({ name, quantity });
+  const isValid = schema.validProduct({ name, quantity });
   if (isValid.error) return resolveRequest(isValid);
   const productExist = await modelProduct.getByKey({ _id: new ObjectId(id) });
   if (!productExist) return resolveRequest('invalid_id');
