@@ -21,5 +21,6 @@ const getSaleById = async (id) => {
 
 module.exports = {
   createSale,
-  listAllSales
+  listAllSales,
+  getSaleById
 };
