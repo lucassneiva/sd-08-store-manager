@@ -20,6 +20,20 @@ const schema = joi.object({
 
 const getAll = async () => Product.getAll();
 
+const findById = async (id) => {
+  const productID = await Product.findById(id);
+
+  if (!productID) {
+    return {
+      code: 'invalid_data',
+      error: { message: 'Wrong id format' },
+      status: HTTP_Unprocessable_Entity
+    };
+  }
+
+  return productID;
+};
+
 const create = async (name, quantity) => {
   const { error } = schema.validate({ name, quantity });
 
@@ -46,5 +60,6 @@ const create = async (name, quantity) => {
 
 module.exports = {
   getAll,
+  findById,
   create,
 };

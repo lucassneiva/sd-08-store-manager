@@ -10,6 +10,16 @@ const getAll = rescue(async (req, res) => {
   res.status(HTTP_OK).json(products);
 });
 
+const findById = rescue(async (req, res, next) => {
+  const { id } = req.params;
+
+  const productID = await Product.findById(id);
+
+  if (productID.error) return next(productID);
+
+  res.status(HTTP_OK).json(productID);
+});
+
 const create = rescue(async (req, res, next) => {
   const { name, quantity } = req.body;
 
@@ -22,5 +32,6 @@ const create = rescue(async (req, res, next) => {
 
 module.exports = {
   getAll,
+  findById,
   create,
 };
