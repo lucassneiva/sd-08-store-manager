@@ -33,12 +33,34 @@ const getAllProducts = rescue(async (req, res, next) => {
 const getById = rescue(async (req, res, next) => {
   const {id} = req.params;
 
+  const { error } = Joi.object({
+    name: Joi.string().min(MIN_STR_LENGTH).required(),
+    quantity: Joi.number().min(1).strict().required()
+  }).validate(req.body);
+
+  if (error) {
+    return next(error);
+  }
   // console.log(id);
 
   const result = await service.getById(id);
 
-  // console.log(result.topology.s.seedlist);
-  if (result.error) return res.status(INVALID_DATA).json(result.error);
+  return res.status(SUCCESS).json(result);
+});
+
+const updateById = rescue(async (req, res, next) => {
+  const {id} = req.params;
+
+  const { error } = Joi.object({
+    name: Joi.string().min(MIN_STR_LENGTH).required(),
+    quantity: Joi.number().min(1).strict().required()
+  }).validate(req.body);
+
+  if (error) {
+    return next(error);
+  }
+
+  const result = await service.updateById(id, req.body);
 
   return res.status(SUCCESS).json(result);
 });
@@ -46,5 +68,6 @@ const getById = rescue(async (req, res, next) => {
 module.exports = {
   createOne,
   getAllProducts,
-  getById
+  getById,
+  updateById
 };

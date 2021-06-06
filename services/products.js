@@ -37,8 +37,6 @@ const getById = async (id) => {
     product = await products.getById(id);
   }
 
-  // console.log('product', product);
-
   if (!product) {
     return {
       error: {
@@ -53,9 +51,27 @@ const getById = async (id) => {
   return product;
 };
 
+const updateById = async (id, body) => {
+  const updatedProduct = await products.updateById(id, body);
+
+  if (!updatedProduct) {
+    return {
+      error: {
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong id format',
+        }
+      },
+    };
+  }
+
+  return updatedProduct;
+};
+
 
 module.exports = {
   create,
   getAll,
-  getById
+  getById,
+  updateById
 };

@@ -22,6 +22,8 @@ app.get('/products/:id', products.getById);
 
 app.post('/products', products.createOne);
 
+app.put('/products/:id', products.updateById);
+
 app.use(errorMiddleware);
 
 app.listen(
