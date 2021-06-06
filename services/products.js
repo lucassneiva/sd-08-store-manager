@@ -68,10 +68,32 @@ const updateById = async (id, body) => {
   return updatedProduct;
 };
 
+const deleteById = async (id) => {
+  let productToDelete;
+
+  if(id.length === MIN_ID_LENGTH) {
+    productToDelete = await products.deleteById(id);
+  }
+
+  if (!productToDelete) {
+    return {
+      error: {
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong id format',
+        }
+      },
+    };
+  }
+
+  return productToDelete;
+};
+
 
 module.exports = {
   create,
   getAll,
   getById,
-  updateById
+  updateById,
+  deleteById
 };

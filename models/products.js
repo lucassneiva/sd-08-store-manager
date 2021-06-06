@@ -59,10 +59,21 @@ const updateById = tryCatch(async (id, data) => {
   return result;
 });
 
+const deleteById = tryCatch(async (id) => {
+  const db = await connection();
+
+  const productToDelete = await db.collection('products').findOne({_id: ObjectId(id)});
+
+  const deleteProduct = await db.collection('products').remove({ _id: ObjectId(id) });
+
+  return productToDelete;
+});
+
 module.exports = {
   createOne,
   getByName,
   getAllProducts,
   getById,
-  updateById
+  updateById,
+  deleteById
 };

@@ -65,9 +65,20 @@ const updateById = rescue(async (req, res, next) => {
   return res.status(SUCCESS).json(result);
 });
 
+const deleteById = rescue(async (req, res, next) => {
+  const {id} = req.params;
+
+  const productToDelete = await service.deleteById(id);
+
+  if (productToDelete.error) return res.status(INVALID_DATA).json(productToDelete.error);
+
+  return res.status(SUCCESS).json(productToDelete);
+});
+
 module.exports = {
   createOne,
   getAllProducts,
   getById,
-  updateById
+  updateById,
+  deleteById
 };

@@ -230,7 +230,7 @@ describe('2 - Crie um endpoint para listar os produtos', () => {
   });
 });
 
-describe.only('3 - Crie um endpoint para atualizar um produto', () => {
+describe('3 - Crie um endpoint para atualizar um produto', () => {
   let connection;
   let db;
 
@@ -392,7 +392,7 @@ describe.only('3 - Crie um endpoint para atualizar um produto', () => {
   });
 });
 
-describe('4 - Crie um endpoint para deletar um produto', () => {
+describe.only('4 - Crie um endpoint para deletar um produto', () => {
   let connection;
   let db;
 

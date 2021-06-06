@@ -24,6 +24,8 @@ app.post('/products', products.createOne);
 
 app.put('/products/:id', products.updateById);
 
+app.delete('/products/:id', products.deleteById);
+
 app.use(errorMiddleware);
 
 app.listen(
