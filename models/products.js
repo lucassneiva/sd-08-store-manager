@@ -1,14 +1,16 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-const tryCatch = (callback) => async (...args) => {
-  try {
-    return callback(...args);
-  } catch (error) {
-    console.log(error.message);
-    return process.exit(1);
-  }
-};
+const tryCatch =
+  (callback) =>
+    async (...args) => {
+      try {
+        return callback(...args);
+      } catch (error) {
+        console.log(error.message);
+        return process.exit(1);
+      }
+    };
 
 const createOne = tryCatch(async (product) => {
   const db = await connection();
@@ -51,10 +53,10 @@ const updateById = tryCatch(async (id, data) => {
     .collection('products')
     .updateOne(
       { _id: ObjectId(id) },
-      { $set: {name: data.name, quantity: data.quantity}}
+      { $set: { name: data.name, quantity: data.quantity } }
     );
 
-  const result = await db.collection('products').findOne({_id: ObjectId(id)});
+  const result = await db.collection('products').findOne({ _id: ObjectId(id) });
 
   return result;
 });
@@ -62,9 +64,9 @@ const updateById = tryCatch(async (id, data) => {
 const deleteById = tryCatch(async (id) => {
   const db = await connection();
 
-  const productToDelete = await db.collection('products').findOne({_id: ObjectId(id)});
+  const productToDelete = await db.collection('products').findOne({ _id: ObjectId(id) });
 
-  const deleteProduct = await db.collection('products').remove({ _id: ObjectId(id) });
+  const deleteProduct = await db.collection('products').deleteOne({ _id: ObjectId(id) });
 
   return productToDelete;
 });
@@ -75,5 +77,5 @@ module.exports = {
   getAllProducts,
   getById,
   updateById,
-  deleteById
+  deleteById,
 };

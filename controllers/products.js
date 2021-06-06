@@ -1,20 +1,20 @@
 const rescue = require('express-rescue');
 const Joi = require('joi');
-const service = require('../services/products');
+const Products = require('../services/products');
 
 const { SUCCESS, CREATED, INVALID_DATA, MIN_STR_LENGTH } = require('../constants');
 
 const createOne = rescue(async (req, res, next) => {
   const { error } = Joi.object({
     name: Joi.string().min(MIN_STR_LENGTH).required(),
-    quantity: Joi.number().min(1).strict().required()
+    quantity: Joi.number().min(1).strict().required(),
   }).validate(req.body);
 
   if (error) {
     return next(error);
   }
 
-  const product = await service.create(req.body);
+  const product = await Products.create(req.body);
 
   if (product.error) return res.status(INVALID_DATA).json(product.error);
 
@@ -22,53 +22,44 @@ const createOne = rescue(async (req, res, next) => {
 });
 
 const getAllProducts = rescue(async (req, res, next) => {
-  const result = await service.getAll();
+  const result = await Products.getAll();
 
-  // console.log(result.topology.s.seedlist);
-  // if (product.error) return res.status(INVALID_DATA).json(product.error);
+  if (result.error) return res.status(INVALID_DATA).json(result.error);
 
-  return res.status(SUCCESS).json({products: result});
+  return res.status(SUCCESS).json({ products: result });
 });
 
 const getById = rescue(async (req, res, next) => {
-  const {id} = req.params;
+  const { id } = req.params;
 
-  const { error } = Joi.object({
-    name: Joi.string().min(MIN_STR_LENGTH).required(),
-    quantity: Joi.number().min(1).strict().required()
-  }).validate(req.body);
+  const result = await Products.getById(id);
 
-  if (error) {
-    return next(error);
-  }
-  // console.log(id);
-
-  const result = await service.getById(id);
+  if (result.error) return res.status(INVALID_DATA).json(result.error);
 
   return res.status(SUCCESS).json(result);
 });
 
 const updateById = rescue(async (req, res, next) => {
-  const {id} = req.params;
+  const { id } = req.params;
 
   const { error } = Joi.object({
     name: Joi.string().min(MIN_STR_LENGTH).required(),
-    quantity: Joi.number().min(1).strict().required()
+    quantity: Joi.number().min(1).strict().required(),
   }).validate(req.body);
 
   if (error) {
     return next(error);
   }
 
-  const result = await service.updateById(id, req.body);
+  const result = await Products.updateById(id, req.body);
 
   return res.status(SUCCESS).json(result);
 });
 
 const deleteById = rescue(async (req, res, next) => {
-  const {id} = req.params;
+  const { id } = req.params;
 
-  const productToDelete = await service.deleteById(id);
+  const productToDelete = await Products.deleteById(id);
 
   if (productToDelete.error) return res.status(INVALID_DATA).json(productToDelete.error);
 
@@ -80,5 +71,5 @@ module.exports = {
   getAllProducts,
   getById,
   updateById,
-  deleteById
+  deleteById,
 };

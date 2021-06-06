@@ -1,10 +1,10 @@
-const products = require('../models/products');
+const Products = require('../models/products');
 
 const { MIN_ID_LENGTH } = require('../constants');
 const create = async ({ name, quantity }) => {
   const newProduct = { name, quantity };
   // Buscamos um produto com o mesmo nome que desejamos criar
-  const isProduct = await products.getByName(newProduct);
+  const isProduct = await Products.getByName(newProduct);
 
   // Caso esse produto já exista, retornamos um objeto de erro informando
   // que não é possível criar o produto pois ele já existe
@@ -14,18 +14,29 @@ const create = async ({ name, quantity }) => {
         err: {
           code: 'invalid_data',
           message: 'Product already exists',
-        }
+        },
       },
     };
   }
 
   // Caso o produto não exista e, portanto, possa ser criado
   // chamamos o model e retornamos o resultado
-  return products.createOne(newProduct);
+  return Products.createOne(newProduct);
 };
 
 const getAll = async () => {
-  const allProducts = await products.getAllProducts();
+  const allProducts = await Products.getAllProducts();
+
+  if (!allProducts) {
+    return {
+      error: {
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong id format',
+        },
+      },
+    };
+  }
 
   return allProducts;
 };
@@ -33,17 +44,17 @@ const getAll = async () => {
 const getById = async (id) => {
   let product;
 
-  if(id.length === MIN_ID_LENGTH) {
-    product = await products.getById(id);
+  if (id.length === MIN_ID_LENGTH) {
+    product = await Products.getById(id);
   }
 
-  if (!product) {
+  if (!product || id.length !== MIN_ID_LENGTH) {
     return {
       error: {
         err: {
           code: 'invalid_data',
           message: 'Wrong id format',
-        }
+        },
       },
     };
   }
@@ -52,7 +63,7 @@ const getById = async (id) => {
 };
 
 const updateById = async (id, body) => {
-  const updatedProduct = await products.updateById(id, body);
+  const updatedProduct = await Products.updateById(id, body);
 
   if (!updatedProduct) {
     return {
@@ -60,7 +71,7 @@ const updateById = async (id, body) => {
         err: {
           code: 'invalid_data',
           message: 'Wrong id format',
-        }
+        },
       },
     };
   }
@@ -71,8 +82,8 @@ const updateById = async (id, body) => {
 const deleteById = async (id) => {
   let productToDelete;
 
-  if(id.length === MIN_ID_LENGTH) {
-    productToDelete = await products.deleteById(id);
+  if (id.length === MIN_ID_LENGTH) {
+    productToDelete = await Products.deleteById(id);
   }
 
   if (!productToDelete) {
@@ -81,7 +92,7 @@ const deleteById = async (id) => {
         err: {
           code: 'invalid_data',
           message: 'Wrong id format',
-        }
+        },
       },
     };
   }
@@ -89,11 +100,10 @@ const deleteById = async (id) => {
   return productToDelete;
 };
 
-
 module.exports = {
   create,
   getAll,
   getById,
   updateById,
-  deleteById
+  deleteById,
 };
