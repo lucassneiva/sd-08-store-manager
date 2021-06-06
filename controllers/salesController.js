@@ -63,6 +63,7 @@ const deleteSale = rescue(async (req, res) => {
       message: 'Wrong sale ID format'
     }
   });
+  res.status(OK).json(sale);
 });
 
 module.exports = {
