@@ -6,7 +6,7 @@ const {
   updateProduct,
   removeProduct
 } = require('../middlewares/ProductsMiddleware');
-const { validateProduct } = require('../middlewares/ValidateMiddleware');
+const { validateProduct } = require('../middlewares/ValidateProdMiddleware');
 
 const router = Router();
 
