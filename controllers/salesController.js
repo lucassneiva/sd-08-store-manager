@@ -1,5 +1,5 @@
 const {
-  addSales, getAllSales, getSaleById, updateSale
+  addSales, getAllSales, getSaleById, updateSale, deleteSale, checkSaleExists
 } = require('../services/saleServices');
 const { UNPROCESSABLE, OK, NOT_FOUND } = require('./constants');
 
@@ -36,9 +36,21 @@ const updatesSale = async(req, res) => {
   return res.status(OK).json(afterUpdated);
 };
 
+const deletesSale = async(req, res) => {
+  const { id } = req.params;
+
+  const saleExists = await checkSaleExists(id);
+  if(!saleExists) return res.startus(UNPROCESSABLE).json(saleExists);
+
+  const deletedSale = await deleteSale(id);
+  if(deletedSale.err) return res.status(UNPROCESSABLE).json(deletedSale);
+  return res.status(OK).json(deletedSale);
+};
+
 module.exports = {
   addsSales,
   getsAllSales,
   getsSale,
   updatesSale,
+  deletesSale
 };

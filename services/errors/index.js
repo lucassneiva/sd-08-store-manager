@@ -5,7 +5,8 @@ const errorMsgs = {
   quantityNotNumber: '"quantity" must be a number',
   wrongId: 'Wrong id format',
   wrongIdOrQuantity: 'Wrong product ID or invalid quantity',
-  saleNotFound: 'Sale not found'
+  saleNotFound: 'Sale not found',
+  wrongSaleIdFormat: 'Wrong sale ID format'
 };
 
 const errorCodes = {

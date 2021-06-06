@@ -1,7 +1,8 @@
+const { SALES } = require('../models/constants');
 const SalesModel = require('../models/salesModel');
 const { generateError, errorMsgs, errorCodes } = require('./errors');
 
-const { wrongIdOrQuantity, saleNotFound } = errorMsgs;
+const { wrongIdOrQuantity, saleNotFound, wrongSaleIdFormat } = errorMsgs;
 const { NOT_FOUND_ERR } = errorCodes;
 
 const addSales = async(sale) => {
@@ -41,9 +42,23 @@ const updateSale = async(id, toUpdate) => {
   return updatedSale;
 };
 
+const deleteSale = async(id) => {
+  const deletedSale = await SalesModel.deleteSaleById(id);
+  if (!deletedSale) return generateError(wrongSaleIdFormat);
+  return deletedSale;
+};
+
+const checkSaleExists = async(id) => {
+  const foundSale = await SalesModel.getSaleById(id);
+  if(!foundSale) return generateError(wrongSaleIdFormat);
+  return foundSale;
+};
+
 module.exports = {
   addSales,
   getAllSales,
   getSaleById,
   updateSale,
+  deleteSale,
+  checkSaleExists,
 };
