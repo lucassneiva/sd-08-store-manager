@@ -19,5 +19,6 @@ Router.post('/sales', controllerSale.create);
 Router.get('/sales/:id', [middlewares.isValidId, controllerSale.getById]);
 Router.get('/sales', controllerSale.getAll);
 Router.put('/sales/:id', [middlewares.isValidId, controllerSale.update]);
+Router.delete('/sales/:id', [middlewares.isValidId, controllerSale.deleteSale]);
 
 module.exports = Router;

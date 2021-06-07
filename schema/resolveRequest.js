@@ -11,9 +11,9 @@ const code = {
   500: 'Internal Server Error',
   404: 'not_found',
 };
-
+const types = ['create', 'update', 'delete'];
 const resolveRequestSales = (res) => {
-  if (res.sales && ( res.sales.err === 'create' || res.sales.err === 'update' )) {
+  if (res.sales && res.sales.err && types.includes(res.sales.err)) {
     return {
       status: status.unProcessableEntity,
       err: {

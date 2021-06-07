@@ -52,20 +52,23 @@ const update = async (updateSale, id) => {
   }
 };
 
+const deleteSale = async (id) => {
+  console.log(id);
+  try {
+    await connectionDb()
+      .then((db) => db.collection('sales'))
+      .then((getCollection) => getCollection.deleteOne({ _id: ObjectId(id) }));
+    console.log('aqui');
+    return true;
+  } catch (err) {
+    return err;
+  } 
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   update,
+  deleteSale,
 };
-
-
-// db.sales.updateOne(
-//   { _id: ObjectId('60bd374901472df171f68de7') },
-//   { 
-//     $set: {
-//       'itensSold.$[elemento].quantity': 10,
-//     }
-//   },
-//   { arrayFilters: [{ 'elemento.productId': '60bce37ca5d2522ff6b3d8bb' }] }
-// );

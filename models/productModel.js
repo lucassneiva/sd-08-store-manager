@@ -58,6 +58,21 @@ const update = async (product) => {
   }
 };
 
+const restoreQuantity = async (product) => {
+  try {
+    const { _id, quantity } = product;
+    const getCollection = await connectionDb().then((db) => db.collection('products'));
+    await getCollection
+      .updateOne(
+        { _id: new ObjectId(_id) },
+        { '$inc': { quantity: quantity } } 
+      );
+    return true;
+  } catch (err) {
+    return err;
+  }
+};
+
 const deleteProduct = async (idProduct) => {
   try {
     const getCollection = await connectionDb().then((db) => db.collection('products'));
@@ -73,5 +88,6 @@ module.exports = {
   getByKey,
   getAll,
   update,
-  deleteProduct
+  deleteProduct,
+  restoreQuantity,
 };
