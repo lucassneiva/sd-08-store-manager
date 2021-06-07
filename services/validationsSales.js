@@ -55,18 +55,18 @@ const validateSolds = async (id) => {
 };
 
 const validateSoldsAll = async () => {
-    const getAllSales = await findModelsSales.getAllSolds();
-  
-    if (!getAllSales) {
-      return {
-        err: {
-          code: 'not_found',
-          message: 'Sale not found',
-        },
-        code: 404,
-      };
+  const getAllSales = await findModelsSales.getAllSolds();
+
+  if (!getAllSales) {
+    return {
+      err: {
+        code: 'not_found',
+        message: 'Sale not found',
+      },
+      code: 404,
     };
   };
+};
 
 module.exports = {
   getByIdArray,
