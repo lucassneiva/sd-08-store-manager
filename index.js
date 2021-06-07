@@ -18,4 +18,6 @@ app.get('/products/:id?', product.search);
 
 app.put('/products/:id', product.update);
 
+app.delete('/products/:id', product.remove);
+
 app.listen(PORT, () => console.log(`Listening to port ${PORT}`));

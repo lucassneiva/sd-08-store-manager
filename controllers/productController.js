@@ -19,6 +19,10 @@ const update = async (req, res) => {
   return res.status(status).json(result);
 };
 
-const remove = async (req, res) => {};
+const remove = async (req, res) => {
+  const { id } = req.params;
+  const { status, result } = await service.remove(id);
+  return res.status(status).json(result);
+};
 
 module.exports = { create, search, update, remove };
