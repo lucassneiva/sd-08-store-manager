@@ -78,19 +78,19 @@ router.put('/:id', async (req, res)=> {
   }
 });
 
-// router.delete('/:id', async(req, res) => {
-//   const { id } = req.params;
+router.delete('/:id', async(req, res) => {
+  const { id } = req.params;
 
-//   const deleteProducts = await SalesServices.exclude(id);
+  const deleteProducts = await SalesServices.exclude(id);
 
-//   console.log('linha 84 controllers', deleteProducts);
+  console.log('linha 84 controllers', deleteProducts);
 
-//   if (deleteProducts.code) {
-//     return res.status(codeMessage.code422).json({ err: deleteProducts});
-//   }
+  if (deleteProducts.code) {
+    return res.status(codeMessage.code422).json({ err: deleteProducts});
+  }
 
-//   return res.status(codeMessage.code200).json(deleteProducts);
+  return res.status(codeMessage.code200).json(deleteProducts);
 
-// });
+});
 
 module.exports = router;

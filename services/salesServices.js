@@ -139,13 +139,12 @@ const exclude = async (id) => {
   console.log('linha 139 services', updateProducts);
   if( updateProducts === null) return {
     code: 'invalid_data',
-    message: 'Wrong id format'
+    message: 'Wrong sale ID format'
   };
 
   return {
     _id: id,
-    name: productsById.name,
-    quantity: productsById.quantity
+    itensSold: productsById.itensSold,
   };
 };
 
