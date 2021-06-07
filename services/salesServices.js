@@ -1,28 +1,12 @@
 const salesModel = require('../models/salesModel');
-const ProductsModel = require('../models/productModel');
+const productsServices = require('../services/productsServices');
 const { ObjectId } = require('mongodb');
 
 // modifiquei o nome do parametro pra ficar no padão dos outros nomes, só pra estetica ficar melhor
-/*const createSale = async (itensSold) => {
-  //const sale = await salesModel.createSale(itensSold);
-  //await updateProduct(itensSold);
-  //
-  for (let item of itensSold) {
-    const product = await ProductsModel.getProductById(item.productId);
-    const newQuantity = product.quantity - item.quantity;
-    ProductsModel.updateProduct(item.productId, {quantity: newQuantity});
-    //ProductsModel.updateProduct(...item.productId, quantity: newQuantity);
-  }
-
-  return salesModel.createSale(itensSold);
-  //return sale;
-};*/
-
-// modifiquei o nome do parametro pra ficar no padão dos outros nomes, só pra estetica ficar melhor
 const createSale = async (itensSold) => {
+  itensSold.forEach(async (product) =>
+    await productsServices.subQuantityProduct(product.productId, product.quantity));
   const sale = await salesModel.createSale(itensSold);
-  //const productById = await ProductsModel.getProductById(item.productId);
-  //await productUpdate(itensSold);
   return sale;
 };
 
@@ -38,8 +22,10 @@ const getAllSales = async () => {
 
 const getSaleById = async (id) => {
   if (!ObjectId.isValid(id)) throw new Error('Sale not found');
+  const saleExist = !!await salesModel.getSaleById(id); // passou com a ajuda do Neto e Ediberto
+  if(!saleExist) throw new Error('Sale not found');
   const sale = await salesModel.getSaleById(id);
-
+  console.log('getSaleById', sale);
   return sale;
 };
 
@@ -54,20 +40,11 @@ const updateSale = async (id, itensSold) => {
 const deleteSale = async (id) => {
   if (!ObjectId.isValid(id)) throw new Error('Wrong sale ID format');
   const exist = await salesModel.getSaleById(id);
-  console.log(exist);
+  console.log('deleteSale', exist);
   if (!exist) throw new Error('Sale not found');
   await salesModel.deleteSale(id);
   return exist;
 };
-
-/*const deleteSale = async (id) => {
-  if (!ObjectId.isValid(id)) throw new Error('Wrong sale ID format');
-  const deletedSales = await salesModel.deleteSale(id);
-  const saleById = await salesModel.getSaleById(id);
-  if (!deletedSales) throw new Error('Wrong sale ID format');
-  return saleById;
-};
-*/
 
 module.exports = {
   createSale,

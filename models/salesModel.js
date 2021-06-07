@@ -48,7 +48,8 @@ const deleteSale = async (id) => {
   const sale = await connection()
     .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) })
     );
-  return saleById;
+  console.log(sale.deletedCount);
+  return sale;
 };
 
 module.exports = {

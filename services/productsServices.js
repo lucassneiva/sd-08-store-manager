@@ -1,6 +1,19 @@
 const productsModel = require('../models/productModel');
 const { ObjectId } = require('mongodb');
 
+const subQuantityProduct = async (id, valorSub) => {
+  const product = await productsModel.getProductById(id);
+  product.quantity -= valorSub;
+  await productsModel.updateProduct(id, product.name, product.quantity);
+};
+
+
+const addQuantityProduct = async (id, valorAdd) => {
+  const product = await productsModel.getProductById(id);
+  product.quantity += valorAdd;
+  await productsModel.updateProduct(id, product.name, product.quantity);
+};
+
 const createProduct = async (name, quantity) => {
   const product = await productsModel.createProduct(name, quantity);
   return product;
@@ -38,4 +51,6 @@ module.exports = {
   getProductById,
   updateProduct,
   deleteProduct,
+  subQuantityProduct,
+  addQuantityProduct,
 };
