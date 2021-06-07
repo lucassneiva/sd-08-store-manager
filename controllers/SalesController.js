@@ -2,7 +2,8 @@ const { Router } = require('express');
 const {
   registerSale,
   getAllSales,
-  findByIdSale
+  findByIdSale,
+  updateSale,
 } = require('../middlewares/SalesMiddleware');
 const { validateSale } = require('../middlewares/ValidateSaleMiddleware');
 
@@ -12,5 +13,7 @@ router.get('/', getAllSales);
 router.get('/:id', findByIdSale);
 
 router.post('/', [validateSale, registerSale]);
+
+router.put('/:id', [validateSale, updateSale]);
 
 module.exports = router;

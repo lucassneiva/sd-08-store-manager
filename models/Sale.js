@@ -17,8 +17,24 @@ const register = async(sale) => {
   };
 };
 
+const update = async(id, productId, quantity) => {
+  await connection().then((db) => db.collection('sales').updateOne(
+    { _id: ObjectId(id), 'itensSold.productId': `${ObjectId(productId)}` },
+    { $set: { itensSold: [ quantity ] } }
+  ));
+
+  return { 
+    _id: ObjectId(id),
+    itensSold: [{
+      productId,
+      quantity
+    }]
+  };
+};
+
 module.exports = {
   getAll,
   findById,
   register,
+  update,
 };

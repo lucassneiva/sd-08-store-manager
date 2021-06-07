@@ -34,9 +34,18 @@ const registerSale = async(request, response) => {
   response.status(STATUS_OK).json(sales);
 };
 
+const updateSale = async(request, response) => {
+  const { id } = request.params;
+  const { productId, quantity } = request.body[0];
+
+  const sales = await SalesService.update(id, productId, quantity);
+
+  response.status(STATUS_OK).json(sales);
+};
 
 module.exports = {
   getAllSales,
   findByIdSale,
   registerSale,
+  updateSale,
 };
