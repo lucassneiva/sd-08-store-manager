@@ -4,7 +4,7 @@ const connection = require('./models/connection');
 const { ObjectId } = require('mongodb');
 const {
   validAmount
-} = require('./service/validation');
+} = require('./service/jokerValidations');
 const rescue = require('express-rescue');
 const {
   UNPROCESSABE_ENTITY,
@@ -13,6 +13,7 @@ const {
   OK,
   ID_LENGTH
 } = require('./service/consts');
+const { router } = require('./routes/productsControler.js');
 
 const app = express();
 app.use(bodyParser.json());
@@ -27,7 +28,7 @@ app.listen(PORT, () => {
   console.log('Online');
 });
 
-app.use('/products', require('./models/productsModel'));
+app.use('/products', router );
 
 // 5 - Crie um endpoint para cadastrar vendas
 
