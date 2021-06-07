@@ -1,3 +1,4 @@
+const e = require('express');
 const salesService = require('../services/sales');
 
 const OK = 200;
@@ -5,17 +6,26 @@ const NOT_FOUND = 404;
 const UNPROCESSABLE = 422;
 
 const create = async (req, res) => {
-  const arr = req.body;
-
-  const sale = await salesService.create(arr);
-  if (typeof sale === 'string') return res.status(UNPROCESSABLE).json({
-    err: {
-      code: 'invalid_data',
-      message: sale,
-    }
-  });
-
-  res.status(OK).json(sale);
+  try {
+    const arr = req.body;
+    const sale = await salesService.create(arr);
+    res.status(OK).json(sale);
+  } catch (e) {
+    if (e.message === 'Such amount is not permitted to sell') return res
+      .status(NOT_FOUND).json({
+        err: {
+          code: 'stock_problem',
+          message: e.message,
+        }
+      });
+    
+    res.status(UNPROCESSABLE).json({
+      err: {
+        code: 'invalid_data',
+        message: e.message,
+      }
+    });
+  }
 };
 
 const getAll = async (_req, res) => {
@@ -25,46 +35,49 @@ const getAll = async (_req, res) => {
 };
 
 const getById = async (req, res) => {
-  const { id } = req.params;
-
-  const sales = await salesService.getById(id);
-  if (typeof sales === 'string') return res.status(NOT_FOUND).json({
-    err: {
-      code: 'not_found',
-      message: sales,
-    }
-  });
-
-  res.status(OK).json(sales);
+  try {
+    const { id } = req.params;
+    const sales = await salesService.getById(id);
+    res.status(OK).json(sales);
+  } catch (e) {
+    res.status(NOT_FOUND).json({
+      err: {
+        code: 'not_found',
+        message: e.message,
+      }
+    });
+  }
 };
 
 const update = async (req, res) => {
-  const { id } = req.params;
-  const arr = req.body;
-
-  const sale = await salesService.update(id, arr);
-  if (typeof sale === 'string') return res.status(UNPROCESSABLE).json({
-    err: {
-      code: 'invalid_data',
-      message: sale,
-    }
-  });
-
-  res.status(OK).json(sale);
+  try {
+    const { id } = req.params;
+    const arr = req.body;
+    const sale = await salesService.update(id, arr);
+    res.status(OK).json(sale);
+  } catch (e) {
+    res.status(UNPROCESSABLE).json({
+      err: {
+        code: 'invalid_data',
+        message: e.message,
+      }
+    });
+  }
 };
 
 const erase = async (req, res) => {
-  const { id } = req.params;
-
-  const sale = await salesService.erase(id);
-  if (typeof sale === 'string') return res.status(UNPROCESSABLE).json({
-    err: {
-      code: 'invalid_data',
-      message: sale,
-    }
-  });
-
-  res.status(OK).json({ message: 'Sale deleted.' });
+  try {
+    const { id } = req.params;
+    await salesService.erase(id);
+    res.status(OK).json({ message: 'Sale deleted.' });
+  } catch (e) {
+    res.status(UNPROCESSABLE).json({
+      err: {
+        code: 'invalid_data',
+        message: e.message,
+      }
+    });
+  }
 };
 
 module.exports = {

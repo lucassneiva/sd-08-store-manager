@@ -5,17 +5,18 @@ const CREATED = 201;
 const UNPROCESSABLE = 422;
 
 const create = async (req, res) => {
-  const { name, quantity } = req.body;
-
-  const product = await productsService.create(name, quantity);
-  if (typeof product === 'string') return res.status(UNPROCESSABLE).json({
-    err: {
-      code: 'invalid_data',
-      message: product,
-    }
-  });
-
-  res.status(CREATED).json({ ...product });
+  try {
+    const { name, quantity } = req.body;
+    const product = await productsService.create(name, quantity);
+    res.status(CREATED).json({ ...product });
+  } catch (e) {
+    res.status(UNPROCESSABLE).json({
+      err: {
+        code: 'invalid_data',
+        message: e.message,
+      }
+    });
+  }
 };
 
 const getAll = async (_req, res) => {
@@ -25,46 +26,49 @@ const getAll = async (_req, res) => {
 };
 
 const getById = async (req, res) => {
-  const { id } = req.params;
-
-  const product = await productsService.getById(id);
-  if (typeof product === 'string') return res.status(UNPROCESSABLE).json({
-    err: {
-      code: 'invalid_data',
-      message: product,
-    }
-  });
-
-  res.status(OK).json({ ...product });
+  try {
+    const { id } = req.params;
+    const product = await productsService.getById(id);
+    res.status(OK).json({ ...product });
+  } catch (e) {
+    res.status(UNPROCESSABLE).json({
+      err: {
+        code: 'invalid_data',
+        message: e.message,
+      }
+    });
+  }
 };
 
 const update = async (req, res) => {
-  const { id } = req.params;
-  const { name, quantity } = req.body;
-
-  const product = await productsService.update(id, name, quantity);
-  if (typeof product === 'string') return res.status(UNPROCESSABLE).json({
-    err: {
-      code: 'invalid_data',
-      message: product,
-    }
-  });
-
-  res.status(OK).json({ ...product });
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+    const product = await productsService.update(id, name, quantity);
+    res.status(OK).json({ ...product });
+  } catch (e) {
+    res.status(UNPROCESSABLE).json({
+      err: {
+        code: 'invalid_data',
+        message: e.message,
+      }
+    });
+  }
 };
 
 const erase = async (req, res) => {
-  const { id } = req.params;
-
-  const product = await productsService.erase(id);
-  if (typeof product === 'string') return res.status(UNPROCESSABLE).json({
-    err: {
-      code: 'invalid_data',
-      message: product,
-    }
-  });
-
-  res.status(OK).json({ message: 'Product deleted.' });
+  try {
+    const { id } = req.params;
+    const product = await productsService.erase(id);
+    res.status(OK).json({ message: 'Product deleted.' });
+  } catch (e) {
+    res.status(UNPROCESSABLE).json({
+      err: {
+        code: 'invalid_data',
+        message: e.message,
+      }
+    });
+  }
 };
 
 module.exports = {

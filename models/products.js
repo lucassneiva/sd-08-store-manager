@@ -28,7 +28,8 @@ const update = async (_id, name, quantity) => {
   const productsCollection = await connect()
     .then((db) => db.collection('products'));
   
-  await productsCollection.update({ _id }, { name, quantity });
+  await productsCollection.updateOne({ _id: ObjectId(_id) },
+    { $set: { name, quantity } });
   
   return {
     _id,
@@ -43,9 +44,7 @@ const erase = async (_id) => {
   
   await productsCollection.deleteOne({ _id: ObjectId(_id) });
   
-  return {
-    _id,
-  };
+  return true;
 };
 
 module.exports = {

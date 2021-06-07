@@ -27,10 +27,10 @@ const alreadyExist = async (name) => {
 
 const create = async (name, quantity) => {
   const isProductValid = isValid(name, quantity);
-  if (isProductValid) return isProductValid;
+  if (isProductValid) throw new Error(isProductValid);
 
   const productAlreadyExists = await alreadyExist(name);
-  if (productAlreadyExists) return productAlreadyExists;
+  if (productAlreadyExists) throw new Error(productAlreadyExists);
 
   const { _id } = await productsModel.create(name, quantity);
 
@@ -44,7 +44,7 @@ const create = async (name, quantity) => {
 const getAll = async () => await productsModel.getAll();
 
 const getById = async (id) => {
-  if (await !ObjectId.isValid(id)) return 'Wrong id format';
+  if (!ObjectId.isValid(id)) throw new Error('Wrong id format');
 
   const { _id, name, quantity } = await productsModel.getById(id);
 
@@ -57,7 +57,7 @@ const getById = async (id) => {
 
 const update = async (_id, name, quantity) => {
   const isProductValid = isValid(name, quantity);
-  if (isProductValid) return isProductValid;
+  if (isProductValid) throw new Error(isProductValid);
 
   await productsModel.update(_id, name, quantity);
 
@@ -69,7 +69,7 @@ const update = async (_id, name, quantity) => {
 };
 
 const erase = async (_id) => {
-  if (await !ObjectId.isValid(_id)) return 'Wrong id format';
+  if (!ObjectId.isValid(_id)) throw new Error('Wrong id format');
 
   await productsModel.erase(_id);
 

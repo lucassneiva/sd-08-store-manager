@@ -23,7 +23,7 @@ const update = async (_id, arr) => {
   const salesCollection = await connect()
     .then((db) => db.collection('sales'));
     
-  await salesCollection.update({ _id }, { itensSold: arr });
+  await salesCollection.updateOne({ _id: ObjectId(_id) }, { $set: { itensSold: arr } });
     
   return {
     _id,
