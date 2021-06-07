@@ -2,7 +2,7 @@ const joi = require('@hapi/joi');
 const Sale = require('../models/Sale');
 
 const HTTP_Unprocessable_Entity = 422;
-// const MIN_LENGTH_NAME = 5;
+const HTTP_Not_Found = 404;
 const MIN_QUANTITY = 1;
 
 // https://stackoverflow.com/questions/42656549/joi-validation-of-array
@@ -16,21 +16,33 @@ const schema = joi.array().items({
     .required(),
 });
 
-const getAll = async () => Sale.getAll();
+const getAll = async () => {
+  const allSales = await Sale.getAll();
 
-// const findById = async (id) => {
-//   const productID = await Product.findById(id);
+  if (allSales === null) {
+    return {
+      code: 'not_found',
+      error: { message: 'Sale not found' },
+      status: HTTP_Not_Found
+    };
+  }
 
-//   if (!productID) {
-//     return {
-//       code: 'invalid_data',
-//       error: { message: 'Wrong id format' },
-//       status: HTTP_Unprocessable_Entity
-//     };
-//   }
+  return allSales;
+};
 
-//   return productID;
-// };
+const findById = async (id) => {
+  const saleID = await Sale.findById(id);
+
+  if (!saleID) {
+    return {
+      code: 'not_found',
+      error: { message: 'Sale not found' },
+      status: HTTP_Not_Found
+    };
+  }
+
+  return saleID;
+};
 
 const create = async (items) => {
   const { error } = schema.validate(items);
@@ -82,7 +94,7 @@ const create = async (items) => {
 
 module.exports = {
   getAll,
-  //  findById,
+  findById,
   create,
   // update,
   // exclude,

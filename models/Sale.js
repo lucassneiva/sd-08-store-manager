@@ -3,20 +3,20 @@ const connection = require('./connection');
 
 const getAll = async () => {
   return await connection()
-    .then(db => db.collection('sales').find().toArray());
-  //.then((itensSold) => ({ itensSold }));
+    .then(db => db.collection('sales').find().toArray())
+    .then((sales) => ({ sales }));
 };
 
-// const findById = async (id) => {
-//   if (!ObjectId.isValid(id)) return null;
+const findById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
 
-//   const productID = await connection()
-//     .then((db) => db.collection('products').findOne(new ObjectId(id)));
+  const saleID = await connection()
+    .then((db) => db.collection('sales').findOne(new ObjectId(id)));
 
-//   if (!productID) return null;
+  if (!saleID) return null;
 
-//   return productID;
-// };
+  return saleID;
+};
 
 const create = async ( items ) => connection()
   .then((db) => db.collection('sales').insertOne( { itensSold: items } ))
@@ -54,7 +54,7 @@ const create = async ( items ) => connection()
 
 module.exports = {
   getAll,
-  //  findById,
+  findById,
   create,
   //  update,
   //  exclude,

@@ -10,15 +10,15 @@ const getAll = rescue(async (req, res) => {
   res.status(HTTP_OK).json(sales);
 });
 
-// const findById = rescue(async (req, res, next) => {
-//   const { id } = req.params;
+const findById = rescue(async (req, res, next) => {
+  const { id } = req.params;
 
-//   const productID = await Product.findById(id);
+  const saleID = await Sale.findById(id);
 
-//   if (productID.error) return next(productID);
+  if (saleID.error) return next(saleID);
 
-//   res.status(HTTP_OK).json(productID);
-// });
+  res.status(HTTP_OK).json(saleID);
+});
 
 const create = rescue(async (req, res, next) => {
   const items = req.body;
@@ -53,7 +53,7 @@ const create = rescue(async (req, res, next) => {
 
 module.exports = {
   getAll,
-  //  findById,
+  findById,
   create,
   //  update,
   //  exclude,
