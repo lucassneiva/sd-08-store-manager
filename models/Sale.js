@@ -32,9 +32,16 @@ const update = async(id, productId, quantity) => {
   };
 };
 
+const remove = async(id) => {
+  const { value } = await connection().then(
+    (db) => db.collection('sales').findOneAndDelete({ _id: ObjectId(id) }));
+  return value;
+};
+
 module.exports = {
   getAll,
   findById,
   register,
   update,
+  remove,
 };

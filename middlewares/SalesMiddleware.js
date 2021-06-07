@@ -2,6 +2,7 @@ const SalesService = require('../services/SalesService');
 
 const STATUS_OK = '200';
 const STATUS_ERROR = '404';
+const STATUS_ERR = '422';
 
 const getAllSales = async(_request, response) => {
   try {
@@ -17,11 +18,11 @@ const findByIdSale = async(request, response) => {
   const { id } = request.params;
   const ID_LENGTH = 24;
 
-  if(id.length < ID_LENGTH) return response.status(STATUS_ERROR).json({
+  const sale = await SalesService.findById(id);
+
+  if(id.length < ID_LENGTH || !sale) return response.status(STATUS_ERROR).json({
     err: { code: 'not_found', message: 'Sale not found'}
   });
-
-  const sale = await SalesService.findById(id);
 
   response.status(STATUS_OK).json(sale);
 }; 
@@ -43,9 +44,25 @@ const updateSale = async(request, response) => {
   response.status(STATUS_OK).json(sales);
 };
 
+const removeSale = async(request, response) => {
+  try {
+    const { id } = request.params;
+
+    const sale = await SalesService.remove(id);
+
+    return response.status(STATUS_OK).json(sale);
+    
+  } catch (error) {
+    return response.status(STATUS_ERR).json({
+      err: { code: 'invalid_data', message: 'Wrong sale ID format'}
+    });
+  }
+};
+
 module.exports = {
   getAllSales,
   findByIdSale,
   registerSale,
   updateSale,
+  removeSale,
 };
