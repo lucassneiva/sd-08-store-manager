@@ -1,14 +1,15 @@
 const connection = require('../config/connection');
 const { ObjectId, ObjectID } = require('mongodb');
 
-const createSale = async (itemSale) => {
+// modifiquei o nome do parametro pra ficar no padão dos outros nomes, só pra estetica ficar melhor
+const createSale = async (itensSold) => {
   const sale = await connection()
     .then((db) => db.collection('sales')
-      .insertOne({ itensSold: itemSale }))
+      .insertOne({ itensSold: itensSold }))
     .then(result => result.ops[0]);
   const response = {
     _id: sale._id,
-    itensSold: itemSale
+    itensSold: itensSold
   };
   return response;
 };
@@ -25,10 +26,10 @@ const getAllSales = () => connection()
   });
 
 const  getSaleById = async (id) => {
-  const product = await connection()
+  const sale = await connection()
     .then((db) =>  db.collection('sales').findOne(ObjectId(id)));
 
-  return product;
+  return sale;
 };
 
 const updateSale =async (id, itensSold) => {
@@ -43,11 +44,11 @@ const updateSale =async (id, itensSold) => {
 };
 
 const deleteSale = async (id) => {
-  //const saleById = await getById(id);
+  const saleById = await getSaleById(id);
   const sale = await connection()
     .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) })
     );
-  return sale;
+  return saleById;
 };
 
 module.exports = {
@@ -57,3 +58,21 @@ module.exports = {
   updateSale,
   deleteSale,
 };
+
+/* usar junto do quantityUpdate do productsModel
+const createSale = async (itensSold) => {
+  const sale = await connection()
+    .then((db) => db.collection('sales')
+      .insertOne({ itensSold }))
+    .then(result => result.ops[0]);
+  const response = {
+    _id: sale._id,
+    itensSold
+  };
+  response.itensSold.forEach((item) =>
+    ProductsModel.updateQuantity(item.productId, -item.quantity));
+  const result = await connection()
+    .then((db) => db.collection('sales').insertMany([response]));
+  return result;
+};
+*/

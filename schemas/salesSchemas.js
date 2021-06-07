@@ -1,6 +1,7 @@
 const errors = { // dica do professor do course
   invalid_data: 'invalid_data',
   wrong_quantity: 'Wrong product ID or invalid quantity',
+  quantityError: 'Such amount is not permitted to sell',
 };
 
 const messageError = (message) => ({
@@ -17,6 +18,12 @@ const messageError_Not_found = (message) => ({
   },
 });
 
+const message_quantityError = (message) => ({
+  err: {
+    code: 'stock_problem',
+    message: errors.quantityError,
+  },
+});
 
 const isValid = (quantity ) => {
   const ZERO = 0;
@@ -27,7 +34,9 @@ const isValid = (quantity ) => {
 
 
 module.exports = {
+  errors,
   isValid,
   messageError,
   messageError_Not_found,
+  message_quantityError,
 };

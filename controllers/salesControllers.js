@@ -11,17 +11,15 @@ const createSale = async (req, res) => {
     const newSale = await salesServices.createSale(itensSold);
     res.status(code_200).json(newSale);
   } catch (error) {
-    console.log(error);
     res.status(code_422).json(messageError(error.message));
   }
 };
 
 const getAllSales = async (_req, res) => {
   try {
-    const products = await salesServices.getAllSales();
-    res.status(code_200).json(products);
+    const sale = await salesServices.getAllSales();
+    res.status(code_200).json(sale);
   } catch (error) {
-    console.error(error);
     res.status(code_422).json(messageError(error.message));
   }
 };
@@ -43,7 +41,9 @@ const updateSale = async (req, res) => {
     const sale = await salesServices.updateSale(id, itensSold);
     res.status(code_200).json(sale);
   } catch (error) {
-    console.error(error);
+    if (error.message === 'Sale not found') {
+      res.status(code_404).json(messageError(error.message));
+    }
     res.status(code_422).json(messageError(error.message));
   }
 };
@@ -54,7 +54,9 @@ const deleteSale = async (req, res) => {
     const sale = await salesServices.deleteSale(id);
     res.status(code_200).json(sale);
   } catch (error) {
-    //console.error(error);
+    if (error.message === 'Sale not found') {
+      res.status(code_404).json(messageError(error.message));
+    }
     res.status(code_422).json(messageError(error.message));
   }
 };
