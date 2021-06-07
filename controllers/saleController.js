@@ -5,33 +5,23 @@ const router = Router();
 
 router.get('/', rescue(async (_req, res) => {
   const STATUS_200 = 200;
-  const STATUS_500 = 500;
-  try {
-    const sale = await service.getAll();
-    res.status(STATUS_200).json(sale);
-  } catch (err) {
-    console.error(err);
-    res.status(STATUS_500).json({ message: 'Erro' });
-  }
+
+  const sales = await service.getAll();
+  res.status(STATUS_200).json({sales});
 }));
 
 router.get('/:id', rescue(async (req, res) => {
   const STATUS_200 = 200;
-  const STATUS_500 = 500;
   const STATUS_404 = 404;
-  try {
-    const { id } = req.params;
-    const sale = await service.getById(id);
-    const { _id, productId, quantity } = sale;
-    const result = {_id, itensSold: [{productId, quantity}]};
-    res.status(STATUS_200).json(result);
-  } catch (err) {
-    if (err.err.code == 'not_found') {
-      res.status( STATUS_404).json(err);
-    }
-    console.error(err);
-    res.status(STATUS_500).json({ message: 'Algo deu errado' });
+
+  const { id } = req.params;
+  const sale = await service.getById(id);
+
+  if (sale.err) {
+    res.status( STATUS_404).json(sale);
   }
+
+  res.status(STATUS_200).json(sale);
 }));
 
 router.post('/', rescue(async (req, res) => {

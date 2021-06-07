@@ -1,12 +1,11 @@
 const model = require('../models/saleModel');
-const { ObjectId } = require('mongodb');
 
 const getAll = async () => model.getAll();
 
 const getById = async (id) => {
   const sale = await model.getById(id);
   if (!sale) {
-    throw {
+    return {
       err: {
         code: 'not_found',
         message: 'Sale not found'
@@ -30,7 +29,6 @@ const create = async (products) => {
     }
   }
   return model.create(products);
-
 };
 
 const update = async(id, products) => {
