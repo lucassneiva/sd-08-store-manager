@@ -15,9 +15,9 @@ const code = {
 const code_esp = {
   404: 'stock_problem' 
 };
-const types_esp = ['stock_problem'];
+const types_esp = ['stock_problem', 'delete'];
 
-const types = ['create', 'update', 'delete'];
+const types = ['create', 'update'];
 
 const resolveRequestSalesEsp = (res) => {
   if (res.sales && res.sales.err && types_esp.includes(res.sales.err)) {
@@ -26,6 +26,15 @@ const resolveRequestSalesEsp = (res) => {
       err: {
         code: code_esp[status.notFound],
         message: 'Such amount is not permitted to sell'
+      }
+    };
+  }
+  if (res.sales && res.sales.err && types_esp.includes(res.sales.err)) {
+    return {
+      status: status.unProcessableEntity,
+      err: {
+        code: code[status.unProcessableEntity],
+        message: 'Wrong sale ID format'
       }
     };
   }

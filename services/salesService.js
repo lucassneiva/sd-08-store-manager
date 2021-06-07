@@ -113,12 +113,12 @@ const deleteSale = async (id) => {
   const getSale = await modelSales.getById(ObjectId(id));
   console.log(getSale);
   if (!getSale || !getSale.length || !getSale[0].itensSold) {
-    return resolveRequestSales({ sales: { err: 'delete' } });
+    return resolveRequestSalesEsp({ sales: { err: 'delete' } });
   } 
   const { itensSold } = getSale[0];
   const resultRestore = await restoreQuantityProduct(itensSold);
   const resultDelete = await modelSales.deleteSale(id);
-  if (!resultDelete) return resolveRequestSales({ sales: { err: 'delete' } });
+  if (!resultDelete) return resolveRequestSalesEsp({ sales: { err: 'delete' } });
   return resolveRequestSales({ sales: { ok: true, result: getSale[0] } });
 };
 
