@@ -5,7 +5,7 @@ const {
 const UNPROCESSABLE_ENTITY = 422;
 const NAME_LENGTH = 5;
 
-const nameValidation = async (req, res, next) => {
+const nameExists = async (req, res, next) => {
   const { name } = req.body;
   const allProducts = await getAllProducts();
   const findProduct = await allProducts.find((item) => item.name === name);
@@ -19,6 +19,11 @@ const nameValidation = async (req, res, next) => {
         }
       });
   }
+  next();
+};
+
+const nameFormat = async (req, res, next) => {
+  const { name } = req.body;
   if (name.length < NAME_LENGTH) {
     return res
       .status(UNPROCESSABLE_ENTITY)
@@ -32,4 +37,7 @@ const nameValidation = async (req, res, next) => {
   next();
 };
 
-module.exports = nameValidation;
+module.exports = {
+  nameExists,
+  nameFormat,
+};

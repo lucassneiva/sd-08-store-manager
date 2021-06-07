@@ -6,9 +6,10 @@ const {
   addProduct,
   getAllProducts,
   getProductById,
+  updateProduct,
 } = require('../models/productsModels');
 
-const { nameValidation, quantityValidation } = require('../services');
+const { nameExists, nameFormat, quantityValidation } = require('../services');
 
 const STATUS_OK = 200;
 const CREATED = 201;
@@ -42,7 +43,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', nameValidation, quantityValidation, async (req, res) => {
+router.post('/', nameExists, nameFormat, quantityValidation, async (req, res) => {
   try {
     const { name, quantity } = req.body;
     const newProduct = await addProduct(name, quantity);
@@ -52,8 +53,15 @@ router.post('/', nameValidation, quantityValidation, async (req, res) => {
   }
 });
 
-router.put('/:id', (_req, res) => {
-  res.status(STATUS_OK).send('Update de produto');
+router.put('/:id', nameFormat, quantityValidation, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+    const updatedProduct = await updateProduct(id, name, quantity);
+    res.status(STATUS_OK).json(updatedProduct);
+  } catch (err) {
+    res.status(ERROR).json({ message: 'Something is wrong' });
+  }
 });
 
 router.delete('/:id', (_req, res) => {

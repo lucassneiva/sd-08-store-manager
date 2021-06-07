@@ -1,7 +1,8 @@
-const nameValidation = require('./nameValidation');
+const { nameExists, nameFormat } = require('./nameValidation');
 const quantityValidation = require('./quantityValidation');
 
 module.exports = {
-  nameValidation,
+  nameExists,
+  nameFormat,
   quantityValidation,
 };
