@@ -14,4 +14,6 @@ app.get('/', (_request, response) => {
 
 app.post('/products', products.create);
 
+app.get('/products/:id?', products.search);
+
 app.listen(PORT, () => console.log(`Listening to port ${PORT}`));

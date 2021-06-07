@@ -3,15 +3,17 @@ const service = require('../services/products');
 const create = async (req, res) => {
   const newProduct = req.body;
   const { status, result } = await service.create(newProduct);
-  return res.status(status).send(result);
+  return res.status(status).json(result);
 };
 
-const getAll = async (req, res) => {};
-
-const getById = async (req, res) => {};
+const search = async (req, res) => {
+  const { id } = req.params;
+  const { status, result } = await service.search(id);
+  return res.status(status).json(result);
+};
 
 const update = async (req, res) => {};
 
 const remove = async (req, res) => {};
 
-module.exports = { create, getAll, getById, update, remove };
+module.exports = { create, search, update, remove };
