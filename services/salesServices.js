@@ -10,11 +10,6 @@ const createSale = async (itensSold) => {
   return sale;
 };
 
-/*const createSale = async (itemSale) => {
-  const sale = await salesModel.createSale(itemSale);
-  return sale;
-};*/
-
 const getAllSales = async () => {
   const sale = await salesModel.getAllSales();
   return sale;
@@ -22,7 +17,7 @@ const getAllSales = async () => {
 
 const getSaleById = async (id) => {
   if (!ObjectId.isValid(id)) throw new Error('Sale not found');
-  const saleExist = !!await salesModel.getSaleById(id); // passou com a ajuda do Neto e Ediberto
+  const saleExist = await salesModel.getSaleById(id);
   if(!saleExist) throw new Error('Sale not found');
   const sale = await salesModel.getSaleById(id);
   console.log('getSaleById', sale);
@@ -42,6 +37,9 @@ const deleteSale = async (id) => {
   const exist = await salesModel.getSaleById(id);
   console.log('deleteSale', exist);
   if (!exist) throw new Error('Sale not found');
+  exist.itensSold.forEach(async (product) => {
+    await productsServices.addQuantityProduct(product.productId, product.quantity);
+  }); // implementei a atualização da quantidade, foi feita em conjunto com o Ediberto
   await salesModel.deleteSale(id);
   return exist;
 };

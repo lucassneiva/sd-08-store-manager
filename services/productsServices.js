@@ -7,7 +7,6 @@ const subQuantityProduct = async (id, valorSub) => {
   await productsModel.updateProduct(id, product.name, product.quantity);
 };
 
-
 const addQuantityProduct = async (id, valorAdd) => {
   const product = await productsModel.getProductById(id);
   product.quantity += valorAdd;

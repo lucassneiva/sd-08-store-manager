@@ -44,11 +44,10 @@ const updateSale =async (id, itensSold) => {
 };
 
 const deleteSale = async (id) => {
-  const saleById = await getSaleById(id);
+  // const saleById = await getSaleById(id);
   const sale = await connection()
     .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) })
     );
-  console.log(sale.deletedCount);
   return sale;
 };
 
@@ -59,21 +58,3 @@ module.exports = {
   updateSale,
   deleteSale,
 };
-
-/* usar junto do quantityUpdate do productsModel
-const createSale = async (itensSold) => {
-  const sale = await connection()
-    .then((db) => db.collection('sales')
-      .insertOne({ itensSold }))
-    .then(result => result.ops[0]);
-  const response = {
-    _id: sale._id,
-    itensSold
-  };
-  response.itensSold.forEach((item) =>
-    ProductsModel.updateQuantity(item.productId, -item.quantity));
-  const result = await connection()
-    .then((db) => db.collection('sales').insertMany([response]));
-  return result;
-};
-*/
