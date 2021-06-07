@@ -3,7 +3,8 @@ const { ObjectId, Db } = require('mongodb');
 const modelProduct = require('../models/productModel');
 const modelSales = require('../models/salesModel');
 const schemaProduct = require('../schema/product');
-const { resolveRequestSales, resolveRequestSalesEsp } = require('../schema/resolveRequest');
+const { resolveRequestSales,
+  resolveRequestSalesEsp } = require('../schema/resolveRequest');
 const schemaSale = require('../schema/sales');
 
 const searchForProductInStorage = async (productId) => modelProduct
