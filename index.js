@@ -19,6 +19,8 @@ app.post('/sales', sale.create);
 
 app.get('/products/:id?', product.search);
 
+app.get('/sales/:id?', sale.search);
+
 app.put('/products/:id', product.update);
 
 app.delete('/products/:id', product.remove);

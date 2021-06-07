@@ -6,7 +6,6 @@ const generateError = require('../../utils/generateError');
 
 module.exports = async (sales) => {
   try {
-    // await validate.name(sales.name);
     sales.forEach((sale) => validate.quantity(sale.quantity));
 
     return {
