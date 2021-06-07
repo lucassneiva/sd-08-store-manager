@@ -43,15 +43,10 @@ const deleteSale = async (id) => {
 const updateSale = async (id, sale) => {
   const salesCollection = await connection()
     .then((db) => db.collection('sales'));
-  await salesCollection.updateOne({ _id: ObjectId(id) }, { $set: {
-    itensSold: sale
-  }});
 
-  return {
-    _id: id,
-    itensSold: sale
-  };
-
+  await salesCollection.updateOne({ _id: ObjectId(id) }, { $set: { itensSold: sale }});
+  const updated = { _id: id, itensSold: sale };
+  return updated;
 };
 
 

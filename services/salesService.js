@@ -32,7 +32,7 @@ const updateSale = async (id, sale) => {
     return null;
   };
   const updatedSale = await SalesModel.updateSale(id, sale);
-  return updateSale;
+  return updatedSale;
 };
 
 module.exports = {
