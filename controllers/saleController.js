@@ -33,7 +33,6 @@ const update = rescue(async(req, res, next) => {
 const deleteSale = rescue(async(req, res, next) => {
   const { id } = req.params;
   const resultService = await salesService.deleteSale(id);
-  console.log(resultService);
   if (resultService.err) return next(resultService);
   return res.status(resultService.status).json(resultService.result);
 });

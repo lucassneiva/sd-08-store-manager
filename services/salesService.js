@@ -3,7 +3,7 @@ const { ObjectId, Db } = require('mongodb');
 const modelProduct = require('../models/productModel');
 const modelSales = require('../models/salesModel');
 const schemaProduct = require('../schema/product');
-const { resolveRequestSales } = require('../schema/resolveRequest');
+const { resolveRequestSales, resolveRequestSalesEsp } = require('../schema/resolveRequest');
 const schemaSale = require('../schema/sales');
 
 const searchForProductInStorage = async (productId) => modelProduct
@@ -17,7 +17,7 @@ const decreaseTheAmountOfProduct = (product, quantity) => {
   const currentQuantity = product.quantity - quantity;
   const MIN = 0;
   if (currentQuantity < MIN) {
-    return false;
+    return { stock_problem: true };
   }
   return { _id: product._id, quantity: currentQuantity };
 };
@@ -27,7 +27,7 @@ const checkStockForNewSale = async (product) => {
   const getProduct =  await searchForProductInStorage(productId);
   if (!getProduct) return false;
   const thereIsProductInStock = decreaseTheAmountOfProduct(getProduct, quantity);
-  if(!thereIsProductInStock) return false;
+  if(thereIsProductInStock.stock_problem) return thereIsProductInStock;
   return thereIsProductInStock;
 };
 
@@ -56,6 +56,9 @@ const create = async (newSale) => {
   const validNewSale = schemaSale.validSale(newSale);
   if(!validNewSale) return resolveRequestSales({ sales: { err: 'create' } });
   const itensSold = await Promise.all(newSale.map(checkStockForNewSale));
+  if (itensSold.find((el) => el.stock_problem)) {
+    return resolveRequestSalesEsp({ sales: { err: 'stock_problem' } });
+  }
   if(itensSold.every((el) => typeof el === 'object')) {
     await Promise.all(itensSold.map(updateNowStockProduct));
     const returnSaleCreated = await modelSales.create(newSale);
@@ -103,6 +106,9 @@ const update = async (saleUpdate, id) => {
 };
 
 const deleteSale = async (id) => {
+  if(!ObjectId.isValid(id)) {
+    return resolveRequestSales({ sales: { err: 'delete' } });
+  }
   const getSale = await modelSales.getById(ObjectId(id));
   console.log(getSale);
   if (!getSale || !getSale.length || !getSale[0].itensSold) {
@@ -114,7 +120,6 @@ const deleteSale = async (id) => {
   if (!resultDelete) return resolveRequestSales({ sales: { err: 'delete' } });
   return resolveRequestSales({ sales: { ok: true, result: getSale[0] } });
 };
-
 
 module.exports = {
   create,

@@ -11,7 +11,26 @@ const code = {
   500: 'Internal Server Error',
   404: 'not_found',
 };
+
+const code_esp = {
+  404: 'stock_problem' 
+};
+const types_esp = ['stock_problem'];
+
 const types = ['create', 'update', 'delete'];
+
+const resolveRequestSalesEsp = (res) => {
+  if (res.sales && res.sales.err && types_esp.includes(res.sales.err)) {
+    return {
+      status: status.notFound,
+      err: {
+        code: code_esp[status.notFound],
+        message: 'Such amount is not permitted to sell'
+      }
+    };
+  }
+};
+
 const resolveRequestSales = (res) => {
   if (res.sales && res.sales.err && types.includes(res.sales.err)) {
     return {
@@ -114,5 +133,6 @@ const resolveRequestProduct = (res) => {
 
 module.exports = {
   resolveRequestProduct,
-  resolveRequestSales
+  resolveRequestSales,
+  resolveRequestSalesEsp
 };
