@@ -66,7 +66,7 @@ const updateProduct = async (_id, name, quantity) => {
 
 const deleteProduct = async (id) => {
   if (!id || id.length !== TWELVE && id.length !== TWENTYFOUR) {
-    return err('Wrong id format');
+    return error('Wrong id format');
   }
   const product = await products.getProductById(id);
   if(!product) return error('Product not found');
