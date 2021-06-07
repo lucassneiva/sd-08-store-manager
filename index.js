@@ -7,7 +7,7 @@ const app = express();
 app.use(bodyParser.json());
 require('dotenv').config();
 
-const PORT = process.env.PORT;
+const PORT = 3000;
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
