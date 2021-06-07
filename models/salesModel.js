@@ -17,7 +17,7 @@ const create = async (salesMade) => {
 const getAll = async () => {
   const salesCollection = await connection()
     .then((db) => db.collection('sales'));
-  
+
   const allSales = await salesCollection
     .find({}).toArray();
 
@@ -34,8 +34,27 @@ const getById = async (id) => {
     .findOne(new ObjectId(id));
 
   if (!sale) return null;
-    
+
   return sale;
+};
+
+const updateById = async (id, changes) => {
+  if (!ObjectId.isValid(id)) return false;
+
+  const newId = new ObjectId(id);
+  const newData = changes;
+
+  const salesCollection = await connection()
+    .then((db) => db.collection('sales'));
+
+  const updated = await salesCollection
+    .findOneAndUpdate(
+      { _id: newId },
+      { $set: { itensSold: newData } },
+      { returnOriginal: false }
+    );
+
+  console.log(update);
 };
 
 module.exports = {

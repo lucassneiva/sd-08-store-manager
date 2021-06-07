@@ -18,7 +18,7 @@ const create = async (req, res) => {
 const getAll = async (req, res) => {
   const allSales = await SalesService
     .getAll();
-  
+
   res.status(SUCCESS).json(allSales);
 };
 
@@ -32,8 +32,17 @@ const getById = async (req, res) => {
   res.status(status).json(sale);
 };
 
+const updateById = async (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+
+  const updated = await SalesService
+    .updateById(id, changes);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  updateById,
 };
