@@ -70,7 +70,28 @@ async function refreshProductQuantity(content, mode){
     });
     return data;
   }
+  return;
+}
+
+async function checkStock(req){
+  const [sale] = req.body;
+  const data = await products.getById(sale.productId);
+  if(sale.quantity > data.quantity){
+    return {
+      err: {
+        code: 'stock_problem',
+        message: 'Such amount is not permitted to sell'
+      }
+    };
+  }
+  return;
 }
 module.exports = {
-  createProduct, getAll, getById, updateProduct, deleteProduct, refreshProductQuantity
+  createProduct,
+  getAll,
+  getById,
+  updateProduct,
+  deleteProduct,
+  refreshProductQuantity,
+  checkStock
 };

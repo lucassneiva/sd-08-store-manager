@@ -1,10 +1,12 @@
 const sales = require('../services/salesService');
-const { refreshProductQuantity } = require('../services/productService');
-const {error, update, success, notFound} = require('../services/responseType');
+const { refreshProductQuantity, checkStock } = require('../services/productService');
+const {error, success, notFound} = require('../services/responseType');
 const { checkSale } = require('../middlewares/checkSale');
 
 const addSale = async (req, res) => {
   checkSale(req, res);
+  const check = await checkStock(req);
+  if (check) return res.status(notFound).json(check);
   await refreshProductQuantity(req.body, 'add');
   const data = await sales.addSale(req);
   return data.err ? res.status(error).json(data) : res.status(success).json(data);

@@ -59,20 +59,14 @@ async function deleteProduct(id) {
 }
 
 async function refreshProductQuantity(id, qtd, mode){
-  if(!ObjectId(id)) return null;
-  const data = await connection().then((db) =>
-    db.collection('products').findOne(new ObjectId(id)));
-  if(!data) return null;
   if (mode !== 'del'){
-    await connection().then((db) =>
+    return await connection().then((db) =>
       db.collection('products').updateOne({_id: ObjectId(id)},
         {$inc: { quantity: -qtd}}));
-    return;
   }
-  await connection().then((db) =>
+  return await connection().then((db) =>
     db.collection('products').updateOne({_id: ObjectId(id)},
       {$inc: {quantity: qtd}}));
-  return;
 }
 
 module.exports = {
