@@ -82,7 +82,6 @@ describe('productModel.js', () => {
   })
 });
 
-
 describe('saletModel.js', () => {
   const salePayload = [
     { productId: 'id1', quantity: 10 },
