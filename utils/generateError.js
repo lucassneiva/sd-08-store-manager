@@ -9,5 +9,5 @@ module.exports = (message, status = HTTP.UNPROCESSABLE) => {
     code = 'invalid_data';
   }
 
-  return { err: { code, message } };
+  return { status, result: { err: { code, message } } };
 };

@@ -6,17 +6,11 @@ const MINIMUM_NAME_LENGTH = 5;
 
 checkNameFormat = (name) => {
   if (typeof name !== 'string') {
-    throw {
-      status: HTTP.UNPROCESSABLE,
-      result: generateError('"name" must be a string'),
-    };
+    throw generateError('"name" must be a string');
   }
 
   if (name.length < MINIMUM_NAME_LENGTH) {
-    throw {
-      status: HTTP.UNPROCESSABLE,
-      result: generateError('"name" length must be at least 5 characters long'),
-    };
+    throw generateError('"name" length must be at least 5 characters long');
   }
 };
 
@@ -27,10 +21,7 @@ checkNameUniqueness = async (name) => {
     .some((element) => name === element);
 
   if (notUnique) {
-    throw {
-      status: HTTP.UNPROCESSABLE,
-      result: generateError('Product already exists'),
-    };
+    throw generateError('Product already exists');
   }
 };
 
@@ -41,17 +32,11 @@ const checkName = async (name) => {
 
 const checkQuantity = (quantity) => {
   if (typeof quantity !== 'number') {
-    throw {
-      status: HTTP.UNPROCESSABLE,
-      result: generateError('"quantity" must be a number'),
-    };
+    throw generateError('"quantity" must be a number');
   }
 
   if (quantity < 1) {
-    throw {
-      status: HTTP.UNPROCESSABLE,
-      result: generateError('"quantity" must be larger than or equal to 1'),
-    };
+    throw generateError('"quantity" must be larger than or equal to 1');
   }
 };
 
