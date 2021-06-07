@@ -13,6 +13,19 @@ const addProduct = async (req, res) => {
   res.status(CREATE).json(product.data);
 };
 
+const getProducts = async (_req, res) => {
+  const result = await products.getProducts();
+  res.status(SUCCESS).json({ products: result });
+};
+const getProductById = async (req, res) => {
+  const { id } = req.params;
+  const product = await products.getProductById(id);
+  if(product.err) return res.status(FAILURE).json({ err: product.err });
+  res.status(SUCCESS).json(product.data);
+};
+
 module.exports = {
   addProduct,
+  getProducts,
+  getProductById,
 };

@@ -2,9 +2,12 @@ const products = require('../models/products');
 
 const error = require('../helpers/error');
 const sucess = require('../helpers/sucess');
+const success = require('../helpers/sucess');
 
 const ZERO = 0;
 const FIVE = 5;
+const TWELVE = 12;
+const TWENTYFOUR= 24;
 
 const addProduct = async (name, quantity) => {
   if(name.length < FIVE) return error('"name" length must be at least 5 characters long');
@@ -27,6 +30,26 @@ const addProduct = async (name, quantity) => {
   });
 };
 
+const getProducts = async () => {
+  const allProducts = await products.getProducts();
+  return allProducts;
+};
+const getProductById = async (id) => {
+  if (!id || id.length !== TWELVE && id.length !== TWENTYFOUR) {
+    return error('Wrong id format');
+  }
+  const product = await products.getProductById(id);
+  if(!product) return error('Wrong id format');
+  const { name, quantity } = product;
+  return success({
+    id,
+    name,
+    quantity
+  });
+};
+
 module.exports = {
   addProduct,
+  getProducts,
+  getProductById,
 };
