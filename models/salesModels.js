@@ -35,14 +35,13 @@ const getById = async (id) => {
   }
 };
 
-const update = async (id, name, quantity) => {
+const update = async (id, idUpdateCheck) => {
   const updateProducts = await connect().then((db) => 
     db
       .collection(COLLECTION_NAME)
-      .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }));
-      
+      .updateOne({ _id: ObjectId(id) }, { $set: { idUpdateCheck } }));
  
-  console.log('linha 48 models', updateProducts);
+  // console.log('linha 48 models', updateProducts);
   return updateProducts;
 };
 

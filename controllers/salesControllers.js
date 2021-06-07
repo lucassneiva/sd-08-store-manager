@@ -62,21 +62,21 @@ router.post('/', async (req, res) =>{
   }
 });
 
-// router.put('/:id', async (req, res)=> {
-//   const {name, quantity} = req.body;
-//   console.log('linha 65 controllers', req.params.id, name, quantity );
-//   try {
-//     const productsUpdate = await SalesServices.update(req.params.id, name, quantity);
-//     if (productsUpdate.code) {
-//       return res.status(codeMessage.code422).json({ err: productsUpdate});
-//     }
-//     return res.status(codeMessage.code200).json(productsUpdate);
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(codeMessage.code500)
-//       .send({message: 'Sistema temporariamente indisponível'});
-//   }
-// });
+router.put('/:id', async (req, res)=> {
+  const idUpdateCheck = req.body;
+  console.log('linha 65 controllers', req.params.id, idUpdateCheck );
+  try {
+    const productsUpdate = await SalesServices.update(req.params.id, idUpdateCheck);
+    if (productsUpdate.code) {
+      return res.status(codeMessage.code422).json({ err: productsUpdate});
+    }
+    return res.status(codeMessage.code200).json(productsUpdate);
+  } catch (err) {
+    console.log(err);
+    return res.status(codeMessage.code500)
+      .send({message: 'Sistema temporariamente indisponível'});
+  }
+});
 
 // router.delete('/:id', async(req, res) => {
 //   const { id } = req.params;

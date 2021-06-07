@@ -100,45 +100,32 @@ const create = async (idCheckOut) => {
   };
 };
 
-const update = async (id, name, quantity) => {
-  // const isProductExists = await productExists(name);
-  // console.log(isProductExists);
-  // const isNameValid = nameValidation(name);
-  const isNameValid = nameValidation(name);
-  // const existName = true;
+const update = async (id, idUpdateCheck) => {
 
-  const isQuantityString = quantityNotIsString(quantity);
-  const isQuantityValid = quantityValidation(quantity);
+  console.log('linha 105 sales service', id, idUpdateCheck);
 
-  // if (isProductExists) return { 
-  //   code: 'invalid_data',
-  //   message: 'Product already exists'
-  // };
-
-  if (!isNameValid) return { 
-    code: 'invalid_data',
-    message: '\"name\" length must be at least 5 characters long'
-  };
+  const isQuantityString = await idUpdateCheck
+    .map((sales) => quantityNotIsString(sales.quantity))[0];
+  const isQuantityValid = await idUpdateCheck
+    .map((sales) => quantityValidation(sales.quantity))[0];
 
   if (!isQuantityString) return { 
     code: 'invalid_data',
-    message: '\"quantity\" must be a number'
+    message: 'Wrong product ID or invalid quantity'
   };
 
   if (!isQuantityValid) return { 
     code: 'invalid_data',
-    message: '\"quantity\" must be larger than or equal to 1'
+    message: 'Wrong product ID or invalid quantity'
   };
 
-  console.log('linha 81 services', name, quantity);
   const updateProducts = await SalesModel
-    .update(id, name, quantity);
+    .update(id, idUpdateCheck);
   console.log('linha 139 services', updateProducts);
 
   return {
     _id: id,
-    name: name,
-    quantity: quantity
+    itensSold: idUpdateCheck,
   };
 };
 
