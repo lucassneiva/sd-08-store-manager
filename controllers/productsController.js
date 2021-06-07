@@ -7,6 +7,7 @@ const {
   getAllProducts,
   getProductById,
   updateProduct,
+  deleteProduct,
 } = require('../models/productsModels');
 
 const { nameExists, nameFormat, quantityValidation } = require('../services');
@@ -64,8 +65,23 @@ router.put('/:id', nameFormat, quantityValidation, async (req, res) => {
   }
 });
 
-router.delete('/:id', (_req, res) => {
-  res.status(STATUS_OK).send('Deletar produto');
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const productById = await getProductById(id);
+    if (!productById) {
+      return res.status(UNPROCESSABLE_ENTITY)
+        .json({
+          err: {
+            code: 'invalid_data',
+            message: 'Wrong id format'
+          }});
+    }
+    const deletedProduct = await deleteProduct(id);
+    res.status(STATUS_OK).json(deletedProduct);
+  } catch (err) {
+    res.status(ERROR).json({ message: 'Something is wrong' });
+  }
 });
 
 module.exports = router;
