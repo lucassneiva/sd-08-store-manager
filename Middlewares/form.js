@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const { productModel } = require('../models');
 const { HandleCustomerError } = require('./handleError');
 const {
@@ -35,15 +36,8 @@ const verifyRegisterSale = (quantity = '') => {
     throw new Error(RESPONSE.PRODUCT_OUR_QUANTITY_INVALID);
 };
 
-const verifyProductExistById = async (productId, productList) => {
-  const existProducts = productList.products
-    .some(({_id}) => _id.toString() === productId.toString());
-  if (!existProducts) throw new Error(RESPONSE.SALE_INVALID);
-};
-
 exports.registerSale = async (req, res, next) => {
   const sale = req.body;
-  // const products = await productModel.getAll();
   try {
     sale.map(
       ({ quantity }) => {
@@ -72,6 +66,17 @@ exports.verifyExistProduct = async (req, res, next) => {
   const { name } = req.body;
   try {
     await verifyProduct(name);
+    next();
+  } catch (error) {
+    const messageError = new HandleCustomerError(error.message);
+    res.status(HTTP_UNPROCESSABLE_ENTITY_STATUS).json(messageError.getMessageError());
+  }
+};
+
+exports.verifyId = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    if (!ObjectId.isValid(id)) throw new Error(RESPONSE.ID_INVALID);
     next();
   } catch (error) {
     const messageError = new HandleCustomerError(error.message);

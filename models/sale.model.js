@@ -29,11 +29,11 @@ exports.existByName = async (name) => {
 };
 
 exports.add = async (entry) =>
-  connect().then(async (db) => {
-    await db.collection('sales')
-      .insertOne({ itensSold: entry });
-    return { itensSold: entry };
-  });
+  connect().then(async (db) =>  await db.collection('sales')
+    .insertOne({ itensSold: entry }))
+    .then(result => ({ _id: result.ops[0]._id,
+      itensSold: result.ops[0].itensSold
+    }));
 
 exports.update = async (id, entry) =>
   connect().then(async (db) => {
