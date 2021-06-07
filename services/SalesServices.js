@@ -38,10 +38,8 @@ const getSaleById = async (id) => {
 };
 
 const updateSales = async (id, sold) => {
-  const getSaleIsValid = await validations.validateSolds(id);
   const quantitiesArrayIsValid = validations.validateQuantityArray(sold);
 
-  if(getSaleIsValid) return { erro: getSaleIsValid };
   if (quantitiesArrayIsValid) return { erro: quantitiesArrayIsValid };
 
     
@@ -64,9 +62,26 @@ const updateSales = async (id, sold) => {
   return { message: updated[0], code: 200 };
 };
 
+const deleteSolds = async (id) => {
+  const deleteIsValid = await validations.validateDeleteSolds(id);
+
+  if (deleteIsValid) return { erro: deleteIsValid };
+
+  const getById = await SalesModels.findSaleById(id);
+  await SalesModels.deleteSale(id);
+  return { message: getById[0], code: 200 }
+}
+
+const deleteSoldsNext = async (id) => {
+  const deleteIsValid = await validations.validateDeleteSolds(id);
+
+  if (deleteIsValid) return { erro: deleteIsValid };
+}
+
 module.exports = {
   addSold,
   getAllSales,
   getSaleById,
   updateSales,
+  deleteSolds,
 };

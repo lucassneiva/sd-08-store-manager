@@ -52,6 +52,16 @@ const validateSolds = async (id) => {
       code: 404,
     };
   };
+
+  if (!getById[0]) {
+    return {
+      err: {
+        code: 'not_found',
+        message: 'Sale not found',
+      },
+      code: 404,
+    };
+  };
 };
 
 const validateSoldsAll = async () => {
@@ -68,9 +78,34 @@ const validateSoldsAll = async () => {
   };
 };
 
+const validateDeleteSolds = async (id) => {
+  const getById = await findModelsSales.findSaleById(id);
+
+  if (!getById) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format',
+      },
+      code: 422,
+    };
+  };
+
+  if (!getById[0]) {
+    return {
+      err: {
+        code: 'not_found',
+        message: 'Sale not found',
+      },
+      code: 404,
+    };
+  };
+};
+
 module.exports = {
   getByIdArray,
   validateQuantityArray,
   validateSolds,
   validateSoldsAll,
+  validateDeleteSolds,
 };

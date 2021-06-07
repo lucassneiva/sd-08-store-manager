@@ -43,10 +43,19 @@ const updateSale = async (id, sale) => {
   return updateSales;
 };
 
+const deleteSale = async (id) => {
+  const delet = await connect()
+    .then((db) => db.collection(TABELA_SALES)
+      .deleteOne({ _id: ObjectID(id) }))
+    .catch((_err) => console.log('Não foi deletado'));
+  return delet;
+};
+
 module.exports = {
   addSales,
   findBySale,
   findSaleById,
   getAllSolds,
   updateSale,
+  deleteSale,
 };
