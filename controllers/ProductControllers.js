@@ -2,8 +2,7 @@
 const Service = require('../services/ProductServices');
 
 const httpCreated = 201;
-
-const httpInternalServerError = 500;
+const httpSuccess = 200;
 
 const create = async (req, res) => {
   try {
@@ -16,6 +15,30 @@ const create = async (req, res) => {
   }
 };
 
+const getAllProducts = async (req, res) => {
+  try {
+    const result = await Service.getAll();
+    res.status(result.http).json({products: result.products});
+  }catch(e) {
+    console.log(e.message);
+
+  }
+};
+
+const getProductById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await Service.getById(id);
+    res.status(result.http).json(result.result);
+  } catch (error) {
+    console.log(error);
+    const errMessage = JSON.parse(error.message);
+    res.status(errMessage.http).json({err:errMessage.err});
+  }
+};
+
 module.exports = {
   create,
+  getAllProducts,
+  getProductById
 };

@@ -1,13 +1,12 @@
 const connection = require('./connection');
 
+const { ObjectId } = require('mongodb');
+
 const create = async (name, quantity) => 
   connection()
     .then((db) => db.collection('products').insertOne({name, quantity}))
     .then((data) => {
       const [result] = data.ops;
-      console.log(`Estou no model com o ${result}`);
-      console.log(result);
-      console.log('-----------------');
       return result;
     });
 
@@ -17,7 +16,13 @@ const getAll = () => {
     .then((data) => data);
 };
 
+const getById = (id) => {
+  return connection()
+    .then((db) => db.collection('products').findOne(new ObjectId(id)));
+};
+
 module.exports = {
   create,
   getAll,
+  getById
 };

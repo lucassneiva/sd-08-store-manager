@@ -1,7 +1,9 @@
+const { ObjectId } = require('mongodb');
 const Model = require('../models/ProductsModel');
 
 const minimumLength = 5;
 const resultLength = 0;
+const minimumLengthId = 12;
 
 const create = async (name, quantity) => {
 
@@ -49,6 +51,58 @@ const create = async (name, quantity) => {
   return Model.create(name, quantity);
 };
 
+const getAll = async () => {
+  const result = await Model.getAll();
+  return {
+    http: 200,
+    products: result
+  };
+};
+
+const getById = async (id) => {
+
+  if(id.length < minimumLengthId) {
+    throw new Error(JSON.stringify({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      },
+      http: 422
+    }));
+  }
+
+  // if(!ObjectId) {
+  //   throw new Error(JSON.stringify({
+  //     err: {
+  //       code: 'invalid_data',
+  //       message: 'Wrong id formart'
+  //     },
+  //     http: 422
+  //   }));
+  // }
+
+  const result = await Model.getById(id);
+
+  console.log(result);
+
+  if(!result) {
+    throw new Error(JSON.stringify({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      },
+      http: 422
+    }));;
+  }
+
+  return {
+    http: 200,
+    result
+  };
+};
+
 module.exports = {
   create,
+  getAll,
+  getById
 };
