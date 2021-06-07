@@ -16,13 +16,14 @@ const STATUS_OK = 200;
 const CREATED = 201;
 const UNPROCESSABLE_ENTITY = 422;
 const ERROR = 500;
+const error_message = 'Something is wrong';
 
 router.get('/', async (_req, res) => {
   try {
     const allProducts = await getAllProducts();
     res.status(STATUS_OK).json({ products: allProducts });
   } catch (err) {
-    res.status(ERROR).json({ message: 'Something is wrong' });
+    res.status(ERROR).json(error_message);
   }
 });
 
@@ -40,7 +41,7 @@ router.get('/:id', async (req, res) => {
     }
     res.status(STATUS_OK).json(productById);
   } catch (err) {
-    res.status(ERROR).json({ message: 'Something is wrong' });
+    res.status(ERROR).json(error_message);
   }
 });
 
@@ -50,7 +51,7 @@ router.post('/', nameExists, nameFormat, quantityValidation, async (req, res) =>
     const newProduct = await addProduct(name, quantity);
     res.status(CREATED).json(newProduct.ops[0]);
   } catch (err) {
-    res.status(ERROR).json({ message: 'Something is wrong' });
+    res.status(ERROR).json(error_message);
   }
 });
 
@@ -61,7 +62,7 @@ router.put('/:id', nameFormat, quantityValidation, async (req, res) => {
     const updatedProduct = await updateProduct(id, name, quantity);
     res.status(STATUS_OK).json(updatedProduct);
   } catch (err) {
-    res.status(ERROR).json({ message: 'Something is wrong' });
+    res.status(ERROR).json(error_message);
   }
 });
 
@@ -80,7 +81,7 @@ router.delete('/:id', async (req, res) => {
     const deletedProduct = await deleteProduct(id);
     res.status(STATUS_OK).json(deletedProduct);
   } catch (err) {
-    res.status(ERROR).json({ message: 'Something is wrong' });
+    res.status(ERROR).json(error_message);
   }
 });
 
