@@ -5,7 +5,8 @@ const COLLECTION_NAME = 'sales';
 
 const create = async (sales) => 
   connect().then(async (db) => {
-    const products = await db.collection(COLLECTION_NAME).insertOne(sales);
+    const products = await db.collection(COLLECTION_NAME)
+      .insertOne({itensSold: sales});
     console.log('linha 13 sales model', products.ops[0]);
     return products.ops[0];
   });

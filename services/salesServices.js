@@ -19,15 +19,12 @@ const getAll = async () => {
 const getByIdService = async (id) => {
   const productsById = await SalesModel
     .getById(id);
-  console.log('linha 21 services', productsById);
+  // console.log('linha 21 services', productsById);
   if( productsById === null) return {
-    code: 'invalid_data',
-    message: 'Wrong id format'
+    code: 'not_found',
+    message: 'Sale not found'
   };
   return productsById;
-
-  // return productsById;
-  // // return productsData.map(getAllProducts);
 };
 
 const nameValidation = (name) => {
@@ -41,6 +38,7 @@ const nameValidation = (name) => {
 
 
 const quantityValidation = (quantity) => {
+  // console.log('linha 44 sales service', quantity);
   const numberQuantityGreaterThan = 1;
   if (!quantity || Number.isInteger(quantity) === false
   || quantity < numberQuantityGreaterThan) return false;
@@ -63,12 +61,16 @@ const productExists = async (name) => {
 };
 
 const create = async (idCheckOut) => {
-  console.log('linha 66 sales services', await idCheckOut.quantity);
+  const test = await idCheckOut.map((sales) => sales.quantity);
+  console.log('linha 66 sales services', test);
 
   const isQuantityString = await idCheckOut
-    .map((sales) => quantityNotIsString(sales.quantity));
+    .map((sales) => quantityNotIsString(sales.quantity))[0];
   const isQuantityValid = await idCheckOut
-    .map((sales) => quantityValidation(sales.quantity));
+    .map((sales) => quantityValidation(sales.quantity))[0];
+
+  // console.log('linha 75 sales service', isQuantityString[0]);
+  // console.log('linha 76 sales service', isQuantityValid);
 
   if (!isQuantityString) return { 
     code: 'invalid_data',
@@ -80,6 +82,7 @@ const create = async (idCheckOut) => {
     message: 'Wrong product ID or invalid quantity'
   };
 
+  // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
   const mapIdCheckOut = await idCheckOut
     .map((sales) => ProductsModel.getById(sales.productId));
 
@@ -87,33 +90,14 @@ const create = async (idCheckOut) => {
 
   console.log('linha 68 sales services', salesProduct);
 
-  const createSalesPromisse = await idCheckOut
-    .map((sales) => SalesModel.create(sales));
+  const callCreate = await SalesModel.create(idCheckOut);
 
-  const createSales = await Promise.all(createSalesPromisse);
+  console.log('linha 96 sales service', callCreate);
 
-  console.log('linha 92 sales services', createSales);
-  
-  // console.log('linha 81 services', name, quantity);
-  // const newProducts = await SalesModel
-  //   .create(name, quantity);
-  // console.log('linha 83 services', newProducts);
-
-  return createSales.map((sales) => {
-    return {
-      _id: sales._id,
-      itensSold: [{
-        productId: sales.productId,
-        quantity: sales.quantity
-      }]
-    };
-  });
-  // {
-    
-  // name: name,
-  // quantity: quantity
-  // Chegou: 'sales services create',
-  // };
+  return {
+    _id: callCreate._id,
+    itensSold: callCreate.itensSold,
+  };
 };
 
 const update = async (id, name, quantity) => {
