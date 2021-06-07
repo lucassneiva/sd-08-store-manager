@@ -2,6 +2,20 @@ const { ObjectId, ObjectID } = require('mongodb');
 const { FORM, RESPONSE } = require('../config/constant/returnMessage');
 const { productModel } = require('../models');
 
+exports.incrementProduct = async (id, value) => {
+  const product = await productModel.getById(id);
+  delete product._id;
+  product.quantity += value;
+  await productModel.update(id, product);
+};
+
+exports.decrementProduct = async (id, value) => {
+  const product = await productModel.getById(id);
+  delete product._id;
+  product.quantity -= value;
+  await productModel.update(id, product);
+};
+
 exports.registerProduct = async (entry) => {
   const nameProduct = entry.name;
   const existNameProduct = await productModel.existByName(nameProduct);

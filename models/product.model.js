@@ -31,8 +31,10 @@ exports.existByName = async (name) => {
 exports.add = async (entry) =>
   connect().then(async (db) => {
     const product = await db.collection('products').insertOne(entry);
-
-    return product.ops[0];
+    return {
+      _id: product.ops[0]._id,
+      ...entry
+    };
   });
 
 exports.update = async (id, entry) =>
