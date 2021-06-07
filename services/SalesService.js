@@ -1,15 +1,19 @@
 const SalesModel = require('../models/SalesModel');
 const SalesSchema = require('../schemas/SalesSchema');
 const { notFoundSales, InvalidObjectIDSale } = require('../schemas/errorMessages');
+const { response } = require('express');
 
 // const ZERO = 0;
 
 const registerSale = async (sales) => {
-  const { quantity } = sales[0];
-    
+  const { productId, quantity } = sales[0];
+  
   const validate = SalesSchema.validateEntries(quantity);
 
   if(validate) return validate;
+
+  const resp = await SalesModel.updateQuantity(productId, quantity);
+  if(resp.code) return resp;
 
   const obj = SalesSchema.newObjectFormat(sales);
 
@@ -19,7 +23,7 @@ const registerSale = async (sales) => {
     _id: salesInsert.ops[0]._id,
     itensSold: salesInsert.ops[0].itensSold,
   };
-
+  
   return newObj;
     
 };
@@ -57,6 +61,12 @@ const deleteSaleByID = async (id) => {
   
   if(!saleId) return InvalidObjectIDSale;
   
+  const idProduct = sale[0].itensSold[0].productId;
+  const quantity = sale[0].itensSold[0].quantity;
+
+  SalesModel.sumQuantity(idProduct, quantity);
+
+
   return sale[0];
 };
 

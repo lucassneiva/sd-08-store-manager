@@ -1,9 +1,45 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
+const { quantityMenorEstoque } = require('../schemas/errorMessages');
 
 const registerSale = async (sales) => {
   try {
     return await connection().then((db) => db.collection('sales').insertOne(sales));
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const updateQuantity = async (idProduct, quantity) => {
+  try {
+    // garantindo que nunca sera menor que zero
+    const product = await connection()
+      .then((db) => db.collection('products').find({_id: ObjectId(idProduct)}).toArray());
+
+    const quanty = product[0].quantity;
+    
+    if(quanty < quantity) return quantityMenorEstoque;
+    
+
+    // console.log(quanty, quantity);
+
+    await connection().then((db) => db.collection('products')
+      .updateOne({ _id: ObjectId(idProduct) }, {$inc: {quantity: - quantity}}))
+      .then((product) => product);
+
+    return true;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const sumQuantity = async (idProduct, quantity) => {
+  try {
+
+    await connection().then((db) => db.collection('products')
+      .updateOne({ _id: ObjectId(idProduct) }, {$inc: {quantity}}))
+      .then((product) => product);
+
   } catch (error) {
     console.error(error);
   }
@@ -61,5 +97,7 @@ module.exports = {
   getAllSales,
   getSalesByID,
   updateSaleByID,
-  deleteSaleByID
+  deleteSaleByID,
+  updateQuantity,
+  sumQuantity
 };

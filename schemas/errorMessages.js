@@ -81,6 +81,16 @@ const InvalidObjectIDSale = {
   }
 };
 
+const quantityMenorEstoque = {
+  code: 404,
+  message: {
+    'err': {
+      'code': 'stock_problem',
+      'message': 'Such amount is not permitted to sell'
+    }
+  }
+};
+
 module.exports = {
   lessThanFive,
   alreadyExists,
@@ -90,4 +100,5 @@ module.exports = {
   quantityInvalidNumber,
   notFoundSales,
   InvalidObjectIDSale,
+  quantityMenorEstoque
 };
