@@ -110,9 +110,28 @@ const updateById = async (id, changes) => {
   };
 };
 
+const deleteById = async (id) => {
+  const deleted = await SalesModel
+    .deleteById(id);
+
+  if (!deleted) return ({
+    status: UNPROCESSABLE_ENTRY,
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    }
+  });
+
+  return {
+    status: SUCCESS,
+    deleted,
+  };
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   updateById,
+  deleteById,
 };

@@ -30,6 +30,8 @@ app.get('/sales/:id', SalesController.getById);
 
 app.put('/sales/:id', SalesController.updateById);
 
+app.delete('/sales/:id', SalesController.deleteById);
+
 app.listen(PORT, () => {
   console.log(`Escutando na porta ${PORT}`);
 });
