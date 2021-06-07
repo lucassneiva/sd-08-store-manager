@@ -8,19 +8,6 @@ const UNPROCESSABLE_ENTRY = 422;
 const idAndQuantErr = 'Wrong product ID or invalid quantity';
 
 const create = async (salesMade) => {
-  // O productId devem ser igual ao id de um produto anteriormente cadastrado
-
-  salesMade.forEach((sale) => {
-    const product = ProductsModel.getById(sale.productId);
-    if (!product) return ({
-      status: UNPROCESSABLE_ENTRY,
-      err: {
-        code: 'invalid_data',
-        message: idAndQuantErr,
-      }
-    });
-  });
-
   // Será validado que não é possível cadastrar vendas com quantidade menor que zero
   // Será validado que não é possível cadastrar vendas com quantidade igual a zero
   const minQuantity = 1;

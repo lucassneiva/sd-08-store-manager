@@ -9,7 +9,7 @@ const create = async (salesMade) => {
     .insertOne({itensSold: [...salesMade]});
 
   return {
-    insertedId,
+    _id: insertedId,
     itensSold: [...salesMade]
   };
 };
