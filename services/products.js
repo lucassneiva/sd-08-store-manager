@@ -1,8 +1,7 @@
 const products = require('../models/products');
 
 const error = require('../helpers/error');
-const sucess = require('../helpers/sucess');
-const success = require('../helpers/sucess');
+const success = require('../helpers/success');
 
 const ZERO = 0;
 const FIVE = 5;
@@ -23,7 +22,7 @@ const addProduct = async (name, quantity) => {
   if (!product) {
     throw new Error('product not created successfully');
   }
-  return sucess({
+  return success({
     _id: product.insertedId,
     name,
     quantity,
