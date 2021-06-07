@@ -1,22 +1,61 @@
 
+
 const productsService = require('../services/product');
 
 const NEW_ITEM = 201;
 const INTERNAL_ERROR = 500;
+const SUCESS = 200;
+const UNPROCESSABLE_ENTITY = 422;
+
 
 
 const controllerProduct = async (req, res) => {
   const newProduct = req.body;
   try {
-    const create = await productsService.AddNewProduct(newProduct);
+    const create = await productsService.addNewProduct(newProduct);
     return res.status(NEW_ITEM).json(create);
   }   catch (error) {
     console.error(error);
     return res.status(INTERNAL_ERROR)
-      .json({error});
+      .json({error: error.message});
   }
 };
 
+const controllerAllProduct = async (_req, res) => {
+  try {
+    const listAll = await productsService.getAllProducts();
+    return res.status(SUCESS).json({ products: listAll });
+  } catch (error) {
+    console.error(error);
+    return res.status(INTERNAL_ERROR)
+      .json({error: error.message});  
+  }
+};
+
+const controllerById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const idProduct = await productsService.getById(id);
+    if (!idProduct) {
+      return res.status(UNPROCESSABLE_ENTITY).json({
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong id format',
+        },
+      });
+    }
+    return res.status(SUCESS).json(idProduct);
+  } catch (error) {
+    console.error(error);
+    res.status(INTERNAL_ERROR).json({ error: error.message });
+  }
+};
+
+
+
+
 module.exports = {
-  controllerProduct
+  controllerProduct,
+  controllerAllProduct,
+  controllerById
 };

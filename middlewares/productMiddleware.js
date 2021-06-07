@@ -3,6 +3,16 @@ const ProductModel = require('../models/product');
 
 const UNPROCESSABLE_ENTITY = 422;
 
+const validateProduct = (req, res, next) => {
+  const { name, quantity } = req.body;
+  const validations = ProductSchema.validate(name, quantity);
+  
+  if (validations.err) {
+    return res.status(validations.code).json({ err: validations.err });
+  }
+  next();
+};
+
 
 const validateIfNameExists = async (req, res, next) => {
   const { name } = req.body;
@@ -21,15 +31,6 @@ const validateIfNameExists = async (req, res, next) => {
   next();
 };
 
-const validateProduct = (req, res, next) => {
-  const { name, quantity } = req.body;
-  const validations = ProductSchema.validate(name, quantity);
-  
-  if (validations.err) {
-    return res.status(validations.code).json({ err: validations.err });
-  }
-  next();
-};
 
 module.exports = {
   validateIfNameExists,

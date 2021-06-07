@@ -6,12 +6,12 @@ const app = express();
 
 app.use(bodyParser.json());
 
-const {routeProduct} = require('./Routes/product');
+const {routeProduct} = require('./routes/product');
 
 const PORT = 3000;
 
 
-app.use('/products', routeProduct);
+app.use(routeProduct);
 
 app.listen(PORT, () => console.log('App ouvindo a porta 3000!'));
 
