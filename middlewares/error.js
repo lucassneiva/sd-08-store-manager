@@ -17,12 +17,12 @@ module.exports = async (err, _req, res, _next) => {
     const { statusCode, payload } = err.output;
     const { message } = payload;
     return statusCode === UNPROCESSABLE_ENTITY
-      ? (res.status(statusCode).json({
+      ? res.status(statusCode).json({
         err: {
           code: 'invalid_data',
           message,
         },
-      }))
+      })
       : res.status(statusCode).json({
         err: {
           code: 'not_found',
@@ -31,5 +31,5 @@ module.exports = async (err, _req, res, _next) => {
       });
   }
 
-  res.status(INTERNAL_SERVER_ERROR).json(err);
+  res.status(INTERNAL_SERVER_ERROR).json(err.message);
 };
