@@ -11,5 +11,6 @@ router.use(bodyParser.json());
 router.post('/', controllers.create);
 router.get('/', controllers.getAllProducts);
 router.get('/:id', controllers.getProductById);
+router.put('/:id', controllers.updateById);
 
 module.exports = router;

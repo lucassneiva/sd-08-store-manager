@@ -83,8 +83,6 @@ const getById = async (id) => {
 
   const result = await Model.getById(id);
 
-  console.log(result);
-
   if(!result) {
     throw new Error(JSON.stringify({
       err: {
@@ -101,8 +99,44 @@ const getById = async (id) => {
   };
 };
 
+const update = async (id, name, quantity) => {
+
+  if (name.length < minimumLength ) {
+    throw new Error(JSON.stringify({
+      err: {
+        code: 'invalid_data',
+        message: '"name" length must be at least 5 characters long'
+      },
+      http: 422,
+    }));
+  };
+
+  if (quantity <= resultLength) {
+    throw new Error(JSON.stringify({
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be larger than or equal to 1'
+      },
+      http: 422,
+    }));
+  };
+
+  if(typeof(quantity) !== 'number') {
+    throw new Error(JSON.stringify({
+      err: {
+        code: 'invalid_data',
+        message: '"quantity" must be a number',
+      },
+      http: 422,
+    }));
+  }
+
+  return Model.update(id, name, quantity);
+};
+
 module.exports = {
   create,
   getAll,
-  getById
+  getById,
+  update
 };
