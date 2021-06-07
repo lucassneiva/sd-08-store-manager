@@ -1,5 +1,6 @@
 const express = require('express');
 const product = require('./controllers/productController');
+const sale = require('./controllers/saleController');
 
 const DEFAULT_PORT = 3000;
 const PORT = process.env.PORT || DEFAULT_PORT;
@@ -13,6 +14,8 @@ app.get('/', (_request, response) => {
 });
 
 app.post('/products', product.create);
+
+app.post('/sales', sale.create);
 
 app.get('/products/:id?', product.search);
 
