@@ -17,11 +17,13 @@ const getById = async (id) => {
 const create = async (name, quantity) => connection()
   .then((db) => db.collection('products').insertOne({ name, quantity }));
 
-const update = async (_id, name, quantity) => connection()
+const update = async (id, name, quantity) => connection()
   .then((db) => 
-    db.collection('products').updateOne({ _id }, { $set: { name, quantity }}));
+    db.collection('products')
+      .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity }}));
   
-
+const remove = async (id) => connection()
+  .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
 
 
 module.exports = {
@@ -30,4 +32,5 @@ module.exports = {
   findByName,
   create,
   update,
+  remove,
 };
