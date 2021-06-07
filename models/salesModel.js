@@ -54,11 +54,12 @@ const updateById = async (id, changes) => {
       { returnOriginal: false }
     );
 
-  console.log(update);
+  return updated.value;
 };
 
 module.exports = {
   create,
   getAll,
   getById,
+  updateById,
 };

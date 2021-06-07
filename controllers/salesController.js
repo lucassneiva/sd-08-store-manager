@@ -36,8 +36,12 @@ const updateById = async (req, res) => {
   const { id } = req.params;
   const changes = req.body;
 
-  const updated = await SalesService
+  const { status, err, updated } = await SalesService
     .updateById(id, changes);
+
+  if (status !== SUCCESS) return res.status(status).json({err});
+
+  res.status(status).json(updated);
 };
 
 module.exports = {

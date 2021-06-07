@@ -96,6 +96,18 @@ const updateById = async (id, changes) => {
   const updated = await SalesModel
     .updateById(id, changes);
 
+  if (!updated) return ({
+    status: UNPROCESSABLE_ENTRY,
+    err: {
+      code: 'invalid_data',
+      message: idAndQuantErr,
+    }
+  });
+
+  return {
+    status: SUCCESS,
+    updated,
+  };
 };
 
 module.exports = {
