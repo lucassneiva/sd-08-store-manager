@@ -10,11 +10,20 @@ const getById = async(id) => {
   return getCollections('sales').then((db) => db.findOne({ _id: ObjectId(id) }));
 };
 
-const create = async (productId, quantity) => {
+const create = async (products) => {
   const sale = await getCollections('sales').then(db =>
-    db.insertOne({ productId, quantity })
+    db.insertOne({ itensSold: products })
   );
-  return { _id: sale.insertedId, itenSold: [{ productId, quantity}] };
+  return { _id: sale.insertedId, itensSold: products };
+};
+
+const update = async (id, productId, quantity) => {
+  if (!ObjectId.isValid(id)) return;
+
+  const sale = await getCollections('sales').then(db =>
+    db.updateOne({ _id: ObjectId(id) }, { $set: { productId, quantity } })
+  );
+  return { _id: sale.insertedId, productId, quantity };
 };
 
 const remove = async (id) => {
@@ -29,5 +38,6 @@ module.exports = {
   getAll,
   getById,
   create,
+  update,
   remove,
 };

@@ -1,8 +1,6 @@
 const { Router } = require('express');
 const service = require('../services/productService');
 const rescue = require('express-rescue');
-const model = require('../models/productModel');
-
 
 const router = Router();
 

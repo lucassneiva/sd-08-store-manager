@@ -1,4 +1,5 @@
 const model = require('../models/saleModel');
+const serviceProduct = require('../services/productService');
 const { ObjectId } = require('mongodb');
 
 const getAll = async () => model.getAll();
@@ -16,7 +17,26 @@ const getById = async (id) => {
   return sale;
 };
 
-const create = async ({productId, quantity}) => {
+const create = async (products) => {
+  const ZERO = 0;
+
+  for (const product of products) {
+    const result = await serviceProduct.getById(product._id);
+    const { quantity } = result;
+    if (!result || Number(quantity) <= ZERO || typeof quantity === 'string') {
+      return {
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong product ID or invalid quantity'
+        }
+      };
+    }
+  }
+  return model.create(products);
+
+};
+
+const update = async(id, productId, quantity) => {
   const ZERO = 0;
   if (Number(quantity) < ZERO) {
     throw {
@@ -42,7 +62,7 @@ const create = async ({productId, quantity}) => {
       }
     };
   }
-  return model.create(productId, quantity);
+  return model.update(id, productId, quantity);
 };
 
 const remove = async (id) => {
@@ -62,5 +82,6 @@ module.exports = {
   getAll,
   getById,
   create,
+  update,
   remove,
 };
