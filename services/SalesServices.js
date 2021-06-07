@@ -38,7 +38,8 @@ const getSaleById = async (id) => {
 };
 
 const updateSales = async (id, sold) => {
-  const getSaleIsValid = await validations.validateSolds(id);  const quantitiesArrayIsValid = validations.validateQuantityArray(sold);
+  const getSaleIsValid = await validations.validateSolds(id);
+  const quantitiesArrayIsValid = validations.validateQuantityArray(sold);
 
   if(getSaleIsValid) return { erro: getSaleIsValid };
   if (quantitiesArrayIsValid) return { erro: quantitiesArrayIsValid };
@@ -60,8 +61,8 @@ const updateSales = async (id, sold) => {
   await SalesModels.updateSale(id, resp);
   const updated = await SalesModels.findSaleById(id);
 
-  return { message: updated[0], code: 200 }
-}
+  return { message: updated[0], code: 200 };
+};
 
 module.exports = {
   addSold,

@@ -40,7 +40,7 @@ const updateSale = async (id, sale) => {
     .then((db) => db.collection(TABELA_SALES)
       .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: sale } }))
     .catch((_err) => console.log('Não atualizei!!!'));
-  return updateSales
+  return updateSales;
 };
 
 module.exports = {
