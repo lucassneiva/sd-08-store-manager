@@ -16,6 +16,27 @@ router.post('/', rescue (async (req, res, next) => {
   res.status(code).json(message);
 }));
 
+router.get('/', rescue (async (_req, res, next) => {
+  const getAll = await salesServices.getAllSales();
+
+  const { message, code, erro } = getAll;
+  
+  if (erro) return next(erro);
+
+  res.status(code).json(message);
+}));
+
+router.get('/:id', rescue (async (req, res, next) => {
+  const { id } = req.params;
+  const getAll = await salesServices.getSaleById(id);
+
+  const { message, code, erro } = getAll;
+  
+  if (erro) return next(erro);
+
+  res.status(code).json(message);
+}));
+
 router.use((erro, _req, res, _next) => {
   const { err, code } = erro;
 

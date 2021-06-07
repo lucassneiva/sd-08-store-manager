@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const connect = require('./Connect');
 
 const TABELA_SALES = 'sales';
@@ -18,7 +19,25 @@ const findBySale = async (sale) => {
   return findBySales;
 };
 
+const findSaleById = async (id) => {
+  const getSoldsById = await connect()
+    .then((db) => db.collection(TABELA_SALES)
+      .find(ObjectId(id)).toArray())
+    .catch((_err) => console.log('Falhou na busca pelo id!!!'));
+  return getSoldsById;
+};
+
+const getAllSolds = async () => {
+  const getAll = await connect()
+    .then((db) => db.collection(TABELA_SALES)
+      .find({}).toArray())
+    .catch((_err) => console.log('Deu erro ao buscar todos!!!'));
+  return getAll;
+};
+
 module.exports = {
   addSales,
   findBySale,
+  findSaleById,
+  getAllSolds,
 };

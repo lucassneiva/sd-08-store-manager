@@ -1,9 +1,9 @@
 const { ObjectId, ObjectID } = require('mongodb');
 
-const findModels = require('../models/ProductModels');
+const findModelsProducts = require('../models/ProductModels');
 
-const NUMBER_FIVE = 5;
 const NUMBER_ZERO = 0;
+const NUMBER_FIVE = 5;
 
 const nameValidations = (name) => {
   if (name.length < NUMBER_FIVE) {
@@ -18,7 +18,7 @@ const nameValidations = (name) => {
 };
 
 const findOne = async (name) => {
-  const res = await findModels.findOneProduct(name);
+  const res = await findModelsProducts.findOneProduct(name);
 
   if (res.length > NUMBER_ZERO) {
     return {
@@ -62,7 +62,7 @@ const validAddNewProduct = (name, quantity) => {
 };
 
 const getById = async (id) => {
-  const byId = await findModels.findOneProductById(id);
+  const byId = await findModelsProducts.findOneProductById(id);
 
   if (!ObjectID.isValid(id)) {
     return {
@@ -85,49 +85,9 @@ const getById = async (id) => {
   };
 };
 
-// Validations for solds!!
-const getByIdArray = async (sale) => {
-  const getIdsArray = sale
-    .every(({ productId }) => {
-      const find = findModels.findOneProductById(productId);
-      return find;
-    });
-
-  if (!getIdsArray) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong id format',
-      },
-      code: 422,
-    };
-  };
-};
-
-const validateQuantityArray = (sale) => {
-  const quantitiesMoreThan = sale.some(({ quantity }) => {
-    return quantity <= NUMBER_ZERO;
-  });
-  const quantitiesIsNumber = sale.some(({ quantity }) => {
-    return typeof quantity !== 'number';
-  });
-
-  if (quantitiesMoreThan || quantitiesIsNumber) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong product ID or invalid quantity',
-      },
-      code: 422,
-    };
-  };
-};
-
 module.exports = {
   validAddNewProduct,
   findOne,
   getById,
   quantityValidations,
-  getByIdArray,
-  validateQuantityArray,
 };
