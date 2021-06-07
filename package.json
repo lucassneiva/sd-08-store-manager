@@ -4,6 +4,7 @@
   "description": "Simple CRUD to sales and products",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon index.js",
     "test": "jest --runInBand",
     "test:mocha": "nyc --all --include models --include services --include controllers mocha test/unit/*.js --exit",
     "start": "nodemon index.js",
@@ -34,6 +35,7 @@
     "nodemon": "^2.0.4"
   },
   "devDependencies": {
+
     "chai": "^4.3.4",
     "eslint": "^7.3.1",
     "eslint-config-airbnb": "^18.2.0",
