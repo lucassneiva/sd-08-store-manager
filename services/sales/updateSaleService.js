@@ -13,7 +13,6 @@ module.exports = async (id, newData) => {
       result: await model.update(id, newData[0]),
     };
   } catch (err) {
-    console.log(err);
     return generateError('Wrong product ID or invalid quantity');
   }
 };
