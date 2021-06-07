@@ -108,7 +108,8 @@ const update = async (saleUpdate, id) => {
 
 const deleteSale = async (id) => {
   if(!ObjectId.isValid(id)) {
-    return resolveRequestSales({ sales: { err: 'delete' } });
+    console.log('aqui');
+    return resolveRequestSalesEsp({ sales: { err: 'delete' } });
   }
   const getSale = await modelSales.getById(ObjectId(id));
   console.log(getSale);

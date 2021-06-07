@@ -20,7 +20,7 @@ const types_esp = ['stock_problem', 'delete'];
 const types = ['create', 'update'];
 
 const resolveRequestSalesEsp = (res) => {
-  if (res.sales && res.sales.err && types_esp.includes(res.sales.err)) {
+  if (res.sales && res.sales.err === types_esp[0]) {
     return {
       status: status.notFound,
       err: {
@@ -29,7 +29,7 @@ const resolveRequestSalesEsp = (res) => {
       }
     };
   }
-  if (res.sales && res.sales.err && types_esp.includes(res.sales.err)) {
+  if (res.sales && res.sales.err === types_esp[1]) {
     return {
       status: status.unProcessableEntity,
       err: {
