@@ -67,9 +67,24 @@ const deleteSale = rescue(async (req, res) => {
   res.status(OK).json(sale);
 });
 
+const updateSale =  rescue (async (req, res) => {
+  const { id } = req.params;
+  const sale = req.body;
+  if(!checkSalesQuantity(sale)) return res
+    .status(INVALID_ERR).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      }
+    });
+  const updatedSale = await SalesService.updateSale(id, sale);
+  return res.status(OK).json(updatedSale);
+});
+
 module.exports = {
   createSale,
   listAllSales,
   getSaleById,
-  deleteSale
+  deleteSale,
+  updateSale,
 };

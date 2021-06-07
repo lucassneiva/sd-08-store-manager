@@ -27,9 +27,18 @@ const deleteSale = async (id) => {
   return deleteSale;
 };
 
+const updateSale = async (id, sale) => {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  };
+  const updatedSale = await SalesModel.updateSale(id, sale);
+  return updateSale;
+};
+
 module.exports = {
   createSale,
   listAllSales,
   getSaleById,
-  deleteSale
+  deleteSale,
+  updateSale,
 };
