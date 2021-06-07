@@ -7,13 +7,11 @@ const add = async (product) => {
     .then((result) => result.ops[0]);
 };
 
-const findProduct = async ({ name }) => {
-  const product = await connection()
+const findProduct = async (product) => {
+  const { name } = product;
+  const productFound = await connection()
     .then((db) => db.collection('products').findOne({ name }));
-
-  if (!product) return null;
-
-  return product;
+  return productFound;
 };
 
 const getAll = async () => {
@@ -21,39 +19,24 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  try {
-    const product = await connection().then((db) =>
-      db.collection('products').findOne(new ObjectId(id)),
-    );
-
-    if (!product) return null;
-
-    return product;
-  } catch (err) {
-    return null;
-  }
+  const product = await connection().then((db) =>
+    db.collection('products').findOne(ObjectId(id)),
+  );
+  return product;
 };
 
 const updateById = async (id, updatedProduct) => {
-  try {
-    return connection().then((db) =>
-      db.collection('products')
-        .updateOne({ _id: ObjectId(id) }, { $set: updatedProduct }),
-    );
-  } catch (err) {
-    return null;
-  }
+  return connection().then((db) =>
+    db.collection('products')
+      .updateOne({ _id: ObjectId(id) }, { $set: updatedProduct }),
+  );
 };
 
 const deleteById = async (id) => {
-  try {
-    const product = await connection().then((db) =>
-      db.collection('products').deleteOne({_id: ObjectId(id)}),
-    );
-    return product;
-  } catch (err) {
-    return null;
-  }
+  const product = await connection().then((db) =>
+    db.collection('products').deleteOne({ _id: ObjectId(id) }),
+  );
+  return product;
 };
 
 module.exports = {

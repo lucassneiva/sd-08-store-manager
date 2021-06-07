@@ -48,20 +48,21 @@ const add = async (itensSold) => {
 
 const getAll = async () => {
   const sales = await Sales.getAll();
-
   return { sales };
 };
 
 const getById = async (id) => {
-  const sales = await Sales.getById(id);
+  const errNotFound = {
+    err: {
+      code: 'not_found',
+      message: 'Sale not found',
+    },
+  };
+  if (!ObjectId.isValid(id)) return errNotFound;
 
-  if (!sales)
-    return {
-      err: {
-        code: 'not_found',
-        message: 'Sale not found',
-      },
-    };
+  const sales = await Sales.getById(id);
+  
+  if (!sales) return errNotFound;
 
   return sales;
 };
@@ -69,14 +70,14 @@ const getById = async (id) => {
 const updateById = async (id, updatedSale) => {
   const validation = await isValid(updatedSale);
   if (validation.err) return validation;
-  const result = await Sales.updateById(id, updatedSale);
-
-  if (!result.matchedCount) return {
+  if (!ObjectId.isValid(id)) return {
     err: {
       code: 'not_found',
       message: 'Id not found',
     },
   };
+  
+  await Sales.updateById(id, updatedSale);
 
   return {
     _id: id,
@@ -85,16 +86,14 @@ const updateById = async (id, updatedSale) => {
 };
 
 const deleteById = async (id) => {
-  const deletedSale = await Sales.getById(id);
-  const sales = await Sales.deleteById(id);
-
-  if (!sales || !sales.deletedCount) return {
+  if (!ObjectId.isValid(id)) return {
     err: {
       code: 'invalid_data',
       message: 'Wrong sale ID format',
     },
   };
-
+  const deletedSale = await Sales.getById(id);
+  await Sales.deleteById(id);
   const { itensSold } = deletedSale;
 
   for (let item of itensSold) {

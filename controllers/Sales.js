@@ -28,7 +28,7 @@ const getById = async (req, res) => {
   const { id } = req.params;
 
   const sales = await Sales.getById(id);
-
+  
   if (sales.err) return res.status(NOT_FOUND).json(sales);
 
   return res.status(OK).json(sales);

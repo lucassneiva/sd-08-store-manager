@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const Products = require('../models/Products');
 
 const MIN_NAME_LEN = 5;
@@ -52,14 +53,11 @@ const add = async (product) => {
 
 const getAll = async () => {
   const products = await Products.getAll();
-
   return { products };
 };
 
 const getById = async (id) => {
-  const product = await Products.getById(id);
-
-  if (!product) {
+  if (!ObjectId.isValid(id)) {
     return {
       err: {
         code: 'invalid_data',
@@ -67,6 +65,7 @@ const getById = async (id) => {
       },
     };
   }
+  const product = await Products.getById(id);
 
   return product;
 };
@@ -75,13 +74,14 @@ const updateById = async (id, updatedProduct) => {
   const validation = isValid(updatedProduct);
   if (validation.err) return validation;
 
-  const result = await Products.updateById(id, updatedProduct);
-  if (!result.matchedCount) return {
+  if (!ObjectId.isValid(id)) return {
     err: {
       code: 'invalid_data',
       message: 'Id not found',
     },
   };
+  
+  await Products.updateById(id, updatedProduct);
 
   return {
     _id: id,
@@ -90,10 +90,7 @@ const updateById = async (id, updatedProduct) => {
 };
 
 const deleteById = async (id) => {
-  const deletedProduct = await Products.getById(id);
-  const result = await Products.deleteById(id);
-  
-  if (!result || !result.deletedCount) {
+  if (!ObjectId.isValid(id)) {
     return {
       err: {
         code: 'invalid_data',
@@ -101,6 +98,10 @@ const deleteById = async (id) => {
       },
     };
   }
+
+  const deletedProduct = await Products.getById(id);
+  
+  await Products.deleteById(id);
   
   return deletedProduct;
 };

@@ -12,37 +12,22 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  try {
-    const sales = await connection()
-      .then((db) => db.collection('sales').findOne(new ObjectId(id)));
-
-    if (!sales) return null;
-
-    return sales;
-  } catch (err) {
-    return null;
-  }
+  const sales = await connection()
+    .then((db) => db.collection('sales').findOne(ObjectId(id)));
+  return sales;
 };
 
 const updateById = async (id, updatedSale) => {
-  try {
-    return connection().then((db) =>
-      db.collection('sales')
-        .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: updatedSale } }),
-    );
-  } catch (err) {
-    return null;
-  }
+  return connection().then((db) =>
+    db.collection('sales')
+      .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: updatedSale } }),
+  );
 };
 
 const deleteById = async (id) => {
-  try {
-    const sales = await connection()
-      .then((db) => db.collection('sales').deleteOne({_id: ObjectId(id)}));
-    return sales;
-  } catch (err) {
-    return null;
-  }
+  const sales = await connection()
+    .then((db) => db.collection('sales').deleteOne({_id: ObjectId(id)}));
+  return sales;
 };
 
 module.exports = {
