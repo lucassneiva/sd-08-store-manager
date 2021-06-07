@@ -10,7 +10,7 @@ const INVALID_DATA_STATUS = 422;
 const getAllProducts = async (_req, res) => {
   try {
     const products = await getAll();
-    res.status(SUCCESS_STATUS).json(products);
+    res.status(SUCCESS_STATUS).json({ products: [ ...products]});
   } catch (error) {
     res.status(ERROR_STATUS).json({message: 'Ops, algo de errado'});
   }

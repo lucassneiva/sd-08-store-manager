@@ -17,7 +17,7 @@ productsRoute.get('/', getAllProducts);
 
 productsRoute.post('/', checkName, checkQuantity, createProduct);
 
-productsRoute.put('/:id', checkName, checkQuantity, updateProduct);
+productsRoute.put('/:id', checkQuantity, checkName, updateProduct);
 
 productsRoute.delete('/:id', deleteProduct);
 
