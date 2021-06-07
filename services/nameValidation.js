@@ -10,7 +10,7 @@ const nameValidation = async (req, res, next) => {
   const allProducts = await getAllProducts();
   const findProduct = await allProducts.find((item) => item.name === name);
   if (findProduct !== undefined) {
-    res
+    return res
       .status(UNPROCESSABLE_ENTITY)
       .json({
         err: {
@@ -20,7 +20,7 @@ const nameValidation = async (req, res, next) => {
       });
   }
   if (name.length < NAME_LENGTH) {
-    res
+    return res
       .status(UNPROCESSABLE_ENTITY)
       .json({
         err: {
