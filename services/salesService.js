@@ -31,6 +31,15 @@ const checkStockForNewSale = async (product) => {
   return thereIsProductInStock;
 };
 
+const verifyStockForUpdate = (productQuantity, quantityCur, quantity) => {
+  const total = productQuantity + quantityCur;
+  if (total >= quantity) {
+    const productQuantity = total - quantity;
+    return { quantity: productQuantity };
+  }
+  return false;
+};
+
 const create = async (newSale) => {
   const validNewSale = schemaSale.validSale(newSale);
   if(!validNewSale) return resolveRequestSales({ sales: { err: 'create' } });
@@ -45,18 +54,57 @@ const create = async (newSale) => {
 
 const getAll = async () => {
   const getAllSales = await modelSales.getAll();
-  if(!getAllSales) return resolveRequestSales({sales: { err: 'get' } });
+  if(!getAllSales) return resolveRequestSales({ sales: { err: 'get' } });
   return resolveRequestSales({ sales: { getAll: true, result: getAllSales } });
 };
 
 const getById = async (id) => {
   const getOneSale = await modelSales.getById(ObjectId(id));
-  if(!getOneSale) return resolveRequestSales({sales: { err: 'get' } });
+  if(!getOneSale) return resolveRequestSales({ sales: { err: 'get' } });
   return resolveRequestSales({ sales: { getOne: true, result: getOneSale[0] } });
+};
+
+const update = async (saleUpdate, id) => {
+  //valida schema
+  if (!schemaSale.validSale(saleUpdate)) {
+    return resolveRequestSales({ sales: { err: 'update' } }); 
+  }
+
+  // quantidade e id para update
+  const { productId, quantity }  = saleUpdate;
+
+  // verifica se existe a venda
+  const getSaleForUpgrade = await getById(id);
+  if (getSaleForUpgrade.err) return resolveRequestSales({ sales: { err: 'update' } });
+
+  // busca o produto que vai receber att na quantidade
+  const product = await modelProduct.getByKey(
+    { _id: productId }
+  );
+  // desestruturando a venda para retirar a quantidade ja vendida
+  const { result: { itensSold } } = getSaleForUpgrade;
+  const { quantity: quantityCur } = itensSold
+    .find((el) => el.productId === productId); 
+
+  // calcula se é possível atualizar a venda
+  const resultCount =  verifyStockForUpdate(product.quantity, quantityCur, quantity);
+  if (!resultCount) return resolveRequestSales({ sales: { err: 'update' } });
+
+  // atualiza o produto
+  await updateNowStockProduct({ _id: productId, quantity: resultCount.quantity });
+  // atualiza a venda
+  const resultUpdateSale = await modelSales.update({ productId, quantity }, id);
+  // resultado
+  if (resultUpdateSale) {
+    const getSaleNow = await getById(id); 
+    return resolveRequestSales({ sales: { update: true, result:  getSaleNow.result } });
+  }
+  return resolveRequestSales({ sales: { err: 'update' } });
 };
 
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };

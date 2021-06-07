@@ -34,8 +34,38 @@ const getById = async (id) => {
   }
 };
 
+const update = async (updateSale, id) => {
+  try {
+    const getUpdateCollection = await connectionDb()
+      .then((db) => db.collection('sales'))
+      .then((getCollection) => getCollection.updateOne(
+        { '_id': ObjectId(id) },
+        { '$set': {
+          'itensSold.$[elemento].quantity': updateSale.quantity,
+        } },
+        { 'arrayFilters': [{ 'elemento.productId': updateSale.productId }] }
+      ));
+    
+    return getUpdateCollection;
+  } catch (err) {
+    return err;
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };
+
+
+// db.sales.updateOne(
+//   { _id: ObjectId('60bd374901472df171f68de7') },
+//   { 
+//     $set: {
+//       'itensSold.$[elemento].quantity': 10,
+//     }
+//   },
+//   { arrayFilters: [{ 'elemento.productId': '60bce37ca5d2522ff6b3d8bb' }] }
+// );

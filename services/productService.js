@@ -5,7 +5,6 @@ const { ObjectId } = require('mongodb');
 
 const productCreate = async (newProduct) => {
   const isValid = schema.validProduct(newProduct);
-  console.log(isValid);
   if (isValid.error) return resolveRequestProduct(isValid);
   const productExists = await modelProduct.getByKey({
     name: newProduct.name 

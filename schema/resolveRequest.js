@@ -13,7 +13,7 @@ const code = {
 };
 
 const resolveRequestSales = (res) => {
-  if (res.sales && res.sales.err === 'create') {
+  if (res.sales && ( res.sales.err === 'create' || res.sales.err === 'update' )) {
     return {
       status: status.unProcessableEntity,
       err: {
@@ -31,7 +31,7 @@ const resolveRequestSales = (res) => {
       }
     };
   };
-  if (res.sales && res.sales.ok) {
+  if (res.sales && (res.sales.ok || res.sales.update)) {
     return {
       status: status.ok,
       result: res.sales.result

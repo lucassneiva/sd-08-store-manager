@@ -5,7 +5,6 @@ const {
 const isValidId = async (req, _res, next) => {
   const { id } = req.params;
   const { path } = req.route;
-  console.log(req.route.path);
   if ((!id || !ObjectId.isValid(id)) && path === '/sales/:id') {
     return next(resolveRequestSales({ sales: { idInvalid: true }}));
   }

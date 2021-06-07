@@ -45,7 +45,6 @@ const update = async (product) => {
   try {
     const { _id } = product;
     delete product._id;
-    console.log(product);
     const getCollection = await connectionDb().then((db) => db.collection('products'));
     await getCollection
       .updateOne(
