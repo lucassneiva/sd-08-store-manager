@@ -48,20 +48,15 @@ router.post('/', rescue(async (req, res) => {
 
 router.put('/:id', rescue(async (req, res) => {
   const STATUS_200 = 200;
-  const STATUS_500 = 500;
   const STATUS_422 = 422;
-  try {
-    const { id } = req.params;
-    const [{ productId, quantity }] = req.body;
-    const sale = await service.update(id, productId, quantity) ;
-    res.status(STATUS_200).json(sale);
-  } catch (err) {
-    if (err.err.code === 'invalid_data') {
-      return res.status(STATUS_422).json(err);
-    }
-    console.log(err);
-    res.status(STATUS_500).json({ message: 'Algo deu errado' });
+
+  const { id } = req.params;
+  const sale = await service.update(id, req.body) ;
+
+  if (sale.err) {
+    return res.status(STATUS_422).json(sale);
   }
+  res.status(STATUS_200).json(sale);
 }));
 
 router.delete('/:id', rescue( async(req, res) => {

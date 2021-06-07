@@ -33,33 +33,20 @@ const create = async (products) => {
 
 };
 
-const update = async(id, productId, quantity) => {
+const update = async(id, products) => {
   const ZERO = 0;
-  if (Number(quantity) < ZERO) {
-    throw {
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong product ID or invalid quantity'
-      }
-    };
+  for (const product of products) {
+    const { quantity } = product;
+    if (Number(quantity) <= ZERO || typeof quantity === 'string') {
+      return {
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong product ID or invalid quantity'
+        }
+      };
+    }
   }
-  if (Number(quantity) === ZERO) {
-    throw {
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong product ID or invalid quantity'
-      }
-    };
-  }
-  if (typeof quantity === 'string') {
-    throw {
-      err: {
-        code: 'invalid_data',
-        message: 'Wrong product ID or invalid quantity'
-      }
-    };
-  }
-  return model.update(id, productId, quantity);
+  return model.update(id, products);
 };
 
 const remove = async (id) => {

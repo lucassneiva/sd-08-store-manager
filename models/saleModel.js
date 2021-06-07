@@ -17,13 +17,13 @@ const create = async (products) => {
   return { _id: sale.insertedId, itensSold: products };
 };
 
-const update = async (id, productId, quantity) => {
+const update = async (id, products) => {
   if (!ObjectId.isValid(id)) return;
 
-  const sale = await getCollections('sales').then(db =>
-    db.updateOne({ _id: ObjectId(id) }, { $set: { productId, quantity } })
+  await getCollections('sales').then(db =>
+    db.updateOne({ _id: ObjectId(id) }, { $set: { itensSold: products } })
   );
-  return { _id: sale.insertedId, productId, quantity };
+  return { _id: id, itensSold: products };
 };
 
 const remove = async (id) => {
