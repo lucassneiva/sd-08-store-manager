@@ -16,52 +16,75 @@ const {
   notFoundCode, stockProblem } = responseNCodes;
 
 const errors = {
-  Product: {
+  Products: {
     nameAtLeastFive: {
-      message: '"name" length must be at least 5 characters long',
-      code: invalidData,
-      response: UNPROCESSABLE_ENTITY
+      response: UNPROCESSABLE_ENTITY,
+      err: {
+        message: '"name" length must be at least 5 characters long',
+        code: invalidData,
+      },
     },
     nameAlreadyExists: {
-      message: 'Product aldready exists',
-      code: invalidData,
-      response: UNPROCESSABLE_ENTITY
+      response: UNPROCESSABLE_ENTITY,
+      err: {
+        message: 'Product aldready exists',
+        code: invalidData,
+
+      }
     },
     quantityMustBeNumber: {
-      message: '"quantity" must be a number', code: invalidData,
-      response: UNPROCESSABLE_ENTITY
+      response: UNPROCESSABLE_ENTITY,
+      err: {
+        message: '"quantity" must be a number',
+        code: invalidData,
+      }
     },
     quantityOneOrMore:
     {
-      message: '"quantity" must be larger than or equal to 1', code: invalidData,
-      response: UNPROCESSABLE_ENTITY
+      response: UNPROCESSABLE_ENTITY,
+      err: {
+        message: '"quantity" must be larger than or equal to 1',
+        code: invalidData,
+      }
     },
     wrongIdFormat: {
-      message: 'Wrong id format', code: 'invalid_data', code: invalidData,
-      response: UNPROCESSABLE_ENTITY
+      response: UNPROCESSABLE_ENTITY,
+      err: {
+        message: 'Wrong id format', code: 'invalid_data',
+        code: invalidData,
+      }
     },
     stockCantBeZero: {
-      message: 'Such amount is not permitted to sell',
-      code: stockProblem,
-      response: NOT_FOUND
+      response: NOT_FOUND,
+      err: {
+        message: 'Such amount is not permitted to sell',
+        code: stockProblem,
+      }
     }
   },
 
   Sales: {
     quantityOneOrMore:
     {
-      message: '"quantity" must be larger than or equal to 1', code: invalidData,
-      response: UNPROCESSABLE_ENTITY
+      response: UNPROCESSABLE_ENTITY,
+      err: {
+        message: '"quantity" must be larger than or equal to 1',
+        code: invalidData,
+      }
     },
     saleCantBeZero: {
-      message: 'Wrong product ID or invalid quantity',
-      code: invalidData,
-      response: UNPROCESSABLE_ENTITY
+      response: UNPROCESSABLE_ENTITY,
+      err: {
+        message: 'Wrong product ID or invalid quantity',
+        code: invalidData,
+      }
     },
     notFoundSale: {
-      message: 'Sale not found',
-      code: notFoundCode,
-      response: NOT_FOUND
+      response: NOT_FOUND,
+      err: {
+        message: 'Sale not found',
+        code: notFoundCode,
+      }
     }
   }
 };
