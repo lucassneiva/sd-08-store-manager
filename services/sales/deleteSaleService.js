@@ -1,4 +1,4 @@
-const model = require('../../models/productModel');
+const model = require('../../models/saleModel');
 const HTTP = require('../../utils/httpStatusCodes');
 const generateError = require('../../utils/generateError');
 
@@ -9,6 +9,6 @@ module.exports = async (id) => {
       result: await model.remove(id),
     };
   } catch (err) {
-    return generateError('Wrong id format');
+    return generateError('Wrong sale ID format');
   }
 };

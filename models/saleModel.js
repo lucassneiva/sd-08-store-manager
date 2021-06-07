@@ -21,7 +21,7 @@ const getById = async (id) => {
 
 const update = async (id, newData) => {
   const db = await connection();
-  const result = await db
+  await db
     .collection('sales')
     .findOneAndUpdate(
       { _id: new ObjectId(id) },

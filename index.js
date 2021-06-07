@@ -27,4 +27,6 @@ app.put('/sales/:id', sale.update);
 
 app.delete('/products/:id', product.remove);
 
+app.delete('/sales/:id', sale.remove);
+
 app.listen(PORT, () => console.log(`Listening to port ${PORT}`));
