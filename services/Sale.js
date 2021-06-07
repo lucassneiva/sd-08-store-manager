@@ -60,21 +60,21 @@ const create = async (items) => {
   return newSale;
 };
 
-// const update = async (id, name, quantity) => {
-//   const { error } = schema.validate({ name, quantity });
+const update = async (id, items) => {
+  const { error } = schema.validate(items);
 
-//   if (error) { 
-//     return {
-//       code: 'invalid_data',
-//       error,
-//       status: HTTP_Unprocessable_Entity
-//     };
-//   };
+  if (error) { 
+    return {
+      code: 'invalid_data',
+      error: { message: 'Wrong product ID or invalid quantity' },
+      status: HTTP_Unprocessable_Entity
+    };
+  };
 
-//   const updateProduct = await Product.update(id, name, quantity);
+  const updateSale = await Sale.update(id, items);
 
-//   return updateProduct;
-// };
+  return updateSale;
+};
 
 // const exclude = async (id) => {
 //   const productID = await Product.findById(id);
@@ -96,6 +96,6 @@ module.exports = {
   getAll,
   findById,
   create,
-  // update,
+  update,
   // exclude,
 };

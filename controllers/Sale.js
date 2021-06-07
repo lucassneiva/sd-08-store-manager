@@ -30,16 +30,16 @@ const create = rescue(async (req, res, next) => {
   res.status(HTTP_OK).json(newSale);
 });
 
-// const update = rescue(async (req, res, next) => {
-//   const { name, quantity } = req.body;
-//   const { id } = req.params;
+const update = rescue(async (req, res, next) => {
+  const items = req.body;
+  const { id } = req.params;
 
-//   const updateProduct = await Product.update(id, name, quantity);
+  const updateSale = await Sale.update(id, items);
 
-//   if (updateProduct.error) return next(updateProduct);
+  if (updateSale.error) return next(updateSale);
 
-//   res.status(HTTP_OK).json(updateProduct);
-// });
+  res.status(HTTP_OK).json(updateSale);
+});
 
 // const exclude = rescue(async (req, res, next) => {
 // 	const { id } = req.params;
@@ -55,6 +55,6 @@ module.exports = {
   getAll,
   findById,
   create,
-  //  update,
+  update,
   //  exclude,
 };
