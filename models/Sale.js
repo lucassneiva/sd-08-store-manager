@@ -37,11 +37,11 @@ const update = async ( id, items ) => {
   return updateSale;
 };
 
-// const exclude = async (id) => {
-//   return await connection().then(db => db.collection('products').deleteOne(
-//     { _id: ObjectId(id) }
-//   ));
-// };
+const exclude = async (id) => {
+  return await connection().then(db => db.collection('sales').deleteOne(
+    { _id: ObjectId(id) }
+  ));
+};
 
 // const findByName = async (name) => {
 //   const productName = await connection()
@@ -57,6 +57,6 @@ module.exports = {
   findById,
   create,
   update,
-  //  exclude,
+  exclude,
   //  findByName,
 };

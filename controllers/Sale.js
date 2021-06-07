@@ -41,20 +41,20 @@ const update = rescue(async (req, res, next) => {
   res.status(HTTP_OK).json(updateSale);
 });
 
-// const exclude = rescue(async (req, res, next) => {
-// 	const { id } = req.params;
+const exclude = rescue(async (req, res, next) => {
+  const { id } = req.params;
 
-// 	const excludeProduct = await Product.exclude(id);
+  const excludeSale = await Sale.exclude(id);
 
-// 	if (excludeProduct.error) return next(excludeProduct);
+  if (excludeSale.error) return next(excludeSale);
 
-//   res.status(HTTP_OK).json(excludeProduct);
-// });
+  res.status(HTTP_OK).json(excludeSale);
+});
 
 module.exports = {
   getAll,
   findById,
   create,
   update,
-  //  exclude,
+  exclude,
 };

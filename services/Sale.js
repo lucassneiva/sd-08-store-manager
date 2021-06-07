@@ -76,26 +76,26 @@ const update = async (id, items) => {
   return updateSale;
 };
 
-// const exclude = async (id) => {
-//   const productID = await Product.findById(id);
+const exclude = async (id) => {
+  const saleID = await Sale.findById(id);
 
-//   if (!productID) {
-//     return {
-//       code: 'invalid_data',
-//       error: { message: 'Wrong id format' },
-//       status: HTTP_Unprocessable_Entity
-//     };
-//   }
+  if (!saleID) {
+    return {
+      code: 'invalid_data',
+      error: { message: 'Wrong sale ID format' },
+      status: HTTP_Unprocessable_Entity
+    };
+  }
 
-//   const excludeProduct = await Product.exclude(id);
+  const excludeSale = await Sale.exclude(id);
 
-//   return excludeProduct;
-// };
+  return excludeSale;
+};
 
 module.exports = {
   getAll,
   findById,
   create,
   update,
-  // exclude,
+  exclude,
 };
