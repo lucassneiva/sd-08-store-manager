@@ -42,11 +42,11 @@ const update = rescue(async (req, res, next) => {
 });
 
 const exclude = rescue(async (req, res, next) => {
-	const { id } = req.params;
+  const { id } = req.params;
 
-	const excludeProduct = await Product.exclude(id);
+  const excludeProduct = await Product.exclude(id);
 
-	if (excludeProduct.error) return next(excludeProduct);
+  if (excludeProduct.error) return next(excludeProduct);
 
   res.status(HTTP_OK).json(excludeProduct);
 });
