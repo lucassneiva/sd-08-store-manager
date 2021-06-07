@@ -10,6 +10,14 @@ const create = rescue(async (req, res, _next) => {
 
   if (!newSales) throw boom.badData('Wrong product ID or invalid quantity');
 
+  if (newSales === 'Insufficient quantity for sale')
+    throw {
+      err: {
+        code: 'stock_problem',
+        message: 'Such amount is not permitted to sell',
+      },
+    };
+
   res.status(OK).json(newSales);
 });
 

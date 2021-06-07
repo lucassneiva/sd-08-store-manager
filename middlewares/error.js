@@ -1,9 +1,12 @@
 const UNPROCESSABLE_ENTITY = 422;
 const INTERNAL_SERVER_ERROR = 500;
 
+const errors = {
+  stock_problem: 404,
+};
+
 module.exports = async (err, _req, res, _next) => {
   if (err.isJoi) {
-    console.log(err.details);
     const errorMessages = err.details.map((detail) => detail.message).join('\n  ');
     return res.status(UNPROCESSABLE_ENTITY).json({
       err: {
@@ -31,5 +34,7 @@ module.exports = async (err, _req, res, _next) => {
       });
   }
 
-  res.status(INTERNAL_SERVER_ERROR).json(err.message);
+  const statusCode = errors[err.err.code] || INTERNAL_SERVER_ERROR;
+
+  res.status(statusCode).json(err);
 };
