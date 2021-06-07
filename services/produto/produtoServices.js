@@ -4,9 +4,7 @@ const {
   getById,
   updateById,
   deleteById,
-} = require('../models/produtosModel');
-
-const QDD = 422;
+} = require('../../models/produto/produtosModel');
 
 const getAllProdutos = async () => {
   const produtos = await getAll();

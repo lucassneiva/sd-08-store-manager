@@ -1,4 +1,4 @@
-const { getById } = require('../models/produtosModel');
+const { getById } = require('../../models/produto/produtosModel');
 
 const validaId = async (req, _res, next) => {
   const {id} = req.params;

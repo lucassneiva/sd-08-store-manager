@@ -7,14 +7,14 @@ const {
   getByIdProducts,
   updateById,
   deleteById,
-} = require('../controllers/produtoController');
+} = require('../../controllers/produto/produtoController');
 
 const {
   validaNome,
   validaNumero,
   validaId,
   validaExiste,
-} = require('../middlewares');
+} = require('../../middlewares');
 
 router.get('/', getAllProducts);
 

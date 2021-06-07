@@ -1,7 +1,5 @@
-const Connection = require('./connection');
+const Connection = require('../connection');
 const { ObjectId } = require('mongodb');
-
-const QDD = 422;
 
 const getAll = async () => {
   const db = await Connection();

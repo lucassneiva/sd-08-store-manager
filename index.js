@@ -1,12 +1,15 @@
 const express = require('express');
-const Router = require('./router/router');
+const RouterProduto = require('./router/produto/router');
+const RouterVenda = require('./router/venda/router');
 const { middlewareError } = require('./middlewares');
 
 const PORT = 3000;
 const app = express();
 app.use(express.json());
 
-app.use('/products', Router);
+app.use('/products', RouterProduto);
+
+app.use('/sales', RouterVenda);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {

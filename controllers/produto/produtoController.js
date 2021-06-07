@@ -6,7 +6,7 @@ const {
   getByIdProdutos,
   updateByIdProducts,
   deleteByIdProducts,
-} = require('../services/produtoServices');
+} = require('../../services/produto/produtoServices');
 
 const DZU = 201;
 const DOO = 200;

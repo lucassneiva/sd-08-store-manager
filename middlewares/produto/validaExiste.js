@@ -1,4 +1,4 @@
-const { getByName } = require('../models/produtosModel');
+const { getByName } = require('../../models/produto/produtosModel');
 
 const validaExiste = async (req, _res, next) => {
   const nome = req.body.name;
