@@ -69,14 +69,14 @@ const deleteSolds = async (id) => {
 
   const getById = await SalesModels.findSaleById(id);
   await SalesModels.deleteSale(id);
-  return { message: getById[0], code: 200 }
-}
+  return { message: getById[0], code: 200 };
+};
 
 const deleteSoldsNext = async (id) => {
   const deleteIsValid = await validations.validateDeleteSolds(id);
 
   if (deleteIsValid) return { erro: deleteIsValid };
-}
+};
 
 module.exports = {
   addSold,
