@@ -38,8 +38,26 @@ const getSaleById = async (id) => {
   return result;
 };
 
+const updateSale = async (id, itensSold) => {
+  const validQuantityValue = itensSold
+    .some((i => i.quantity === ZERO || i.quantity < ZERO));
+
+  const validQuantityNumber = itensSold.some((i) => typeof i.quantity !== 'number');
+  if (validQuantityValue || validQuantityNumber) {
+    return error('Wrong product ID or invalid quantity');
+  }
+
+  await sales.updateSale(id, itensSold);
+
+  return success({
+    _id: id,
+    itensSold,
+  });
+};
+
 module.exports = {
   addSales,
   getSales,
   getSaleById,
+  updateSale,
 };

@@ -22,8 +22,19 @@ const getSaleById = async (req, res) => {
   return res.status(SUCCESS).json(result);
 };
 
+const updateSales = async (req, res) => {
+  const { id } = req.params;
+  const itensSold = req.body;
+
+  const saleUpdate = await sales.updateSale(id, itensSold);
+  if(saleUpdate.err) return res.status(FAILURE).json({ err: saleUpdate.err });
+
+  return res.status(SUCCESS).json(saleUpdate.data);
+};
+
 module.exports = {
   addSales,
   getSales,
   getSaleById,
+  updateSales,
 };
