@@ -55,9 +55,25 @@ const updateSale = async (id, itensSold) => {
   });
 };
 
+const deleteSale = async (id) => {
+  if (!id || id.length !== TWELVE && id.length !== TWENTYFOUR) {
+    return error('Wrong sale ID format');
+  }
+  const sale = await sales.getSaleById(id);
+  if(!sale) return error('Sale not found');
+
+  const { deletedCount } = await sales.deleteSale(id);
+  if (!deletedCount) {
+    return error('Sale not deleted');
+  }
+
+  return success(sale);
+};
+
 module.exports = {
   addSales,
   getSales,
   getSaleById,
   updateSale,
+  deleteSale,
 };

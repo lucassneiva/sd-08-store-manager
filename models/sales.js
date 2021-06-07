@@ -28,9 +28,15 @@ const updateSale = async (_id, itensSold) => {
     ));
 };
 
+const deleteSale = async (id) => {
+  return getDbCollection()
+    .then((collection) => collection.deleteOne({ _id: ObjectId(id) }));
+};
+
 module.exports = {
   addSales,
   getSales,
   getSaleById,
   updateSale,
+  deleteSale,
 };

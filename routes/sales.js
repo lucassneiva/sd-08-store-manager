@@ -11,4 +11,6 @@ app.get('/:id', sales.getSaleById);
 
 app.put('/:id', sales.updateSales);
 
+app.delete('/:id', sales.deleteSale);
+
 module.exports = app;
