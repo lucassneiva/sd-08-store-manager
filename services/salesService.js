@@ -3,15 +3,13 @@ const { ObjectId } = require('bson');
 
 const QUANTIDADE_MINIMA = 0;
 
-const validarVenda = async (quantity) => {
-  if(quantity <= QUANTIDADE_MINIMA || typeof quantity !== 'number') {
+const validarItensSold = async ({quantity}) => {
+  if(quantity <= QUANTIDADE_MINIMA || typeof quantity !== 'number')
     throw new Error('Wrong product ID or invalid quantity');
-  }
-  return undefined;
 };
 
 const cadastraVenda = async (sale) => {
-  const valido = await validarVenda(sale[0].quantity);
+  const valido = await validarItensSold(sale[0]);
   if (valido !== undefined) {
     throw new Error('Wrong product ID or invalid quantity');
   }
@@ -31,9 +29,26 @@ const buscarVendaPorId = async (id) => {
     throw new Error('Sale not found');
   return vendaId;
 };
+// https://stackoverflow.com/questions/37576685/using-async-await-with-a-foreach-loop
+const atualizarVendas = async (sale) => {
+  for (const itenSold of sale.itensSold){
+    await validarItensSold(itenSold);
+  }
+  const vendaAtualizada = salesModel.atualizarVendas(sale);
+  return vendaAtualizada;
+};
+
+const deletarVendaPorId = async (id) => {
+  if (!ObjectId.isValid(id))
+    throw new Error('Wrong sale ID format');
+  const deletaVenda = await salesModel.deletarVendaPorId(id);
+  return deletaVenda;
+};
 
 module.exports = {
   cadastraVenda,
   listarVendas,
   buscarVendaPorId,
+  atualizarVendas,
+  deletarVendaPorId,
 };

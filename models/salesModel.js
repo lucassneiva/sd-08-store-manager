@@ -20,8 +20,26 @@ const buscarVendaPorId = async (id) => {
   return venda;
 };
 
+const atualizarVendas = async (sale) => {
+  const db = await connection();
+  await db
+    .collection('sales')
+    .updateOne({ _id: ObjectId(sale.id)}, { $set: { itensSold: sale.itensSold } });
+  return buscarVendaPorId(sale.id);
+};
+
+const deletarVendaPorId = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  const db = await connection();
+  const vendaId = await buscarVendaPorId(id);
+  await db.collection('sales').deleteOne({ _id: ObjectId(id) });
+  return vendaId;
+};
+
 module.exports = {
   cadastraVenda,
   listarVendas,
   buscarVendaPorId,
+  atualizarVendas,
+  deletarVendaPorId,
 };

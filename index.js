@@ -28,6 +28,11 @@ app.get('/sales', salesController.listarVendas);
 
 app.get('/sales/:id', salesController.buscarVendaPorId);
 
+app.put('/sales/:id', salesController.atualizarVendas);
+
+app.delete('/sales/:id', salesController.deletarVendaPorId);
+
+
 app.listen(PORT, () => {
   console.log('Online');
 });

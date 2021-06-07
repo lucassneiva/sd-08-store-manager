@@ -9,11 +9,11 @@ const cadastraVenda = async (req, res) => {
     const produtoVendido = req.body;
     const vendas = await salesService.cadastraVenda(produtoVendido);
     res.status(httpStatusCodeSucess).json(vendas);
-  } catch (error) {
+  } catch (err) {
     res.status(httpStatusCodeErro).json({
       err: {
         code: 'invalid_data',
-        message: error.message
+        message: err.message
       }
     });
   }
@@ -41,8 +41,43 @@ const buscarVendaPorId = async (req, res) => {
   }
 };
 
+const atualizarVendas = async (req, res) => {
+  try {
+    const itensSold = req.body;
+    const { id } = req.params;
+    const sale = {id, itensSold};
+    const vendaAtualizada = await salesService.atualizarVendas(sale);
+    res.status(httpStatusCodeSucess).json(vendaAtualizada);
+  } catch (err) {
+    res.status(httpStatusCodeErro).json({
+      err: {
+        code: 'invalid_data',
+        message: err.message,
+      }
+    });
+  }
+};
+
+const deletarVendaPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletarVenda = await salesService.deletarVendaPorId(id);
+    res.status(httpStatusCodeSucess).json(deletarVenda);
+  } catch (err) {
+    res.status(httpStatusCodeErro).json({
+      err: {
+        code: 'invalid_data',
+        message: err.message,
+      }
+    });
+  }
+};
+
+
 module.exports = {
   cadastraVenda,
   listarVendas,
   buscarVendaPorId,
+  atualizarVendas,
+  deletarVendaPorId,
 };
