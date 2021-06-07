@@ -1,5 +1,4 @@
 const model = require('../models/saleModel');
-const serviceProduct = require('../services/productService');
 const { ObjectId } = require('mongodb');
 
 const getAll = async () => model.getAll();
@@ -19,11 +18,9 @@ const getById = async (id) => {
 
 const create = async (products) => {
   const ZERO = 0;
-
   for (const product of products) {
-    const result = await serviceProduct.getById(product._id);
-    const { quantity } = result;
-    if (!result || Number(quantity) <= ZERO || typeof quantity === 'string') {
+    const { quantity } = product;
+    if (Number(quantity) <= ZERO || typeof quantity === 'string') {
       return {
         err: {
           code: 'invalid_data',

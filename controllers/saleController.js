@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const service = require('../services/saleService');
 const rescue = require('express-rescue');
-const model = require('../models/saleModel');
 const router = Router();
 
 router.get('/', rescue(async (_req, res) => {
@@ -38,12 +37,10 @@ router.get('/:id', rescue(async (req, res) => {
 router.post('/', rescue(async (req, res) => {
   const STATUS_200 = 200;
   const STATUS_422 = 422;
-  const STATUS_500 = 500;
 
   const sale = await service.create(req.body);
-
-  if (sale.err.code == 'invalid_data') {
-    return res.status(STATUS_422).json(err);
+  if (sale.err) {
+    return res.status(STATUS_422).json(sale);
   }
   return res.status(STATUS_200).json(sale);
 
