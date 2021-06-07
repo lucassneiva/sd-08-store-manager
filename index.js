@@ -1,5 +1,5 @@
 const express = require('express');
-const products = require('./controllers/productController');
+const product = require('./controllers/productController');
 
 const DEFAULT_PORT = 3000;
 const PORT = process.env.PORT || DEFAULT_PORT;
@@ -12,8 +12,10 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.post('/products', products.create);
+app.post('/products', product.create);
 
-app.get('/products/:id?', products.search);
+app.get('/products/:id?', product.search);
+
+app.put('/products/:id', product.update);
 
 app.listen(PORT, () => console.log(`Listening to port ${PORT}`));

@@ -12,7 +12,12 @@ const search = async (req, res) => {
   return res.status(status).json(result);
 };
 
-const update = async (req, res) => {};
+const update = async (req, res) => {
+  const { id } = req.params;
+  const newData = req.body;
+  const { status, result } = await service.update(id, newData);
+  return res.status(status).json(result);
+};
 
 const remove = async (req, res) => {};
 

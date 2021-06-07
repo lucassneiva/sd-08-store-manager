@@ -24,7 +24,7 @@ checkNameUniqueness = async (name) => {
   }
 };
 
-module.exports = async (name) => {
+module.exports = async (name, skipUniqueness = false) => {
   checkNameFormat(name);
-  await checkNameUniqueness(name);
+  if (!skipUniqueness) await checkNameUniqueness(name);
 };
