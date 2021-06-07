@@ -9,4 +9,6 @@ app.get('/', products.getProducts);
 
 app.get('/:id', products.getProductById);
 
+app.put('/:id', products.updateProduct);
+
 module.exports = app;

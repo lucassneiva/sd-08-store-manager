@@ -48,8 +48,25 @@ const getProductById = async (id) => {
   });
 };
 
+const updateProduct = async (_id, name, quantity) => {
+  if(name.length < FIVE) return error('"name" length must be at least 5 characters long');
+  if(quantity <= ZERO) {
+    return error('"quantity" must be larger than or equal to 1');
+  }
+  if(typeof quantity !== 'number') return error('"quantity" must be a number');
+
+  await products.updateProduct(_id, name, quantity);
+
+  return success({
+    _id,
+    name,
+    quantity
+  });
+};
+
 module.exports = {
   addProduct,
   getProducts,
   getProductById,
+  updateProduct,
 };
