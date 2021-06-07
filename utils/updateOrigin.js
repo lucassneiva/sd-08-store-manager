@@ -1,6 +1,13 @@
+const generateError = require('./generateError');
+const HTTP = require('./httpStatusCodes');
+
 const subtractLoop = async (items, originModel) => {
   for (const item of items) {
     await originModel.getById(item.productId).then((product) => {
+      if (item.quantity > product.quantity) {
+        throw { status: HTTP.NOT_FOUND };
+      }
+
       originModel.update(item.productId, {
         name: product.name,
         quantity: product.quantity - item.quantity,
