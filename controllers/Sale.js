@@ -2,7 +2,6 @@ const rescue = require('express-rescue');
 const Sale = require('../services/Sale');
 
 const HTTP_OK = 200;
-// const HTTP_Created = 201;
 
 const getAll = rescue(async (req, res) => {
   const sales = await Sale.getAll();
@@ -24,9 +23,9 @@ const create = rescue(async (req, res, next) => {
   const items = req.body;
 
   const newSale = await Sale.create(items);
-
+  
   if (newSale.error) return next(newSale);
-
+  
   res.status(HTTP_OK).json(newSale);
 });
 

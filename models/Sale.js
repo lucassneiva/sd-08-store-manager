@@ -43,20 +43,10 @@ const exclude = async (id) => {
   ));
 };
 
-// const findByName = async (name) => {
-//   const productName = await connection()
-//     .then((db) => db.collection('products').findOne({ name }));
-
-//   if(!productName) return null;
-
-//   return productName;
-// };
-
 module.exports = {
   getAll,
   findById,
   create,
   update,
   exclude,
-  //  findByName,
 };

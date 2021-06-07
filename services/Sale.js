@@ -1,5 +1,6 @@
 const joi = require('@hapi/joi');
 const Sale = require('../models/Sale');
+const productStock = require('../models/Product');
 
 const HTTP_Unprocessable_Entity = 422;
 const HTTP_Not_Found = 404;
@@ -55,6 +56,10 @@ const create = async (items) => {
     };
   };
 
+  items.forEach(async (item) => {
+    await productStock.subtractQuantity(item.productId, item.quantity);
+  });
+
   const newSale = await Sale.create(items);
 
   return newSale;
@@ -86,6 +91,10 @@ const exclude = async (id) => {
       status: HTTP_Unprocessable_Entity
     };
   }
+
+  saleID.itensSold.forEach(async (item) => {
+    await productStock.sumQuantity(item.productId, item.quantity);
+  });
 
   const excludeSale = await Sale.exclude(id);
 

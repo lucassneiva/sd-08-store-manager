@@ -52,6 +52,25 @@ const findByName = async (name) => {
   return productName;
 };
 
+/*
+Referência:
+https://github.com/cleytonoliveira/store-manager/blob/main/models/ProductsModel.js
+*/
+const subtractQuantity = async (id, quantity) => await connection()
+  .then((db) => db.collection('products')
+    .updateMany(
+      { _id: ObjectId(id) },
+      { $inc: { quantity: - quantity } }
+    ));
+
+const sumQuantity = async (id, quantity) => await connection()
+  .then((db) => db.collection('products')
+    .updateMany(
+      { _id: ObjectId(id) },
+      { $inc: { quantity: quantity } },
+    ));
+// ********************************************************************************
+
 module.exports = {
   getAll,
   findById,
@@ -59,4 +78,6 @@ module.exports = {
   update,
   exclude,
   findByName,
+  subtractQuantity,
+  sumQuantity,
 };
