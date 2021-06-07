@@ -1,6 +1,6 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
-const { MongoClient, ObjectId } = require('mongodb');
+const { MongoClient } = require('mongodb');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 const productModel = require('../../models/productModel');
@@ -27,13 +27,13 @@ describe('productModel.js', () => {
   
   after(() => {
     MongoClient.connect.restore();
+    sinon.restore();
   });
 
   describe('when a product is created succesfully', async () => {
     it('returns an object with an "_id" property', async () => {
       const { name, quantity } = productPayload;
       const response = await productModel.create(name, quantity);
-
 
       expect(response).to.be.an('object');
       expect(response).to.have.a.property('_id');
@@ -55,7 +55,6 @@ describe('productModel.js', () => {
       const product = await productModel.create(name, quantity);
       const response = await productModel.readById(product._id)
       
-
       expect(response).to.be.an('object');
       expect(response).to.have.a.property('_id');
     });
@@ -77,6 +76,7 @@ describe('productModel.js', () => {
       const product = await productModel.create(name, quantity);
       await productModel.destroy(product._id);
       const response = await productModel.readById(product._id);
+
       expect(response).to.be.a('null')
     })
   })
@@ -104,6 +104,7 @@ describe('saletModel.js', () => {
   
   after(() => {
     MongoClient.connect.restore();
+    sinon.restore();
   });
 
   describe('when a sale is created succesfully', async () => {
@@ -148,6 +149,7 @@ describe('saletModel.js', () => {
       const sale = await saleModel.create(salePayload);
       await saleModel.destroy(sale._id);
       const response = await saleModel.readById(sale._id);
+
       expect(response).to.be.a('null')
     })
   })
