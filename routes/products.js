@@ -11,4 +11,6 @@ app.get('/:id', products.getProductById);
 
 app.put('/:id', products.updateProduct);
 
+app.delete('/:id', products.deleteProduct);
+
 module.exports = app;

@@ -64,9 +64,23 @@ const updateProduct = async (_id, name, quantity) => {
   });
 };
 
+const deleteProduct = async (id) => {
+  if (!id || id.length !== TWELVE && id.length !== TWENTYFOUR) {
+    return err('Wrong id format');
+  }
+  const product = await products.getProductById(id);
+  if(!product) return error('Product not found');
+  const { deletedCount } = await products.deleteProduct(id);
+  if (!deletedCount) {
+    return error('Product not deleted');
+  }
+  return success(product);
+};
+
 module.exports = {
   addProduct,
   getProducts,
   getProductById,
   updateProduct,
+  deleteProduct,
 };
