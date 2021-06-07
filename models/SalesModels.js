@@ -1,4 +1,4 @@
-const { ObjectId } = require('mongodb');
+const { ObjectId, ObjectID } = require('mongodb');
 const connect = require('./Connect');
 
 const TABELA_SALES = 'sales';
@@ -35,9 +35,18 @@ const getAllSolds = async () => {
   return getAll;
 };
 
+const updateSale = async (id, sale) => {
+  const updateSales = await connect()
+    .then((db) => db.collection(TABELA_SALES)
+      .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: sale } }))
+    .catch((_err) => console.log('Não atualizei!!!'));
+  return updateSales
+};
+
 module.exports = {
   addSales,
   findBySale,
   findSaleById,
   getAllSolds,
+  updateSale,
 };

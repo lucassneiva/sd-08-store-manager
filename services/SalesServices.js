@@ -37,8 +37,35 @@ const getSaleById = async (id) => {
   return { message: getById[0], code: 200 };
 };
 
+const updateSales = async (id, sold) => {
+  const getSaleIsValid = await validations.validateSolds(id);  const quantitiesArrayIsValid = validations.validateQuantityArray(sold);
+
+  if(getSaleIsValid) return { erro: getSaleIsValid };
+  if (quantitiesArrayIsValid) return { erro: quantitiesArrayIsValid };
+
+    
+  const getById = await SalesModels.findSaleById(id);
+  const useMap = getById[0].itensSold;
+
+  const resp = useMap.map((data) => {
+    if (data.productId === sold[0].productId) {
+      return {
+        ...data,
+        quantity: sold[0].quantity,
+      };
+    }
+    return data;
+  });
+
+  await SalesModels.updateSale(id, resp);
+  const updated = await SalesModels.findSaleById(id);
+
+  return { message: updated[0], code: 200 }
+}
+
 module.exports = {
   addSold,
   getAllSales,
   getSaleById,
+  updateSales,
 };

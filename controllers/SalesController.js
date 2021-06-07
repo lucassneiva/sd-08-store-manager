@@ -28,9 +28,22 @@ router.get('/', rescue (async (_req, res, next) => {
 
 router.get('/:id', rescue (async (req, res, next) => {
   const { id } = req.params;
-  const getAll = await salesServices.getSaleById(id);
+  const getById = await salesServices.getSaleById(id);
 
-  const { message, code, erro } = getAll;
+  const { message, code, erro } = getById;
+  
+  if (erro) return next(erro);
+
+  res.status(code).json(message);
+}));
+
+router.put('/:id', rescue( async (req, res, next) => {
+  const { id } = req.params;
+  const sale = req.body;
+  
+  const updateSale = await salesServices.updateSales(id, sale);
+
+  const { message, code, erro } = updateSale;
   
   if (erro) return next(erro);
 
