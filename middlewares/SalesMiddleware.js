@@ -18,9 +18,13 @@ const findByIdSale = async(request, response) => {
   const { id } = request.params;
   const ID_LENGTH = 24;
 
+  if(id.length < ID_LENGTH) return response.status(STATUS_ERROR).json({
+    err: { code: 'not_found', message: 'Sale not found'}
+  });
+
   const sale = await SalesService.findById(id);
 
-  if(id.length < ID_LENGTH || !sale) return response.status(STATUS_ERROR).json({
+  if(!sale) return response.status(STATUS_ERROR).json({
     err: { code: 'not_found', message: 'Sale not found'}
   });
 
