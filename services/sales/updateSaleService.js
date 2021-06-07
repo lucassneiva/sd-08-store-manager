@@ -1,19 +1,19 @@
-const model = require('../../models/productModel');
+const model = require('../../models/saleModel');
 const validate = require('../validation');
 
 const HTTP = require('../../utils/httpStatusCodes');
-const SKIP_UNIQUENESS = true;
+const generateError = require('../../utils/generateError');
 
 module.exports = async (id, newData) => {
   try {
-    await validate.name(newData.name, SKIP_UNIQUENESS);
-    validate.quantity(newData.quantity);
+    validate.quantity(newData[0].quantity);
 
     return {
       status: HTTP.OK,
-      result: await model.update(id, newData),
+      result: await model.update(id, newData[0]),
     };
   } catch (err) {
-    return err;
+    console.log(err);
+    return generateError('Wrong product ID or invalid quantity');
   }
 };

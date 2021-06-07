@@ -21,11 +21,14 @@ const getById = async (id) => {
 
 const update = async (id, newData) => {
   const db = await connection();
-  const instructions = { $set: newData };
   const result = await db
     .collection('sales')
-    .findOneAndUpdate({ _id: new ObjectId(id) }, instructions);
-  return { ...result.value, ...newData };
+    .findOneAndUpdate(
+      { _id: new ObjectId(id) },
+      { $set: { 'itensSold.$[elem].quantity': newData.quantity } },
+      { arrayFilters: [{ 'elem.productId': newData.productId }] },
+    );
+  return await getById(id);
 };
 
 const remove = async (id) => {
