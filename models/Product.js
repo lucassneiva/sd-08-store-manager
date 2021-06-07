@@ -52,10 +52,9 @@ const findByName = async (name) => {
   return productName;
 };
 
-/*
-Referência:
-https://github.com/cleytonoliveira/store-manager/blob/main/models/ProductsModel.js
-*/
+// ********************************************************************************
+// Referência:
+// https://github.com/cleytonoliveira/store-manager/blob/main/models/ProductsModel.js
 const subtractQuantity = async (id, quantity) => await connection()
   .then((db) => db.collection('products')
     .updateMany(

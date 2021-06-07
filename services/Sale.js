@@ -2,6 +2,8 @@ const joi = require('@hapi/joi');
 const Sale = require('../models/Sale');
 const productStock = require('../models/Product');
 
+const zeroStock = 0;
+
 const HTTP_Unprocessable_Entity = 422;
 const HTTP_Not_Found = 404;
 const MIN_QUANTITY = 1;
@@ -56,9 +58,38 @@ const create = async (items) => {
     };
   };
 
-  items.forEach(async (item) => {
-    await productStock.subtractQuantity(item.productId, item.quantity);
+  // items.forEach(async (item) => {
+  //   await productStock.subtractQuantity(item.productId, item.quantity);
+  // });
+
+  // ********************************************************************************
+  // Referência:
+  // https://github.com/cleytonoliveira/store-manager/blob/main/services/SalesService.js
+  let productInStock = true;
+
+  const verifyStock = items.map(async (item) => {
+    const { quantity } = await productStock.findById(item.productId);
+  
+    const difference = quantity - item.quantity;
+  
+    if (difference <= zeroStock) return productInStock = false;
+ 
+    return await productStock.subtractQuantity(item.productId, item.quantity);
   });
+  
+  // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+  // Se qualquer uma das promises passadas for rejeitada, 'Promise.all' assíncronamente é rejeitada
+  // com o valor da promise rejeitada, independentemente se outras promises foram resolvidas.
+  await Promise.all(verifyStock);
+  
+  if (!productInStock) {
+    return {
+      code: 'stock_problem',
+      error: { message: 'Such amount is not permitted to sell' },
+      status: HTTP_Not_Found
+    };
+  }
+  // ********************************************************************************
 
   const newSale = await Sale.create(items);
 
