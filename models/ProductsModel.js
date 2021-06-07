@@ -1,6 +1,6 @@
 const connection = require('./connect');
 
-const formatProduct = ({ _id, name, quantity }) => ({ id: _id, name, quantity });
+const formatProduct = ({ _id, name, quantity }) => ({ _id, name, quantity });
 
 const addProduct = async (product) => {
   return connection()
