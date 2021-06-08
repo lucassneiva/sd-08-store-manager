@@ -29,10 +29,14 @@ const insertOne = async (collecName, obj) => {
 };
 
 const deleteById = async (collecName, id) => {
-  const { deletedCount } = await withCollection(collecName)
-    .then((coll) => coll.deleteOne({ _id: new ObjectId(id) }));
-  if (!deletedCount) return false;
-  return true;
+  try {
+    const { deletedCount } = await withCollection(collecName)
+      .then((coll) => coll.deleteOne({ _id: new ObjectId(id) }));
+    if (!deletedCount) return false;
+    return true;
+  } catch (err) {
+    return false;
+  }
 };
 
 const updateById = async (collecName, id, obj) => {
