@@ -1,29 +1,33 @@
 const { General } = require('../models');
 
 const COLLECTION_NAME = 'products';
-const RESOURCE_NAME_SINGULAR = 'fill it up';
+const NAME_SINGULAR = 'Product';
 
 const getAll = async () => {
-  const examples = await General.getAll(COLLECTION_NAME);
-  return { result: examples };
+  const resources = await General.getAll(COLLECTION_NAME);
+  return { result: { products: resources } };
 };
 
 const findById = async (id) => {
   const example = await General.findById(COLLECTION_NAME, id);
-  if (!example) return { error: { code: 'not_found', message: 'not_found message find' } };
+  if (!example) return { error: {
+    code: 'unprocessable_entity', message: 'Wrong id format' } };
   return { result: example };
 };
 
 const insertOne = async (obj) => {
+  const [matchedName] = await General.findWith(COLLECTION_NAME, { name: obj.name });
   const insertedId = await General.insertOne(COLLECTION_NAME, obj);
-  if (!insertedId) return { error: { code: 'already_exists', message: 'already_exists message insert' } };
+  if (!insertedId || matchedName) return { error: {
+    code: 'unprocessable_entity', message: `${NAME_SINGULAR} already exists` } };
   return { result: { _id: insertedId, ...obj } };
 };
 
 const deleteById = async (id) => {
   const resp = await General.deleteById(COLLECTION_NAME, id);
   if (!resp) return { error: { code: 'not_found', message: 'not_found message delete' } };
-  return { result: { message: `The ${RESOURCE_NAME_SINGULAR} with id = ${id} was deleted successfully` } };
+  return { result: {
+    message: `The ${NAME_SINGULAR} with id = ${id} was deleted successfully` } };
 };
 
 const updateById = async (id, obj) => {

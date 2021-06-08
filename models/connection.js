@@ -8,15 +8,15 @@ let db = null;
 
 const connection = () => {
   return db ? Promise.resolve(db)
-  : MongoClient.connect(getURL(mongodbConnection), OPTIONS)
-    .then((conn) => {
-      db = conn.db(mongodbConnection.database);
-      return db;
-    })
-    .catch((err) =>{
-      console.log(err);
-      process.exitCode = 1;
-    });
-}
+    : MongoClient.connect(getURL(mongodbConnection), OPTIONS)
+      .then((conn) => {
+        db = conn.db(mongodbConnection.database);
+        return db;
+      })
+      .catch((err) =>{
+        console.log(err);
+        process.exitCode = 1;
+      });
+};
 
 module.exports = connection;

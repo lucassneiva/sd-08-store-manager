@@ -1,7 +1,8 @@
 const { ObjectId } = require('mongodb');
 const connection = require('./connection');
 
-const withCollection = async (collecName) => await connection().then((db) => db.collection(collecName));
+const withCollection = async (collecName) => await connection()
+  .then((db) => db.collection(collecName));
 
 const getAll = async (collecName) => (
   await withCollection(collecName)
@@ -40,10 +41,16 @@ const updateById = async (collecName, id, obj) => {
   return true;
 };
 
+const findWith = async (collecName, obj) => (
+  await withCollection(collecName)
+    .then((coll) => coll.find({ ...obj }).toArray())
+);
+
 module.exports = {
   getAll,
   findById,
   insertOne,
   deleteById,
   updateById,
+  findWith,
 };

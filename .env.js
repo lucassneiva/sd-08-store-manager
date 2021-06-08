@@ -19,7 +19,7 @@ module.exports = {
     port: '27017',
     username: '',
     password: '',
-    database: 'fill it up',
+    database: 'StoreManager',
     search: 'retryWrites=true&w=majority',
   },
 };

@@ -1,19 +1,16 @@
 const Joi = require('joi');
 
+const MIN_NAME_LENGTH = 5;
+const MIN_QUANTITY = 1;
+
 const insert = Joi.object({
-  label1: Joi.string().required(),
-  label4: Joi.array().items(Joi.number()).required(),
-  label2: Joi.string().isoDate().message('Date needs to be on ISODate pattern')
-   .required(),
-  label3: Joi.number().required(),
-})
-.messages({ 'any.required': 'The {#label} field is required.', 'string.type': '{#label} needs to be a string' });
+  name: Joi.string().min(MIN_NAME_LENGTH).required(),
+  quantity: Joi.number().integer().min(MIN_QUANTITY).required(),
+}).messages({ 'number.min': `{#label} must be larger than or equal to ${MIN_QUANTITY}` });
 
 const update = Joi.object({
-  label1: Joi.string(),
-  label4: Joi.array().items(Joi.number()),
-  label2: Joi.string().isoDate().message('Date needs to be on ISODate pattern'),
-  label3: Joi.number(),
+  name: Joi.string().min(MIN_NAME_LENGTH).required(),
+  quantity: Joi.number().integer().min(MIN_QUANTITY).required(),
 });
 
 module.exports = {

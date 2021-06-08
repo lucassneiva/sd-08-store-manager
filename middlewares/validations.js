@@ -7,7 +7,7 @@ const validate = (resource) => (type) => tcw(async (req, _res, next) => {
   const schema = Schemas[resource][type];
   await schema.validateAsync(req.body);
   next();
-}, 'bad_request');
+}, 'unprocessable_entity');
 
 module.exports = {
   Products: validate('Products'),
