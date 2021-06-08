@@ -16,15 +16,16 @@ router.get('/', async(req, res) => {
 // router.get('/:id','');
 
 router.post('/', async(req, res) => {
+  const s = 201;  
+  const st = 422;
+  const { name, quantity } = req.body;
   try {
-    const s = 201;  
-    const { name, quantity } = req.body;
-    const result = await  insertpdt(name, quantity);
-    res.status(s).send(result.ops[0]);
+    const result = await insertpdt(name, quantity);
+    res.status(s).json(result.ops[0]);
+    
   }catch(err) {
     console.log(err);
-    const st = 422;
-    res.status(st).send(err);
+    return res.status(st).send(err);
   };
 });
 // router.put('/:id');

@@ -6,8 +6,15 @@ const getAll = async() => {
   
 };
 
-const insertProduct = async(name, quantity) => 
+
+const getbyname = async(name) => {
+  return conn().then(db => db.collection('products').countDocuments({name}));
   
+};
+
+
+
+const insertProduct = async(name, quantity) => 
   conn().then(
     async (db) => 
     {
@@ -16,6 +23,8 @@ const insertProduct = async(name, quantity) =>
     }
 
   );
+
+
   
 const deleteProduct = async(id) => 
   
@@ -36,4 +45,5 @@ module.exports = {
   getAll,
   insertProduct,
   deleteProduct,
+  getbyname,
 };

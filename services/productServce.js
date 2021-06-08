@@ -1,4 +1,9 @@
-const { getAll, insertProduct, deleteProduct } = require('../models/productModel');
+const { 
+  getAll,
+  insertProduct,
+  deleteProduct,
+  getbyname, 
+} = require('../models/productModel');
 
 const alldocs = async() => await getAll();
 
@@ -6,16 +11,18 @@ const alldocs = async() => await getAll();
 const f = 5;
 const z = 0;
 const insertpdt = async(name, quantity) => { 
- 
+  const count = await getbyname(name);
+  
   if (name.length < f){
-    return ({ 
+    
+    throw({ 
       err:{
         code: 'invalid_data',
         message: '\"name\" length must be at least 5 characters long'
       } 
     });
   }else if( quantity <= z){
-    return (
+    throw (
       { 
         err:{
           code: 'invalid_data',
@@ -24,7 +31,25 @@ const insertpdt = async(name, quantity) => {
       }
     );
 
-  } else { return await insertProduct(name, quantity);};
+  } else if(!Number.isInteger(quantity)) {
+    throw (
+      { 
+        err:{
+          code: 'invalid_data',
+          message: '"\quantity\" must be a number'
+        } 
+      }
+    );
+  }else if(count > z) {
+    throw (
+      { 
+        err:{
+          code: 'invalid_data',
+          message: 'Product already exists'
+        } 
+      }
+    );
+  }else { return await insertProduct(name, quantity);};
   
 };
 
