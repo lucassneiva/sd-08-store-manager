@@ -29,8 +29,6 @@ const getAll = async () => {
 
 const getById = async (id) => {
 
-  console.log('estou no começo do service');
-
   const hex = /[0-9A-Fa-f]{6}/g;
 
   if(!hex.test(id)) {
@@ -61,8 +59,39 @@ const getById = async (id) => {
 
 };
 
+const update = async (id, array) => {
+
+  const resultAll = await Model.getAll();
+
+  if(resultAll.some((item) => item._id === id)) {
+    throw new Error(JSON.stringify({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      },
+      http: 422
+    }));
+  }
+
+  array.map((item) => {
+    if(item.quantity <= zero || typeof(item.quantity) !== 'number') {
+      console.log(array.item);
+      throw new Error(JSON.stringify({
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong product ID or invalid quantity'
+        },
+        http: 422
+      }));
+    }
+  });
+
+  return Model.update(id, array);
+};
+
 module.exports = {
   create,
   getAll,
-  getById
+  getById,
+  update
 };
