@@ -25,4 +25,11 @@ const validName = (name) => {
   return true;
 };
 
+/* const validProduct = (id) => {
+  const result = null;
+  if (id.length > result) return false;
+  return true;
+  
+} */
+
 module.exports = {nameExist,quantityIsNumber,validInsertQuantity,validName}; 

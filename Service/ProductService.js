@@ -1,8 +1,8 @@
 const ProductModel = require('../Model/ProductModel');
 const {StatusCodes} = require('http-status-codes');
 const Ultils = require('../Helpers/Ultils');
-const createProduct = async (name, quantity) => {
 
+const createProduct = async (name, quantity) => {
   if (!await Ultils.validName(name)) {
     return {
       isError: true,
@@ -66,6 +66,16 @@ const getAllProducts = async () => {
 
 const getProductId = async (id) => {
   const result = await ProductModel.findById(id);
+  if (result=== null) return {
+    
+    isError: true,
+    err:{
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    },
+    status: StatusCodes.UNPROCESSABLE_ENTITY,
+    
+  };
   return result;
 };
 
@@ -73,18 +83,19 @@ const getProductByName = async () => {};
 
 
 const updateProduct = async (id, name, quantity) => {
-  if (!Ultils.validName(name)) {
+  
+  if (!await Ultils.validName(name)) {
     return {
       isError: true,
       err:{
         code: 'invalid_data',
         message: '"name" length must be at least 5 characters long',
       },
-      status: status.UNPROCESSABLE_ENTITY,
+      status: StatusCodes.UNPROCESSABLE_ENTITY,
     };
   };
 
-  if (!Ultils.quantityIsNumber(quantity)) {
+  if (!await Ultils.quantityIsNumber(quantity)) {
     return {
       isError: true,
       err:{
@@ -92,30 +103,42 @@ const updateProduct = async (id, name, quantity) => {
         message: '\"quantity\" must be a number',
       },
 
-      status: status.UNPROCESSABLE_ENTITY,
+      status: StatusCodes.UNPROCESSABLE_ENTITY,
 
     };
   };
 
-  if (!Ultils.validInsertQuantity(quantity)) {
+  if (!await Ultils.validInsertQuantity(quantity)) {
     return {
       isError: true,
       err:{
         code: 'invalid_data',
         message: '\"quantity\" must be larger than or equal to 1',
       },
-      status: status.UNPROCESSABLE_ENTITY,
+      status: StatusCodes.UNPROCESSABLE_ENTITY,
 
     };
   }
-
   const returns = await ProductModel.updateById(id, name, quantity);
+console.log(returns);
+
   return returns;
 };
 
 
 const deleteProduct = async (id) => {
   const product = await ProductModel.deleteProduct(id);
+  if (product=== null) return {
+    
+    isError: true,
+    err:{
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    },
+    status: StatusCodes.UNPROCESSABLE_ENTITY,
+    
+  };
+  
   return product;
 };
 

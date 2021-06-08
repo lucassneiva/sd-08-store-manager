@@ -16,8 +16,8 @@ const findProductByName = (productName) => {
 
 
 const findById = async (id) => {
-  if(!ObjectId.isValid(id)) return null;
-
+   if(!ObjectId.isValid(id)) return null;
+  
   return connection().then(
     db => db.collection('products').findOne(ObjectId(id))
   );
@@ -37,6 +37,8 @@ const createProduct = async (name, quantity) => {
 };
 
 const deleteProduct = async (id) => {
+  console.log(id);
+  if(!ObjectId.isValid(id)) return null;
   return connection().then(
     db => db.collection('products').deleteOne({ _id: ObjectId(id) })
   ).then((result) => ({ _id: result._id}));
