@@ -3,9 +3,6 @@ const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 const {
   UNPROCESSABE_ENTITY,
-  CREATED,
-  OK,
-  ID_LENGTH
 } = require('../service/consts');
 
 // 1 - Crie um endpoint para o cadastro de produtos
@@ -54,11 +51,17 @@ const getAllProducts = async () => {
   return allProducts;
 };
 
+// 4 - Crie um endpoint para deletar um produto
+const deleteProduct = async (idParam) => {
+  const db = await connection();
+  await db.collection('products').deleteOne({ _id: ObjectId(idParam) });
+};
 
 module.exports = {
   existProduct,
   addProduct,
   updateProduct,
   getProduct,
-  getAllProducts
+  getAllProducts,
+  deleteProduct
 };

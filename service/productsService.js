@@ -15,12 +15,12 @@ const {
   addProduct,
   updateProduct,
   getAllProducts,
-  getProduct
+  getProduct,
+  deleteProduct
 } = require('../models/productsModel');
 
 const app = express();
 app.use(bodyParser.json());
-
 
 const validation = (body) => {
   const quantity = validAmount(body.quantity);
@@ -41,6 +41,16 @@ const validation = (body) => {
       status: UNPROCESSABE_ENTITY,
       code: 'invalid_data',
       message: '"quantity" must be larger than or equal to 1'
+    };
+  }
+};
+
+const validationToFind = (params) => {
+  if (params.id.length !== ID_LENGTH) {
+    throw {
+      status: UNPROCESSABE_ENTITY,
+      code: 'invalid_data',
+      message: 'Wrong id format'
     };
   }
 };
@@ -77,16 +87,6 @@ const tryUpdate = async (req, res) => {
 };
 
 // 2 - Crie um endpoint para listar os produtos
-const validationToFind = (params) => {
-  if (params.id.length !== ID_LENGTH) {
-    throw {
-      status: UNPROCESSABE_ENTITY,
-      code: 'invalid_data',
-      message: 'Wrong id format'
-    };
-  }
-};
-
 const findProduct = async (req, res) => {
   const { params } = req;
   try {
@@ -106,9 +106,25 @@ const findAllProduct = async (res) => {
   return res.status(OK).json({products: allProducts});
 };
 
+// 4 - Crie um endpoint para deletar um produto
+const findToDelete = async (req, res) => {
+  const { params, body } = req;
+  try {
+    validationToFind(params);
+    await deleteProduct(params.id);
+    return res.status(OK).json(body);
+  } catch (error) {
+    return res.status(error.status).json({err: {
+      code: error.code,
+      message: error.message
+    }});
+  }
+};
+
 module.exports = {
   tryAddProduct,
   tryUpdate,
   findProduct,
-  findAllProduct
+  findAllProduct,
+  findToDelete
 };
