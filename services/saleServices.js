@@ -1,4 +1,8 @@
 const { SALES } = require('../models/constants');
+const {
+  decreaseProductQuantity,
+  increaseProductQuantity
+} = require('../models/productsModel');
 const SalesModel = require('../models/salesModel');
 const { generateError, errorMsgs, errorCodes } = require('./errors');
 
@@ -14,6 +18,11 @@ const addSales = async(sale) => {
   if (sale.find(product => typeof product.quantity === 'string')) {
     return generateError(wrongIdOrQuantity);
   }
+
+  sale.forEach(async(product) => {
+    const { productId, quantity } = product;
+    await decreaseProductQuantity(productId, quantity);
+  });
 
   const added = await SalesModel.addSale(sale);
 
@@ -43,8 +52,20 @@ const updateSale = async(id, toUpdate) => {
 };
 
 const deleteSale = async(id) => {
+  const sale = await getSaleById(id);
+
+  if (!sale.err) {
+    const {itensSold} = sale;
+    itensSold.forEach(async(product) => {
+      const { productId, quantity } = product;
+      await increaseProductQuantity(productId, quantity);
+      ;
+    });
+  }
+
   const deletedSale = await SalesModel.deleteSaleById(id);
   if (!deletedSale) return generateError(wrongSaleIdFormat);
+
   return deletedSale;
 };
 

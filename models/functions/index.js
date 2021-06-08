@@ -47,6 +47,28 @@ const update = async(id, keysValues, collectionName) => {
   );
 };
 
+const decreaseQuantity = async(id, quantityToDecrease, collectionName) => {
+  const db = await connect();
+
+  await db.collection(collectionName).updateOne(
+    {_id: ObjectId(id)},
+    {$inc: {
+      quantity: -quantityToDecrease
+    }}
+  );
+};
+
+const increaseQuantity = async(id, quantityToIncrease, collectionName) => {
+  const db = await connect();
+  await db.collection(collectionName).updateOne(
+    {_id: ObjectId(id)},
+    {$inc: {
+      quantity: quantityToIncrease
+    }}
+  );
+};
+
+
 module.exports = {
   getById,
   addNew,
@@ -54,4 +76,6 @@ module.exports = {
   deleteById,
   getByKeysValues,
   update,
+  decreaseQuantity,
+  increaseQuantity,
 };

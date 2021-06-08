@@ -1,6 +1,8 @@
 const { PRODUCTS } = require('./constants');
 const {
-  getById, addNew, getAll, deleteById, getByKeysValues, update } = require('./functions');
+  getById, addNew, getAll, deleteById, getByKeysValues, update,
+  decreaseQuantity, increaseQuantity
+} = require('./functions');
 
 const getProductByName = async(nameToFind) => (
   await getByKeysValues({name: nameToFind}, PRODUCTS )
@@ -18,6 +20,14 @@ const updateProduct = async(id, name, quantity) => (
   await update(id, {name, quantity}, PRODUCTS)
 ); 
 
+const decreaseProductQuantity = async(id, quantityToDecrease) => {
+  await decreaseQuantity(id, quantityToDecrease, PRODUCTS);
+};
+
+const increaseProductQuantity = async(id, quantityToIncrease) => {
+  await increaseQuantity(id, quantityToIncrease, PRODUCTS);
+};
+
 module.exports = {
   getProductByName,
   addProduct,
@@ -25,5 +35,7 @@ module.exports = {
   getProductById,
   updateProduct,
   deleteProductById,
+  decreaseProductQuantity,
+  increaseProductQuantity,
 };
 
