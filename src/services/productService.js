@@ -62,9 +62,23 @@ const addProduct = async (name, quantity) => {
 
 };
 
+const update = async (id, name, quantity) =>{
+  const { error } = schema.validate({ name, quantity });
+  if (error) {
+    return {
+      code: 'invalid_data',
+      error,
+      status: HTTP_Unprocessable_Entity
+    };
+  };
+
+  return await productModel.update(id, name, quantity);
+};
+
 module.exports = {
   getAll,
   getById,
   addProduct,
+  update,
 };
 
