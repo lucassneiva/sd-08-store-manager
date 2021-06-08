@@ -9,7 +9,6 @@ const {
 } = require('../service/consts');
 
 // 1 - Crie um endpoint para o cadastro de produtos
-
 const existProduct = async ( name ) => {
   const db = await connection();
   const isFound = await db.collection('products').findOne({ 'name': name});
@@ -29,6 +28,7 @@ const addProduct = async(body) => {
   return isFound;
 };
 
+// 3 - Crie um endpoint para atualizar um produto
 const updateProduct = async (body, params) => {
   const db = await connection();
   await db.collection('products').updateOne({_id: ObjectId(params.id)}, {
@@ -41,8 +41,24 @@ const updateProduct = async (body, params) => {
   return isFound;
 };
 
+// 2 - Crie um endpoint para listar os produtos
+const getProduct = async (idParam) => {
+  const db = await connection();
+  const product = await db.collection('products').findOne(ObjectId(idParam));
+  return product;
+};
+
+const getAllProducts = async () => {
+  const db = await connection();
+  const allProducts = await db.collection('products').find().toArray();
+  return allProducts;
+};
+
+
 module.exports = {
   existProduct,
   addProduct,
-  updateProduct
+  updateProduct,
+  getProduct,
+  getAllProducts
 };

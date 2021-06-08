@@ -14,6 +14,8 @@ const {
   existProduct,
   addProduct,
   updateProduct,
+  getAllProducts,
+  getProduct
 } = require('../models/productsModel');
 
 const app = express();
@@ -60,7 +62,6 @@ const tryAddProduct = async (req, res) => {
 };
 
 // 3 - Crie um endpoint para atualizar um produto
-
 const tryUpdate = async (req, res) => {
   const { body, params } = req;
   try {
@@ -75,7 +76,39 @@ const tryUpdate = async (req, res) => {
   }
 };
 
+// 2 - Crie um endpoint para listar os produtos
+const validationToFind = (params) => {
+  if (params.id.length !== ID_LENGTH) {
+    throw {
+      status: UNPROCESSABE_ENTITY,
+      code: 'invalid_data',
+      message: 'Wrong id format'
+    };
+  }
+};
+
+const findProduct = async (req, res) => {
+  const { params } = req;
+  try {
+    validationToFind(params);
+    const product = await getProduct(params.id);
+    return res.status(OK).json(product);
+  } catch (error) {
+    return res.status(error.status).json({err: {
+      code: error.code,
+      message: error.message
+    }});
+  }
+};
+
+const findAllProduct = async (res) => {
+  const allProducts = await getAllProducts();
+  return res.status(OK).json({products: allProducts});
+};
+
 module.exports = {
   tryAddProduct,
-  tryUpdate
+  tryUpdate,
+  findProduct,
+  findAllProduct
 };

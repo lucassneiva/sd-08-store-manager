@@ -10,7 +10,9 @@ const {
 } = require('../service/consts');
 const rescue = require('express-rescue');
 const { tryAddProduct,
-  tryUpdate } = require('../service/productsService');
+  tryUpdate,
+  findAllProduct,
+  findProduct } = require('../service/productsService');
 
 const router = express.Router();
 const app = express();
@@ -31,39 +33,10 @@ router.put('/:id', rescue(async (req, res) => {
 
 
 // 2 - Crie um endpoint para listar os produtos
-const getProduct = async (idParam) => {
-  const db = await connection();
-  const product = await db.collection('products').findOne(ObjectId(idParam));
-  return product;
-};
-
-const findProduct = async (req, res) => {
-  const { params } = req;
-  if (params.id.length !== ID_LENGTH) {
-    return res.status(UNPROCESSABE_ENTITY).json({err: {
-      code: 'invalid_data',
-      message: 'Wrong id format'
-    }});
-  }
-  const product = await getProduct(params.id);
-  return res.status(OK).json(product);
-};
-
 router.get('/:id', rescue(async (req, res) => {
   const end = await findProduct(req, res);
   return end;
 }));
-
-const getAllProducts = async () => {
-  const db = await connection();
-  const allProducts = await db.collection('products').find().toArray();
-  return allProducts;
-};
-
-const findAllProduct = async (res) => {
-  const allProducts = await getAllProducts();
-  return res.status(OK).json({products: allProducts});
-};
 
 router.get('', rescue(async (_req, res) => {
   const end = await findAllProduct(res);
