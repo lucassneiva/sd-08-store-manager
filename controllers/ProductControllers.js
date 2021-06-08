@@ -42,8 +42,20 @@ const updateById = async (req, res) => {
     const {id} = req.params;
     const { name, quantity } = req.body;
 
-    const result = await Service.update(id, name, quantity);
+    await Service.update(id, name, quantity);
     res.status(httpSuccess).json({_id:id, name, quantity});
+  } catch (e) {
+    const data = JSON.parse(e.message);
+    res.status(data.http).json({err: data.err});
+  }
+};
+
+const deleteById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await Service.getById(id);
+    await Service.deleteProduct(id);
+    res.status(httpSuccess).json(data.result);
   } catch (e) {
     const data = JSON.parse(e.message);
     res.status(data.http).json({err: data.err});
@@ -54,5 +66,6 @@ module.exports = {
   create,
   getAllProducts,
   getProductById,
-  updateById
+  updateById,
+  deleteById
 };

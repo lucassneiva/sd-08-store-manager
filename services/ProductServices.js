@@ -71,16 +71,6 @@ const getById = async (id) => {
     }));
   }
 
-  // if(!ObjectId) {
-  //   throw new Error(JSON.stringify({
-  //     err: {
-  //       code: 'invalid_data',
-  //       message: 'Wrong id formart'
-  //     },
-  //     http: 422
-  //   }));
-  // }
-
   const result = await Model.getById(id);
 
   if(!result) {
@@ -134,9 +124,38 @@ const update = async (id, name, quantity) => {
   return Model.update(id, name, quantity);
 };
 
+const deleteProduct = async (id) => {
+  if(id.length < minimumLengthId) {
+    throw new Error(JSON.stringify({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      },
+      http: 422
+    }));
+  }
+
+  const result = await Model.getAll();
+
+  const obj = result.find((item) => item.id === id);
+  console.log(obj);
+  if(result.some((item) => item.id === id)) {
+    throw new Error(JSON.stringify({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      },
+      http: 422
+    }));
+  }
+
+  return Model.deleteProduct(id);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
-  update
+  update,
+  deleteProduct
 };
