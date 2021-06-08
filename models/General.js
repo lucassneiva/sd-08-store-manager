@@ -9,10 +9,14 @@ const getAll = async (collecName) => (
     .then((coll) => coll.find().toArray())
 );
 
-const findById = async (collecName, id) => (
-  await withCollection(collecName)
-    .then((coll) => coll.findOne(new ObjectId(id)))
-);
+const findById = async (collecName, id) => {
+  try {
+    return await withCollection(collecName)
+      .then((coll) => coll.findOne(new ObjectId(id)));
+  } catch (err) {
+    return null;
+  }
+};
 
 const insertOne = async (collecName, obj) => {
   try {
