@@ -16,6 +16,29 @@ const create = async (req, res) => {
   }
 };
 
+const getAllSales = async (req, res) => {
+  try {
+    const result = await Service.getAll();
+    res.status(result.http).json({sales: result.sales});
+  } catch (error) {
+    console.log(e.message);
+  }
+};
+
+const getSaleById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await Service.getById(id);
+    res.status(result.http).json(result.result);
+  } catch (error) {
+    // console.log(error);
+    const errMessage = JSON.parse(error.message);
+    res.status(errMessage.http).json({err:errMessage.err});
+  }
+};
+
 module.exports = {
   create,
+  getAllSales,
+  getSaleById
 };

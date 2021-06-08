@@ -9,5 +9,7 @@ const router = express.Router();
 router.use(bodyParser.json());
 
 router.post('/', controllers.create);
+router.get('/', controllers.getAllSales);
+router.get('/:id', controllers.getSaleById);
 
 module.exports = router;
