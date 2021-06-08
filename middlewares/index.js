@@ -9,6 +9,7 @@ const {
 
 const {
   validaNumeroVenda,
+  validaIdVenda,
 } = require('../middlewares/venda');
 
 
@@ -19,4 +20,5 @@ module.exports = {
   validaId,
   validaExiste,
   validaNumeroVenda,
+  validaIdVenda,
 };
