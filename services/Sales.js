@@ -4,15 +4,15 @@ const COLLECTION_NAME = 'sales';
 const NAME_SINGULAR = 'Sale';
 
 const getAll = async () => {
-  const examples = await General.getAll(COLLECTION_NAME);
-  return { result: examples };
+  const resources = await General.getAll(COLLECTION_NAME);
+  return { result: { sales: resources } };
 };
 
 const findById = async (id) => {
-  const example = await General.findById(COLLECTION_NAME, id);
-  if (!example) return { error: {
-    code: 'not_found', message: 'not_found message find' } };
-  return { result: example };
+  const resource = await General.findById(COLLECTION_NAME, id);
+  if (!resource) return { error: {
+    code: 'not_found', message: `${NAME_SINGULAR} not found` } };
+  return { result: resource };
 };
 
 const insertOne = async (arr) => {

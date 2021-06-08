@@ -14,8 +14,8 @@ module.exports = (err, _req, res, _next) => {
 
   const resJson = () => {
     switch (code) {
-    case 'not_found':
-      return { message };
+    // case 'not_found':
+    //   return { message };
     case 'bad_request':
       return { err: { code, message: 'invalid_data', data: message } };
     case 'unprocessable_entity':
