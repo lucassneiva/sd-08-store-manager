@@ -1,31 +1,45 @@
-const productModel = require('../models/productModel');
+const express = require('express');
+const router = express.Router();
+const {alldocs, insertpdt, deleteone } = require('../services/productServce');
 
-const allproducts = async(req, res, _next) => {
+router.get('/', async(req, res) => {  
   try {
-    const status = 200;
-    const results = await productModel.getAll();
-    res.status(status).send(results); 
-  } catch (error) {console.error(error);
-    const statuserr = 500;
-    res.status(statuserr).json({message: error.message});
+    const produtos = await alldocs();
+    res.send(produtos);
+  }catch (err) {
+    console.log(err);
+    const st = 500;
+    res.status(st).send({message: 'erro ao listar todos os produtos'});
+  };
+});
+// router.get('/:id','');
 
-  }
-};
-
-const insertProduct = async (req, res, next) => {
+router.post('/', async(req, res) => {
   try {
-    const status = 200;
-    const results = await productModel.insertProduct();
-    res.status(status).send(results); 
-  } catch (error) {console.error(error);
-    const statuserr = 500;
-    res.status(statuserr).json({message: error.message});
-
+    const s = 200;  
+    const { name, quantity } = req.body;
+    const result = await  insertpdt(name, quantity);
+    res.status(s).send(result);
+  }catch 
+  
+  (err) {
+    console.log(err);
+    const st = 422;
+    res.status(st).send(err);
+  };
+});
+// router.put('/:id');
+router.delete('/:id', async(req, res) => {
+  try {
+    const s = 200;  
+    const { id } = req.query;
+    const result = await  deleteone(id);
+    res.status(s).send(result);
+  }catch (err) { 
+    console.log(err);
+    const st = 500;
+    res.status(st).send({message: 'erro ao deletar o produto'});
   }
+});
 
-};
-
-module.exports = {
-  allproducts,
-  insertProduct,
-};
+module.exports = router;

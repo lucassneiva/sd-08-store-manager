@@ -1,21 +1,39 @@
 const { ObjectId } = require('mongodb');
-const conn = require('../configs/conn');
+const conn = require('./conn');
 
-const getAll = async(_req, res) => {
-  const status = 200;
-  const result = conn().then(db => db.collection('products').find().toArray());
-  res.status(status).send(result);
+const getAll = async() => {
+  return conn().then(db => db.collection('products').find().toArray());
+  
 };
 
-const insertProduct = async(req, res) => {
-  const status = 200;
-  conn().then(db => db.collection('products').insert(req.body));
-  res.status(status).send(ops.ObjectId);
-};
+const insertProduct = async(name, quantity) => 
+  
+  conn().then(
+    async (db) => 
+    {
+      const result = await db.collection('products').insertOne({ name, quantity });
+      return result.ops[0];
+    }
+
+  );
+  
+const deleteProduct = async(id) => 
+  
+  conn().then(
+    async (db) => 
+    {
+      const result = await db.collection('products').deleteOne(
+        { '_id' : ObjectId(id) });
+      return result;
+    }
+
+  );
+
+
 
 
 module.exports = {
   getAll,
   insertProduct,
-
+  deleteProduct,
 };

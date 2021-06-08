@@ -1,15 +1,10 @@
-const allsales = async(req, res, next) => {
-  try {
-    const status = 200;
-    const result = await productModel.getAll();
-    res.status(status).send(results); 
-  } catch (error) {console.error(error);
-    const statuserr = 500;
-    res.status(statuserr).json({message: error.message});
+const express = require('express');
+const router = express.Router();
 
-  }
-};
+router.get('/', (req, res) => {  res.send('okok');});
+// router.get('/:id','');
+router.post('/', (req, res) => {  res.send('captao caverna');});
+// router.put('/:id');
+// router.delete('/:id');
 
-module.exports = {
-  allsales,
-};
+module.exports = router;
