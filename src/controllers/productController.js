@@ -42,10 +42,20 @@ const update = rescue(async (req, res, next) => {
   res.status(HTTP_OK).json(result);
 });
 
+const exclude = rescue(async (req, res, next) => {
+  const { id } = req.params;
+
+  const resultexclude = await productService.exclude(id);
+
+  if (resultexclude.error) return next(resultexclude);
+
+  res.status(HTTP_OK).json(resultexclude);
+});
 
 module.exports = {
   getAll,
   getById,
   addProduct,
   update,
+  exclude,
 };

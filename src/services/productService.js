@@ -75,10 +75,25 @@ const update = async (id, name, quantity) =>{
   return await productModel.update(id, name, quantity);
 };
 
+const exclude = async (id) =>{
+  const result = await productModel.getById(id);
+
+  if (!result) {
+    return {
+      code: 'invalid_data',
+      error: { message: 'Wrong id format' },
+      status: HTTP_Unprocessable_Entity
+    };
+  }
+
+  return await productModel.exclude(id);
+};
+
 module.exports = {
   getAll,
   getById,
   addProduct,
   update,
+  exclude,
 };
 
