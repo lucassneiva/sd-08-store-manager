@@ -9,9 +9,9 @@ const insert = Joi.object({
 }).messages({ 'number.min': `{#label} must be larger than or equal to ${MIN_QUANTITY}` });
 
 const update = Joi.object({
-  name: Joi.string().min(MIN_NAME_LENGTH).required(),
-  quantity: Joi.number().integer().min(MIN_QUANTITY).required(),
-});
+  name: Joi.string().min(MIN_NAME_LENGTH),
+  quantity: Joi.number().integer().min(MIN_QUANTITY),
+}).messages({ 'number.min': `{#label} must be larger than or equal to ${MIN_QUANTITY}` });
 
 module.exports = {
   insert,
