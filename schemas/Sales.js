@@ -1,19 +1,22 @@
 const Joi = require('joi');
 
-const insert = Joi.object({
-  label1: Joi.string().required(),
-  label4: Joi.array().items(Joi.number()).required(),
-  label2: Joi.string().isoDate().message('Date needs to be on ISODate pattern')
-   .required(),
-  label3: Joi.number().required(),
-})
-.messages({ 'any.required': 'The {#label} field is required.', 'string.type': '{#label} needs to be a string' });
+const PRODUCT_ID_LENGTH = 24;
+const MIN_QUANTITY = 1;
 
-const update = Joi.object({
-  label1: Joi.string(),
-  label4: Joi.array().items(Joi.number()),
-  label2: Joi.string().isoDate().message('Date needs to be on ISODate pattern'),
-  label3: Joi.number(),
+const insert = Joi.array().items({
+  productId: Joi.string().length(PRODUCT_ID_LENGTH).required(),
+  quantity: Joi.number().integer().min(MIN_QUANTITY).required(),
+}).messages({
+  'number.min': 'Wrong product ID or invalid quantity',
+  'number.base': 'Wrong product ID or invalid quantity',
+});
+
+const update = Joi.array().items({
+  productId: Joi.string().length(PRODUCT_ID_LENGTH),
+  quantity: Joi.number().integer().min(MIN_QUANTITY),
+}).messages({
+  'number.min': 'Wrong product ID or invalid quantity',
+  'number.base': 'Wrong product ID or invalid quantity',
 });
 
 module.exports = {
