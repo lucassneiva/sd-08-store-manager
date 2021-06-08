@@ -6,13 +6,16 @@ const {validateIfNameExists,
 const{
   controllerProduct,
   controllerAllProduct, 
-  controllerById} = require('../controllers/product');
+  controllerById,
+  controllerUpdate} = require('../controllers/product');
 
 const routeProduct = express.Router();
 
-routeProduct.post('/products', validateProduct, validateIfNameExists, controllerProduct);
+
 routeProduct.get('/products/:id', controllerById);
+routeProduct.put('/products/:id', validateProduct, controllerUpdate);
 routeProduct.get('/products', controllerAllProduct);
+routeProduct.post('/products', validateProduct, validateIfNameExists, controllerProduct);
 
 
 module.exports = {

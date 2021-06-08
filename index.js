@@ -8,10 +8,12 @@ app.use(bodyParser.json());
 
 const {routeProduct} = require('./routes/product');
 
+
 const PORT = 3000;
 
 
 app.use(routeProduct);
+
 
 app.listen(PORT, () => console.log('App ouvindo a porta 3000!'));
 

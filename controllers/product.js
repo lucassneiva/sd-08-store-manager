@@ -13,7 +13,7 @@ const controllerProduct = async (req, res) => {
   const newProduct = req.body;
   try {
     const create = await productsService.addNewProduct(newProduct);
-    return res.status(NEW_ITEM).json(create);
+    return res.status(NEW_ITEM).json(create.ops[0]);
   }   catch (error) {
     console.error(error);
     return res.status(INTERNAL_ERROR)
@@ -51,11 +51,22 @@ const controllerById = async (req, res) => {
   }
 };
 
+const controllerUpdate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, quantity } = req.body;
+    const upProduct = await productsService.update(id, name, quantity);
+    return res.status(SUCESS).json(upProduct);
+  } catch (error) {
+    res.status(INTERNAL_ERROR).json({ error: error.message });
+  }
+};
 
 
 
 module.exports = {
   controllerProduct,
   controllerAllProduct,
-  controllerById
+  controllerById,
+  controllerUpdate
 };
