@@ -6,7 +6,8 @@ const getAllProducts = () => {
 };
 
 const findProductByName = (productName) => {
-  return connection().then((db) => db.collection('products').find({ name: productName }).toArray());
+  return connection().then((db) => db.collection('products')
+    .find({ name: productName }).toArray());
 };
 
 const findById = async (id) => {
@@ -18,7 +19,9 @@ const findById = async (id) => {
 const updateById = async (id, name, quantity) => {
   return connection()
     .then((db) =>
-      db.collection('products').updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } }),
+      db.collection('products')
+        .updateOne({ _id: ObjectId(id) },
+          { $set: { name, quantity } }),
     )
     .then(() => ({ _id: id, name, quantity }));
 };
