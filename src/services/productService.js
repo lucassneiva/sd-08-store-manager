@@ -20,11 +20,21 @@ const schema = joi.object({
     .required(),
 });
 
-const getAll = async () => {
-  const product = await productModel.getAll();
-  return product;
-};
+const getAll = async () =>  productModel.getAll();
 
+const getById = async (id) => {
+  const result = await productModel.getById(id);
+
+  if (!result) {
+    return {
+      code: 'invalid_data',
+      error: { message: 'Wrong id format' },
+      status: HTTP_Unprocessable_Entity
+    };
+  }
+
+  return result;
+};
 
 
 const addProduct = async (name, quantity) => {
@@ -54,6 +64,7 @@ const addProduct = async (name, quantity) => {
 
 module.exports = {
   getAll,
+  getById,
   addProduct,
 };
 

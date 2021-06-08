@@ -3,19 +3,26 @@ const productService = require('../services/productService');
 const rescue = require('express-rescue');
 
 //status de respostas HTTP
+const HTTP_OK = 200;
 const Created = 201;
 const InternalServerError = 500;
 
-const getAll = async (req, res) => {
-  try {
-    const result = await productService.getAll();
-    res.status(Created).json(result);
-  } catch (error) {
-    res.status(InternalServerError).json({
-      message: err.message
-    });
-  }
-};
+const getAll = rescue(async (req, res) => {
+
+  const result = await productService.getAll();
+  res.status(HTTP_OK).json(result);
+});
+
+const getById = rescue(async (req, res, next) => {
+  const { id } = req.params;
+
+  const result = await productService.getById(id);
+
+  if (result.error) return next(result);
+
+  res.status(HTTP_OK).json(result);
+});
+
 
 const addProduct = rescue(async (req, res, next) => {
 
@@ -28,5 +35,6 @@ const addProduct = rescue(async (req, res, next) => {
 
 module.exports = {
   getAll,
+  getById,
   addProduct,
 };
