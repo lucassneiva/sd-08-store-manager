@@ -13,5 +13,7 @@ app.get('/', (_request, response) => {
 });
 
 app.post('/products', ProductsController.insert);
+app.get('/products/:id', ProductsController.findByID);
+app.get('/products', ProductsController.getAll);
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
