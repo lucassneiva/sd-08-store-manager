@@ -35,8 +35,8 @@ const deleteById = async (id) => {
     message: `The ${NAME_SINGULAR} with id = ${id} was deleted successfully` } };
 };
 
-const updateById = async (id, obj) => {
-  const resp = await General.updateById(COLLECTION_NAME, id, obj);
+const updateById = async (id, arr) => {
+  const resp = await General.updateById(COLLECTION_NAME, id, { itensSold: arr });
   if (!resp) return { error: {
     code: 'not_found', message: 'not_found message update' } };
   return await findById(id);
