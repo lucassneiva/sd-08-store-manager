@@ -4,57 +4,38 @@ const { STATUS_500, DEU_ERRO } = require('../statusCode');
 
 const salesServices = require('../services/salesServices');
 
-router.post('/', async (req, res) => {
-  try {
-    const result = await salesServices.addSalesServices(req.body);
-    res.status(result.statusCode).json(result.json);
-  } catch (error) {
-    console.log(error);
-    res.status(STATUS_500).json({ message: DEU_ERRO });
-  }
-});
+const addSales = async (req, res) => {
+  const result = await salesServices.addSalesServices(req.body);
+  res.status(result.statusCode).json(result.json);
+};
 
-router.get('/', async (req, res) => {
-  try {
-    const result = await salesServices.getAllSalesServices();
-    res.status(result.statusCode).json(result.json);
-  } catch (error) {
-    console.log(error);
-    res.status(STATUS_500).json({ message: DEU_ERRO });
-  }
-});
+const getAllSales = async (req, res) => {
+  const result = await salesServices.getAllSalesServices();
+  res.status(result.statusCode).json(result.json);
+};
 
-router.get('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await salesServices.findByIdSalesServices(id);
-    res.status(result.statusCode).json(result.json);
-  } catch (error) {
-    console.log(error);
-    res.status(STATUS_500).json({ message: DEU_ERRO });
-  }
-});
+const findByIdSales = async (req, res) => {
+  const { id } = req.params;
+  const result = await salesServices.findByIdSalesServices(id);
+  res.status(result.statusCode).json(result.json);
+};
 
-router.put('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await salesServices.updateSalesServices(id, req.body);
-    res.status(result.statusCode).json(result.json);
-  } catch (error) {
-    console.log(error);
-    res.status(STATUS_500).json({ message: DEU_ERRO });
-  }
-});
+const updateSales = async (req, res) => {
+  const { id } = req.params;
+  const result = await salesServices.updateSalesServices(id, req.body);
+  res.status(result.statusCode).json(result.json);
+};
 
-router.delete('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await salesServices.deleteSalesServices(id);
-    res.status(result.statusCode).json(result.json);
-  } catch (error) {
-    console.log(error);
-    res.status(STATUS_500).json({ message: DEU_ERRO });
-  }
-});
+const deleteSales = async (req, res) => {
+  const { id } = req.params;
+  const result = await salesServices.deleteSalesServices(id);
+  res.status(result.statusCode).json(result.json);
+};
 
-module.exports = router;
+module.exports = {
+  addSales,
+  getAllSales,
+  findByIdSales,
+  updateSales,
+  deleteSales
+};

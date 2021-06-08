@@ -25,7 +25,9 @@ const getAllProducts = async () => {
 
 const findByIdProducts = async (id) => {
   const result = await connect()
-    .then((db) => db.collection('products').find({ _id: ObjectID(id) }).toArray());
+    .then((db) => ObjectID.isValid(id)
+      ? db.collection('products').find({ _id: ObjectID(id) }).toArray()
+      : null);
   return result;
 };
 

@@ -1,4 +1,4 @@
-const { ObjectID } = require('bson');
+const { ObjectID, ObjectId } = require('bson');
 const Joi = require('joi');
 const productsModel = require('../models/productsModel');
 const CINCO = 5;
@@ -20,8 +20,6 @@ const nameValidation = async (name) => {
 
 const addProduct = async (name, quantity) => {
   const { error } = addProductValidation({ name, quantity });
-  const validationName = await nameValidation(name);
-  const result = await productsModel.addProduct(name, quantity);
 
   if(error) return {
     statusCode: 422,
@@ -33,6 +31,8 @@ const addProduct = async (name, quantity) => {
     }
   };
 
+  const validationName = await nameValidation(name);
+
   if(validationName.length !== ZERO) return {
     statusCode: 422,
     json: {
@@ -42,6 +42,8 @@ const addProduct = async (name, quantity) => {
       }
     }
   };
+
+  const result = await productsModel.addProduct(name, quantity);
 
   return {
     statusCode: 201,
@@ -61,9 +63,9 @@ const getAllProductsServices =  async () => {
 };
 
 const getByIdProductsServices = async (id) => {
-  const idValid = ObjectID.isValid(id);
+  const result = await productsModel.findByIdProducts(id);
     
-  if(!idValid) return {
+  if(!result) return {
     statusCode: 422,
     json: {
       err: {
@@ -72,8 +74,6 @@ const getByIdProductsServices = async (id) => {
       }
     }
   };
-  
-  const result = await productsModel.findByIdProducts(id);
 
   return {
     statusCode: 200,
