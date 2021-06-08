@@ -28,27 +28,30 @@ const getAll = async () => {
 };
 
 const getById = async (id) => {
-  const result = await Model.getById(id);
 
-  // console.log(result)
+  console.log('estou no começo do service');
 
-  if(id.length < minimumLengthId) {
+  const hex = /[0-9A-Fa-f]{6}/g;
+
+  if(!hex.test(id)) {
     throw new Error(JSON.stringify({
       err: {
         code: 'not_found',
         message: 'Sale not found'
       },
-      http: 422
+      http: 404
     }));
   }
-
-  if(!result || result === null) {
+  
+  const result = await Model.getById(id);
+  
+  if(!result) {
     throw new Error(JSON.stringify({
       err: {
         code: 'not_found',
         message: 'Sale not found'
       },
-      http: 422
+      http: 404
     }));;
   }
   return {

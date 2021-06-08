@@ -13,7 +13,7 @@ const getAll = async () => {
     .then((db) => db.collection('sales').find().toArray());
 };
 
-const getById = async (id) => {
+const getById = (id) => {
   return connection()
     .then((db) => db.collection('sales').findOne(new ObjectId(id)));
 };

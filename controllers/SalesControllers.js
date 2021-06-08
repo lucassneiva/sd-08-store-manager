@@ -31,7 +31,6 @@ const getSaleById = async (req, res) => {
     const result = await Service.getById(id);
     res.status(result.http).json(result.result);
   } catch (error) {
-    // console.log(error);
     const errMessage = JSON.parse(error.message);
     res.status(errMessage.http).json({err:errMessage.err});
   }
