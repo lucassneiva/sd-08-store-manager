@@ -9,11 +9,8 @@ const {
   ID_LENGTH
 } = require('../service/consts');
 const rescue = require('express-rescue');
-const {
-  validLength,
-  validAmount
-} = require('../service/jokerValidations');
-const { tryAddProduct } = require('../service/productsService');
+const { tryAddProduct,
+  tryUpdate } = require('../service/productsService');
 
 const router = express.Router();
 const app = express();
@@ -27,41 +24,11 @@ router.post('/', rescue(async (req, res) => {
 }));
 
 // 3 - Crie um endpoint para atualizar um produto
-
-const updateProduct = async (req, res) => {
-  const { body, params } = req;
-  const quantity = validAmount(body.quantity);
-  if (!validLength(body['name'])) {
-    return res.status(UNPROCESSABE_ENTITY).json({err: {
-      code: 'invalid_data',
-      message: '"name" length must be at least 5 characters long'
-    }});
-  } if (quantity === 'IsNaN' ) {
-    return res.status(UNPROCESSABE_ENTITY).json({err: {
-      code: 'invalid_data',
-      message: '"quantity" must be a number'
-    }});
-  } if (quantity === 'IsLessOrEqual0') {
-    return res.status(UNPROCESSABE_ENTITY).json({err: {
-      code: 'invalid_data',
-      message: '"quantity" must be larger than or equal to 1'
-    }});
-  }
-  const db = await connection();
-  await db.collection('products').updateOne({_id: ObjectId(params.id)}, {
-    $set: {
-      name: body.name,
-      quantity: body.quantity
-    }
-  });
-  const isFound = await db.collection('products').findOne({ 'name': body['name']});
-  return res.status(OK).json(isFound);
-};
-
 router.put('/:id', rescue(async (req, res) => {
-  const end = await updateProduct(req, res);
+  const end = await tryUpdate(req, res);
   return end;
 }));
+
 
 // 2 - Crie um endpoint para listar os produtos
 const getProduct = async (idParam) => {

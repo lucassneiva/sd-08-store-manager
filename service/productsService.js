@@ -13,16 +13,14 @@ const {
 const {
   existProduct,
   addProduct,
+  updateProduct,
 } = require('../models/productsModel');
 
 const app = express();
 app.use(bodyParser.json());
 
-// 1 - Crie um endpoint para o cadastro de produtos
 
-
-
-const validationToAddProduct = (body) => {
+const validation = (body) => {
   const quantity = validAmount(body.quantity);
   if (!validLength(body['name'])) {
     throw {
@@ -45,11 +43,12 @@ const validationToAddProduct = (body) => {
   }
 };
 
+// 1 - Crie um endpoint para o cadastro de produtos
 const tryAddProduct = async (req, res) => {
   const { body } = req;
   try {
     await existProduct(body.name);
-    validationToAddProduct(body);
+    validation(body);
     const productAdded = await addProduct(body);
     return res.status(CREATED).json(productAdded);
   } catch (error) {
@@ -60,6 +59,23 @@ const tryAddProduct = async (req, res) => {
   }
 };
 
+// 3 - Crie um endpoint para atualizar um produto
+
+const tryUpdate = async (req, res) => {
+  const { body, params } = req;
+  try {
+    validation(body);
+    const isFound = await updateProduct(body, params);  
+    return res.status(OK).json(isFound);
+  } catch (error) {
+    return res.status(error.status).json({err: {
+      code: error.code,
+      message: error.message
+    }});
+  }
+};
+
 module.exports = {
-  tryAddProduct
+  tryAddProduct,
+  tryUpdate
 };

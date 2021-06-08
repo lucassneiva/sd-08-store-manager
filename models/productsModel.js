@@ -29,7 +29,20 @@ const addProduct = async(body) => {
   return isFound;
 };
 
+const updateProduct = async (body, params) => {
+  const db = await connection();
+  await db.collection('products').updateOne({_id: ObjectId(params.id)}, {
+    $set: {
+      name: body.name,
+      quantity: body.quantity
+    }
+  });
+  const isFound = await db.collection('products').findOne({ 'name': body['name']});
+  return isFound;
+};
+
 module.exports = {
   existProduct,
-  addProduct
+  addProduct,
+  updateProduct
 };
