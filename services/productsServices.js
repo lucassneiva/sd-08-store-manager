@@ -5,7 +5,7 @@ const insert = async (name, quantity) => {
 
   const validations = await productsSchema.validate(name, quantity);
 
-  if (validations.err) return validations;
+  if (validations) return validations;
 
   const data = await productsModel.insert(name, quantity);
 
@@ -13,5 +13,5 @@ const insert = async (name, quantity) => {
 };
 
 module.exports = {
-  insert
+  insert,
 };
