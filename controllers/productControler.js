@@ -4,8 +4,9 @@ const {alldocs, insertpdt, deleteone } = require('../services/productServce');
 
 router.get('/', async(req, res) => {  
   try {
+    const s = 200;
     const produtos = await alldocs();
-    res.send(produtos);
+    res.status(s).send(produtos);
   }catch (err) {
     console.log(err);
     const st = 500;
@@ -16,13 +17,11 @@ router.get('/', async(req, res) => {
 
 router.post('/', async(req, res) => {
   try {
-    const s = 200;  
+    const s = 201;  
     const { name, quantity } = req.body;
     const result = await  insertpdt(name, quantity);
-    res.status(s).send(result);
-  }catch 
-  
-  (err) {
+    res.status(s).send(result.ops[0]);
+  }catch(err) {
     console.log(err);
     const st = 422;
     res.status(st).send(err);

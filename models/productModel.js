@@ -12,7 +12,7 @@ const insertProduct = async(name, quantity) =>
     async (db) => 
     {
       const result = await db.collection('products').insertOne({ name, quantity });
-      return result.ops[0];
+      return (result);
     }
 
   );
@@ -24,7 +24,7 @@ const deleteProduct = async(id) =>
     {
       const result = await db.collection('products').deleteOne(
         { '_id' : ObjectId(id) });
-      return result;
+      return result.deleted;
     }
 
   );

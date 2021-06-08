@@ -1,4 +1,4 @@
-const frisby = require('frisby');
+/* const frisby = require('frisby');
 const { MongoClient } = require('mongodb');
 
 const mongoDbUrl = 'mongodb://localhost:27017';
@@ -833,3 +833,4 @@ describe('10 - Valide a quantidade de produtos', () => {
       });
   });
 });
+ */
