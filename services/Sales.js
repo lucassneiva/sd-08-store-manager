@@ -30,7 +30,7 @@ const insertOne = async (arr) => {
 const deleteById = async (id) => {
   const resp = await General.deleteById(COLLECTION_NAME, id);
   if (!resp) return { error: {
-    code: 'not_found', message: 'not_found message delete' } };
+    code: 'unprocessable_entity', message: 'Wrong sale ID format' } };
   return { result: {
     message: `The ${NAME_SINGULAR} with id = ${id} was deleted successfully` } };
 };
