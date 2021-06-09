@@ -1,7 +1,6 @@
 const Products = require('../models/Products');
 
 const create = async (product) => {
-
   const { name } = product;
 
   const productExists = await Products.findByName(name);
@@ -21,7 +20,6 @@ const create = async (product) => {
 const findAll = async () => Products.findAll();
 
 const findById = async (id) => {
-
   const product = await Products.findById(id);
 
   if (!product) {
@@ -36,8 +34,11 @@ const findById = async (id) => {
   return product;
 };
 
+const update = async (product) => Products.update(product);
+
 module.exports = {
   create,
   findAll,
-  findById
+  findById,
+  update
 };

@@ -6,12 +6,10 @@ const MIN_QUANTITY = 1;
 const productSchema = Joi.object({
   name: Joi
     .string()
-    .not().empty()
     .min(MIN_LENGTH)
     .required(),
   quantity: Joi
     .number()
-    .not().empty()
     .min(MIN_QUANTITY)
     .required()
 });

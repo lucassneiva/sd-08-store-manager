@@ -39,8 +39,24 @@ const findById = rescue(async (req, res, next) => {
 
 });
 
+const update = rescue(async (req, res, next) => {
+  const { error } = productSchema.validate(req.body);
+
+  if (error) return next(error);
+
+  const { name, quantity } = req.body;
+  const { id } = req.params;
+
+  const product = await service.update({ id, name, quantity });
+
+  if (product.error) return next(product.error);
+
+  res.status(OK).json(product);
+});
+
 module.exports = {
   create,
   findAll,
-  findById
+  findById,
+  update
 };
