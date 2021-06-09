@@ -17,10 +17,10 @@ const create = async (req, res) => {
 };
 
 // GETALL ------------------------------------------
-const getAll = rescue(async (_req, res) => {
+const getAll = async (_req, res) => {
   const products = await products.getAll();
   return res.status(STATUS_200).json(products);
-});
+};
 
 // GETBYID -------------------------------------------
 const getById = async (req, res) => {
