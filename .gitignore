@@ -293,3 +293,4 @@ $RECYCLE.BIN/
 
 # Private enviroment
 # .env.js
+tests/
