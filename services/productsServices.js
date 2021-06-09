@@ -20,7 +20,18 @@ const findById = async (id) => {
 };
 
 const getAll = async () => {
-  const products = await productsModel.getProducts();
+  const products = await productsModel.getAll();
+  if(!products) return null;
+
+  return { status: 200, products };
+};
+
+const updateByID = async (id, body) => {
+  const validations = await productsSchema.validate(body.name, body.quantity);
+
+  if (validations) return validations;
+
+  const products = await productsModel.updateByID(id, body);
   if(!products) return null;
 
   return { status: 200, products };
@@ -29,5 +40,6 @@ const getAll = async () => {
 module.exports = {
   insert,
   findById,
-  getAll
+  getAll,
+  updateByID
 };

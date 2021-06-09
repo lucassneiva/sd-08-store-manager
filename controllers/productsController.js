@@ -34,8 +34,29 @@ const getAll = async (_req, res) => {
   return res.status(ERROR_OK).json(data);
 };
 
+const updateByID = async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+
+  const product = await findByID(id);
+
+  const productUpdate = {
+    name: name? name : product.data.name,
+    quantity: quantity? quantity : product.data.quantity,
+  };
+
+  const data = await productsServices.updateByID(id, productUpdate);
+
+
+  if(body.err) return res.status(body.status).json(body);
+
+
+  return res.status(ERROR_OK).json(data);
+};
+
 module.exports = {
   insert,
   findByID,
-  getAll
+  getAll,
+  updateByID
 };
