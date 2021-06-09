@@ -1,9 +1,8 @@
 const SalesModel = require('../models/SalesModel');
 const SalesSchema = require('../schemas/SalesSchema');
 const { notFoundSales, InvalidObjectIDSale } = require('../schemas/errorMessages');
-const { response } = require('express');
 
-// const ZERO = 0;
+const ZERO = 0;
 
 const registerSale = async (sales) => {
   const { productId, quantity } = sales[0];
@@ -40,7 +39,7 @@ const getAllSales = async () => {
 
 const getSalesByID = async (id) => {
   const saleId = await SalesModel.getSalesByID(id);
-  if(!saleId) return notFoundSales;
+  if(!saleId || saleId.length === ZERO) return notFoundSales; // aqui
   return saleId[0];
 };
 
@@ -55,19 +54,25 @@ const updateSaleByID = async (id, quantity, productId) => {
 
 const deleteSaleByID = async (id) => {
 
-  const sale = await SalesModel.getSalesByID(id);
+  // const sale = await SalesModel.getSalesByID(id);
+  // if(!sale) return { code: 404}
 
-  const saleId = await SalesModel.deleteSaleByID(id);
-  
-  if(!saleId) return InvalidObjectIDSale;
-  
-  const idProduct = sale[0].itensSold[0].productId;
-  const quantity = sale[0].itensSold[0].quantity;
+  const getSale = await SalesModel.getSale(id);
+  if(!getSale || getSale.length === ZERO) return InvalidObjectIDSale;
 
-  SalesModel.sumQuantity(idProduct, quantity);
+  await SalesModel.deleteSaleByID(id);
+  // console.log(s);
+
+  // verificar aqui 
+  // Refatorar essa parte
+  const idProduct = getSale[0].itensSold[0].productId;
+  const quantity = getSale[0].itensSold[0].quantity;
+
+  await SalesModel.sumQuantity(idProduct, quantity);
 
 
-  return sale[0];
+  return getSale[0];
+ 
 };
 
 module.exports = {

@@ -44,7 +44,7 @@ const sumQuantity = async (idProduct, quantity) => {
     console.error(error);
   }
 };
-
+// aqui
 const getAllSales = async () => {
   try {
     return await connection().then((db) => db.collection('sales').find().toArray());
@@ -53,7 +53,7 @@ const getAllSales = async () => {
   }
 };
 
-const getSalesByID = async (id) => {
+const getSalesByID = async (id) => { // aqui
   try {
     const resp = await connection()
       .then((db) => ObjectId.isValid(id)? db.collection('sales')
@@ -82,10 +82,18 @@ const updateSaleByID = async (id, quantity, productId) => {
   }
 };
 
+const getSale = async (id) => {
+  const resp = await connection()
+    .then((db) => ObjectId.isValid(id)? db.collection('sales')
+      .find({_id: ObjectId(id)}).toArray(): null);
+  // console.log(resp)
+  return resp;
+};
+
 const deleteSaleByID = async (id) => {
   try {
     await connection().then((db) => db.collection('sales')
-      .deleteOne({_id: ObjectId(id)})).then((sale) => sale);
+      .deleteOne({_id: ObjectId(id)})).then((sale) => sale); 
     return true;
   } catch (error) {
     console.error(error);
@@ -99,5 +107,6 @@ module.exports = {
   updateSaleByID,
   deleteSaleByID,
   updateQuantity,
-  sumQuantity
+  sumQuantity,
+  getSale
 };

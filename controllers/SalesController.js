@@ -40,7 +40,7 @@ const updateSaleByID = async (req, resp) => {
 const deleteSaleByID = async (req, resp) => {
   const { id } = req.params;
   const response = await SalesService.deleteSaleByID(id);
-  
+
   if(response.code) return resp.status(response.code).json(response.message);
 
   resp.status(HTTP_STATUS_OK).json(response);
