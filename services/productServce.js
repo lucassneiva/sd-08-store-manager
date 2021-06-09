@@ -103,11 +103,11 @@ const updateOne = async(id, body) => {
 
 
 const deleteone = async(id) => {
-  if (!id) {
-    console.error({ 
+  if (!ObjectId.isValid(id)) {
+    throw({ 
       err:{
         code: 'invalid_data',
-        message: '"\"id\"" idnão encontrado'
+        message: 'Wrong id format'
       } 
     });
   }else{return  await deleteProduct(id);}

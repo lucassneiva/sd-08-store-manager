@@ -44,16 +44,15 @@ const update = async(id, body) =>
   });
 ;
 
-const deleteProduct = async(id) => 
+const deleteProduct = async(id) => {
   
-  conn().then(
-    async (db) => 
-    {
-      const result = await db.collection('products').deleteOne(ObjectId(id));
-      return result;
-    }
-
+  return conn().then(
+    async (db) => await db.collection('products').deleteOne({_id:ObjectId(id)})
   );
+      
+}; 
+
+  
 
 
 

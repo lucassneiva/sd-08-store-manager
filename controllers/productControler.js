@@ -65,7 +65,6 @@ router.put('/:id', async(req, res) => {
   // console.log('olha ai:', body);
   try {
     const result = await updateOne(id, body);
-    console.log('rrr:', result);
     res.status(cc).json(result);
   }catch (err) {
     console.log(err);
@@ -76,13 +75,12 @@ router.put('/:id', async(req, res) => {
 
 router.delete('/:id', async(req, res) => {
   try {
-      
-    const { id } = req.query;
+    const { id } = req.params;
     const result = await  deleteone(id);
     res.status(cc).send(result);
   }catch (err) { 
     console.log(err);
-    res.status(cdxxii).send({message: 'erro ao deletar o produto'});
+    res.status(cdxxii).send(err);
   }
 });
 
