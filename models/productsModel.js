@@ -1,4 +1,3 @@
-const { response } = require('express');
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
@@ -10,23 +9,27 @@ const insert = async (name, quantity) =>
 const findByName = async (nameNewProduct) =>
   await connection()
     .then((db) => db.collection('products').findOne({ name: nameNewProduct }))
-    .then(response => response);
+    .then(response => response)
+    .catch(err => console.log(err));
 
 const findById = async (id) =>
-  connection()
-    .then((db) => db.collection('products').findOne(ObjectId(id)))
+  await connection()
+    .then((db) => db.collection('products').findOne(new ObjectId(id)))
     .then(response => response)
     .catch(err => console.log(err));
 
-const getAll = async () =>
-  connection()
-    .then((db) => db.collection('products').find())
-    .then(response => response)
-    .catch(err => console.log(err));
+const getProducts = async () => {
+  try {
+    const db = await connection();
+    return await db.collection('products').find().toArray();
+  } catch (error) {
+    return null;
+  }
+};
 
 module.exports = {
+  getProducts,
   insert,
   findByName,
   findById,
-  getAll
 };

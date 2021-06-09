@@ -1,5 +1,3 @@
-// models/connection.js
-
 const { MongoClient } = require('mongodb');
 
 const OPTIONS = {
@@ -7,8 +5,8 @@ const OPTIONS = {
   useUnifiedTopology: true,
 };
 
-// const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
-const MONGO_DB_URL = 'mongodb://127.0.0.1:27017';
+const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
+// const MONGO_DB_URL = 'mongodb://127.0.0.1:27017';
 const DB_NAME = 'StoreManager';
 
 let db = null;

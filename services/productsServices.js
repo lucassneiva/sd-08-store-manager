@@ -11,7 +11,7 @@ const insert = async (name, quantity) => {
   return { status: 201, data };
 };
 
-const findByID = async (id) => {
+const findById = async (id) => {
   const data = await productsModel.findById(id);
 
   if(!data) return null;
@@ -20,15 +20,14 @@ const findByID = async (id) => {
 };
 
 const getAll = async () => {
-  const data = await productsModel.getAll();
+  const products = await productsModel.getProducts();
+  if(!products) return null;
 
-  if(!data) return null;
-
-  return { status: 201, data };
+  return { status: 200, products };
 };
 
 module.exports = {
   insert,
-  findByID,
+  findById,
   getAll
 };

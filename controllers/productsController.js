@@ -1,4 +1,5 @@
 const productsServices = require('../services/productsServices');
+const rescue = require('express-rescue');
 const ERROR_CODE = 422;
 const ERROR_OK = 200;
 
@@ -14,13 +15,13 @@ const insert = async (req, res) => {
 
 const findByID = async (req, res) => {
   const { id } = req.params;
-  const data = await productsServices.findById(id);
-  console.log(data)
-  if(!data) return res
+  const product = await productsServices.findById(id);
+
+  if(!product) return res
     .status(ERROR_CODE)
     .json({err: { code: 'invalid_data', message: 'Wrong id format' } });
 
-  return res.status(ERROR_OK).json(data);
+  return res.status(product.status).json(product.data);
 };
 
 const getAll = async (_req, res) => {
