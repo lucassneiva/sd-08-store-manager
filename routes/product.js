@@ -11,11 +11,13 @@ const{
 
 const routeProduct = express.Router();
 
-
 routeProduct.get('/products/:id', controllerById);
+routeProduct.post('/products', validateIfNameExists, validateProduct,  controllerProduct);
+
 routeProduct.put('/products/:id', validateProduct, controllerUpdate);
 routeProduct.get('/products', controllerAllProduct);
-routeProduct.post('/products', validateProduct, validateIfNameExists, controllerProduct);
+
+
 
 
 module.exports = {

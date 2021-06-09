@@ -10,9 +10,9 @@ const UNPROCESSABLE_ENTITY = 422;
 
 
 const controllerProduct = async (req, res) => {
-  const newProduct = req.body;
   try {
-    const create = await productsService.addNewProduct(newProduct);
+    const {name, quantity} = req.body;
+    const create = await productsService.addNewProduct(name, quantity);
     return res.status(NEW_ITEM).json(create.ops[0]);
   }   catch (error) {
     console.error(error);
@@ -28,7 +28,7 @@ const controllerAllProduct = async (_req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(INTERNAL_ERROR)
-      .json({error: error.message});  
+      .json({ error: error.menssage});  
   }
 };
 
@@ -55,6 +55,7 @@ const controllerUpdate = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, quantity } = req.body;
+    // console.log(id, name, quantity);
     const upProduct = await productsService.update(id, name, quantity);
     return res.status(SUCESS).json(upProduct);
   } catch (error) {

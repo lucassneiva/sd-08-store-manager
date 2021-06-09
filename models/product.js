@@ -29,7 +29,7 @@ const update = async (id, name, quantity) => {
   return { id, name, quantity };
 };
 
-
+// update(123456, 'Daniel', 10).then(data => console.log(data));
 
 module.exports = {
   getAllProducts,
