@@ -1,12 +1,17 @@
+const { ObjectId } = require('bson');
 const { 
   getAll,
   insertProduct,
   deleteProduct,
-  getbyname, 
+  getbyname,
+  getbyid, 
 } = require('../models/productModel');
 
-const alldocs = async() => await getAll();
-
+const alldocs = async() => {
+  const result = await getAll();
+  return ({products: result});
+};
+  
 
 const f = 5;
 const z = 0;
@@ -54,6 +59,21 @@ const insertpdt = async(name, quantity) => {
 };
 
 
+const getoneid = async(id) => {
+  if (!ObjectId.isValid(id)) {
+    throw(
+      { 
+        err:{
+          code: 'invalid_data',
+          message: 'Wrong id format'
+        } 
+      } 
+    );
+    
+  }else { return await getbyid(id);}
+};
+
+
 const deleteone = async(id) => {
   if (!id) {
     console.error({ 
@@ -70,4 +90,5 @@ module.exports = {
   alldocs,
   insertpdt,
   deleteone,
+  getoneid,
 };

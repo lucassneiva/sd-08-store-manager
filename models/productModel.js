@@ -1,14 +1,25 @@
 const { ObjectId } = require('mongodb');
 const conn = require('./conn');
 
-const getAll = async() => {
-  return conn().then(db => db.collection('products').find().toArray());
+const getAll = async() => { 
   
-};
+  const products = await conn().then( db => db.collection('products').find().toArray());
+  console.log(products);
+  return products;
+      
+    
+};  
+
+
 
 
 const getbyname = async(name) => {
   return conn().then(db => db.collection('products').countDocuments({name}));
+  
+};
+
+const getbyid = async(id) => {
+  return conn().then(db => db.collection('products').findOne(ObjectId(id)));
   
 };
 
@@ -23,7 +34,7 @@ const insertProduct = async(name, quantity) =>
     }
 
   );
-
+;
 
   
 const deleteProduct = async(id) => 
@@ -46,4 +57,5 @@ module.exports = {
   insertProduct,
   deleteProduct,
   getbyname,
+  getbyid,
 };
