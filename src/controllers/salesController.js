@@ -9,6 +9,16 @@ const getAll = rescue(async (req, res) => {
   res.status(HTTP_OK).json(sales);
 });
 
+const getById = rescue(async (req, res, next)=>{
+  const {id} = req.body;
+
+  const resultId =await salesService.getById(id);
+
+  if (resultId.error) return next(resultId);
+  res.status(HTTP_OK).json(resultId);
+
+});
+
 const create = rescue(async (req, res, next) => {
   const items = req.body;
 
@@ -23,4 +33,5 @@ const create = rescue(async (req, res, next) => {
 module.exports = {
   getAll,
   create,
+  getById,
 };

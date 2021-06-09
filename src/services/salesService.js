@@ -3,6 +3,7 @@ const salesModel = require('../models/salesModel');
 
 const HTTP_Unprocessable_Entity = 422;
 // const MIN_LENGTH_NAME = 5;
+const HTTP_Not_Found = 404;
 const MIN_QUANTITY = 1;
 
 const schema = joi.array().items({
@@ -15,7 +16,33 @@ const schema = joi.array().items({
     .required(),
 });
 
-const getAll = async () => salesModel.getAll();
+const getAll = async () => {
+  const resultAll = await salesModel.getAll();
+
+  if (resultAll === null) {
+    return {
+      code: 'not_found',
+      error: { message: 'Sale not found' },
+      status: HTTP_Not_Found
+    };
+  }
+
+  return resultAll;
+};
+
+const getById = async (id)=>{
+  const result = await salesModel.getById(id);
+
+  if (!result) {
+    return {
+      code: 'not_found',
+      error: { message: 'Sale not found' },
+      status: HTTP_Not_Found
+    };
+  }
+
+  return result;
+};
 
 const create = async (items) => {
   const { error } = schema.validate(items);
@@ -36,4 +63,5 @@ const create = async (items) => {
 module.exports = {
   getAll,
   create,
+  getById,
 }; 
