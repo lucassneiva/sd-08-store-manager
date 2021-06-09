@@ -49,10 +49,23 @@ const update = async (product) => {
   return { _id: id, ...product };
 };
 
+const remove = async (product) => {
+  const { id } = product;
+
+  if (!ObjectId.isValid(id)) return null;
+
+  await connection()
+    .then((db) => db.collection('products')
+      .deleteOne({ _id: ObjectId(id) }));
+
+  return { _id: id, ...product };
+};
+
 module.exports = {
   create,
   findByName,
   findAll,
   findById,
-  update
+  update,
+  remove
 };

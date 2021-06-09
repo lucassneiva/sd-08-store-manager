@@ -54,9 +54,21 @@ const update = rescue(async (req, res, next) => {
   res.status(OK).json(product);
 });
 
+const remove = rescue(async (req, res, next) => {
+  const { name, quantity } = req.body;
+  const { id } = req.params;
+
+  const product = await service.remove({ id, name, quantity });
+
+  if (product.error) return next(product.error);
+
+  res.status(OK).json(product);
+});
+
 module.exports = {
   create,
   findAll,
   findById,
-  update
+  update,
+  remove
 };
