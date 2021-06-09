@@ -15,7 +15,7 @@ module.exports = {
   },
   mongodbConnection: {
     protocol: 'mongodb',
-    hostname: 'localhost',
+    hostname: 'mongodb',
     port: '27017',
     username: '',
     password: '',

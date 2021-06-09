@@ -9,6 +9,7 @@ module.exports = (err, _req, res, _next) => {
     already_exists: 409,
     unprocessable_entity: 422,
     internal_error: 500,
+    stock_problem: 404,
   };
   const status = statusByErrorCode[code] || statusByErrorCode['internal_error'];
 
