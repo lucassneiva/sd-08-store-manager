@@ -1,8 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-// const Products = require('./controllers/Products');
-// const Sales = require('./controllers/Sales');
+const products = require('./controllers/products');
+// const sales = require('./controllers/Sales');
 
 const app = express();
 const PORT = '3000';
@@ -14,17 +14,17 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-// app.post('/products', Products.add);
-// app.get('/products', Products.getAll);
-// app.get('/products/:id', Products.getById);
-// app.put('/products/:id', Products.updateById);
-// app.delete('/products/:id', Products.deleteById);
+app.post('/products', products.create);
+app.get('/products', products.getAll);
+app.get('/products/:id', products.getById);
+app.put('/products/:id', products.updateById);
+app.delete('/products/:id', products.deleteById);
 
-// app.post('/sales', Sales.add);
-// app.get('/sales', Sales.getAll);
-// app.get('/sales/:id', Sales.getById);
-// app.put('/sales/:id', Sales.updateById);
-// app.delete('/sales/:id', Sales.deleteById);
+// app.post('/sales', sales.add);
+// app.get('/sales', sales.getAll);
+// app.get('/sales/:id', sales.getById);
+// app.put('/sales/:id', sales.updateById);
+// app.delete('/sales/:id', sales.deleteById);
 
 app.listen(PORT, () => {
   console.log('Online');

@@ -1,8 +1,5 @@
 // Importamos o driver do MongoDB.
 const { MongoClient } = require('mongodb');
-
-
-
 // Armazenamos as configurações de conexão em uma constante para
 // facilitar a leitura do código.
 const OPTIONS = {
