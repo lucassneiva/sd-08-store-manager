@@ -76,9 +76,25 @@ const update = async(id, items)=>{
   
 };
 
+const exclude = async (id) => {
+  const saleID = await salesModel.getById(id);
+
+  if (!saleID) {
+    return {
+      code: 'invalid_data',
+      error: { message: 'Wrong sale ID format' },
+      status: HTTP_Unprocessable_Entity
+    };
+  }
+  
+  const result = await salesModel.exclude(id);
+  return result;
+};
+
 module.exports = {
   getAll,
   create,
   getById,
   update,
+  exclude,
 }; 

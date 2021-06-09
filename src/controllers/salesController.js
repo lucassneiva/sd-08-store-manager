@@ -9,10 +9,10 @@ const getAll = rescue(async (req, res) => {
   res.status(HTTP_OK).json(sales);
 });
 
-const getById = rescue(async (req, res, next)=>{
-  const {id} = req.body;
+const getById = rescue(async (req, res, next) => {
+  const { id } = req.body;
 
-  const resultId =await salesService.getById(id);
+  const resultId = await salesService.getById(id);
 
   if (resultId.error) return next(resultId);
   res.status(HTTP_OK).json(resultId);
@@ -29,7 +29,7 @@ const create = rescue(async (req, res, next) => {
   res.status(HTTP_OK).json(newSale);
 });
 
-const update = rescue(async (req, res, next)=>{
+const update = rescue(async (req, res, next) => {
   const items = req.body;
   const { id } = req.params;
 
@@ -38,9 +38,18 @@ const update = rescue(async (req, res, next)=>{
   res.status(HTTP_OK).json(resultUpdate);
 });
 
+const exclude = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  
+  const result = await salesService.exclude(id);
+  if (result.error) return next(result);
+  res.status(HTTP_OK).json(result);
+});
+
 module.exports = {
   getAll,
   create,
   getById,
   update,
+  exclude,
 };
