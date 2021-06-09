@@ -1,7 +1,5 @@
 const Products = require('../models/Products');
 
-const UNPROCESSABLE_ENTITY = 422;
-
 const create = async (product) => {
 
   const { name } = product;
@@ -11,7 +9,7 @@ const create = async (product) => {
   if (productExists) {
     return {
       error: {
-        code: UNPROCESSABLE_ENTITY,
+        code: 'invalid_data',
         message: 'Product already exists'
       }
     };
@@ -20,6 +18,26 @@ const create = async (product) => {
   return Products.create(product);
 };
 
+const findAll = async () => Products.findAll();
+
+const findById = async (id) => {
+
+  const product = await Products.findById(id);
+
+  if (!product) {
+    return {
+      error: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    };
+  }
+
+  return product;
+};
+
 module.exports = {
-  create
+  create,
+  findAll,
+  findById
 };
