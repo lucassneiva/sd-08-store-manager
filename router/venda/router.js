@@ -5,6 +5,7 @@ const {
   criarVenda,
   todasVendas,
   idVenda,
+  updateVenda,
 } = require('../../controllers/venda/vendaController');
 
 const {
@@ -16,5 +17,8 @@ router.get('/:id', validaIdVenda, idVenda);
 router.get('/', todasVendas);
 
 router.post('/', validaNumeroVenda, criarVenda);
+
+router.put('/:id', validaNumeroVenda, updateVenda);
+
 
 module.exports = router;

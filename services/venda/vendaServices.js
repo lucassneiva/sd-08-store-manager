@@ -6,6 +6,7 @@ const {
   cadatraVendaModel,
   getAllVendasModel,
   getByIdVendaModel,
+  updateVendasModel,
 } = require('../../models/venda/vendasModel');
 
 const cadastraVenda = async (itensSold) => {
@@ -27,8 +28,14 @@ const getByIdVenda = async ({id}) => {
   return produto;
 };
 
+const updateVendas = async (id, updateSale) => {
+  const update = await updateVendasModel(id, updateSale);
+  return update;
+};
+
 module.exports = {
   cadastraVenda,
   getAllVendas,
   getByIdVenda,
+  updateVendas,
 };

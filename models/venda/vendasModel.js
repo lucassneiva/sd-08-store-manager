@@ -20,8 +20,17 @@ const getByIdVendaModel = async (ids) => {
   return result;
 };
 
+const updateVendasModel = async (id, updateSale) => {
+  const db = await Connection();
+  await db.collection('sales')
+    .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: updateSale } });
+  const result = await getByIdVendaModel(id);
+  return result;
+};
+
 module.exports = {
   cadatraVendaModel,
   getAllVendasModel,
   getByIdVendaModel,
+  updateVendasModel,
 };
