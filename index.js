@@ -20,12 +20,6 @@ app.get('/products/:id', products.getById);
 app.put('/products/:id', products.updateById);
 app.delete('/products/:id', products.deleteById);
 
-// app.post('/sales', sales.add);
-// app.get('/sales', sales.getAll);
-// app.get('/sales/:id', sales.getById);
-// app.put('/sales/:id', sales.updateById);
-// app.delete('/sales/:id', sales.deleteById);
-
 app.listen(PORT, () => {
   console.log('Online');
 });
