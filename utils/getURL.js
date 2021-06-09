@@ -1,4 +1,5 @@
-module.exports = ({ protocol, hostname, port, username, password, pathname, search, hash }) => {
+module.exports = ({ protocol, hostname, port, username,
+  password, pathname, search, hash }) => {
   const host = username ? `@${hostname}` : hostname;
   const pwd = password ? `:${password}` : '';
   const portNumber = port ? `:${port}` : '';
