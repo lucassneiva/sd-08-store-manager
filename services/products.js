@@ -6,15 +6,15 @@ const getAll = async () => {
   return products;
 };
 
-// const findById = async (id) => {
-//   const validate = validProducts.validateId(id);
-//   if (validate) return({ code: 'invalid_data', message: 'Wrong id format'});
-
-//   const product = await ProductsModel.findById(id);
-//   if (!product) return({ code: 'invalid_data', message: 'Wrong id format'});
-
-//   return ({ product });
-// };
+const getById = async (id) => {
+  const product = await productsModel.getById(id);
+  return product;
+  // const validate = validProducts.validateId(id);
+  // if (validate) return({ code: 'invalid_data', message: 'Wrong id format'});
+  // const product = await ProductsModel.findById(id);
+  // if (!product) return({ code: 'invalid_data', message: 'Wrong id format'});
+  // return ({ product });
+};
 
 const create = async (name, quantity) => {
   const findByName =  await productsModel.findByName(name);
@@ -23,13 +23,13 @@ const create = async (name, quantity) => {
   return product;
 };
 
-// const updateById = async (id, name, quantity) => {
-//   const validateNameQty = await validProducts.validateNameQuantity(name, quantity);
-//   if (validateNameQty.message) return validateNameQty;
+const updateById = async (id, updatedProduct) => {
+  // const validateNameQty = await validProducts.validateNameQuantity(name, quantity);
+  // if (validateNameQty.message) return validateNameQty;
 
-//   const product = await productsModel.updateById(id, name, quantity);
-//   return ({ product });
-// };
+  const product = await productsModel.updateById(id, updatedProduct);
+  return product;
+};
 
 // const deleteById = async (id) => {
 //   const result = await productsModel.deleteById(id);
@@ -39,7 +39,7 @@ const create = async (name, quantity) => {
 module.exports = {
   getAll,
   create,
-  // findById,
-  // updateById,
+  getById,
+  updateById,
   // deleteById,
 };

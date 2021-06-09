@@ -28,21 +28,29 @@ const getAll = async (_req, res) => {
 };
 
 // GETBYID -------------------------------------------
-// const getById = async (req, res) => {
-//   const { id } = req.params;
-//   const product = await products.getById(id);
-//   if (product.err) res.status(STATUS_422).json(product);
-//   return res.status(STATUS_200).json(product);
-// };
+const getById = async (req, res) => {
+  const { id } = req.params;
+  const product = await productsServices.getById(id);
+  if (product !== null) {
+    return res.status(STATUS_200).send(product);
+  }
+  return res.status(STATUS_422).json({ err: {
+    code: 'invalid_data',
+    message: 'Wrong id format',
+  },
+  });
+
+  // if (product.err) res.status(STATUS_422).json(product);
+  // return res.status).json(product);
+};
 
 // UPDATEBYID -----------------------------------------
-// const updateById = async (req, res) => {
-//   const { id } = req.params;
-//   const updatedProduct = req.body;
-//   const product = await Products.updateById(id, updatedProduct) ;
-//   if (product.err) res.status(STATUS_422).json(product);
-//   return res.status(STATUS_200).json(product);
-// };
+const updateById = async (req, res) => {
+  const { id } = req.params;
+  const updatedProduct = req.body;
+  const product = await productsServices.updateById(id, updatedProduct);
+  return res.status(STATUS_200).json(product);
+};
 
 // DELETEBYID -----------------------------------------
 // const deleteById = async (req, res) => {
@@ -57,7 +65,7 @@ const getAll = async (_req, res) => {
 module.exports = {
   create,
   getAll,
-//   getById,
-//   updateById,
+  getById,
+  updateById,
 //   deleteById,
 };

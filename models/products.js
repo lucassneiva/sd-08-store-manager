@@ -23,22 +23,24 @@ const findByName = async (name) => {
   return product;
 };
 
-// const findById = async (id) => {
-//   if (!ObjectId.isValid(id)) return null;
-//   const product =  await connection()
-//     .then((db) => db.collection('products').findOne(new ObjectId(id)));
-//   if (!product) return null;
-//   return product;
-// };
+const getById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return connection()
+    .then((db) => db.collection('products').findOne(ObjectId(id)));
+};
 
-// const updateQtyById = async (id, quantity) =>
-//   await connection()
-//     .then((db) => db.collection('products').updateOne(
-//       {_id: ObjectId(id)},
-//       { $inc: { quantity: quantity, },
-//       }))
-//     .then(() => { return ({});
-//     });
+const updateById = async (id, updatedProduct) => {
+  const { name, quantity } = updatedProduct;
+  if (!ObjectId.isValid(id)) return null;
+  await connection()
+    .then((db) => db.collection('products').updateOne(
+      {_id: ObjectId(id)},
+      { $set: { name, quantity } }));
+  return { _id: id, name, quantity };
+  // }))
+  //   .then(() => { return ({});
+  //   });
+};
 
 // const deleteById = async (id) =>
 //   await connection()
@@ -48,8 +50,8 @@ const findByName = async (name) => {
 module.exports = {
   create,
   getAll,
-  // findById,
+  getById,
   findByName,
   // deleteById,
-  // updateQtyById
+  updateById
 };
