@@ -10,17 +10,17 @@ const isValidNameQuantity = (name, quantity) => {
   switch (true) {
   case (isValidLength(name, minLenght)):
     return ({
-      code: 'invalid_data',
+      status: 'invalid_data',
       message: '\"name\" length must be at least 5 characters long'
     });
   case (isValidQuantity(quantity, minQuantity)):
     return ({
-      code: 'invalid_data',
+      status: 'invalid_data',
       message: '\"quantity\" must be larger than or equal to 1'
     });
   case (isString(quantity)):
     return ({
-      code: 'invalid_data',
+      status: 'invalid_data',
       message: '\"quantity\" must be a number'
     });
   default: return {};
@@ -31,7 +31,7 @@ const isValidName = async (name) => {
   const validate = await findByName(name);
   if (validate) {
     return ({
-      code: 'invalid_data',
+      status: 'invalid_data',
       message: 'Product already exists'
     });
   }
