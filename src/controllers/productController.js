@@ -1,4 +1,3 @@
-// const productModel = require('');
 const productService = require('../services/productService');
 const rescue = require('express-rescue');
 
