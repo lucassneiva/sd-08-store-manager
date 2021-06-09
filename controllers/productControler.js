@@ -6,6 +6,7 @@ const {
   insertpdt,
   deleteone,
   getoneid,
+  updateOne,
 } = require('../services/productServce');
 const cc = 200;
 const cci = 201;
@@ -58,7 +59,19 @@ router.post('/', async(req, res) => {
 });
 
 
-// router.put('/:id');
+router.put('/:id', async(req, res) => {
+  const { id } = req.params;
+  const  body = req.body;
+  // console.log('olha ai:', body);
+  try {
+    const result = await updateOne(id, body);
+    console.log('rrr:', result);
+    res.status(cc).json(result);
+  }catch (err) {
+    console.log(err);
+    res.status(cdxxii).send(err);
+  };
+});
 
 
 router.delete('/:id', async(req, res) => {

@@ -36,15 +36,21 @@ const insertProduct = async(name, quantity) =>
   );
 ;
 
-  
+const update = async(id, body) => 
+  conn().then( async (db) => { 
+    const result = await db.collection('products').updateOne(
+      {_id: ObjectId(id)}, {$set:{ name: body.name, quantity:body.quantity }});
+    return (getbyid(id));
+  });
+;
+
 const deleteProduct = async(id) => 
   
   conn().then(
     async (db) => 
     {
-      const result = await db.collection('products').deleteOne(
-        { '_id' : ObjectId(id) });
-      return result.deleted;
+      const result = await db.collection('products').deleteOne(ObjectId(id));
+      return result;
     }
 
   );
@@ -58,4 +64,5 @@ module.exports = {
   deleteProduct,
   getbyname,
   getbyid,
+  update,
 };

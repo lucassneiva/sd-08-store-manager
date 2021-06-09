@@ -4,7 +4,8 @@ const {
   insertProduct,
   deleteProduct,
   getbyname,
-  getbyid, 
+  getbyid,
+  update, 
 } = require('../models/productModel');
 
 const alldocs = async() => {
@@ -74,6 +75,33 @@ const getoneid = async(id) => {
 };
 
 
+const updateOne = async(id, body) => { 
+  if( body.name.length < f){
+    throw ({ 
+      err:{
+        code: 'invalid_data',
+        message: '\"name\" length must be at least 5 characters long'
+      } 
+    });
+
+  }else if( body.quantity <= z){
+    throw ({ 
+      err:{
+        code: 'invalid_data',
+        message: '\"quantity\" must be larger than or equal to 1'
+      } 
+    });
+  }else if( typeof body.quantity === 'string'){
+    throw ({ 
+      err:{
+        code: 'invalid_data',
+        message: '\"quantity\" must be a number'
+      } 
+    });
+  }else{ return await update(id, body);}
+};
+
+
 const deleteone = async(id) => {
   if (!id) {
     console.error({ 
@@ -91,4 +119,5 @@ module.exports = {
   insertpdt,
   deleteone,
   getoneid,
+  updateOne,
 };
