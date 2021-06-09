@@ -60,8 +60,25 @@ const create = async (items) => {
   return newSale;
 };
 
+const update = async(id, items)=>{
+  const { error } = schema.validate(items);
+
+  if (error) { 
+    return {
+      code: 'invalid_data',
+      error: { message: 'Wrong product ID or invalid quantity' },
+      status: HTTP_Unprocessable_Entity
+    };
+  };
+
+  const result = await salesModel.update(id, items);
+  return result;
+  
+};
+
 module.exports = {
   getAll,
   create,
   getById,
+  update,
 }; 

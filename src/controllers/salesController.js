@@ -29,9 +29,18 @@ const create = rescue(async (req, res, next) => {
   res.status(HTTP_OK).json(newSale);
 });
 
+const update = rescue(async (req, res, next)=>{
+  const items = req.body;
+  const { id } = req.params;
+
+  const resultUpdate = await salesService.update(id, items);
+  if (resultUpdate.error) return next(resultUpdate);
+  res.status(HTTP_OK).json(resultUpdate);
+});
 
 module.exports = {
   getAll,
   create,
   getById,
+  update,
 };
