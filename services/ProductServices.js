@@ -137,8 +137,7 @@ const deleteProduct = async (id) => {
 
   const result = await Model.getAll();
 
-  const obj = result.find((item) => item.id === id);
-  console.log(obj);
+  // const obj = result.find((item) => item.id === id);
   if(result.some((item) => item.id === id)) {
     throw new Error(JSON.stringify({
       err: {

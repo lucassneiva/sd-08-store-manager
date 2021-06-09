@@ -1,7 +1,6 @@
 const Model = require('../models/SalesModel');
 
 const zero = 0;
-const minimumLengthId = 12;
 
 const create = async (array) => {
   array[0].itensSold.map((item) => {
@@ -89,9 +88,38 @@ const update = async (id, array) => {
   return Model.update(id, array);
 };
 
+const deleteSale = async (id) => {
+
+  const hex = /[0-9A-Fa-f]{6}/g;
+
+  if(!hex.test(id)) {
+    throw new Error(JSON.stringify({
+      err: {
+        code: 'not_found',
+        message: 'Sale not found'
+      },
+      http: 422
+    }));
+  }
+  const checkBeforeDelete = await Model.getById(id);
+
+  if (!checkBeforeDelete) {
+    throw new Error(JSON.stringify({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      },
+      http: 422
+    }));
+  }
+
+  return Model.deleteSale(id);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
-  update
+  update,
+  deleteSale
 };

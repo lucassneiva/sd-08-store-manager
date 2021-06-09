@@ -1,6 +1,16 @@
 const Service = require('../services/SalesServices');
+const Model = require('../models/SalesModel');
 
 const httpSuccess = 200;
+
+const erro = {
+  err: {
+    code: 'invalid_data',
+    message: 'Wrong sale ID format'
+  },
+};
+
+const http422 = 422;
 
 const create = async (req, res) => {
   try {
@@ -47,9 +57,22 @@ const update = async (req, res) => {
   }
 };
 
+const deleteById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const itemData = await Service.getById(id);
+    const deleteResult = await Service.deleteSale(id);
+    res.status(itemData.http).json(itemData.result);
+  } catch (error) {
+    res.status(http422).json(erro);
+
+  }
+};
+
 module.exports = {
   create,
   getAllSales,
   getSaleById,
-  update
+  update,
+  deleteById
 };
