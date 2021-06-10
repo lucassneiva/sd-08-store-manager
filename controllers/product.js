@@ -63,11 +63,32 @@ const controllerUpdate = async (req, res) => {
   }
 };
 
+const controllerRemove = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const productId = await productsService.getById(id);
+    if (!productId) {
+      return res.status(UNPROCESSABLE_ENTITY).json({
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong id format',
+        },
+      });
+    }
+    const removeId = await productsService.remove(id);
+    return res.status(SUCESS).json(removeId);
+  } catch (error) {
+    res.status(INTERNAL_ERROR).json({ message });
+  }
+};
+
+
 
 
 module.exports = {
   controllerProduct,
   controllerAllProduct,
   controllerById,
-  controllerUpdate
+  controllerUpdate,
+  controllerRemove
 };

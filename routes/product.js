@@ -7,7 +7,8 @@ const{
   controllerProduct,
   controllerAllProduct, 
   controllerById,
-  controllerUpdate} = require('../controllers/product');
+  controllerUpdate,
+  controllerRemove} = require('../controllers/product');
 
 const routeProduct = express.Router();
 
@@ -15,6 +16,7 @@ routeProduct.get('/products/:id', controllerById);
 routeProduct.post('/products', validateIfNameExists, validateProduct,  controllerProduct);
 
 routeProduct.put('/products/:id', validateProduct, controllerUpdate);
+routeProduct.delete('/products/:id', controllerRemove);
 routeProduct.get('/products', controllerAllProduct);
 
 
