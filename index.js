@@ -19,6 +19,8 @@ app.get('/products/:id', products.getById);
 app.put('/products/:id', validateName, validateQuantity, products.updateById);
 app.delete('/products/:id', products.deleteById);
 
+// app.post('/sales', .create);
+
 app.listen(PORT, () => {
   console.log('Online');
 });
