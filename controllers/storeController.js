@@ -1,6 +1,7 @@
 const rescue = require('express-rescue');
 const StoreService = require('../services/storeService');
 
+const successStatus = 200;
 const responseSuccessStatus = 201;
 
 const create = rescue(async (req, res, next) => {
@@ -18,6 +19,20 @@ const create = rescue(async (req, res, next) => {
   // res.status(responseSuccessStatus).send('OK');
 });
 
+const getAll = rescue(async (_req, res, _next) => {
+  const response = await StoreService.getAll();
+  // console.log(response);
+  res.status(successStatus).json({ products: response });
+});
+
+const findById = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const response = await StoreService.findById(id);
+  // console.log('findById Controller', response);
+  if (response.message) return next(response.message);
+  res.status(successStatus).json(response);
+});
+
 module.exports = {
-  create,
+  create, getAll, findById,
 };

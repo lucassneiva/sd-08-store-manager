@@ -4,8 +4,8 @@ const { expect } = require('chai');
 const StoreModel = require('../../models/storeModel');
 const StoreService = require('../../services/storeService');
 
-describe('Na camada SERVICES', () => {
-  describe('ao inserir um novo produto no BD', () => {
+describe('Na camada SERVICES', async () => {
+  describe('ao inserir um novo produto no BD', async () => {
     describe('quando o payload informado não é válido', async () => {
       const payloadProduct = {};
   
@@ -100,9 +100,129 @@ describe('Na camada SERVICES', () => {
   
       it('retorna objeto com "_id", "name" e "quantity" do produto inserido', async () => {
         const response = await StoreService.create(payloadProduct);
-        expect(response).to.have.a.property('_id');
-        expect(response).to.have.a.property('name');
-        expect(response).to.have.a.property('quantity');
+        expect(response).to.include.all.keys('_id', 'name', 'quantity')
+      });
+    });
+  });
+
+  describe('ao buscar todos os produtos', async () => {
+    describe('quando não existe produtos criados', async () => {
+      before(() => {
+        sinon.stub(StoreModel, 'getAll').resolves([]);
+      });
+  
+      after(() => {
+        StoreModel.getAll.restore();
+      });
+  
+      it('o retorno é uma array vazia', async () => {
+        const response = await StoreService.getAll();
+        expect(response).to.be.an('array');
+        expect(response).to.be.empty;
+      });
+    });
+  
+    describe('quando existem produtos criados', async () => {
+      const payloadProduct = [
+        {
+          _id: '60c13544b7b98a438cb1e2cc',
+          name: 'Produto do Batista',
+          quantity: 10
+        },
+        {
+          _id: '60c13544b7b98a438cb1e2cd',
+          name: 'Produto Silva',
+          quantity: 10
+        },
+      ];
+
+      before(() => {
+        sinon.stub(StoreModel, 'getAll').resolves(payloadProduct);
+      });
+  
+      after(() => {
+        StoreModel.getAll.restore();
+      });
+  
+      it('retorna um array', async () => {
+        const response = await StoreService.getAll();
+        expect(response).to.be.an('array');
+      });
+
+      it('o array não está vazio', async () => {
+        const response = await StoreService.getAll();
+        expect(response).to.be.not.empty;
+      });
+  
+      it('o array possuem itens do tipo objeto', async () => {
+        const [ item ] = await StoreService.getAll();
+        expect(item).to.be.an('object');
+      });
+  
+      it('tais itens possuem as propriedades "_id", "name" e "quantity"', async () => {
+        const [ item ] = await StoreService.getAll();
+        expect(item).to.include.all.keys('_id', 'name', 'quantity')
+      });
+    });
+  });
+
+  describe('ao buscar um produto através do ID', async () => {
+    const ID_EXAMPLE = '5f43a7ca92d58904914656b6'
+    const ID_INVALID = '12345'
+    const payloadProduct = {
+      name: 'Produto do Batista',
+      quantity: 100,
+    };
+
+    describe('quando Id não é válido', async() => {
+      before(() => {
+        sinon.stub(StoreModel, 'findById').resolves(null);
+      });
+  
+      after(() => {
+        StoreModel.findById.restore();
+      });
+  
+      it('o retorno é um objeto com mensagem "Wrong id format"', async () => {
+        const response = await StoreService.findById(ID_INVALID);
+        expect(response).to.be.a('object');
+        expect(response.message).to.be.equal('Wrong id format');
+      });
+    });
+
+    describe('quando não é encontrado uma correspondência', async() => {
+      before(() => {
+        sinon.stub(StoreModel, 'findById').resolves(null);
+      });
+  
+      after(() => {
+        StoreModel.findById.restore();
+      });
+  
+      it('o retorno é um objeto com mensagem "Wrong id format"', async () => {
+        const response = await StoreService.findById(ID_EXAMPLE);
+        expect(response).to.be.a('object');
+        expect(response.message).to.be.equal('Wrong id format');
+      });
+    });
+      
+    describe('quando é encontrado uma correspondência', async () => {
+      before(() => {
+        sinon.stub(StoreModel, 'findById').resolves({ _id: ID_EXAMPLE, ...payloadProduct });
+      });
+  
+      after(() => {
+        StoreModel.findById.restore();
+      });
+  
+      it('retorna um objeto', async () => {
+        const response = await StoreService.findById(ID_EXAMPLE);
+        expect(response).to.be.an('object');
+      });
+  
+      it('o objeto possui as propriedades "_id", "name" e "quantity"', async () => {
+        const response = await StoreService.findById(ID_EXAMPLE);
+        expect(response).to.include.all.keys('_id', 'name', 'quantity')
       });
     });
   });

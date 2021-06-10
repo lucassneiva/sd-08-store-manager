@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { ObjectId } = require('mongodb');
 
 const StoreModel = require('../models/storeModel');
 
@@ -29,6 +30,18 @@ const create = async ({ name, quantity }) => {
   return await StoreModel.create({ name, quantity });
 };
 
+const getAll = async () => {
+  const products = await StoreModel.getAll();
+  return products;
+};
+
+const findById = async (id) => {
+  if(!ObjectId.isValid(id)) return { message: 'Wrong id format' };
+  const product = await StoreModel.findById(id);
+  if (!product) return { message: 'Wrong id format' };
+  return product;
+};
+
 module.exports = {
-  create,
+  create, getAll, findById,
 };
