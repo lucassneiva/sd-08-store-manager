@@ -20,6 +20,8 @@ app.get('/products', products.getAllProducts );
 app.get('/products/:id', products.getById);
 // Criar produtos
 app.post('/products', products.createProducts);
+//Atualizar produtos
+app.put('/products/:id', products.updateProduct);
 
 app.use(errorMiddleware);
 

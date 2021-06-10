@@ -56,10 +56,27 @@ const getById = async (id) => {
   return productID;
 };
 
+const update = async (id, name, quantity) => {
+  const { error } = schema.validate({ name, quantity });
+
+  if (error) { 
+    return {
+      code: 'invalid_data',
+      error,
+      status: 422
+    };
+  };
+
+  const productId = await model.update(id, name, quantity);
+
+  return productId;
+};
+
 
 module.exports = {
   getAll,
   add,
   getById,
+  update,
 }; 
   
