@@ -1,6 +1,8 @@
 const Connection = require('../connection');
 const { ObjectId } = require('mongodb');
 
+const QDD = 422;
+
 const cadatraVendaModel = async (itensSold) => {
   const db = await Connection();
   const venda = await db.collection('sales').insertOne({ itensSold });
@@ -28,9 +30,18 @@ const updateVendasModel = async (id, updateSale) => {
   return result;
 };
 
+const deleteVendasModel = async (id) => {
+  const result = await getByIdVendaModel(id);
+  const db = await Connection();
+  await db.collection('sales')
+    .deleteOne({ _id: ObjectId(id) });
+  return result;
+};
+
 module.exports = {
   cadatraVendaModel,
   getAllVendasModel,
   getByIdVendaModel,
   updateVendasModel,
+  deleteVendasModel,
 };

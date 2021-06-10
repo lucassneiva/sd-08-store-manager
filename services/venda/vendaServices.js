@@ -7,6 +7,7 @@ const {
   getAllVendasModel,
   getByIdVendaModel,
   updateVendasModel,
+  deleteVendasModel,
 } = require('../../models/venda/vendasModel');
 
 const cadastraVenda = async (itensSold) => {
@@ -33,9 +34,15 @@ const updateVendas = async (id, updateSale) => {
   return update;
 };
 
+const deleteVendas = async (id) => {
+  const update = await deleteVendasModel(id);
+  return update;
+};
+
 module.exports = {
   cadastraVenda,
   getAllVendas,
   getByIdVenda,
   updateVendas,
+  deleteVendas,
 };

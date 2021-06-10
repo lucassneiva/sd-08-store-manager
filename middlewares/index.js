@@ -10,6 +10,7 @@ const {
 const {
   validaNumeroVenda,
   validaIdVenda,
+  validaIdDelete,
 } = require('../middlewares/venda');
 
 
@@ -21,4 +22,5 @@ module.exports = {
   validaExiste,
   validaNumeroVenda,
   validaIdVenda,
+  validaIdDelete,
 };
