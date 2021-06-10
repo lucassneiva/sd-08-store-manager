@@ -33,7 +33,7 @@ const getById = async (req, res) => {
   if (sales !== null) {
     return res.status(STATUS_200).send(sales);
   }
-  return res.status(STATUS_404.json({ err: {
+  return res.status(STATUS_404).json({ err: {
     code: 'not_found',
     message: 'Sale not found',
   },
