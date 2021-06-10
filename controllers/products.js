@@ -9,7 +9,6 @@ const STATUS_422 = 422; // Erros do cliente (400-499)
 const create = async (req, res) => {
   const { name, quantity } = req.body;
   const newProduct = await productsServices.create(name, quantity);
-  console.log(newProduct);
   if (newProduct !== null) {
     return res.status(STATUS_201).json(newProduct);
   } else { return res.status(STATUS_422).json({
@@ -39,9 +38,6 @@ const getById = async (req, res) => {
     message: 'Wrong id format',
   },
   });
-
-  // if (product.err) res.status(STATUS_422).json(product);
-  // return res.status).json(product);
 };
 
 // UPDATEBYID -----------------------------------------
@@ -53,19 +49,23 @@ const updateById = async (req, res) => {
 };
 
 // DELETEBYID -----------------------------------------
-// const deleteById = async (req, res) => {
-//   const { id } = req.params;
-//   const product = await Products.deleteById(id);
-//   if (product.err) {
-//     return res.status(STATUS_422).json(product);
-//   }
-//   return res.status(STATUS_200).json(product);
-// };
+const deleteById = async (req, res) => {
+  const { id } = req.params;
+  const product = await productsServices.deleteById(id);
+  if (product !== null) return res.status(STATUS_200).send(product);
+  return res.status(STATUS_422).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    },
+  });
+};
+
 
 module.exports = {
   create,
   getAll,
   getById,
   updateById,
-//   deleteById,
+  deleteById,
 };

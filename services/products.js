@@ -1,5 +1,4 @@
 const productsModel = require('../models/products');
-const validProducts = require('./validProducts');
 
 const getAll = async () => {
   const products = await productsModel.getAll();
@@ -9,11 +8,6 @@ const getAll = async () => {
 const getById = async (id) => {
   const product = await productsModel.getById(id);
   return product;
-  // const validate = validProducts.validateId(id);
-  // if (validate) return({ code: 'invalid_data', message: 'Wrong id format'});
-  // const product = await ProductsModel.findById(id);
-  // if (!product) return({ code: 'invalid_data', message: 'Wrong id format'});
-  // return ({ product });
 };
 
 const create = async (name, quantity) => {
@@ -24,22 +18,20 @@ const create = async (name, quantity) => {
 };
 
 const updateById = async (id, updatedProduct) => {
-  // const validateNameQty = await validProducts.validateNameQuantity(name, quantity);
-  // if (validateNameQty.message) return validateNameQty;
-
   const product = await productsModel.updateById(id, updatedProduct);
   return product;
 };
 
-// const deleteById = async (id) => {
-//   const result = await productsModel.deleteById(id);
-//   return (result);
-// };
+const deleteById = async (id) => {
+  const deletedProduct = await productsModel.getById(id);
+  await productsModel.deleteById(id);
+  return (deletedProduct);
+};
 
 module.exports = {
   getAll,
   create,
   getById,
   updateById,
-  // deleteById,
+  deleteById,
 };

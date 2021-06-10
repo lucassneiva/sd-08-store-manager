@@ -1,21 +1,14 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-// const renameId = ({ _id, ...document }) => ({ id: _id, ...document });
-
 const create = async (name, quantity) =>
   await connection()
     .then((db) => db.collection('products').insertOne({ name, quantity }))
-    .then((result) => result.ops[0]
-
-      // return ({ _id: result.insertedId, name, quantity });
-    );
+    .then((result) => result.ops[0]);
 
 const getAll = async () =>
   await connection()
     .then((db) => db.collection('products').find().toArray());
-  // .then((produtcs) => produtcs);
-
 
 const findByName = async (name) => {
   const product =  await connection()
@@ -37,21 +30,18 @@ const updateById = async (id, updatedProduct) => {
       {_id: ObjectId(id)},
       { $set: { name, quantity } }));
   return { _id: id, name, quantity };
-  // }))
-  //   .then(() => { return ({});
-  //   });
 };
 
-// const deleteById = async (id) =>
-//   await connection()
-//     .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }))
-//     .then(() => true);
+const deleteById = async (id) =>
+  await connection()
+    .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
+
 
 module.exports = {
   create,
   getAll,
   getById,
   findByName,
-  // deleteById,
+  deleteById,
   updateById
 };
