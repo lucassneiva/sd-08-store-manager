@@ -18,7 +18,7 @@ const addProduct = async (name, quantity) =>
 
 const updateProduct = async (id, name, quantity) =>
   connection().then( async (db) => {
-    const productUpdated = await db.collection('products')
+    await db.collection('products')
       .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity }});
     return { _id: id, name, quantity };
   });

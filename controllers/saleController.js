@@ -48,8 +48,43 @@ const getSaleById = async (req, res) => {
   }
 };
 
+const updateSale = async (req, res) => {
+  try {
+    const sales = req.body;
+    const { id } = req.params;
+    const sale = await saleModel.updateSale(id, sales);
+
+    res.status(HTTP_STATUS_OK).json(sale);
+  } catch (err) {
+    console.error(err.message);
+    res.status(INTERNAL_ERROR).json({ message: err.message });
+  }
+};
+
+const excludeSale = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedSale = await saleModel.excludeSale(id);
+    if(!deletedSale) {
+      return res.status(UNPROCESSABLE_ENTITY).json({ 
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong sale ID format'
+        }
+      });
+    }
+    
+    res.status(HTTP_STATUS_OK).json(deletedSale);
+  } catch (err) {
+    console.error(err.message);
+    res.status(INTERNAL_ERROR).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getAllSales,
   addSales,
-  getSaleById
+  getSaleById,
+  updateSale,
+  excludeSale
 };
