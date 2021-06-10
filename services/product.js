@@ -42,8 +42,24 @@ const add = async (name, quantity) => {
   return model.add(name, quantity);
 };
 
+const getById = async (id) => {
+  const productID = await model.getById(id);
+
+  if (!productID) {
+    return {
+      code: 'invalid_data',
+      error: { message: 'Wrong id format' },
+      status: 422
+    };
+  }
+
+  return productID;
+};
+
+
 module.exports = {
   getAll,
   add,
+  getById,
 }; 
   

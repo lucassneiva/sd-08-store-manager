@@ -12,11 +12,23 @@ const getAllProducts = rescue(async (_req, res) => {
 const createProducts = rescue(async (req, res, next) => {
   const { name, quantity } = req.body;
   const createdProduct = await service.add(name, quantity);
-  createdProduct.error && next(createdProduct);  
+  createdProduct.error && next(createdProduct);
   res.status(CREATED).json(createdProduct);
-});  
+});
+
+const getById = rescue(async (req, res, next) => {
+  const { id } = req.params;
+
+  const productId = await service.getById(id);
+
+  productId.error && next(productId);
+
+  res.status(OK).json(productId);
+});
+
   
 module.exports ={
   getAllProducts,
   createProducts,
+  getById
 };

@@ -1,4 +1,5 @@
 module.exports = (err, _req, res, _next) => {
+  console.log(err);
   const statusError = {
     err: {
       code: err.code,

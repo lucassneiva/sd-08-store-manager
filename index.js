@@ -16,6 +16,8 @@ app.get('/', (_request, response) => {
 
 //Listar todos os produtos
 app.get('/products', products.getAllProducts );
+//Procurar por ID
+app.get('/products/:id', products.getById);
 // Criar produtos
 app.post('/products', products.createProducts);
 
