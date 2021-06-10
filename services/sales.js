@@ -5,10 +5,10 @@ const getAll = async () => {
   return sales;
 };
 
-// const getById = async (id) => {
-//   const product = await productsModel.getById(id);
-//   return product;
-// };
+const getById = async (id) => {
+  const sales = await salesModel.getById(id);
+  return sales;
+};
 
 const create = async (bodySales) => {
   // const findByName =  await productsModel.findByName(name);
@@ -31,7 +31,7 @@ const create = async (bodySales) => {
 module.exports = {
   getAll,
   create,
-  // getById,
+  getById,
   // updateById,
   // deleteById,
 };

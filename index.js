@@ -23,6 +23,7 @@ app.delete('/products/:id', products.deleteById);
 
 app.post('/sales', salesMiddle.validateQuantity, sales.create);
 app.get('/sales', sales.getAll);
+app.get('/sales/:id', sales.getById);
 
 app.listen(PORT, () => {
   console.log('Online');

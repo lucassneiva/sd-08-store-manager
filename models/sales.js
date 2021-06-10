@@ -16,11 +16,11 @@ const getAll = async () =>
 //   return product;
 // };
 
-// const getById = async (id) => {
-//   if (!ObjectId.isValid(id)) return null;
-//   return connection()
-//     .then((db) => db.collection('products').findOne(ObjectId(id)));
-// };
+const getById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return connection()
+    .then((db) => db.collection('sales').findOne(ObjectId(id)));
+};
 
 // const updateById = async (id, updatedProduct) => {
 //   const { name, quantity } = updatedProduct;
@@ -41,7 +41,7 @@ const getAll = async () =>
 module.exports = {
   create,
   getAll,
-  // getById,
+  getById,
   // findByName,
   // deleteById,
   // updateById
