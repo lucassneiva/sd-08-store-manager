@@ -17,10 +17,10 @@ const create = async (bodySales) => {
   return sales;
 };
 
-// const updateById = async (id, updatedProduct) => {
-//   const product = await productsModel.updateById(id, updatedProduct);
-//   return product;
-// };
+const updateById = async (id, updatedSale) => {
+  const sales = await salesModel.updateById(id, updatedSale);
+  return sales;
+};
 
 // const deleteById = async (id) => {
 //   const deletedProduct = await productsModel.getById(id);
@@ -32,6 +32,6 @@ module.exports = {
   getAll,
   create,
   getById,
-  // updateById,
+  updateById,
   // deleteById,
 };

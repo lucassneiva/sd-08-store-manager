@@ -22,15 +22,14 @@ const getById = async (id) => {
     .then((db) => db.collection('sales').findOne(ObjectId(id)));
 };
 
-// const updateById = async (id, updatedProduct) => {
-//   const { name, quantity } = updatedProduct;
-//   if (!ObjectId.isValid(id)) return null;
-//   await connection()
-//     .then((db) => db.collection('products').updateOne(
-//       {_id: ObjectId(id)},
-//       { $set: { name, quantity } }));
-//   return { _id: id, name, quantity };
-// };
+const updateById = async (id, itensSold) => {
+  if (!ObjectId.isValid(id)) return null;
+  await connection()
+    .then((db) => db.collection('sales').updateOne(
+      {_id: ObjectId(id)},
+      { $set: { itensSold } }));
+  return { _id: id, itensSold };
+};
 
 // const deleteById = async (id) => {
 //   if (!ObjectId.isValid(id)) return null;
@@ -44,5 +43,5 @@ module.exports = {
   getById,
   // findByName,
   // deleteById,
-  // updateById
+  updateById
 };

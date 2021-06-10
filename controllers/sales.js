@@ -41,12 +41,12 @@ const getById = async (req, res) => {
 };
 
 // // UPDATEBYID -----------------------------------------
-// const updateById = async (req, res) => {
-//   const { id } = req.params;
-//   const updatedProduct = req.body;
-//   const product = await productsServices.updateById(id, updatedProduct);
-//   return res.status(STATUS_200).json(product);
-// };
+const updateById = async (req, res) => {
+  const { id } = req.params;
+  const updatedSales= req.body;
+  const sales = await salesServices.updateById(id, updatedSales);
+  return res.status(STATUS_200).json(sales);
+};
 
 // // DELETEBYID -----------------------------------------
 // const deleteById = async (req, res) => {
@@ -66,6 +66,6 @@ module.exports = {
   create,
   getAll,
   getById,
-  // updateById,
+  updateById,
   // deleteById,
 };
