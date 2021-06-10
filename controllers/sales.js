@@ -10,7 +10,7 @@ const create = async (req, res) => {
   const bodySales = req.body;
   const newSales = await salesServices.create(bodySales);
   if (newSales !== null) {
-    return res.status(STATUS_201).json(newSales);
+    return res.status(STATUS_200).json(newSales);
   } else { return res.status(STATUS_422).json({
     err: {
       code: 'invalid_data',
