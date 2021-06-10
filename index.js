@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const { validateName, validateQuantity }= require('./middlewares/products');
 const products = require('./controllers/products');
 const sales = require('./controllers/sales');
+const salesMiddle = require('./middlewares/sales');
 
 const app = express();
 const PORT = '3000';
@@ -20,7 +21,7 @@ app.get('/products/:id', products.getById);
 app.put('/products/:id', validateName, validateQuantity, products.updateById);
 app.delete('/products/:id', products.deleteById);
 
-app.post('/sales', validateQuantity, sales.create);
+app.post('/sales', salesMiddle.validateQuantity, sales.create);
 app.get('/sales', sales.getAll);
 
 app.listen(PORT, () => {
