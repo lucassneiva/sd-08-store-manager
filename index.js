@@ -25,7 +25,7 @@ app.post('/sales', salesMiddle.validateQuantity, sales.create);
 app.get('/sales', sales.getAll);
 app.get('/sales/:id', sales.getById);
 app.put('/sales/:id', salesMiddle.validateQuantity, sales.updateById);
-// app.delete('/sales/:id', sales.deleteById);
+app.delete('/sales/:id', sales.deleteById);
 
 app.listen(PORT, () => {
   console.log('Online');

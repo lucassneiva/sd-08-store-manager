@@ -2,7 +2,7 @@ const salesServices = require('../services/sales');
 
 // https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status
 const STATUS_200 = 200; // Respostas de sucesso (200-299)
-const STATUS_404= 404;
+const STATUS_404 = 404;
 const STATUS_422 = 422; // Erros do cliente (400-499)
 
 // CREATE ----------------------------------------
@@ -49,17 +49,17 @@ const updateById = async (req, res) => {
 };
 
 // // DELETEBYID -----------------------------------------
-// const deleteById = async (req, res) => {
-//   const { id } = req.params;
-//   const product = await productsServices.deleteById(id);
-//   if (product !== null) return res.status(STATUS_200).send(product);
-//   return res.status(STATUS_422).json({
-//     err: {
-//       code: 'invalid_data',
-//       message: 'Wrong id format',
-//     },
-//   });
-// };
+const deleteById = async (req, res) => {
+  const { id } = req.params;
+  const sales = await salesServices.deleteById(id);
+  if (sales !== null) return res.status(STATUS_200).send(sales);
+  return res.status(STATUS_422).json({
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong sale ID format',
+    },
+  });
+};
 
 
 module.exports = {
@@ -67,5 +67,5 @@ module.exports = {
   getAll,
   getById,
   updateById,
-  // deleteById,
+  deleteById,
 };

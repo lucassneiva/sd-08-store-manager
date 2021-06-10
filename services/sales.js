@@ -11,8 +11,6 @@ const getById = async (id) => {
 };
 
 const create = async (bodySales) => {
-  // const findByName =  await productsModel.findByName(name);
-  // if (findByName) return null;
   const sales = await salesModel.create(bodySales);
   return sales;
 };
@@ -22,16 +20,16 @@ const updateById = async (id, updatedSale) => {
   return sales;
 };
 
-// const deleteById = async (id) => {
-//   const deletedProduct = await productsModel.getById(id);
-//   await productsModel.deleteById(id);
-//   return (deletedProduct);
-// };
+const deleteById = async (id) => {
+  const deletedSales = await salesModel.getById(id);
+  await salesModel.deleteById(id);
+  return deletedSales;
+};
 
 module.exports = {
   getAll,
   create,
   getById,
   updateById,
-  // deleteById,
+  deleteById,
 };

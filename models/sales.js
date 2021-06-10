@@ -31,17 +31,16 @@ const updateById = async (id, itensSold) => {
   return { _id: id, itensSold };
 };
 
-// const deleteById = async (id) => {
-//   if (!ObjectId.isValid(id)) return null;
-//   return await connection()
-//     .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
-// };
+const deleteById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  return await connection()
+    .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) }));
+};
 
 module.exports = {
   create,
   getAll,
   getById,
-  // findByName,
-  // deleteById,
+  deleteById,
   updateById
 };
