@@ -89,4 +89,4 @@ const errors = {
   }
 };
 
-module.export = { errors, responseCodes };
+module.export = { errors, responseNCodes };
