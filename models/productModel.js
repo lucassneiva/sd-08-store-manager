@@ -1,59 +1,24 @@
-const connect = require('./mongoConnection');
-const { ObjectID, ObjectId } = require('mongodb');
+const connection = require('./mongoConnection');
 
-const getAll = async() => 
-  await connect()
-    .then((db) => 
-      db.collection('products')
-        .find()
-        .toArray());
+const getAll = async () => connection()
+  .then(db => db.collection('products').find().toArray());
 
-const add = async (name, quantity) =>
-  await connect()
-    .then((db) => 
-      db.collection('products')
-        .insertOne({ name, quantity }))
-    .then((result) => result.ops[0]);
+const add = async (name, quantity) => connection()
+  .then((db) => db.collection('products').insertOne({name, quantity}))
+  .then((result) => ({ _id: result.insertedId, name, quantity}));
 
-const getById = async (id) => {
-  if (!ObjectId.isValid(id)) return null;
+const getByName = async (name) => {
 
-  await connect()
-    .then((db) =>
-      ObjectId.isValid(id) ?
-        db.collection('products').findOne({ _id: ObjectID(id)})
-        : null
-    );
-};
+  const productName = await connection()  
+    .then(db => db.collection('products').findOne({name}));
 
-const update = async (id, name, quantity) => {
-  if (!ObjectId.isValid(id)) return null;
-  await connect()
-    .then((db) =>
-      db
-        .collection('products')
-        .updateOne({ _id: ObjectID(id)}, {$set: { name, quantity}})
-        .then(() => ({ _id: id, name, quantity}))
-    );
-};
+  !productName && null;
 
-const exclude = async (id) => {
-  if(!ObjectId.isValid(id)) return null;
-
-  return await connect()
-    .then((db) =>
-      ObjectId.isValid(id) ?
-        db
-          .collection('products')
-          .deleteOne({ _id: ObjectID(id) })
-        :null
-    );
+  return productName;
 };
 
 module.exports = {
   getAll,
-  getById,
   add,
-  update,
-  exclude,
+  getByName,
 };
