@@ -2,7 +2,7 @@ const salesServices = require('../services/sales');
 
 // https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status
 const STATUS_200 = 200; // Respostas de sucesso (200-299)
-// const STATUS_201= 201;
+const STATUS_404= 404;
 const STATUS_422 = 422; // Erros do cliente (400-499)
 
 // CREATE ----------------------------------------
@@ -33,7 +33,7 @@ const getById = async (req, res) => {
   if (sales !== null) {
     return res.status(STATUS_200).send(sales);
   }
-  return res.status(STATUS_422).json({ err: {
+  return res.status(STATUS_404.json({ err: {
     code: 'not_found',
     message: 'Sale not found',
   },
