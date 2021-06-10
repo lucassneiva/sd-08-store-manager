@@ -1,5 +1,6 @@
 const { getAll, getOne, create, updateOne, deleteOne } = require('../models/salesModel');
 const { getAll: getAllP} = require('../models/productsModel');
+const {updateProducts, checkStock} = require('../services/salesServices');
 const PRODUCT_QUANTITY_MINIMUM = 0;
 const SUCCESS_STATUS = 200;
 const INSERTED_STATUS = 201;
@@ -9,7 +10,16 @@ const NOT_FOUND_STATUS = 404;
 
 const createSale = async (req, res, next) => {
   try {
+    const validStock = await checkStock(req.body);
+    if(!validStock.every(Boolean)){
+      return next({
+        code: 'stock_problem', 
+        message: 'Such amount is not permitted to sell', 
+        status: NOT_FOUND_STATUS
+      });
+    };
     const result = await create(req.body);
+    await updateProducts(req.body, 'update');
     res.status(SUCCESS_STATUS).json(result);
   } catch (err) {
     res.status(ERROR_STATUS).json('Nao adicionou sale');
@@ -74,6 +84,15 @@ const getOneSale = async (req, res, next) => {
 const updateSale = async (req, res, _next) => {
   try {
     await updateOne(req.params.id, req.body);
+    await updateProducts(req.body, 'update');
+    const validStock = await checkStock(req.body);
+    if(!validStock){
+      return next({
+        code: 'stock_problem', 
+        message: 'Such amount is not permitted to sell', 
+        status: NOT_FOUND_STATUS
+      });
+    };
     const result = await getOne(req.params.id);
     res.status(SUCCESS_STATUS).json(result);
   } catch (error) {
@@ -84,6 +103,7 @@ const updateSale = async (req, res, _next) => {
 const deleteSale = async (req, res, next) => {
   try {
     const result = await getOne(req.params.id);
+    await updateProducts([...result.itensSold], 'delete');
     if(!result) return next({
       code: 'invalid_data',
       message: 'Wrong sale ID format', 
