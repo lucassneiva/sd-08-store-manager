@@ -1,3 +1,4 @@
+// Models faz a conexão com o banco de dados
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
@@ -13,21 +14,19 @@ const getProductById = async (id) => {
   return db.collection('products').findOne(ObjectId(id));
 };
 
-const addProduct = async (name, quantity) => {
+const findProductByName = async (name) => {
+  const db = await connection();
+  const product = await db.collection('products').findOne({ 'name': name });
+  return product;
+};
+
+const addProduct = async (name, quantity = 1) => {
   const db = await connection();
   const product = await db.collection('products').insertOne({ name, quantity });
   return product;
 };
 
-const deleteId = async (id) => {
-  const db = await connection();
-  if (!ObjectId.isValid(id)) return null;
-  const product = await getProductById(id);
-  await db.collection('products').deleteOne({ _id: ObjectId(id) });
-  return product;
-};
-
-const update = async (id, name, quantity) => {
+const updateOrCreateProduct = async (id, name, quantity) => {
   const db = await connection();
   if (!ObjectId.isValid(id)) return null;
   const product = await db
@@ -37,10 +36,19 @@ const update = async (id, name, quantity) => {
   return { id, name, quantity };
 };
 
+const deleteUsingId = async (id) => {
+  const db = await connection();
+  if (!ObjectId.isValid(id)) return null;
+  const product = await getProductById(id);
+  await db.collection('products').deleteOne({ _id: ObjectId(id) });
+  return product;
+};
+
 module.exports = {
   addProduct,
   getAll,
   getProductById,
-  update,
-  deleteId,
+  findProductByName,
+  updateOrCreateProduct,
+  deleteUsingId,
 };
