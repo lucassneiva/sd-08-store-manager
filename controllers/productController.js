@@ -32,4 +32,4 @@ const remove = async (req, res) => {
   return res.status(OK).json(result);
 };
 
-module.exports = { create, search, update, remove };
+module.exports = { getAllProducts, create, search, update, remove };
