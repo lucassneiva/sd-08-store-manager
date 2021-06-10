@@ -1,7 +1,7 @@
 const productsServices = require('../services/productsServices');
 const rescue = require('express-rescue');
 const ERROR_CODE = 422;
-const ERROR_OK = 200;
+const STATUS_OK = 200;
 
 const insert = async (req, res) => {
   const { name, quantity } = req.body;
@@ -31,27 +31,28 @@ const getAll = async (_req, res) => {
     .status(ERROR_CODE)
     .json({err: { code: 'invalid_data', message: 'Something went wrong' } });
 
-  return res.status(ERROR_OK).json(data);
+  return res.status(STATUS_OK).json(data);
 };
 
 const updateByID = async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
 
-  const product = await findByID(id);
+  const product = await productsServices.findById(id);
 
-  const productUpdate = {
-    name: name? name : product.data.name,
-    quantity: quantity? quantity : product.data.quantity,
-  };
+  const correctName = name? name : product.data.name;
+  const correctQuantity = quantity !== undefined ? quantity : product.data.quantity;
 
-  const data = await productsServices.updateByID(id, productUpdate);
+  const data = await productsServices.updateByID(id, correctName, correctQuantity);
+
+  if(data.err) return res.status(data.status).json(data);
+
+  if (!data) return res
+    .status(ERROR_CODE)
+    .json({err: { code: 'invalid_data', message: 'Wrong id format' } });
 
 
-  if(body.err) return res.status(body.status).json(body);
-
-
-  return res.status(ERROR_OK).json(data);
+  return res.status(data.status).json(data.message);
 };
 
 module.exports = {

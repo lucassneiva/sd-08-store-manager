@@ -1,5 +1,6 @@
 const { findByName } = require('../models/productsModel');
 const MIN_LENGTH = 5;
+const QUANTITY_ZERO = 0;
 
 const validate = async (name, quantity) => {
   if (name.length < MIN_LENGTH) return {
@@ -16,13 +17,17 @@ const validate = async (name, quantity) => {
       message: '"quantity" must be a number',
     }
   };
-  if (quantity < 1) return {
+  if (quantity <= QUANTITY_ZERO) return {
     status: 422,
     err: {
       code: 'invalid_data',
       message: '"quantity" must be larger than or equal to 1',
     }
   };
+  return;
+};
+
+const productExists = async (name) => {
   if (await findByName(name)) return {
     status: 422,
     err: {
@@ -34,5 +39,6 @@ const validate = async (name, quantity) => {
 };
 
 module.exports = {
-  validate
+  validate,
+  productExists
 };

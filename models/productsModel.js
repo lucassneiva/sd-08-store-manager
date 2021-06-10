@@ -27,14 +27,18 @@ const getAll = async () => {
   }
 };
 
-const updateByID = async (id, body) =>
-  await connection()
-    .then((db) => db.collection('products')
+const updateByID = async (id, name, quantity) =>{
+  try {
+    const db = await connection();
+    return await db.collection('products')
       .updateOne(
-        new ObjectId(id),
-        { $set: { name: body.name, quantity: body.quantity } }))
-    .then(response => response)
-    .catch(err => console.log(err));
+        { '_id': ObjectId(id) },
+        { $set: { 'name': name, 'quantity': quantity },
+        });
+  } catch (error) {
+    return null;
+  }
+};
 
 module.exports = {
   getAll,

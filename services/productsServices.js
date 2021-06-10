@@ -1,10 +1,14 @@
 const productsModel = require('../models/productsModel');
 const productsSchema = require ('../Schema/productsSchema');
 
+const ZERO_MODIFIED = 0;
+
 const insert = async (name, quantity) => {
   const validations = await productsSchema.validate(name, quantity);
+  const alreadyExists = await productsSchema.productExists(name);
 
   if (validations) return validations;
+  if (alreadyExists) return alreadyExists;
 
   const data = await productsModel.insert(name, quantity);
 
@@ -26,15 +30,15 @@ const getAll = async () => {
   return { status: 200, products };
 };
 
-const updateByID = async (id, body) => {
-  const validations = await productsSchema.validate(body.name, body.quantity);
+const updateByID = async (id, name, quantity) => {
+  const validations = await productsSchema.validate(name, quantity);
 
   if (validations) return validations;
 
-  const products = await productsModel.updateByID(id, body);
-  if(!products) return null;
+  const data = await productsModel.updateByID(id, name, quantity);
+  if(data.nModified === ZERO_MODIFIED) return null;
 
-  return { status: 200, products };
+  return { status: 200, message: { id, name, quantity } };
 };
 
 module.exports = {
