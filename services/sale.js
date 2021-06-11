@@ -13,7 +13,18 @@ const schema = joi.array().items({
     .required(),
 });
 
-const getAll = async () => model.getAll();
+const getAll = async () => {
+  const listAllSales = await model.getAll();
+
+  if (!listAllSales) {
+    return {
+      code: 'not_found',
+      error: { message: 'Sale not found'},
+      status: 404
+    };
+  }
+  return listAllSales;
+};
 
 const add = async (itensSold) => {
   const { error } = schema.validate(itensSold);
@@ -28,19 +39,19 @@ const add = async (itensSold) => {
   return await model.add(itensSold);
 };
 
-// const getById = async (id) => {
-//   const productID = await model.getById(id);
+const getById = async (id) => {
+  const saleId = await model.getById(id);
 
-//   if (!productID) {
-//     return {
-//       code: 'invalid_data',
-//       error: { message: 'Wrong id format' },
-//       status: 422
-//     };
-//   }
+  if (!saleId) {
+    return {
+      code: 'not_found',
+      error: { message: 'Sale not found'},
+      status: 404
+    };
+  }
 
-//   return productID;
-// };
+  return saleId;
+};
 
 // const update = async (id, name, quantity) => {
 //   const { error } = schema.validate({ name, quantity });
@@ -78,7 +89,7 @@ const add = async (itensSold) => {
 module.exports = {
   getAll,
   add,
-  // getById,
+  getById,
   // update,
   // deleteProduct,
 }; 

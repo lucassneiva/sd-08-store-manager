@@ -16,15 +16,15 @@ const createSales = rescue(async (req, res, next) => {
   res.status(OK).json(createdSale);
 });
 
-// const getById = rescue(async (req, res, next) => {
-//   const { id } = req.params;
+const getById = rescue(async (req, res, next) => {
+  const { id } = req.params;
 
-//   const productId = await service.getById(id);
+  const saleId = await service.getById(id);
 
-//   productId.error && next(productId);
+  saleId.error && next(saleId);
 
-//   res.status(OK).json(productId);
-// });
+  res.status(OK).json(saleId);
+});
 
 // const updateProduct = rescue(async (req, res, next) => {
 //   const { id } = req.params;
@@ -49,7 +49,7 @@ const createSales = rescue(async (req, res, next) => {
 module.exports ={
   getAllSales,
   createSales,
-  // getById,
+  getById,
   // updateProduct,
   // deleteProduct, 
 };

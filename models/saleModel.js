@@ -1,5 +1,5 @@
 const connection = require('./mongoConnection');
-// const { ObjectId, ObjectID } = require('mongodb');
+const { ObjectId, ObjectID } = require('mongodb');
 
 const getAll = async () => connection()
   .then(db => db.collection('sales').find().toArray())
@@ -9,25 +9,16 @@ const add = async (itensSold) => connection()
   .then((db) => db.collection('sales').insertOne({itensSold}))
   .then((result) => ({ _id: result.insertedId, itensSold}));
 
-// const getByName = async (name) => {
+const getById = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
 
-//   const productName = await connection()  
-//     .then(db => db.collection('products').findOne({name}));
+  const saleId = await connection()
+    .then((db) => db.collection('sales').findOne({ _id: ObjectID(id)}));
 
-//   !productName && null;
+  !saleId && null;
 
-//   return productName;
-// };
-// const getById = async (id) => {
-//   if (!ObjectId.isValid(id)) return null;
-
-//   const productId = await connection()
-//     .then((db) => db.collection('products').findOne({ _id: ObjectID(id)}));
-
-//   !productId && null;
-
-//   return productId;
-// };
+  return saleId;
+};
 
 // const update = async ( id, name, quantity ) => {
 //   if (!ObjectId.isValid(id)) return null;
@@ -52,8 +43,7 @@ const add = async (itensSold) => connection()
 module.exports = {
   getAll,
   add,
-  // getByName,
-  // getById,
+  getById,
   // update,
   // deleteProduct,
 };

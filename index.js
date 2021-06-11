@@ -28,6 +28,8 @@ app.delete('/products/:id', products.deleteProduct);
 
 //Listar todas as vendas
 app.get('/sales', sales.getAllSales );
+//Procurar por ID
+app.get('/sales/:id', sales.getById);
 // Criar vendas
 app.post('/sales', sales.createSales);
 
