@@ -8,4 +8,5 @@ module.exports = async (req, res, cb) => {
   if (searchResult) {
     return res.status(eSame.status).json({ err: eSame.err });
   }
+  cb();
 };
