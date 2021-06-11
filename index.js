@@ -5,17 +5,14 @@ const PORT = 3000;
 const app = express();
 app.use(bodyParser.json());
 
-const ProductsController = require('./controllers/productsController');
+const SalesController = require('./controllers/salesController');
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.send();
 });
 
-app.get('/products', ProductsController.getAll);
-app.get('/products/:id', ProductsController.findByID);
-app.put('/products/:id', ProductsController.updateByID);
-app.delete('/products/:id', ProductsController.deleteByID);
-app.post('/products', ProductsController.insert);
+app.use('/products', require('./controllers/productsController'));
+app.use('/sales', require('./controllers/salesController'));
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));

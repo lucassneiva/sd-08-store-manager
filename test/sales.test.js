@@ -5,7 +5,7 @@ const mongoDbUrl = 'mongodb://localhost:27017';
 const url = 'http://localhost:3000';
 const invalidId = 99999;
 
-describe.skip('5 - Crie um endpoint para cadastrar vendas', () => {
+describe('5 - Crie um endpoint para cadastrar vendas', () => {
   let connection;
   let db;
 
@@ -61,6 +61,7 @@ describe.skip('5 - Crie um endpoint para cadastrar vendas', () => {
       ])
       .expect('status', 422)
       .then((secondResponse) => {
+        console.log(secondResponse);
         const { json } = secondResponse;
         expect(json.err.code).toBe('invalid_data');
         expect(json.err.message).toBe('Wrong product ID or invalid quantity');

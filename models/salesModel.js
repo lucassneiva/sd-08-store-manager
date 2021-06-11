@@ -1,39 +1,39 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-const insert = async (name, quantity) =>
+const insert = async (itensSold) =>
   await connection()
-    .then((db) => db.collection('products').insertOne({ name, quantity }))
-    .then((result) => ({ _id: result.insertedId, name, quantity }));
+    .then((db) => db.collection('sales').insertOne({ itensSold }))
+    .then((result) => ({ _id: result.insertedId, itensSold }));
 
-const findByName = async (nameNewProduct) =>
+const findByProductId = async (newProductId) =>
   await connection()
-    .then((db) => db.collection('products').findOne({ name: nameNewProduct }))
+    .then((db) => db.collection('sales').findOne({ productId: newProductId }))
     .then(response => response)
     .catch(err => console.log(err));
 
 const findById = async (id) =>
   await connection()
-    .then((db) => db.collection('products').findOne(new ObjectId(id)))
+    .then((db) => db.collection('sales').findOne(new ObjectId(id)))
     .then(response => response)
     .catch(err => console.log(err));
 
 const getAll = async () => {
   try {
     const db = await connection();
-    return await db.collection('products').find().toArray();
+    return await db.collection('sales').find().toArray();
   } catch (error) {
     return null;
   }
 };
 
-const updateByID = async (id, name, quantity) =>{
+const updateByID = async (id, productId, quantity) =>{
   try {
     const db = await connection();
-    return await db.collection('products')
+    return await db.collection('sales')
       .updateOne(
         { '_id': ObjectId(id) },
-        { $set: { 'name': name, 'quantity': quantity },
+        { $set: { 'productId': productId, 'quantity': quantity },
         });
   } catch (error) {
     return null;
@@ -43,7 +43,7 @@ const updateByID = async (id, name, quantity) =>{
 const deleteByID = async (id) =>{
   try {
     const db = await connection();
-    return await db.collection('products')
+    return await db.collection('sales')
       .deleteOne({ _id: ObjectId(id) });
   } catch (error) {
     return null;
@@ -53,7 +53,7 @@ const deleteByID = async (id) =>{
 module.exports = {
   getAll,
   insert,
-  findByName,
+  findByProductId,
   findById,
   updateByID,
   deleteByID
