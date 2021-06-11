@@ -34,6 +34,8 @@ app.get('/sales/:id', sales.getById);
 app.post('/sales', sales.createSales);
 //Atualizar vendas
 app.put('/sales/:id', sales.updateSale);
+//Deletando produtos
+app.delete('/sales/:id', sales.deleteSale);
 
 app.use(errorMiddleware);
 

@@ -35,21 +35,20 @@ const updateSale = rescue(async (req, res, next) => {
   res.status(OK).json(updatedSale);
 });
 
-// const deleteProduct = rescue(async (req, res, next) => {
-//   const { id } = req.params;
+const deleteSale = rescue(async (req, res, next) => {
+  const { id } = req.params;
 
-//   const deletedProduct = await service.deleteProduct(id);
+  const deletedSale = await service.deleteSale(id);
 
-//   deletedProduct.error && next(deletedProduct);
+  deletedSale.error && next(deletedSale);
 
-//   res.status(OK).json(deletedProduct);
-// });
-
+  res.status(OK).json(deletedSale);
+});
   
 module.exports ={
   getAllSales,
   createSales,
   getById,
   updateSale,
-  // deleteProduct, 
+  deleteSale,
 };

@@ -69,21 +69,21 @@ const update = async (id, itensSold) => {
   return sale;
 };
 
-// const deleteProduct = async (id) => {
-//   const product = await model.getById(id);
+const deleteSale = async (id) => {
+  const sale = await model.getById(id);
   
-//   if (!product){
-//     return {
-//       code: 'invalid_data',
-//       error: { message: 'Wrong id format' },
-//       status: 422
-//     };
-//   }
+  if (!sale){
+    return {
+      code: 'invalid_data',
+      error: { message: 'Wrong sale ID format' },
+      status: 422
+    };
+  }
 
-//   const deletedProduct = await model.deleteProduct(id);
+  const deletedSale = await model.deleteSale(id);
   
-//   return deletedProduct;
-// };
+  return deletedSale;
+};
 
 
 module.exports = {
@@ -91,6 +91,6 @@ module.exports = {
   add,
   getById,
   update,
-  // deleteProduct,
+  deleteSale,
 }; 
   
