@@ -11,6 +11,10 @@ app.use(router);
 
 app.listen(PORT_NUMBER, () => console.log('Listen to port 3000'));
 
+app.get('/teste', (_req, res) => {
+  res.send('Teste');
+});
+
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.send();
