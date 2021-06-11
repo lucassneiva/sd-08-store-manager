@@ -1,18 +1,18 @@
 const express = require('express');
 const app = express();
-const bodyParser = require('body-parser');
+const route = require('./src/routes/routes');
+
 const PORT = 3000;
 
-const products = require('./src/controllers/ProductsController');
+app.use(express.json());
+app.use(route);
 
-app.use(bodyParser.json());
+app.listen(PORT, () => {
+  console.log('Fala que eu te escuto');
+});
+
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.send();
 });
-
-app.get('/products', products.getAll);
-app.post('/products', products.create);
-
-app.listen(process.env.PORT || PORT, () => console.log('Fala que eu te escuto!'));

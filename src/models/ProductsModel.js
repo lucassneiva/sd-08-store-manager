@@ -1,45 +1,61 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
+
+/***********CADASTRANDO PRODUTO *************/
+const createProduct = async (name, quantity) =>{
+  const db = await connection();
+  const newProduct = await db.collection('products')
+    .insertOne({ name, quantity });
+  return newProduct;
+};
+
+/*************LISTANDO TODOS OS PRODUTOS *************/
+
 const getAll = async () => {
-  const allProducts = await connection()
-    .then((db) => db.collection('products').find().toArray())
-    .then((products) => products);
-
-  return allProducts;
+  const db = await connection();
+  const product = await db.collection('products').find().toArray();
+  if (product) return product;
+};
+/*************LISTANDO PRODUTO POR ID *************/
+const getById = async (id) => {
+  const db = await connection();
+  const productId = await db.collection('products').findOne(ObjectId(id));
+  return productId;
 };
 
-const create = async (name, quantity) => {
-  await connection().then((db) => db.collection('products')
-    .insertOne({ name, quantity }))
-    .then(result => {
-      return ({
-        _id: result.insertedId,
-        name,
-        quantity,
-      });
-    });
+/*************LISTANDO PRODUTO POR NOME *************/
+const findProducts= async (name, quantity) => {
+  const db = await connection();
+  const isFound = await db.collection('products').findOne({name});
+  return isFound;
 };
 
-const findByName = async (name) => {
-  const getName = await connection()
-    .then((db) => db.collection('products')
-      .findOne({ name: name }));
+/*************ATUALIZANDO UM PRODUTO *************/
 
-  return getName;
+const updateOne = async ( id, name, quantity ) => {
+  const db = await connection();
+  await  db.collection('products')
+    .updateOne({ _id: id }, { $set: { name, quantity } });
+  return { _id: id, name, quantity };
 };
 
-const findById = async (id) => {
-  const getId = await connection()
-    .then((db) => db.collection('products')
-      .findOne(ObjectId(id)));
+/************* EXCLUINDO PRODUTO *************/
 
-  return getId;
+const deleteOne = async (id) => {
+  if (!ObjectId.isValid(id)) return null;
+  const db = await connection();
+  const productId = await db.collection('products').findOne(ObjectId(id));
+  await db.collection('products').deleteOne({ _id: ObjectId(id)});
+  if(productId) productId;
 };
+
 
 module.exports = {
-  create,
-  findByName,
-  findById,
-  getAll,
+  deleteOne,
+  updateOne,
+  getById,
+  getAll, 
+  createProduct, 
+  findProducts
 };

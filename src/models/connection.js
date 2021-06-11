@@ -1,27 +1,24 @@
 const { MongoClient } = require('mongodb');
 
-//const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager'; //rodar avaliator
-const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager'; //rodar local
+const OPTIONS = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
+
+const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager'; //rodar avaliator
+//const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager'; //rodar local
 
 const DB_NAME = 'StoreManager';
 
-let schema = null;
+let db = null;
 
-async function connection() {
-  if (schema) return Promise.resolve(schema);
-  return MongoClient.connect(MONGO_DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-    .then((conn) => conn.db(DB_NAME))
-    .then((dbSchema) => {
-      schema = dbSchema;
-      return schema;
-    })
-    .catch((err) => {
-      console.error(err);
-      process.exit(1);
+const connection = () => {
+  return db ? Promise.resolve(db) : MongoClient.connect(MONGO_DB_URL, OPTIONS)
+    .then((connect) => {
+      db = connect.db(DB_NAME);
+      return db;
     });
-}
+};
+
 
 module.exports = connection;
