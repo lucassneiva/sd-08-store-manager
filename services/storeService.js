@@ -17,13 +17,10 @@ const requestDataIsValid = (name, quantity) => {
 
 const create = async ({ name, quantity }) => {
   const { error } = requestDataIsValid(name, quantity);
-  // console.log('STORESERVICE', error);
   if (error) {
     const { isJoi, details } = error;
-    // console.log('entrou no erro', { isJoi, details });
     return { isJoi, details };
   }
-  // console.log('não entrou no IF de erro');
   const existingProduct = await StoreModel.findByName(name);
   if(existingProduct) return { message: 'Product already exists'};
   
@@ -42,6 +39,26 @@ const findById = async (id) => {
   return product;
 };
 
+const updateById = async (id, name, quantity) => {
+  if(!ObjectId.isValid(id)) {
+    // console.log('entrou no id');
+    return { message: 'Wrong id format' };
+  }
+  const { error } = requestDataIsValid(name, quantity);
+  if (error) {
+    // console.log('entrou no Joi');
+    const { isJoi, details } = error;
+    return { isJoi, details };
+  }
+
+  const { modifiedCount } = await StoreModel.updateById(id, name, quantity);
+  // if (!modifiedCount) {
+  //   console.log('entrou no id nao encontrado', modifiedCount);
+  //   return { message: 'Nothing to change' };
+  // }
+  return { modifiedCount };
+};
+
 module.exports = {
-  create, getAll, findById,
+  create, getAll, findById, updateById
 };

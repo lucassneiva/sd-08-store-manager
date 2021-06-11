@@ -33,6 +33,15 @@ const findById = rescue(async (req, res, next) => {
   res.status(successStatus).json(response);
 });
 
+const updateById = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  const response = await StoreService.updateById(id, name, quantity);
+  if (response.isJoi) return next(response.details[0].message);
+  if (response.message) return next(response.message);
+  res.status(successStatus).json({ _id: id, name, quantity });
+});
+
 module.exports = {
-  create, getAll, findById,
+  create, getAll, findById, updateById,
 };

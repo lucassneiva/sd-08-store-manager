@@ -35,7 +35,7 @@ describe('Na camada MODELS', async () => {
     await db.collection('products').deleteMany({});
   });
   
-  describe('ao cadastrar um novo produto', async () => {
+  describe('ao chamar o CREATE para cadastrar um novo produto', async () => {
     describe('quando é inserido com sucesso', async () => {
       it('retorna um objeto', async () => {
         const response = await StoreModel.create(payloadProduct);
@@ -62,7 +62,7 @@ describe('Na camada MODELS', async () => {
     });
   });
 
-  describe('ao procurar todos os produtos', async () => {
+  describe('ao chamar o GETALL para procurar todos os produtos', async () => {
     describe('quando não existe nenhum produto criado', async () => { 
       it('retorna um array', async () => {
         const response = await StoreModel.getAll();
@@ -107,12 +107,8 @@ describe('Na camada MODELS', async () => {
     });
   });
 
-
-
-
-
-  describe('ao buscar um filme através do ID', () => {
-    describe('quando não é encontrado uma correspondência', () => {
+  describe('ao chamar o FINDBYID para buscar um filme através do ID', async () => {
+    describe('quando não é encontrado uma correspondência', async () => {
       const ID_EXAMPLE = '5f43a7ca92d58904914656b6'
       it('retorna "null"', async () => {
         const response = await StoreModel.findById(ID_EXAMPLE);
@@ -120,7 +116,7 @@ describe('Na camada MODELS', async () => {
       });
     });
   
-    describe('quando existe um filme para o ID informado', async() => {
+    describe('quando existe uma correspondência', async() => {
       let ID_EXAMPLE = '';
       beforeEach(async () => {
         db = connectionMock.db('StoreManager');
@@ -139,6 +135,46 @@ describe('Na camada MODELS', async () => {
       it('o objeto possui as propriedades: "_id", "name" e "quantity"', async () => {
         const response = await StoreModel.findById(ID_EXAMPLE);
         expect(response).to.include.all.keys('_id', 'name', 'quantity')
+      });
+    });
+  });
+
+  describe('ao chamar o UPDATEBYID para atualizar um filme através do ID', async() => {
+    const UPDATE_NAME = 'Produto do Silva';
+    const UPDATE_QUANTITY = 100;
+
+    describe('quando não é encontrado uma correspondência', async() => {
+      const ID_EXAMPLE = '5f43a7ca92d58904914656b6';
+
+      it('retorna um objeto', async () => {
+        const response = await StoreModel.updateById(ID_EXAMPLE, UPDATE_NAME, UPDATE_QUANTITY);
+        expect(response).to.be.a('object')
+      });
+
+      it('o objeto possui a propriedade: "modifiedCount", com valor igual a "0" ', async () => {
+        const response = await StoreModel.updateById(ID_EXAMPLE, UPDATE_NAME, UPDATE_QUANTITY);
+        expect(response.modifiedCount).to.be.equal(0)
+      });
+    });
+  
+    describe('quando existe uma correspondência', async() => {
+      let ID_EXAMPLE = '';
+      beforeEach(async () => {
+        db = connectionMock.db('StoreManager');
+        const id = await db.collection('products').insertOne(
+          { "name": "Produto do Batista", "quantity": 10 },
+        );
+        ID_EXAMPLE = id.insertedId;
+      });
+        
+      it('retorna um objeto', async () => {
+        const response = await StoreModel.updateById(ID_EXAMPLE, UPDATE_NAME, UPDATE_QUANTITY);
+        expect(response).to.be.a('object')
+      });
+  
+      it('o objeto possui a propriedade: "modifiedCount", com valor igual a "1" ', async () => {
+        const response = await StoreModel.updateById(ID_EXAMPLE, UPDATE_NAME, UPDATE_QUANTITY);
+        expect(response.modifiedCount).to.be.equal(1)
       });
     });
   });

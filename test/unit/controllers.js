@@ -5,7 +5,7 @@ const StoreService = require('../../services/storeService');
 const StoreController = require('../../controllers/storeController');
 
 describe('Na camada CONTROLLERS', () => {
-  describe('ao chamar o controller de create para inserir um novo produto', () => {
+  describe('ao chamar CREATE para inserir um novo produto', () => {
     describe('quando o payload informado não é válido', async () => {
       const response = {};
       const request = {};
@@ -13,7 +13,7 @@ describe('Na camada CONTROLLERS', () => {
       const error = {
         isJoi: true,
         details: [{
-          message: 'validate error',
+          message: 'validate error JOI',
         }],
       };
   
@@ -30,7 +30,7 @@ describe('Na camada CONTROLLERS', () => {
       it('chama o método next com objeto', async () => {
         await StoreController.create(request, response, next);
         expect(next.calledWith(sinon.match.string)).to.be.equal(true);
-        expect(next.calledWith('validate error')).to.be.equal(true);
+        expect(next.calledWith('validate error JOI')).to.be.equal(true);
       });
     });
   
@@ -93,7 +93,7 @@ describe('Na camada CONTROLLERS', () => {
     });
   });
 
-  describe('ao chamar o controller de getAll para buscar todos os produtos', () => {
+  describe('ao chamar GETALL para buscar todos os produtos', () => {
     describe('quando não é encontrado uma correspondência', async () => {
       const response = {};
       const request = {};
@@ -120,7 +120,7 @@ describe('Na camada CONTROLLERS', () => {
       });
     });
   
-    describe('quando é encontrado uma correspondência', async () => {
+    describe('quando existe uma correspondência', async () => {
       const response = {};
       const request = {};
 
@@ -159,12 +159,7 @@ describe('Na camada CONTROLLERS', () => {
     });
   });
 
-
-
-
-
-
-  describe('Ao chamar o controller de findById para buscar um produto específico', async () => {
+  describe('ao chamar FINDBYID para buscar um produto específico', async () => {
     describe('quando não é encontrado uma correspondência', async () => {
       const response = {};
       const request = {};
@@ -191,7 +186,7 @@ describe('Na camada CONTROLLERS', () => {
       });
     });
   
-    describe('quando existem filmes no banco de dados', async () => {
+    describe('quando existe uma correspondência', async () => {
       const response = {};
       const request = {};
       const ID_EXAMPLE = '5f43a7ca92d58904914656b6'
@@ -218,6 +213,103 @@ describe('Na camada CONTROLLERS', () => {
   
       it('é chamado o método "json" passando um objeto', async () => {
         await StoreController.findById(request, response);
+        expect(response.json.calledWith({ _id: ID_EXAMPLE, ...payloadProduct })).to.be.equal(true);
+      });
+    });
+  });
+
+  describe('ao chamar UPDATEBYID para buscar um produto específico', async () => {
+    describe('quando não é encontrado uma correspondência', async () => {
+      const response = {};
+      const request = {};
+      let next = {};
+      const error = { message: 'Wrong id format'};
+      const ID_EXAMPLE = '5f43a7ca92d58904914656b6';
+      const payloadProduct = {
+        name: 'Produto do Batista',
+        quantity: 100,
+      };
+  
+      before(() => {
+        request.params = { id: ID_EXAMPLE };
+        request.body = { ...payloadProduct }
+        next = sinon.stub().returns();
+        sinon.stub(StoreService, 'updateById').resolves(error);
+      })
+  
+      after(() => {
+        StoreService.updateById.restore();
+      })
+
+      it('chama o método next com a string de erro', async () => {
+        await StoreController.updateById(request, response, next);
+        expect(next.calledWith(sinon.match.string)).to.be.equal(true);
+        expect(next.calledWith('Wrong id format')).to.be.equal(true);
+      });
+    });
+
+    describe('quando o payload informado não é válido', async () => {
+      const response = {};
+      const request = {};
+      let next = {};
+      const error = {
+        isJoi: true,
+        details: [{
+          message: 'validate error JOI',
+        }],
+      };
+      const ID_EXAMPLE = '5f43a7ca92d58904914656b6';
+      const payloadProduct = {
+        name: 'Produto do Batista',
+        quantity: 100,
+      };
+  
+      before(() => {
+        request.params = { id: ID_EXAMPLE };
+        request.body = { ...payloadProduct }
+        next = sinon.stub().returns();
+        sinon.stub(StoreService, 'updateById').resolves(error);
+      });
+  
+      after(() => {
+        StoreService.updateById.restore();
+      });
+  
+      it('chama o método next com objeto', async () => {
+        await StoreController.updateById(request, response, next);
+        expect(next.calledWith(sinon.match.string)).to.be.equal(true);
+        expect(next.calledWith('validate error JOI')).to.be.equal(true);
+      });
+    });
+  
+    describe('quando existe uma correspondência', async () => {
+      const response = {};
+      const request = {};
+      const ID_EXAMPLE = '5f43a7ca92d58904914656b6'
+      const payloadProduct = {
+        name: 'Produto do Batista',
+        quantity: 100,
+      };
+  
+      before(() => {
+        request.params = { id: ID_EXAMPLE };
+        request.body = { ...payloadProduct }
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+        sinon.stub(StoreService, 'updateById').resolves({ modifiedCount: 1 });
+      })
+  
+      after(() => {
+        StoreService.updateById.restore();
+      })
+  
+      it('é chamado o método "status" passando o código 200', async () => {
+        await StoreController.updateById(request, response);
+        expect(response.status.calledWith(200)).to.be.equal(true);
+      });
+  
+      it('é chamado o método "json" passando um objeto', async () => {
+        await StoreController.updateById(request, response);
         expect(response.json.calledWith({ _id: ID_EXAMPLE, ...payloadProduct })).to.be.equal(true);
       });
     });

@@ -5,7 +5,7 @@ const StoreModel = require('../../models/storeModel');
 const StoreService = require('../../services/storeService');
 
 describe('Na camada SERVICES', async () => {
-  describe('ao inserir um novo produto no BD', async () => {
+  describe('ao chamar CREATE para inserir um novo produto', async () => {
     describe('quando o payload informado não é válido', async () => {
       const payloadProduct = {};
   
@@ -20,7 +20,7 @@ describe('Na camada SERVICES', async () => {
       });
     });
   
-    describe('quando o payload contem um nome com o tamanho menor do que 5 caracteres', async () => {
+    describe('quando o payload contem no nome uma string com o tamanho menor do que 5 caracteres', async () => {
       const payloadProduct = {
         name: 'Bat',
         quantity: 100,
@@ -37,7 +37,7 @@ describe('Na camada SERVICES', async () => {
       });
     });
   
-    describe('quando o payload contem uma quantidade menor do que 0', async () => {
+    describe('quando o payload contem na quantidade um inteiro menor do que 0', async () => {
       const payloadProduct = {
         name: 'Produto do Batista',
         quantity: -100,
@@ -105,7 +105,7 @@ describe('Na camada SERVICES', async () => {
     });
   });
 
-  describe('ao buscar todos os produtos', async () => {
+  describe('ao chamar GETALL para buscar todos os produtos', async () => {
     describe('quando não existe produtos criados', async () => {
       before(() => {
         sinon.stub(StoreModel, 'getAll').resolves([]);
@@ -166,7 +166,7 @@ describe('Na camada SERVICES', async () => {
     });
   });
 
-  describe('ao buscar um produto através do ID', async () => {
+  describe('ao chamar FINDBYID para buscar um produto através do ID', async () => {
     const ID_EXAMPLE = '5f43a7ca92d58904914656b6'
     const ID_INVALID = '12345'
     const payloadProduct = {
@@ -206,7 +206,7 @@ describe('Na camada SERVICES', async () => {
       });
     });
       
-    describe('quando é encontrado uma correspondência', async () => {
+    describe('quando existe uma correspondência', async () => {
       before(() => {
         sinon.stub(StoreModel, 'findById').resolves({ _id: ID_EXAMPLE, ...payloadProduct });
       });
@@ -223,6 +223,104 @@ describe('Na camada SERVICES', async () => {
       it('o objeto possui as propriedades "_id", "name" e "quantity"', async () => {
         const response = await StoreService.findById(ID_EXAMPLE);
         expect(response).to.include.all.keys('_id', 'name', 'quantity')
+      });
+    });
+  });
+
+  describe('ao chamar UPDATEBYID para buscar um produto através do ID', async () => {
+    const ID_EXAMPLE = '5f43a7ca92d58904914656b6'
+    const NAME_EXAMPLE= 'Produto do Silva';
+    const QUANTITY_EXAMPLE = 100;
+
+    const ID_INVALID = '12345'
+    const NAME_INVALID = 'Pro';
+    const QUANTITY_INVALID = -100;
+
+    describe('quando Id não é válido', async() => {
+      before(() => {
+        sinon.stub(StoreModel, 'updateById').resolves({ modifiedCount: 0 });
+      });
+  
+      after(() => {
+        StoreModel.updateById.restore();
+      });
+  
+      it('o retorno é um objeto com mensagem "Wrong id format"', async () => {
+        const response = await StoreService.updateById(ID_INVALID, NAME_EXAMPLE, QUANTITY_EXAMPLE);
+        expect(response).to.be.a('object');
+        expect(response.message).to.be.equal('Wrong id format');
+      });
+    });
+
+    describe('quando o payload informado não é válido', async () => {  
+      it('retorna um objeto', async () => {
+        const response = await StoreService.updateById(ID_EXAMPLE, NAME_INVALID, QUANTITY_INVALID);
+        expect(response).to.be.a('object');
+      });
+  
+      it('o retorno é um objeto que contem uma propriedade error', async () => {
+        const response = await StoreService.updateById(ID_EXAMPLE, NAME_INVALID, QUANTITY_INVALID);
+        expect(response).to.have.a.property('details');
+      });
+    });
+  
+    describe('quando o payload contem no nome uma string com o tamanho menor do que 5 caracteres', async () => {  
+      it('o retorno é um objeto Joi', async () => {
+        const response = await StoreService.updateById(ID_EXAMPLE, NAME_INVALID, QUANTITY_EXAMPLE);
+        expect(response.isJoi).to.be.equal(true);
+      });
+  
+      it('o retorno é proveniente da validaçao "string.min"', async () => {
+        const response = await StoreService.updateById(ID_EXAMPLE, NAME_INVALID, QUANTITY_EXAMPLE);
+        expect(response.details[0].type).to.be.equal('string.min');
+      });
+    });
+  
+    describe('quando o payload contem na quantidade um inteiro menor do que 0', async () => {
+      it('o retorno é um objeto Joi', async () => {
+        const response = await StoreService.updateById(ID_EXAMPLE, NAME_EXAMPLE, QUANTITY_INVALID);
+        expect(response.isJoi).to.be.equal(true);
+      });
+  
+      it('o retorno é proveniente da validaçao "number.min"', async () => {
+        const response = await StoreService.updateById(ID_EXAMPLE, NAME_EXAMPLE, QUANTITY_INVALID);
+        expect(response.details[0].type).to.be.equal('number.min');
+      });
+    });
+
+    // describe('quando não é encontrado uma correspondência', async() => {
+    //   before(() => {
+    //     sinon.stub(StoreModel, 'updateById').resolves({ modifiedCount: 0 });
+    //   });
+  
+    //   after(() => {
+    //     StoreModel.updateById.restore();
+    //   });
+  
+    //   it('o retorno é um objeto com mensagem "Wrong id format"', async () => {
+    //     const response = await StoreService.updateById(ID_EXAMPLE, NAME_EXAMPLE, QUANTITY_EXAMPLE);
+    //     expect(response).to.be.a('object');
+    //     expect(response.message).to.be.equal('Wrong id format');
+    //   });
+    // });
+      
+    describe('quando existe uma correspondência', async () => {
+      before(() => {
+        sinon.stub(StoreModel, 'updateById').resolves({ modifiedCount: 1 });
+      });
+  
+      after(() => {
+        StoreModel.updateById.restore();
+      });
+  
+      it('retorna um objeto', async () => {
+        const response = await StoreService.updateById(ID_EXAMPLE, NAME_EXAMPLE, QUANTITY_EXAMPLE);
+        expect(response).to.be.an('object');
+      });
+  
+      it('o objeto possui as propriedades "modifiedCount"', async () => {
+        const response = await StoreService.updateById(ID_EXAMPLE, NAME_EXAMPLE, QUANTITY_EXAMPLE);
+        expect(response).to.have.a.property('modifiedCount')
       });
     });
   });
