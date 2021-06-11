@@ -1,3 +1,4 @@
+const rescue = require('express-rescue');
 const {
   registerNewProduct,
   findProductById,
@@ -10,41 +11,41 @@ const { ERROR_TYPES } = require('../common/erroTypes');
 
 const { HTTP_201_STATUS, HTTP_200_STATUS } = require('../common/httpStatus');
 
-const test = async (req, res) => {
+const test = rescue(async (req, res) => {
   res.send({ messege: 'Nada aqui' });
-};
+});
 
-const add = async (req, res) => {
+const add = rescue(async (req, res) => {
   const { name, quantity } = req.body;
   const newProduct = await registerNewProduct(name, quantity);
   return res.status(HTTP_201_STATUS).json(newProduct);
-};
+});
 
-const find = async (req, res) => {
+const find = rescue(async (req, res) => {
   const { id } = req.params;
   const searchResult = await findProductById(id);
   if (searchResult) return res.status(HTTP_200_STATUS).json(searchResult);
   return res.status(ERROR_TYPES.eId.status).json({ err: ERROR_TYPES.eId.err });
-};
+});
 
-const remove = async (req, res) => {
+const remove = rescue(async (req, res) => {
   const { id } = req.params;
   const deletedProduct = await deleteProduct(id);
   if (deletedProduct) return res.status(HTTP_200_STATUS).json(deletedProduct);
   return res.status(ERROR_TYPES.eId.status).json({ err: ERROR_TYPES.eId.err });
-};
-const update = async (req, res) => {
+});
+const update = rescue(async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
   const updateDoneResult = await updateProduct(id, name, quantity);
   if (updateDoneResult) return res.status(HTTP_200_STATUS).json(updateDoneResult);
   return res.status(ERROR_TYPES.eId.status).json({ err: ERROR_TYPES.eId.err });
-};
+});
 
-const list = async (req, res) => {
+const list = rescue(async (req, res) => {
   const searchResult = await listAllProducts();
   return res.status(HTTP_200_STATUS).json({ products: searchResult });
-};
+});
 
 module.exports = {
   add,
