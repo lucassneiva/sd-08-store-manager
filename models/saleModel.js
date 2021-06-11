@@ -20,22 +20,22 @@ const getById = async (id) => {
   return saleId;
 };
 
-// const update = async ( id, name, quantity ) => {
-//   if (!ObjectId.isValid(id)) return null;
+const update = async ( id, itensSold ) => {
+  if (!ObjectId.isValid(id)) return null;
 
-//   const product = await connection()
-//     .then(
-//       (db) =>	db
-//         .collection('products')
-//         .updateOne({_id: ObjectId(id) }, { $set: { name, quantity }
-//         })
-//         .then((result) => ({ _id: result.insertedId, name, quantity }))
-//     );
+  const sale = await connection()
+    .then(
+      (db) =>	db
+        .collection('sales')
+        .updateOne({_id: ObjectId(id) }, { $set: { itensSold }
+        })
+        .then(() => ({ _id: id, itensSold }))
+    );
 
-//   !product && null;
+  !sale && null;
 
-//   return product;
-// };
+  return sale;
+};
 
 // const deleteProduct = async (id) => await connection()
 //   .then(db => db.collection('products').deleteOne({_id: ObjectId (id)}));
@@ -44,6 +44,6 @@ module.exports = {
   getAll,
   add,
   getById,
-  // update,
+  update,
   // deleteProduct,
 };

@@ -26,14 +26,14 @@ const getById = rescue(async (req, res, next) => {
   res.status(OK).json(saleId);
 });
 
-// const updateProduct = rescue(async (req, res, next) => {
-//   const { id } = req.params;
-//   const { name, quantity } = req.body;
+const updateSale = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const itensSold = req.body;
 
-//   const updatedProduct = await service.update(id, name, quantity);
-//   updatedProduct.error && next(updatedProduct);
-//   res.status(OK).json(updatedProduct);
-// });
+  const updatedSale = await service.update(id, itensSold);
+  updatedSale.error && next(updatedSale);
+  res.status(OK).json(updatedSale);
+});
 
 // const deleteProduct = rescue(async (req, res, next) => {
 //   const { id } = req.params;
@@ -50,6 +50,6 @@ module.exports ={
   getAllSales,
   createSales,
   getById,
-  // updateProduct,
+  updateSale,
   // deleteProduct, 
 };

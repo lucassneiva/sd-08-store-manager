@@ -53,21 +53,21 @@ const getById = async (id) => {
   return saleId;
 };
 
-// const update = async (id, name, quantity) => {
-//   const { error } = schema.validate({ name, quantity });
+const update = async (id, itensSold) => {
+  const { error } = schema.validate(itensSold);
 
-//   if (error) { 
-//     return {
-//       code: 'invalid_data',
-//       error,
-//       status: 422
-//     };
-//   };
+  if (error) { 
+    return {
+      code: 'invalid_data',
+      error: { message: 'Wrong product ID or invalid quantity'},
+      status: 422
+    };
+  };
 
-//   const productId = await model.update(id, name, quantity);
+  const sale = await model.update(id, itensSold);
 
-//   return productId;
-// };
+  return sale;
+};
 
 // const deleteProduct = async (id) => {
 //   const product = await model.getById(id);
@@ -90,7 +90,7 @@ module.exports = {
   getAll,
   add,
   getById,
-  // update,
+  update,
   // deleteProduct,
 }; 
   

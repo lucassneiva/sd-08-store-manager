@@ -32,6 +32,8 @@ app.get('/sales', sales.getAllSales );
 app.get('/sales/:id', sales.getById);
 // Criar vendas
 app.post('/sales', sales.createSales);
+//Atualizar vendas
+app.put('/sales/:id', sales.updateSale);
 
 app.use(errorMiddleware);
 
