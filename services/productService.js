@@ -5,6 +5,11 @@ const create = async (name, quantity) => {
   return ops[0];
 };
 
+const hasProduct = async (name) => {
+  return await productModel.getProductByName(name) !== null;
+};
+
 module.exports = {
   create,
+  hasProduct,
 };
