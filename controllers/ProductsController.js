@@ -13,7 +13,7 @@ const getAll = async (_req, res) => {
 const getById = async (req, res) => {
   const { id } = req.params;
   const product = await Products.getById(id);
-  if (product.err) res.status(STATUS_CODE_ERROR).json(product);
+  if (product.err) return res.status(STATUS_CODE_ERROR).json(product);
   res.status(STATUS_CODE_OK).json(product);
 };
 
@@ -27,16 +27,16 @@ const create = async (req, res) => {
 const update = async (req, res) => {
   const { name, quantity } = req.body;
   const { id } = req.params;
-  const product = await Products.update(id, name, quantity);
+  const product = await Products.update(id, { name, quantity });
   if (product.err) return res.status(STATUS_CODE_ERROR).json(product);
-  return res.status(STATUS_CODE_OK).json(product);
+  res.status(STATUS_CODE_OK).json(product);
 };
 
 const remove = async (req, res) => {
   const { id } = req.params;
   const product = await Products.remove(id);
   if (product.err) return res.status(STATUS_CODE_ERROR).json(product);
-  return res.status(STATUS_CODE_OK).json(product);
+  res.status(STATUS_CODE_OK).json(product);
 };
 
 module.exports = {

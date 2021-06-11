@@ -4,7 +4,7 @@ const { ObjectId } = require('mongodb');
 const MIN_NAME_LENGTH = 5;
 const MIN_QUANTITY = 1;
 
-const productIsValid = (name, quantity) => {
+const productIsValid = ({ name, quantity }) => {
   if (typeof name !== 'string'|| name.length < MIN_NAME_LENGTH) return {
     err: {
       code: 'invalid_data',
@@ -27,8 +27,9 @@ const productIsValid = (name, quantity) => {
 };
 
 const getAll = async () => {
+  const products = await Products.getAll();
   return {
-    products: await Products.getAll()
+    products
   };
 };
 
@@ -51,7 +52,7 @@ const create = async (name, quantity) => {
       message: 'Product already exists'
     }
   };
-  const productValid = productIsValid(name, quantity);
+  const productValid = productIsValid({ name, quantity });
   if (typeof productValid === 'object') return productValid;
   const { insertedId } = await Products.create(name, quantity);
   return {
@@ -61,14 +62,13 @@ const create = async (name, quantity) => {
   };
 };
 
-const update = async (id, name, quantity) => {
-  const productValid = productIsValid(name, quantity);
+const update = async (id, product) => {
+  const productValid = productIsValid(product);
   if (typeof productValid === 'object') return productValid;
-  await Products.update(id, name, quantity);
+  await Products.update(id, product);
   return {
     _id: id,
-    name,
-    quantity
+    ...product,
   };
 };
 
