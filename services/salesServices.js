@@ -24,10 +24,10 @@ const findById = async (id) => {
 };
 
 const getAll = async () => {
-  const data = await salesModel.getAll();
-  if(!data) return null;
+  const sales = await salesModel.getAll();
+  if(!sales) return null;
 
-  return { status: 200, data };
+  return { status: 200, sales };
 };
 
 const updateByID = async (id, productId, quantity) => {

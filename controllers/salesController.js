@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const salesServices = require('../services/salesServices');
-const ERROR_CODE = 422;
+const ERROR_CODE = 404;
 const STATUS_OK = 200;
 
 router.post('/', async (req, res) => {
@@ -23,7 +23,7 @@ router.get('/:id', async (req, res) => {
 
   if(!body) return res
     .status(ERROR_CODE)
-    .json({err: { code: 'invalid_data', message: 'Wrong id format' } });
+    .json({err: { code: 'not_found', message: 'Sale not found' } });
 
   return res.status(body.status).json(body.data);
 });
