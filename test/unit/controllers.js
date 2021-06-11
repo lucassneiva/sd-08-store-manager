@@ -314,4 +314,66 @@ describe('Na camada CONTROLLERS', () => {
       });
     });
   });
+
+
+
+
+  describe('ao chamar DELETEBYID para deletar um produto específico', async () => {
+    describe('quando não é encontrado uma correspondência', async () => {
+      const response = {};
+      const request = {};
+      const ID_EXAMPLE = '5f43a7ca92d58904914656b6'
+      let next = {};
+      const error = {
+        message: 'Wrong id format',
+      };
+  
+      before(() => {
+        request.params = { id: ID_EXAMPLE };
+        next = sinon.stub().returns();
+        sinon.stub(StoreService, 'deleteById').resolves(error);
+      })
+  
+      after(() => {
+        StoreService.deleteById.restore();
+      })
+
+      it('chama o método next com a string de erro', async () => {
+        await StoreController.deleteById(request, response, next);
+        expect(next.calledWith(sinon.match.string)).to.be.equal(true);
+        expect(next.calledWith('Wrong id format')).to.be.equal(true);
+      });
+    });
+  
+    describe('quando existe uma correspondência', async () => {
+      const response = {};
+      const request = {};
+      const ID_EXAMPLE = '5f43a7ca92d58904914656b6'
+      const payloadProduct = {
+        name: 'Produto do Batista',
+        quantity: 100,
+      };
+  
+      before(() => {
+        request.params = { id: ID_EXAMPLE };
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+        sinon.stub(StoreService, 'deleteById').resolves({ _id: ID_EXAMPLE, ...payloadProduct });
+      })
+  
+      after(() => {
+        StoreService.deleteById.restore();
+      })
+  
+      it('é chamado o método "status" passando o código 200', async () => {
+        await StoreController.deleteById(request, response);
+        expect(response.status.calledWith(200)).to.be.equal(true);
+      });
+  
+      it('é chamado o método "json" passando um objeto', async () => {
+        await StoreController.deleteById(request, response);
+        expect(response.json.calledWith({ _id: ID_EXAMPLE, ...payloadProduct })).to.be.equal(true);
+      });
+    });
+  });
 });

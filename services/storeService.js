@@ -3,6 +3,8 @@ const { ObjectId } = require('mongodb');
 
 const StoreModel = require('../models/storeModel');
 
+const message = 'Wrong id format';
+
 const requestDataIsValid = (name, quantity) => {
   const requiredNonEmptyString = Joi.string().not().empty().required();
   const requiredNonEmptyNumber = Joi.number().not().empty().required();
@@ -33,16 +35,16 @@ const getAll = async () => {
 };
 
 const findById = async (id) => {
-  if(!ObjectId.isValid(id)) return { message: 'Wrong id format' };
+  if(!ObjectId.isValid(id)) return { message };
   const product = await StoreModel.findById(id);
-  if (!product) return { message: 'Wrong id format' };
+  if (!product) return { message };
   return product;
 };
 
 const updateById = async (id, name, quantity) => {
   if(!ObjectId.isValid(id)) {
     // console.log('entrou no id');
-    return { message: 'Wrong id format' };
+    return { message };
   }
   const { error } = requestDataIsValid(name, quantity);
   if (error) {
@@ -59,6 +61,13 @@ const updateById = async (id, name, quantity) => {
   return { modifiedCount };
 };
 
+const deleteById = async (id) => {
+  if(!ObjectId.isValid(id)) return { message };
+  const product = await StoreModel.deleteById(id);
+  if (!product) return { message };
+  return product;
+};
+
 module.exports = {
-  create, getAll, findById, updateById
+  create, getAll, findById, updateById, deleteById
 };

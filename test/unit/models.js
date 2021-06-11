@@ -178,4 +178,40 @@ describe('Na camada MODELS', async () => {
       });
     });
   });
+
+
+
+
+
+  describe('ao chamar o DELETEBYID para deletar um filme através do ID', async () => {
+    describe('quando não é encontrado uma correspondência', async () => {
+      const ID_EXAMPLE = '5f43a7ca92d58904914656b6'
+      it('retorna "null"', async () => {
+        const response = await StoreModel.deleteById(ID_EXAMPLE);
+        expect(response).to.be.equal(null)
+      });
+    });
+  
+    describe('quando existe uma correspondência', async() => {
+      let ID_EXAMPLE = '';
+      beforeEach(async () => {
+        db = connectionMock.db('StoreManager');
+        const id = await db.collection('products').insertMany([
+          { "name": "Produto do Batista", "quantity": 10 },
+          { "name": "Produto Silva", "quantity": 10 },
+        ]);
+        ID_EXAMPLE = id.insertedIds[0];
+      });
+        
+      it('retorna um objeto', async () => {
+        const response = await StoreModel.deleteById(ID_EXAMPLE);
+        expect(response).to.be.a('object')
+      });
+  
+      it('o objeto possui as propriedades: "_id", "name" e "quantity"', async () => {
+        const response = await StoreModel.deleteById(ID_EXAMPLE);
+        expect(response).to.include.all.keys('_id', 'name', 'quantity')
+      });
+    });
+  });
 });

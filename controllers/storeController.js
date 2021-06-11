@@ -42,6 +42,13 @@ const updateById = rescue(async (req, res, next) => {
   res.status(successStatus).json({ _id: id, name, quantity });
 });
 
+const deleteById = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const response = await StoreService.deleteById(id);
+  if (response.message) return next(response.message);
+  res.status(successStatus).json(response);
+});
+
 module.exports = {
-  create, getAll, findById, updateById,
+  create, getAll, findById, updateById, deleteById,
 };

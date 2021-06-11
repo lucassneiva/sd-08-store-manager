@@ -33,6 +33,19 @@ const updateById = async (id, name, brand) => {
     .updateOne({ _id: ObjectId(id) }, { $set: { name, brand } });
 };
 
+const deleteById = async (id) => {
+  const db = await connection();
+  const product = await findById(id);
+  await db.collection('products')
+    .deleteOne({ _id: ObjectId(id) });
+  return product;
+};
+
 module.exports = {
-  create, findByName, getAll, findById, updateById,
+  create,
+  findByName,
+  getAll,
+  findById,
+  updateById,
+  deleteById,
 };

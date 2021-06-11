@@ -324,4 +324,65 @@ describe('Na camada SERVICES', async () => {
       });
     });
   });
+
+  describe('ao chamar DELETEBYID para deletar um produto através do ID', async () => {
+    const ID_EXAMPLE = '5f43a7ca92d58904914656b6'
+    const ID_INVALID = '12345'
+    const payloadProduct = {
+      name: 'Produto do Batista',
+      quantity: 100,
+    };
+
+    describe('quando Id não é válido', async() => {
+      before(() => {
+        sinon.stub(StoreModel, 'deleteById').resolves(null);
+      });
+  
+      after(() => {
+        StoreModel.deleteById.restore();
+      });
+  
+      it('o retorno é um objeto com mensagem "Wrong id format"', async () => {
+        const response = await StoreService.deleteById(ID_INVALID);
+        expect(response).to.be.a('object');
+        expect(response.message).to.be.equal('Wrong id format');
+      });
+    });
+
+    describe('quando não é encontrado uma correspondência', async() => {
+      before(() => {
+        sinon.stub(StoreModel, 'deleteById').resolves(null);
+      });
+  
+      after(() => {
+        StoreModel.deleteById.restore();
+      });
+  
+      it('o retorno é um objeto com mensagem "Wrong id format"', async () => {
+        const response = await StoreService.deleteById(ID_EXAMPLE);
+        expect(response).to.be.a('object');
+        expect(response.message).to.be.equal('Wrong id format');
+      });
+    });
+      
+    describe('quando existe uma correspondência', async () => {
+      before(() => {
+        sinon.stub(StoreModel, 'deleteById').resolves({ _id: ID_EXAMPLE, ...payloadProduct });
+      });
+  
+      after(() => {
+        StoreModel.deleteById.restore();
+      });
+  
+      it('retorna um objeto', async () => {
+        const response = await StoreService.deleteById(ID_EXAMPLE);
+        expect(response).to.be.an('object');
+      });
+  
+      it('o objeto possui as propriedades "_id", "name" e "quantity"', async () => {
+        const response = await StoreService.deleteById(ID_EXAMPLE);
+        expect(response).to.include.all.keys('_id', 'name', 'quantity')
+      });
+    });
+  });
 });
