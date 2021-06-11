@@ -14,13 +14,14 @@ const readById = async (table, id) => conn()
     : null
   );
 
+  
 const update = async (table, id, item) => {
   if (!ObjectId.isValid(id)) return null;
   conn()
     .then((db) => db.collection(table).updateOne({ _id: ObjectID(id) }, { $set: item }))
     .then(() => ({ _id: id, ...item }));
 };
-
+  
 const exclude = async (table, id) => {
   if (!ObjectId.isValid(id)) return null;
   return conn()
@@ -30,10 +31,24 @@ const exclude = async (table, id) => {
     );
 };
 
+// ESPECIFIC QUERIES
+
+const checkProductName = async (name) => {
+  const product = await conn()
+    .then((db) => db.collection('products').findOne({ name }));
+
+  return product ? true : false;
+};
+
+const drop = async () => conn()
+  .then((db) => db.dropDatabase());
+
 module.exports = {
   getAll,
   create,
   readById,
   update,
   exclude,
+  checkProductName,
+  drop,
 };
