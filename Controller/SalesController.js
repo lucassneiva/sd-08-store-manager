@@ -1,23 +1,25 @@
-const ProductModel = require('../models/ProductModel');
-const func = require('../util');
-const status = require('./status');
+const SalesService = require('../Service/SaleService');
 
+const { StatusCodes } = require('http-status-codes');
 
-const getAll = async () => {
-  const result = await ProductModel.getAllProducts();
-  const formatedResult = { products: [...result] };
-  return formatedResult;
+const getAllSales = async (_req, res) => {
+  console.log('[SALES CONTROLLER] : CHAMOU O MÉTODO BUSCAR AS SALES');
+  try {
+    const result = await SaleService.getAllSales();
+    return res.status(StatusCodes.OK).json(result);
+  } catch (error) {
+    console.log(`[SALES CONTROLLER]: BUSCAR => ${error}`);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
+  }
 };
 
-
-const findById = async (id) => {
+const getOneSale = async (id) => {
   const result = await ProductModel.findById(id);
   return result;
 };
 
-
-const editById = async (id, name, quantity) => {
-  if (!func.validName(name)) {
+const editSale = async () => {};
+/*  if (!func.validName(name)) {
     return {
       isError: true,
       code: 'invalid_data',
@@ -41,69 +43,16 @@ const editById = async (id, name, quantity) => {
       code: 'invalid_data',
       status: status.UNPROCESSABLE_ENTITY,
       message: '\"quantity\" must be larger than or equal to 1',
-    };
-  }
+    }; */
 
+const createSale = async () => {};
 
-
-  const findProduct = await ProductModel.updateById(id, name, quantity);
-  return findProduct;
-};
-
-
-const create = async (name, quantity) => {
-  if (!await func.validName(name)) {
-    return {
-      isError: true,
-      code: 'invalid_data',
-      status: status.UNPROCESSABLE_ENTITY,
-      message: '"name" length must be at least 5 characters long',
-    };
-  };
-
-  if (!await func.quantityIsNumber(quantity)) {
-    return {
-      isError: true,
-      code: 'invalid_data',
-      status: status.UNPROCESSABLE_ENTITY,
-      message: '\"quantity\" must be a number',
-    };
-  };
-
-  if (!await func.validInsertQuantity(quantity)) {
-    return {
-      isError: true,
-      code: 'invalid_data',
-      status: status.UNPROCESSABLE_ENTITY,
-      message: '\"quantity\" must be larger than or equal to 1',
-    };
-  }
-
-  const nameResult = await ProductModel.findProductByName(name);
-
-  if (!await func.nameAlreadyExists(nameResult)) {
-    return {
-      isError: true,
-      code: 'invalid_data',
-      status: status.UNPROCESSABLE_ENTITY,
-      message: 'Product already exists',
-    };
-  }
-
-  const product = await ProductModel.createProduct(name, quantity);
-
-  return product;
-};
-
-const deleteById = async (id) => {
-  const product = await ProductModel.deleteProduct(id);
-  return product;
-};
+const deleteSale = async () => {};
 
 module.exports = {
-  getAll,
-  findById,
-  create,
-  editById,
-  deleteById,
+  getAllSales,
+  getOneSale,
+  createSale,
+  editSale,
+  deleteSale,
 };

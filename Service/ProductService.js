@@ -62,7 +62,7 @@ const getAllProducts = async () => {
 
 const getProductId = async (id) => {
   const result = await ProductModel.findById(id);
-  if (result === null)
+  if (!result )
     return {
       isError: true,
       err: {

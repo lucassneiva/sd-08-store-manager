@@ -3,12 +3,10 @@ const SalesController = require('../controller/SalesController');
 
 const SalesRouter = Router();
 
-SalesRouter.get('/', SalesController.getAllCrushs).post('/', SalesController.addCrush);
+SalesRouter.get('/', SalesController.getAllSales).post('/', SalesController.createSale);
 
-SalesRouter.get('/search', SalesController.searchCrush);
-
-SalesRouter.get('/:id', SalesController.getOneCrush)
-  .put('/:id', SalesController.editCrush)
-  .delete('/:id', SalesController.deleteCrush);
+SalesRouter.get('/:id', SalesController.getOneSale)
+  .put('/:id', SalesController.editSale)
+  .delete('/:id', SalesController.deleteSale);
 
 module.exports = SalesRouter;

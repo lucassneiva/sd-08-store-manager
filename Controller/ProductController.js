@@ -45,7 +45,8 @@ const deleteProduct = async (req, res) => {
   const { id } = req.params;
   try {
     const product = await ProductService.deleteProduct(id);
-    res.status(StatusCodes.NO_CONTENT).json(product);
+    if (product.isError) return res.status(product.status).json(product);
+    return res.status(StatusCodes.OK).json(product);
   } catch (error) {
     console.log(`[PRODUCTS CONTROLLER] : buscar => ${error}`);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
@@ -58,7 +59,8 @@ const updateProduct = async (req, res) => {
     const { id } = req.params;
     const { name, quantity } = req.body;
     const product = await ProductService.updateProduct(id, name, quantity);
-    res.status(StatusCodes.OK).json(product);
+    if (product.isError) return res.status(product.status).json(product);
+    return res.status(StatusCodes.OK).json(product);
   } catch (error) {
     console.log(`[PRODUCTS CONTROLLER] : buscar => ${error}`);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: error.message });
