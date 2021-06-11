@@ -41,9 +41,18 @@ const updateByID = async (id, name, quantity) => {
   return { status: 200, message: { id, name, quantity } };
 };
 
+const deleteByID = async (id) => {
+  const data = await productsModel.deleteByID(id);
+
+  if(data && data.deletedCount && data.deletedCount === 1) return { status: 200, data };
+
+  return null;
+};
+
 module.exports = {
   insert,
   findById,
   getAll,
-  updateByID
+  updateByID,
+  deleteByID
 };

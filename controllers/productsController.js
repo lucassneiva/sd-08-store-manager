@@ -55,9 +55,22 @@ const updateByID = async (req, res) => {
   return res.status(data.status).json(data.message);
 };
 
+const deleteByID = async (req, res) => {
+  const { id } = req.params;
+  const product = await productsServices.findById(id);
+  const data = await productsServices.deleteByID(id);
+
+  if(!data) return res
+    .status(ERROR_CODE)
+    .json({err: { code: 'invalid_data', message: 'Wrong id format' } });
+
+  return res.status(data.status).json(product.data);
+};
+
 module.exports = {
   insert,
   findByID,
   getAll,
-  updateByID
+  updateByID,
+  deleteByID
 };
