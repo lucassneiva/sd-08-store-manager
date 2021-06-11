@@ -1,6 +1,13 @@
-const { getAll, create, checkProductName } = require('./mongoModel');
+const {
+  getAll,
+  create,
+  checkProductName,
+  readById,
+} = require('./mongoModel');
 
 const getAllProducts = async () => await getAll('products');
+
+const getById = async (id) => await readById('products', id);
 
 const createProduct = async (product) => await create('products', product);
 
@@ -10,4 +17,5 @@ module.exports = {
   getAllProducts,
   createProduct,
   checkName,
+  getById,
 };

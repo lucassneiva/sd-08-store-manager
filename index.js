@@ -18,6 +18,7 @@ app.get('/', (_request, response) => {
 // PRODUCTS
 
 app.get('/products', products.getAllProducts);
+app.get('/products/:id', products.getProductbyId);
 app.post('/products', products.addProduct);
 
 // GET ERRORS

@@ -1,5 +1,6 @@
 const joi = require('@hapi/joi');
 const model = require('../models/productModel');
+const { ObjectID } = require('mongodb');
 
 const ONE = 1;
 const FIVE = 5;
@@ -20,6 +21,18 @@ const schema = joi.object({
 });
 
 const getAll = async () => model.getAllProducts();
+
+const getById = async (id) => {
+  const resp = await model.getById(id);
+
+  return resp
+    ? model.getById(id)
+    : {
+      code: 'invalid_data',
+      error: { message: 'Wrong id format' },
+      status: UNPROCESS,
+    };
+};
 
 const create = async (product) => {
   const { error } = schema.validate(product);
@@ -45,4 +58,4 @@ const create = async (product) => {
   return model.createProduct(product);
 };
 
-module.exports = { getAll, create };
+module.exports = { getAll, getById, create };
