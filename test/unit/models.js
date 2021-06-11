@@ -7,7 +7,7 @@ const ProductsModels = require('../../models/Products');
 const SalesModels = require('../../models/Sales');
 
 const payloadProduct = { name: 'Bola de futebol', quantity: 20 };
-const anotherProduct = { name: 'Bola de basebol', quantity: 10 };
+const anotherProduct = { name: 'Bola de beisebol', quantity: 10 };
 
 describe('Testa o model do Produto', () => {
   let DBServer;

@@ -5,7 +5,7 @@ const MIN_NAME_LEN = 5;
 const MIN_QNT = 0;
 
 const isValid = (product) => {
-  const {name,quantity} = product;
+  const { name, quantity } = product;
   if (typeof name !== 'string' || name.length <= MIN_NAME_LEN) {
     return {
       err: {
@@ -66,7 +66,6 @@ const getById = async (id) => {
     };
   }
   const product = await Products.getById(id);
-
   return product;
 };
 
@@ -74,18 +73,19 @@ const updateById = async (id, updatedProduct) => {
   const validation = isValid(updatedProduct);
   if (validation.err) return validation;
 
-  if (!ObjectId.isValid(id)) return {
-    err: {
-      code: 'invalid_data',
-      message: 'Id not found',
-    },
-  };
-  
+  if (!ObjectId.isValid(id))
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format',
+      },
+    };
+
   await Products.updateById(id, updatedProduct);
 
   return {
     _id: id,
-    ...updatedProduct
+    ...updatedProduct,
   };
 };
 
@@ -100,9 +100,7 @@ const deleteById = async (id) => {
   }
 
   const deletedProduct = await Products.getById(id);
-  
   await Products.deleteById(id);
-  
   return deletedProduct;
 };
 
