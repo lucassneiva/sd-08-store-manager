@@ -4,7 +4,7 @@ const MIN_LENGTH = 5;
 const MIN_QUANTITY = 1;
 
 const productSchema = Joi.object({
-  name: Joi
+  productId: Joi
     .string()
     .min(MIN_LENGTH)
     .required(),

@@ -8,7 +8,6 @@ const create = async (product) => {
   if (productExists) {
     return {
       error: {
-        code: 'invalid_data',
         message: 'Product already exists'
       }
     };
@@ -25,7 +24,6 @@ const findById = async (id) => {
   if (!product) {
     return {
       error: {
-        code: 'invalid_data',
         message: 'Wrong id format'
       }
     };
@@ -44,7 +42,6 @@ const remove = async (product) => {
   if (!removedProduct) {
     return {
       error: {
-        code: 'invalid_data',
         message: 'Wrong id format'
       }
     };
