@@ -12,13 +12,11 @@ const add = async (req, res) => {
   if (product.err) {
     return res.status(UNPROCESSABLE_ENTITY).json(product);
   }
-
   return res.status(CREATED).json(product);
 };
 
 const getAll = async (_req, res) => {
   const products = await Products.getAll();
-
   return res.status(OK).json(products);
 };
 

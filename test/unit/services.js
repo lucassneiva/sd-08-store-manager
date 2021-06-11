@@ -6,63 +6,33 @@ const SalesModels = require('../../models/Sales');
 const ProductsServices = require('../../services/Products');
 const SalesServices = require('../../services/Sales');
 
-const PRODUCT_RESULT_SUCCESS = {
-  _id: '60beb13dd17ae2dec95b598f',
-  name: 'Bola de futebol',
-  quantity: 10,
-};
-const FIND_PRODUCT_RESULT = {
-  _id: '60b6f3afb16f873447e04cf3',
-  name: 'Bola de beisebol',
-  quantity: 10,
-};
-const GET_ALL_RESULT_PRODUCTS = [
-  {
-    _id: '60beb13dd17ae2dec95b598f',
-    name: 'Bola de futebol',
-    quantity: 10,
-  },
-];
-const SALE_RESULT_SUCCESS = {
-  itensSold: [
-    {
-      productId: '60beb13dd17ae2dec95b598f',
-      quantity: 3,
-    },
-  ],
-  _id: '60bee1b929ec702d7ba5946a',
-};
-const GET_ALL_RESULT_SALES = [
-  {
-    itensSold: [
-      {
-        productId: '60beb13dd17ae2dec95b598f',
-        quantity: 3,
-      },
-    ],
-    _id: '60bee1b929ec702d7ba5946a',
-  },
-];
-const INVALID_DATA = 'invalid_data';
-const INVALID_NAME = '"name" length must be at least 5 characters long';
-const INVALID_QNT = '"quantity" must be larger than or equal to 1';
-const INVALID_QNT_FORMAT = '"quantity" must be a number';
-const PRODUCT_EXISTS = 'Product already exists';
-const VALID_PRODUCT_ID = '60beb13dd17ae2dec95b598f';
-const VALID_SALE_ID = '60bee1b929ec702d7ba5946a';
-const INVALID_ID = '9999';
-const INVALID_ID_MESSAGE = 'Wrong id format';
-const INVALID_SALE_ID_MESSAGE = 'Wrong sale ID format';
-const STOCK_PROBLEM = 'stock_problem';
-const INVALID_QNT_SOLD = 'Such amount is not permitted to sell';
-const WRONG_SALE_DATA = 'Wrong product ID or invalid quantity';
-const NOT_FOUND = 'not_found';
-const SALE_NOT_FOUND = 'Sale not found';
+const {
+  PRODUCT,
+  OTHER_PRODUCT,
+  GET_ALL_PRODUCTS,
+  SALE,
+  GET_ALL_SALES,
+  VALID_PRODUCT_ID,
+  VALID_SALE_ID,
+  INVALID_ID,
+  NOT_FOUND,
+  INVALID_DATA,
+  STOCK_PROBLEM,
+  INVALID_NAME,
+  INVALID_QNT,
+  INVALID_QNT_FORMAT,
+  INVALID_QNT_SOLD,
+  INVALID_ID_MESSAGE,
+  INVALID_SALE_ID_MESSAGE,
+  PRODUCT_EXISTS,
+  SALE_NOT_FOUND,
+  WRONG_SALE_DATA,
+} = require('./constants');
 
 describe('Testa o services do Produto', () => {
   describe('Testa a função add', () => {
     beforeEach(() => {
-      sinon.stub(ProductsModels, 'add').resolves(PRODUCT_RESULT_SUCCESS);
+      sinon.stub(ProductsModels, 'add').resolves(PRODUCT);
     });
 
     afterEach(() => {
@@ -130,7 +100,7 @@ describe('Testa o services do Produto', () => {
     });
 
     it('5 - Deve retornar um objeto de erro se o produto já estiver cadastrado', async () => {
-      sinon.stub(ProductsModels, 'findProduct').resolves(FIND_PRODUCT_RESULT);
+      sinon.stub(ProductsModels, 'findProduct').resolves(OTHER_PRODUCT);
       const payload = { name: 'Bola de beisebol', quantity: 10 };
       const response = await ProductsServices.add(payload);
       const {
@@ -145,7 +115,7 @@ describe('Testa o services do Produto', () => {
 
   describe('Testa a função getAll', () => {
     it('6 - Deve listar todos os produtos', async () => {
-      sinon.stub(ProductsModels, 'getAll').resolves(GET_ALL_RESULT_PRODUCTS);
+      sinon.stub(ProductsModels, 'getAll').resolves(GET_ALL_PRODUCTS);
       const response = await ProductsServices.getAll();
       const { products } = response;
 
@@ -163,7 +133,7 @@ describe('Testa o services do Produto', () => {
 
   describe('Testa a função getById', () => {
     beforeEach(() => {
-      sinon.stub(ProductsModels, 'getById').resolves(PRODUCT_RESULT_SUCCESS);
+      sinon.stub(ProductsModels, 'getById').resolves(PRODUCT);
     });
 
     afterEach(() => {
@@ -191,7 +161,7 @@ describe('Testa o services do Produto', () => {
 
   describe('Testa a função updateById', () => {
     it('9 - Deve atualizar um produto pelo ID', async () => {
-      const { quantity: oldQnt } = PRODUCT_RESULT_SUCCESS;
+      const { quantity: oldQnt } = PRODUCT;
       const updatedProduct = await ProductsServices.updateById(VALID_PRODUCT_ID, {
         name: 'Bola de futebol',
         quantity: 30,
@@ -266,7 +236,7 @@ describe('Testa o services do Produto', () => {
 
   describe('Testa a função deleteById', () => {
     beforeEach(() => {
-      sinon.stub(ProductsModels, 'getById').resolves(PRODUCT_RESULT_SUCCESS);
+      sinon.stub(ProductsModels, 'getById').resolves(PRODUCT);
     });
 
     afterEach(() => {
@@ -295,9 +265,9 @@ describe('Testa o services do Produto', () => {
 describe('Testa o services das Vendas', () => {
   describe('Testa a função add', () => {
     beforeEach(() => {
-      sinon.stub(SalesModels, 'add').resolves(SALE_RESULT_SUCCESS);
-      sinon.stub(ProductsModels, 'getById').resolves(PRODUCT_RESULT_SUCCESS);
-      sinon.stub(ProductsModels, 'getAll').resolves(GET_ALL_RESULT_PRODUCTS);
+      sinon.stub(SalesModels, 'add').resolves(SALE);
+      sinon.stub(ProductsModels, 'getById').resolves(PRODUCT);
+      sinon.stub(ProductsModels, 'getAll').resolves(GET_ALL_PRODUCTS);
       sinon.stub(ProductsModels, 'updateById').resolves({});
     });
 
@@ -363,7 +333,7 @@ describe('Testa o services das Vendas', () => {
 
   describe('Testa a função getAll', () => {
     it('21 - Deve listar todas as vendas', async () => {
-      sinon.stub(SalesModels, 'getAll').resolves(GET_ALL_RESULT_SALES);
+      sinon.stub(SalesModels, 'getAll').resolves(GET_ALL_SALES);
       const response = await SalesServices.getAll();
       const { sales } = response;
 
@@ -384,7 +354,7 @@ describe('Testa o services das Vendas', () => {
     });
 
     it('22 - Deve buscar um produto pelo ID com sucesso retornando um objeto com "_id"e "itensSold"', async () => {
-      sinon.stub(SalesModels, 'getById').resolves(SALE_RESULT_SUCCESS);
+      sinon.stub(SalesModels, 'getById').resolves(SALE);
       const response = await SalesServices.getById(VALID_SALE_ID);
 
       expect(response).to.be.a('object');
@@ -416,8 +386,8 @@ describe('Testa o services das Vendas', () => {
   describe('Testa a função updateById', () => {
     beforeEach(() => {
       sinon.stub(SalesModels, 'updateById').resolves({});
-      sinon.stub(ProductsModels, 'getAll').resolves(GET_ALL_RESULT_PRODUCTS);
-      sinon.stub(ProductsModels, 'getById').resolves(PRODUCT_RESULT_SUCCESS);
+      sinon.stub(ProductsModels, 'getAll').resolves(GET_ALL_PRODUCTS);
+      sinon.stub(ProductsModels, 'getById').resolves(PRODUCT);
       sinon.stub(ProductsModels, 'updateById').resolves({});
     });
 
@@ -432,7 +402,7 @@ describe('Testa o services das Vendas', () => {
       const salePayload = [{ productId: '60beb13dd17ae2dec95b598f', quantity: 2 }];
       const { _id: saleId, itensSold } = await SalesServices.updateById(VALID_SALE_ID, salePayload);
       expect(saleId).to.be.equal(VALID_SALE_ID);
-      expect(itensSold).not.to.have.members(SALE_RESULT_SUCCESS.itensSold);
+      expect(itensSold).not.to.have.members(SALE.itensSold);
     });
 
     it('26 - Deve retornar um objeto de erro se a quantidade de produtos vendidos for maior ou igual a quantidade em estoque', async () => {
@@ -482,10 +452,10 @@ describe('Testa o services das Vendas', () => {
 
   describe('Testa a função deleteById', () => {
     beforeEach(() => {
-      sinon.stub(SalesModels, 'getById').resolves(SALE_RESULT_SUCCESS);
+      sinon.stub(SalesModels, 'getById').resolves(SALE);
       sinon.stub(SalesModels, 'deleteById').resolves({});
-      sinon.stub(ProductsModels, 'getAll').resolves(GET_ALL_RESULT_PRODUCTS);
-      sinon.stub(ProductsModels, 'getById').resolves(PRODUCT_RESULT_SUCCESS);
+      sinon.stub(ProductsModels, 'getAll').resolves(GET_ALL_PRODUCTS);
+      sinon.stub(ProductsModels, 'getById').resolves(PRODUCT);
       sinon.stub(ProductsModels, 'updateById').resolves({});
     });
 

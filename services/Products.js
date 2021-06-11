@@ -35,7 +35,7 @@ const isValid = (product) => {
 
 const add = async (product) => {
   const existingProduct = await Products.findProduct(product);
-
+  console.log(product);
   const validation = isValid(product);
 
   if (validation.err) return validation;
