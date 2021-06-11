@@ -11,13 +11,13 @@ const getAllProducts = rescue(async (_req, res) => {
 
 const addProduct = rescue(async (req, res, next) => {
   const { name, quantity } = req.body;
+  let status = CREATED;
   const resp = await services.create({ name, quantity });
   if (resp.error) {
+    status = resp.status;
     next(resp);
   }
-
-  const status = resp.status ? resp.status : CREATED;
-  res.status(status).send(resp);
+  res.status(status).json(resp);
 });
 
 module.exports = { getAllProducts, addProduct };

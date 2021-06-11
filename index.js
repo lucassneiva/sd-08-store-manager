@@ -19,3 +19,15 @@ app.get('/', (_request, response) => {
 
 app.get('/products', products.getAllProducts);
 app.post('/products', products.addProduct);
+
+// GET ERRORS
+app.use((error, _req, res, _next) => {
+  console.log(error);
+  const resp = {
+    err: {
+      code: error.code,
+      message: error.error.message
+    }
+  };
+  res.status(error.status).json(resp);
+});
