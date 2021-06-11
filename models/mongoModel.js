@@ -40,9 +40,6 @@ const checkProductName = async (name) => {
   return product ? true : false;
 };
 
-const drop = async () => conn()
-  .then((db) => db.dropDatabase());
-
 module.exports = {
   getAll,
   create,
@@ -50,5 +47,4 @@ module.exports = {
   update,
   exclude,
   checkProductName,
-  drop,
 };
