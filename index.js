@@ -22,6 +22,8 @@ app.get('/products/:id', products.getById);
 app.post('/products', products.createProducts);
 //Atualizar produtos
 app.put('/products/:id', products.updateProduct);
+//Deletando produtos
+app.delete('/products/:id', products.deleteProduct);
 
 app.use(errorMiddleware);
 
