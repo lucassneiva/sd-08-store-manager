@@ -17,9 +17,9 @@ const readById = async (table, id) => conn()
   
 const update = async (table, id, item) => {
   if (!ObjectId.isValid(id)) return null;
-  conn()
+  return conn()
     .then((db) => db.collection(table).updateOne({ _id: ObjectID(id) }, { $set: item }))
-    .then(() => ({ _id: id, ...item }));
+    .then((resp) => ({ _id: resp.insertedId, ...item }));
 };
   
 const exclude = async (table, id) => {

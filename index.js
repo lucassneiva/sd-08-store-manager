@@ -20,10 +20,13 @@ app.get('/', (_request, response) => {
 app.get('/products', products.getAllProducts);
 app.get('/products/:id', products.getProductbyId);
 app.post('/products', products.addProduct);
+app.put('/products/:id', products.updateProduct);
 
 // GET ERRORS
 app.use((error, _req, res, _next) => {
+  console.log('-----------------------------------------------------');
   console.log(error);
+  console.log('-----------------------------------------------------');
   const resp = {
     err: {
       code: error.code,

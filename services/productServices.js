@@ -58,4 +58,32 @@ const create = async (product) => {
   return model.createProduct(product);
 };
 
-module.exports = { getAll, getById, create };
+const update = async (id, product) => {
+  const { error } = schema.validate(product);
+  if (error) {
+    return {
+      code: 'invalid_data',
+      error,
+      status: UNPROCESS,
+    };
+  }
+
+  const { quantity } = product;
+
+  if (typeof quantity !== 'number') {
+    return {
+      code: 'invalid_data',
+      error: { message: '"quantity" must be a number' },
+      status: UNPROCESS,
+    };
+  }
+
+  return model.updateProduct(id, product);
+};
+
+module.exports = {
+  getAll,
+  getById,
+  create,
+  update,
+};

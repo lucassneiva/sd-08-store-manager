@@ -31,8 +31,21 @@ const addProduct = rescue(async (req, res, next) => {
   res.status(status).json(resp);
 });
 
+const updateProduct = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  let status = OK;
+  const resp = await services.update(id, { name, quantity });
+  if (resp.error) {
+    status = resp.status;
+    next(resp);
+  }
+  res.status(status).send(resp);
+});
+
 module.exports = {
   getAllProducts,
   addProduct,
   getProductbyId,
+  updateProduct,
 };
