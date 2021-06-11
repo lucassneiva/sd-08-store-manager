@@ -39,9 +39,25 @@ const findById = async (id) => {
 
 const update = async (sale) => Sales.update(sale);
 
+const remove = async (id) => {
+  const removedProduct = await Sales.remove(id);
+
+  if (!removedProduct) {
+    return {
+      error: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }
+    };
+  }
+
+  return removedProduct;
+};
+
 module.exports = {
   create,
   findAll,
   findById,
-  update
+  update,
+  remove
 };

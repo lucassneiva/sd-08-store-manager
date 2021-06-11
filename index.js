@@ -26,6 +26,7 @@ app.post('/sales', sales.create);
 app.get('/sales/:id', sales.findById);
 app.get('/sales', sales.findAll);
 app.put('/sales/:id', sales.update);
+app.delete('/sales/:id', sales.remove);
 
 app.use(errorMiddleware);
 

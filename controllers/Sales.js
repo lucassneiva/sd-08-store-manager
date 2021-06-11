@@ -50,9 +50,20 @@ const update = rescue(async (req, res, next) => {
   res.status(OK).json(sale);
 });
 
+const remove = rescue(async (req, res, next) => {
+  const { id } = req.params;
+
+  const sale = await service.remove(id);
+
+  if (sale.error) return next(sale.error);
+
+  res.status(OK).json(sale);
+});
+
 module.exports = {
   create,
   findAll,
   findById,
-  update
+  update,
+  remove
 };
