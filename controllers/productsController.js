@@ -2,87 +2,60 @@ const express = require('express');
 
 const router = express.Router();
 
-const {
-  addProduct,
-  getAllProducts,
-  getProductById,
-  updateProduct,
-  deleteProduct,
-} = require('../models/productsModels');
-
-const { nameExists, nameFormat, quantityValidation } = require('../services');
+const Products = require('../services/productsServices');
 
 const STATUS_OK = 200;
 const CREATED = 201;
 const UNPROCESSABLE_ENTITY = 422;
-const ERROR = 500;
-const error_message = 'Something is wrong';
 
 router.get('/', async (_req, res) => {
-  try {
-    const allProducts = await getAllProducts();
-    res.status(STATUS_OK).json({ products: allProducts });
-  } catch (err) {
-    res.status(ERROR).json(error_message);
-  }
+  const allProducts = await Products.getAllProducts();
+  res.status(STATUS_OK).json(allProducts);
 });
 
 router.get('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const productById = await getProductById(id);
-    if (!productById) {
-      return res.status(UNPROCESSABLE_ENTITY)
-        .json({
-          err: {
-            code: 'invalid_data',
-            message: 'Wrong id format'
-          }});
-    }
-    res.status(STATUS_OK).json(productById);
-  } catch (err) {
-    res.status(ERROR).json(error_message);
+  const { id } = req.params;
+  const productById = await Products.getProductById(id);
+
+  if (productById.err) {
+    return res.status(UNPROCESSABLE_ENTITY).json(productById);
   }
+
+  return res.status(STATUS_OK).json(productById);
 });
 
-router.post('/', nameExists, nameFormat, quantityValidation, async (req, res) => {
-  try {
-    const { name, quantity } = req.body;
-    const newProduct = await addProduct(name, quantity);
-    res.status(CREATED).json(newProduct.ops[0]);
-  } catch (err) {
-    res.status(ERROR).json(error_message);
+router.post('/', async (req, res) => {
+  const { name, quantity } = req.body;
+  const newProduct = await Products.addProduct(name, quantity);
+
+  if (newProduct.err) {
+    return res.status(UNPROCESSABLE_ENTITY).json(newProduct);
   }
+
+  return res.status(CREATED).json(newProduct);
 });
 
-router.put('/:id', nameFormat, quantityValidation, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, quantity } = req.body;
-    const updatedProduct = await updateProduct(id, name, quantity);
-    res.status(STATUS_OK).json(updatedProduct);
-  } catch (err) {
-    res.status(ERROR).json(error_message);
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, quantity } = req.body;
+  const updatedProduct = await Products.updateProduct(id, name, quantity);
+
+  if (updatedProduct.err) {
+    return res.status(UNPROCESSABLE_ENTITY).json(updatedProduct);
   }
+
+  return res.status(STATUS_OK).json(updatedProduct);
 });
 
 router.delete('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const productById = await getProductById(id);
-    if (!productById) {
-      return res.status(UNPROCESSABLE_ENTITY)
-        .json({
-          err: {
-            code: 'invalid_data',
-            message: 'Wrong id format'
-          }});
-    }
-    const deletedProduct = await deleteProduct(id);
-    res.status(STATUS_OK).json(deletedProduct);
-  } catch (err) {
-    res.status(ERROR).json(error_message);
+  const { id } = req.params;
+  const deletedProduct = await Products.deleteProduct(id);
+
+  if (deletedProduct.err) {
+    return res.status(UNPROCESSABLE_ENTITY).json(deletedProduct);
   }
+
+  return res.status(STATUS_OK).json(deletedProduct);
 });
 
 module.exports = router;
