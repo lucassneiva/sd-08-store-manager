@@ -30,15 +30,16 @@ const getAll = async () => {
   return { status: 200, sales };
 };
 
-const updateByID = async (id, productId, quantity) => {
-  const validations = await salesSchema.validate(productId, quantity);
+const updateByID = async (id, itensSold) => {
+  const validations = await salesSchema.validate(itensSold);
 
   if (validations) return validations;
 
-  const data = await salesModel.updateByID(id, productId, quantity);
-  if(data.nModified === ZERO_MODIFIED) return null;
+  const data = await salesModel.updateByID(id, itensSold);
 
-  return { status: 200, message: { id, productId, quantity } };
+  if(data.modifiedCount === ZERO_MODIFIED) return null;
+
+  return { status: 200, message: { id, itensSold } };
 };
 
 const deleteByID = async (id) => {

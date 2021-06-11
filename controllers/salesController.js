@@ -40,14 +40,9 @@ router.get('/', async (_req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { productId, quantity } = req.body;
+  const itensSold = req.body;
 
-  const product = await salesServices.findById(id);
-
-  const correctProductId = productId? productId : product.data.productId;
-  const correctQuantity = quantity !== undefined ? quantity : product.data.quantity;
-
-  const body = await salesServices.updateByID(id, correctProductId, correctQuantity);
+  const body = await salesServices.updateByID(id, itensSold);
 
   if(body.err) return res.status(body.status).json(body);
 

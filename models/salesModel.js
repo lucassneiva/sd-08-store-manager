@@ -27,13 +27,13 @@ const getAll = async () => {
   }
 };
 
-const updateByID = async (id, productId, quantity) =>{
+const updateByID = async (id, itensSold) =>{
   try {
     const db = await connection();
     return await db.collection('sales')
       .updateOne(
         { '_id': ObjectId(id) },
-        { $set: { 'productId': productId, 'quantity': quantity },
+        { $set: { 'itensSold': itensSold },
         });
   } catch (error) {
     return null;
