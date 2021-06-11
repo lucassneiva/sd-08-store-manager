@@ -37,8 +37,11 @@ const findById = async (id) => {
   return sale;
 };
 
+const update = async (sale) => Sales.update(sale);
+
 module.exports = {
   create,
   findAll,
-  findById
+  findById,
+  update
 };

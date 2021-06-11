@@ -47,7 +47,7 @@ const update = rescue(async (req, res, next) => {
   const { name, quantity } = req.body;
   const { id } = req.params;
 
-  const product = await service.update({ id, name, quantity });
+  const product = await service.update({ id, product: { name, quantity } });
 
   if (product.error) return next(product.error);
 

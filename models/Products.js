@@ -37,8 +37,8 @@ const findById = async (id) => {
   return product;
 };
 
-const update = async (product) => {
-  const { id } = product;
+const update = async (updatedProduct) => {
+  const { id, product } = updatedProduct;
 
   if (!ObjectId.isValid(id)) return null;
 
@@ -58,6 +58,7 @@ const remove = async (product) => {
     .then((db) => db.collection('products')
       .deleteOne({ _id: ObjectId(id) }));
 
+  
   return { _id: id, ...product };
 };
 

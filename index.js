@@ -19,12 +19,13 @@ app.get('/', (_request, response) => {
 
 app.post('/products', products.create);
 app.get('/products/:id', products.findById);
+app.get('/products', products.findAll);
 app.put('/products/:id', products.update);
 app.delete('/products/:id', products.remove);
-app.get('/products', products.findAll);
 app.post('/sales', sales.create);
 app.get('/sales/:id', sales.findById);
 app.get('/sales', sales.findAll);
+app.put('/sales/:id', sales.update);
 
 app.use(errorMiddleware);
 
