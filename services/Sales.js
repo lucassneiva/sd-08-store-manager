@@ -11,6 +11,7 @@ const create = async (itensSold) => {
   if(productNotFound) {
     return {
       error: {
+        code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity'
       }
     };
@@ -19,6 +20,25 @@ const create = async (itensSold) => {
   return Sales.create(itensSold);
 };
 
+const findAll = async () => Sales.findAll();
+
+const findById = async (id) => {
+  const sale = await Sales.findById(id);
+
+  if (!sale) {
+    return {
+      error: {
+        code: 'not_found',
+        message: 'Sale not found'
+      }
+    };
+  }
+
+  return sale;
+};
+
 module.exports = {
   create,
+  findAll,
+  findById
 };

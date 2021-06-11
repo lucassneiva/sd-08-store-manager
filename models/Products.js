@@ -18,12 +18,12 @@ const findByName = async (name) => {
 };
 
 const findAll = async () => {
-  const product = await connection()
+  const products = await connection()
     .then((db) => db.collection('products').find().toArray());
 
-  if (!product) return null;
+  if (!products) return null;
 
-  return product;
+  return products;
 };
 
 const findById = async (id) => {
