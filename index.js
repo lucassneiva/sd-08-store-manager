@@ -21,6 +21,7 @@ app.get('/products', products.getAllProducts);
 app.get('/products/:id', products.getProductbyId);
 app.post('/products', products.addProduct);
 app.put('/products/:id', products.updateProduct);
+app.delete('/products/:id', products.deleteProduct);
 
 // GET ERRORS
 app.use((error, _req, res, _next) => {
