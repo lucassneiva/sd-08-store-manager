@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const salesServices = require('../services/salesServices');
 const ERROR_CODE = 404;
+const ERROR_CODE_DELETE = 422;
 const STATUS_OK = 200;
 
 router.post('/', async (req, res) => {
@@ -54,15 +55,14 @@ router.put('/:id', async (req, res) => {
   return res.status(body.status).json(body);
 });
 
-router.delete('/id', async (req, res) => {
-  console.log('entrei no delete');
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const sale = await salesServices.findById(id);
   const data = await salesServices.deleteByID(id);
 
   if(!data) return res
-    .status(ERROR_CODE)
-    .json({err: { code: 'invalid_data', message: 'Wrong id format' } });
+    .status(ERROR_CODE_DELETE)
+    .json({err: { code: 'invalid_data', message: 'Wrong sale ID format' } });
 
   return res.status(data.status).json(sale.data);
 });

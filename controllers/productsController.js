@@ -57,7 +57,7 @@ router.put('/:id', async (req, res) => {
   return res.status(data.status).json(data.message);
 });
 
-router.delete('/id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   const product = await productsServices.findById(id);
   const data = await productsServices.deleteByID(id);
