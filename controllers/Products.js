@@ -59,7 +59,7 @@ const remove = rescue(async (req, res, next) => {
 
   const product = await service.remove(id);
 
-  if (product?.error) return next(product.error);
+  if (product && product.error) return next(product.error);
 
   res.status(OK).json({ message: 'ok'});
 });
