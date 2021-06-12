@@ -1,4 +1,4 @@
-// Controller puxa/utiliza os services
+// Controller puxa/utiliza os services ou, dependendo, diretamente o models
 const productServices = require('../services/productServices');
 const responseNCodes = require('../utilities/errorsNCodes');
 const { OK, CREATED } = responseNCodes;
