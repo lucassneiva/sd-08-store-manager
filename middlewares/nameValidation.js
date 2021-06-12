@@ -10,7 +10,7 @@ const nameValidation = async (req, res, next) => {
     return res.status(UNPROCESSABLE_ENTITY_STATUS).json({
       err: {
         code: 'invalid_data',
-        message: '"name" length must be at last 5 characters long',
+        message: '"name" length must be at least 5 characters long',
       },
     });
   }
