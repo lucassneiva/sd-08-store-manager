@@ -44,7 +44,7 @@ const updateByID = async (id, itensSold) => {
 
 const deleteByID = async (id) => {
   const data = await salesModel.deleteByID(id);
-console.log(data);
+
   if(data && data.deletedCount && data.deletedCount === 1) return { status: 200, data };
 
   return null;
