@@ -26,9 +26,6 @@ app.delete('/products/:id', products.deleteProduct);
 
 // SALES
 
-app.get('/sales', sales.getAllSales);
-app.get('/sales/:id', sales.getSaleById);
-
 // GET ERRORS
 app.use((error, _req, res, _next) => {
   console.log('-----------------------------------------------------');
