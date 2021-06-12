@@ -32,7 +32,8 @@
     "jest": "^26.4.1",
     "mongoclient": "^1.0.3",
     "mongodb": "^3.5.9",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "rescue": "^6.0.4"
   },
   "devDependencies": {
     "chai": "^4.3.4",

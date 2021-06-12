@@ -1,4 +1,4 @@
-/* const frisby = require('frisby');
+const frisby = require('frisby');
 const { MongoClient } = require('mongodb');
 
 const mongoDbUrl = 'mongodb://localhost:27017';
@@ -342,7 +342,7 @@ describe('6 - Crie um endpoint para listar as vendas', () => {
       });
   });
 });
-
+/*
 describe('7 - Crie um endpoint para atualizar uma venda', () => {
   let connection;
   let db;
@@ -832,5 +832,4 @@ describe('10 - Valide a quantidade de produtos', () => {
         expect(json.err.message).toBe('Such amount is not permitted to sell');
       });
   });
-});
- */
+}); */
