@@ -1,12 +1,9 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-const create = async (name, quantity) => {
+const create = async (dataForUpdate) => {
   const db = await connection();
-  const result = await db.collection('products').insertOne({
-    name,
-    quantity
-  });
+  const result = await db.collection('products').insertOne(dataForUpdate);
   return result;
 };
 
@@ -24,8 +21,13 @@ const getByName = async (name) => {
 
 const getById = async (id) => {
   const db = await connection();
-  const result = await db.collection('products').findOne({ _id: ObjectId(id) });
-  return result;
+  try {
+    const result = await db.collection('products').findOne({ _id: ObjectId(id) });
+    return result;
+  } catch (err) {
+    console.error(`Id ${id} not found \n.`, err);
+    return { error: true };
+  }
 };
 
 const update = async (id, dataForUpdate) => {
@@ -41,13 +43,6 @@ const remove = async (id) => {
   await db.collection('products').deleteOne({ _id: ObjectId(id) });
   return product;
 };
-
-//getById('60c4f6f6ecc0b62dd790c178').then(console.log);
-//create('carne', 10).then(console.log);
-//updateOne('60c5077010eb4f4916417f9b', { name: 'feijoada', quantity: 10}).then(console.log);
-//remove('60c514fc910a926757f93344').then(console.log);
-//getAll().then(console.log);
-
 
 module.exports = {
   create,

@@ -1,27 +1,25 @@
 const productsModel = require('../models/productsModel');
-
 const productsSchema = require('../schema/productsSchema');
+const objErrorGenerator = require('../utils/errorObjGenerator');
 
-const create = async (name, quantity) => {
-  const { error } = productsSchema.product.validate({ name, quantity });
+const UNPROCESSABLE_ENTITY = 422;
 
-  if (error) return {
-    statusCode: 422,
-    code: 'invalid_data',
-    message: error.details[0].message,
-    error: true
-  };
+const create = async (dataForUpdate) => {
+  const { error } = productsSchema.product.validate(dataForUpdate);
 
+  if (error) {
+    const message = error.details[0].message;
+    return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
+  }
+
+  const { name } = dataForUpdate;
   const existsProduct = await productsModel.getByName(name);
-
-  if (existsProduct) return {
-    statusCode: 422,
-    code: 'invalid_data',
-    message: 'Product already exists',
-    error: true
+  if (existsProduct) {
+    const message = 'Product already exists';
+    return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
   };
 
-  const { ops } = await productsModel.create(name, quantity);
+  const { ops } = await productsModel.create(dataForUpdate);
   return ops[0];
 };
 
@@ -30,28 +28,22 @@ const getProducts = async (id = false) => {
     const result = await productsModel.getAll();
     return result;
   }
-  try {
-    const product = await productsModel.getById(id);
-    return product;
-  } catch (err) {
-    console.error('Wrong id format');
-    return {
-      statusCode: 422,
-      code: 'invalid_data',
-      message: 'Wrong id format',
-      error: true
-    };
-  }
+
+  const product = await productsModel.getById(id);
+  if (product.error) {
+    const message = 'Wrong id format';
+    return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
+  };
+
+  return product;
 };
 
 const update = async (id, dataForUpdate) => {
   const { error } = productsSchema.product.validate(dataForUpdate);
 
-  if (error) return {
-    statusCode: 422,
-    code: 'invalid_data',
-    message: error.details[0].message,
-    error: true
+  if (error) {
+    const message = error.details[0].message;
+    return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
   };
 
   const result = await productsModel.update(id, dataForUpdate);
@@ -60,30 +52,16 @@ const update = async (id, dataForUpdate) => {
 };
 
 const remove = async (id) => {
-  try {
-    await productsModel.getById(id);
+  const { error } = await productsModel.getById(id);
 
-  }catch (err){
-    console.error('Wrong id format');
-    return {
-      statusCode: 422,
-      code: 'invalid_data',
-      message: 'Wrong id format',
-      error: true
-    };
+  if (error) {
+    const message = 'Wrong id format';
+    return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
   };
-  // o get by id deveria ficar dentro, ou usar outro serviço do git by id
 
   const result = await productsModel.remove(id);
-  return result; 
+  return result;
 };
-
-// update('60c5077010eb4f4916417f9b', { name: 'macarrao', quantity: 8}).then(console.log);
-//create('cafezinho', 10).then(console.log);
-//remove('60c520515e844a7ef5dc1fd4').then(console.log);
-//getProducts().then(console.log);
-
-// productsModel.getById('60c52f3654ab819a35f224f').then(console.log).catch(() => console.log('Deu erro'));
 
 module.exports = {
   create,
