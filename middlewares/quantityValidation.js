@@ -1,8 +1,10 @@
+const UNPROCESSABLE_ENTITY_STATUS = 422;
+
 const quantityValidation = (req, res, next) => {
   const { quantity } = req.body;
 
   if (typeof quantity !== 'number') {
-    return res.status(422).json({
+    return res.status(UNPROCESSABLE_ENTITY_STATUS).json({
       err: {
         code: 'invalid_data',
         message: '"quantity" must be a number',
@@ -11,7 +13,7 @@ const quantityValidation = (req, res, next) => {
   }
 
   if (quantity < 1) {
-    return res.status(422).json({
+    return res.status(UNPROCESSABLE_ENTITY_STATUS).json({
       err: {
         code: 'invalid_data',
         message: '"quantity" must be larger than or equal to 1',
