@@ -3,7 +3,7 @@ const joi = require('@hapi/joi');
 
 const MIN_LENGTH = 5;
 
-const create = joi
+const product = joi
   .object({
     name: joi
       .string()
@@ -23,5 +23,5 @@ const create = joi
   });
 
 module.exports = {
-  create
+  product
 };

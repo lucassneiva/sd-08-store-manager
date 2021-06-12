@@ -28,18 +28,32 @@ const getById = async (id) => {
   return result;
 };
 
-const updateOne = async (dataForUpdate) => {
+const update = async (id, dataForUpdate) => {
   const db = await connection();
-  const result = await db.collection('products').updateOne(dataForUpdate);
+  const result = await db.collection('products')
+    .updateOne({ _id: ObjectId(id) }, { $set: dataForUpdate });;
+  return result;
+};
+
+const remove = async (id) => {
+  const db = await connection();
+  const product = await getById(id);
+  await db.collection('products').deleteOne({ _id: ObjectId(id) });
+  return product;
 };
 
 //getById('60c4f6f6ecc0b62dd790c178').then(console.log);
-// getAll().then(console.log);
-// create('café', 10).then(console.log);
+//create('carne', 10).then(console.log);
+//updateOne('60c5077010eb4f4916417f9b', { name: 'feijoada', quantity: 10}).then(console.log);
+//remove('60c514fc910a926757f93344').then(console.log);
+//getAll().then(console.log);
+
 
 module.exports = {
   create,
   getAll,
   getByName,
   getById,
+  update,
+  remove
 };
