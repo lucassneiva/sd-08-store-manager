@@ -44,14 +44,14 @@ router.put('/:id', async (req, res) => {
 
   const body = await salesServices.updateByID(id, itensSold);
 
-  if(body.err) return res.status(body.status).json(body);
+  if(body && body.err) return res.status(body.status).json(body);
 
   if (!body) return res
     .status(ERROR_CODE)
     .json({err: { code: 'invalid_data', message: 'Wrong id format' } });
 
 
-  return res.status(body.status).json(body.message);
+  return res.status(body.status).json(body);
 });
 
 router.delete('/id', async (req, res) => {

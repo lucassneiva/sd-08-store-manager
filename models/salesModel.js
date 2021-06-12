@@ -12,11 +12,16 @@ const findByProductId = async (newProductId) =>
     .then(response => response)
     .catch(err => console.log(err));
 
-const findById = async (id) =>
-  await connection()
-    .then((db) => db.collection('sales').findOne(new ObjectId(id)))
-    .then(response => response)
-    .catch(err => console.log(err));
+const findById = async (id) => {
+  try {
+    await connection()
+      .then((db) => db.collection('sales').findOne(new ObjectId(id)))
+      .then(response => response);
+    
+  } catch (error) {
+    return null;
+  }
+};
 
 const getAll = async () => {
   try {

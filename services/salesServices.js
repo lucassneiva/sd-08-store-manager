@@ -39,7 +39,7 @@ const updateByID = async (id, itensSold) => {
 
   if(data.modifiedCount === ZERO_MODIFIED) return null;
 
-  return { status: 200, message: { id, itensSold } };
+  return { status: 200, _id: id, itensSold };
 };
 
 const deleteByID = async (id) => {
