@@ -8,13 +8,37 @@ const create = async (itensSold) => {
 
   const productNotFound = products.some(product => !product);
 
-  if(productNotFound) {
+  if (productNotFound) {
     return {
       error: {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity'
       }
     };
+  }
+
+  for (let item of itensSold) {
+    const { quantity, productId } = item;
+
+    const product = await Products.findById(productId);
+
+    const { quantity: stockQuantity } = product;
+
+    const diffQuantity = stockQuantity - quantity;
+
+    if (diffQuantity < +'0') {
+      return {
+        error: {
+          code: 'stock_problem',
+          message: 'Such amount is not permitted to sell'
+        }
+      };
+    }
+
+    await Products.update({
+      id: productId,
+      product: { ...product, quantity: diffQuantity }
+    });
   }
 
   return Sales.create(itensSold);
@@ -49,6 +73,21 @@ const remove = async (id) => {
         message: 'Wrong sale ID format'
       }
     };
+  }
+
+  const { itensSold } = saleExists;
+
+  for (let item of itensSold) {
+    const { quantity, productId } = item;
+
+    const product = await Products.findById(productId);
+
+    const { quantity: stockQuantity } = product;
+
+    await Products.update({
+      id: productId,
+      product: { ...product, quantity: stockQuantity + quantity }
+    });
   }
 
   return Sales.remove(id);

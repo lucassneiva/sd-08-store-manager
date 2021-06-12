@@ -1,12 +1,14 @@
 const UNPROCESSABLE_ENTITY = 422;
 const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
+const BAD_REQUEST = 404;
 
 const error = (err, _req, res, _next) => {
 
   const statusByErrorCode = {
     invalid_data: UNPROCESSABLE_ENTITY,
-    not_found: NOT_FOUND
+    not_found: NOT_FOUND,
+    stock_problem: NOT_FOUND
   };
 
   if (err.isJoi) {
