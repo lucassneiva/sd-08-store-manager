@@ -11,6 +11,9 @@ const addSales = rescue(async (req, res, next) => {
     status = resp.status;
     next(resp);
   }
+  console.log('************');
+  console.log(resp);
+  console.log('************');
   res.status(status).json(resp);
 });
 
@@ -30,8 +33,20 @@ const getSaleById = rescue(async (req, res, next) => {
   res.status(status).send(resp);
 });
 
+const updateSale = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  let status = OK;
+  const resp = await services.update(id, req.body);
+  if (resp.error) {
+    status = resp.status;
+    next(resp);
+  }
+  res.status(status).json(resp);
+});
+
 module.exports = {
   addSales,
   getAllSales,
   getSaleById,
+  updateSale,
 };

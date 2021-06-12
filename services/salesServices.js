@@ -17,10 +17,10 @@ const schema = joi.object({
     .required(),
 });
 
-const create = async(sales) => {
+const handleCreateUpdate = (arr) => {
   let erros = ZERO;
   let err;
-  sales.forEach((sale) => {
+  arr.forEach((sale) => {
     const { quantity } = sale;
     if (typeof quantity !== 'number')
     {
@@ -34,6 +34,12 @@ const create = async(sales) => {
       err = error;
     }
   });
+
+  return { erros, err };
+};
+
+const create = async(sales) => {
+  const { erros, err } = handleCreateUpdate(sales);
 
   if (erros > ZERO) {
     return {
@@ -60,8 +66,23 @@ const getById = async (id) => {
     };
 };
 
+const update = async (id, sales) => {
+  const { erros, err } = handleCreateUpdate(sales);
+
+  if (erros > ZERO) {
+    return {
+      code: 'invalid_data',
+      error: err,
+      status: UNPROCESS,
+    };
+  }
+
+  return model.updateSale(id, sales);
+};
+
 module.exports = {
   create,
   getAll,
   getById,
+  update,
 };

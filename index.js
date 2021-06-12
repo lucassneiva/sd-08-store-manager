@@ -29,6 +29,7 @@ app.delete('/products/:id', products.deleteProduct);
 app.post('/sales', sales.addSales);
 app.get('/sales', sales.getAllSales);
 app.get('/sales/:id', sales.getSaleById);
+app.put('/sales/:id', sales.updateSale);
 
 // GET ERRORS
 app.use((error, _req, res, _next) => {
