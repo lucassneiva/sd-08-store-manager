@@ -1,44 +1,54 @@
 const rescue = require('express-rescue');
-const Product = require('../services/Products');
-const { STATUS_201, STATUS_200, ERROR_TYPES } = require('../utils/consts');
+const {
+  lint2,
+  lint,
+  getAll,
+  updateById,
+  create,
+  searchById,
+  deleteById,
+} = require('../models/Products');
 
-const create = rescue(async (req, res) => {
+const { HTTP_201_STATUS, HTTP_200_STATUS } = require('../common/httpStatus');
+const { RESPONSE_ERROR } = require('../common/erroTypes');
+
+const add = rescue(async (req, res) => {
   const { name, quantity } = req.body;
-  const product = await Product.create(name, quantity);
-  return res.status(STATUS_201).json(product);
+  const newProduct = await create(name, quantity);
+  return res.status(HTTP_201_STATUS).json(newProduct);
 });
 
-const searchById = rescue(async (req, res) => {
+const find = rescue(async (req, res) => {
   const { id } = req.params;
-  const search = await Product.searchById(id);
-  if (search !== null) return res.status(STATUS_200).json(search);
-  return res.status(ERROR_TYPES.eId.status).json({err: ERROR_TYPES.eId.err});
+  const searchResult = await searchById(id);
+  if (searchResult !== null) return res.status(HTTP_200_STATUS).json(searchResult);
+  return res.status(RESPONSE_ERROR.eId.status).json({ err: RESPONSE_ERROR.eId.err });
 });
 
-const deleteById = rescue(async (req, res) => {
+const remove = rescue(async (req, res) => {
   const { id } = req.params;
-  const deleteProduct = await Product.deleteById(id);
-  if (deleteProduct !== null) return res.status(STATUS_200).json(deleteProduct);
-  return res.status(ERROR_TYPES.eId.status).json({err: ERROR_TYPES.eId.err});
+  const productDeleted = await deleteById(id);
+  if (productDeleted !== null) return res.status(HTTP_200_STATUS).json(productDeleted);
+  return res.status(RESPONSE_ERROR.eId.status).json({ err: RESPONSE_ERROR.eId.err });
 });
 
-const updateById = rescue(async (req, res) => {
+const update = rescue(async (req, res) => {
   const { id } = req.params;
   const { name, quantity } = req.body;
-  const update = await Product.updateById(id, name, quantity);
-  if (update !== null) return res.status(STATUS_200).json(update);
-  return res.status(ERROR_TYPES.eId.status).json({err: ERROR_TYPES.eId.err});
+  const updateResult = await updateById(id, name, quantity);
+  if (updateResult !== null) return res.status(HTTP_200_STATUS).json(updateResult);
+  return res.status(RESPONSE_ERROR.eId.status).json({ err: RESPONSE_ERROR.eId.err });
 });
 
-const getAll = rescue(async (_req, res) => {
-  const search = await Product.getAll();
-  return res.status(STATUS_200).json({ products: search });
+const list = rescue(async (_req, res) => {
+  const searchResult = await getAll();
+  return res.status(HTTP_200_STATUS).json({ products: searchResult });
 });
 
 module.exports = {
-  create,
-  searchById,
-  updateById,
-  deleteById,
-  getAll,
+  add,
+  find,
+  update,
+  remove,
+  list,
 };

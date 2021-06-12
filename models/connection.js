@@ -1,10 +1,10 @@
 const { MongoClient } = require('mongodb');
-const { MONGO_DB_URL, DB_NAME, OPTIONS } = require('../utils/consts');
+const { URL_MONGO_DATABASE, NAME_OF_DATABASE, OPTIONS } = require('../common/defs');
 
 const connection = () => {
-  return MongoClient.connect(MONGO_DB_URL, OPTIONS)
-    .then((conn) => console.log('Connected to the MongoDB.') || conn.db(DB_NAME))
-    .catch ((err) => {
+  return MongoClient.connect(URL_MONGO_DATABASE, OPTIONS)
+    .then((conn) => console.log('Connected to the MongoDB.') || conn.db(NAME_OF_DATABASE))
+    .catch((err) => {
       console.log(err);
       process.exit();
     });

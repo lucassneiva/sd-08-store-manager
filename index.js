@@ -1,12 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { DEFAULT_PORT } = require('./utils/consts');
-const prodValidMiddle = require('./middlewares/Products/productValidadeMiddleware');
-const ProdReqValidMiddle = require('./middlewares/Products/requestValidateMiddleware');
-const SaleReqValidMiddle = require('./middlewares/Sales/requestValidateMiddleware');
-const Products = require('./controllers/Products');
-const Sales = require('./controllers/Sales');
-const validProdIdMiddleware = require('./middlewares/Sales/validateProductIdMiddleware');
+
+const { DEFAULT_PORT } = require('./common/defs');
+const productsRouters = require('./routes/products.routes');
+const salesRouters = require('./routes/sales.routes');
 
 const app = express();
 app.use(bodyParser.json());
@@ -16,19 +13,10 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-//Products
-app.get('/products/', Products.getAll);
-app.get('/products/:id', Products.searchById);
-app.post('/products', ProdReqValidMiddle, prodValidMiddle, Products.create);
-app.put('/products/:id', ProdReqValidMiddle, Products.updateById);
-app.delete('/products/:id', Products.deleteById);
+app.use('/products', productsRouters);
 
 //Sales
-app.post('/sales', SaleReqValidMiddle, Sales.create);
-app.get('/sales/', Sales.getAll);
-app.get('/sales/:id', Sales.searchById);
-app.put('/sales/:id', SaleReqValidMiddle, Sales.updateById);
-app.delete('/sales/:id', Sales.deleteById);
+app.use('/sales', salesRouters);
 
 const port = process.env.PORT || DEFAULT_PORT;
 

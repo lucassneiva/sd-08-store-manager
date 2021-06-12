@@ -1,7 +1,8 @@
-const { MIN_QUANTITY, ERROR_TYPES} = require('../../utils/consts');
+const { MIN_QUANTITY } = require('../../common/defs');
+const { RESPONSE_ERROR } = require('../../common/erroTypes');
 
 module.exports = (req, res, next) => {
-  const {eSaleIdQnt} = ERROR_TYPES;
+  const { eSaleIdQnt } = RESPONSE_ERROR;
   const products = req.body;
   const validate = products.map((product) => {
     const { quantity } = product;
@@ -10,14 +11,13 @@ module.exports = (req, res, next) => {
       return 'error';
     }
 
-    if (typeof (quantity) !== 'number') {
+    if (typeof quantity !== 'number') {
       return 'error';
     }
   });
 
   if (validate.find((item) => item === 'error')) {
-    return res.status(eSaleIdQnt.status).json({err: eSaleIdQnt.err});
+    return res.status(eSaleIdQnt.status).json({ err: eSaleIdQnt.err });
   }
   next();
 };
-

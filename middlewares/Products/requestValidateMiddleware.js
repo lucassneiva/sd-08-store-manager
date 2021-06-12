@@ -1,8 +1,9 @@
-const { MIN_LENGTH, MIN_QUANTITY, ERROR_TYPES } = require('../../utils/consts');
+const { MIN_LENGTH, MIN_QUANTITY } = require('../../common/defs');
+const { RESPONSE_ERROR } = require('../../common/erroTypes');
 
 module.exports = (req, res, next) => {
   const { name, quantity } = req.body;
-  const { eEmpty, eLength, eZero, eString } = ERROR_TYPES;
+  const { eEmpty, eLength, eZero, eString } = RESPONSE_ERROR;
   switch(true) {
   case (!name): return res
     .status(eEmpty.status)

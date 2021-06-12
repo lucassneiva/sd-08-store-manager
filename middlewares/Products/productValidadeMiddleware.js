@@ -1,9 +1,9 @@
 const Product = require('../../services/Products.service');
-const { ERROR_TYPES } = require('../../utils/consts');
+const { RESPONSE_ERROR } = require('../../common/erroTypes');
 
 module.exports = async (req, res, next) => {
   const {name} = req.body;
-  const { eSame } = ERROR_TYPES;
+  const { eSame } = RESPONSE_ERROR;
   const search  = await Product.searchByName(name);
   if (search !== null) {
     return res
