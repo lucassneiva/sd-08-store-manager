@@ -18,6 +18,8 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
+  console.log('sales get.id');
+
   const { id } = req.params;
   const body = await salesServices.findById(id);
 
@@ -55,15 +57,16 @@ router.put('/:id', async (req, res) => {
 });
 
 router.delete('/id', async (req, res) => {
+  console.log('entrei no delete');
   const { id } = req.params;
   const sale = await salesServices.findById(id);
-  const body = await salesServices.deleteByID(id);
+  const data = await salesServices.deleteByID(id);
 
-  if(!body) return res
+  if(!data) return res
     .status(ERROR_CODE)
     .json({err: { code: 'invalid_data', message: 'Wrong id format' } });
 
-  return res.status(body.status).json(sale.body);
+  return res.status(data.status).json(sale.data);
 });
 
 module.exports = router;
