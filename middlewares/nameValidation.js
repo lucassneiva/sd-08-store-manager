@@ -19,9 +19,9 @@ const nameValidation = async (req, res, next) => {
         message: 'Product already exists',
       },
     });
-  } else {
-    return next();
   }
+
+  return next();
 };
 
 module.exports = nameValidation;
