@@ -6,7 +6,7 @@ const {
   updateById,
   deleteById,
   getAll,
-} = require('../services/Sales.service');
+} = require('../services/Sales');
 
 const { HTTP_200_STATUS } = require('../common/httpStatus');
 const { RESPONSE_ERROR } = require('../common/erroTypes');

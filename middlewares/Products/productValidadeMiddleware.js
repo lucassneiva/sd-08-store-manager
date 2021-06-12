@@ -1,4 +1,4 @@
-const Product = require('../../services/Products.service');
+const Product = require('../../services/Products');
 const { RESPONSE_ERROR } = require('../../common/erroTypes');
 
 module.exports = async (req, res, next) => {
