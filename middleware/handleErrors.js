@@ -1,14 +1,8 @@
-// const genericError = {
-//   statusCode: 500,
-//   error: 'Internal Server Error',
-//   message: 'An internal server error occurred'
-// };
-
 function handleErrors(err, _req, res, _next) {  
 
-  const { statusCode, message, err: error } = err;
+  const { statusCode, message, code } = err;
 
-  return res.status(statusCode).json({ err: { message, code: error }});
+  return res.status(statusCode).json({ err: { message, code }});
 
 }
 module.exports = handleErrors;

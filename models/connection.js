@@ -8,10 +8,10 @@ const OPTIONS = {
 };
 
 
-const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
+//const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 // avaliador
-
-// const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
+const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
+// máquina
 
 const connection =  async () =>{
   try{
@@ -22,8 +22,9 @@ const connection =  async () =>{
     console.error(`${DATA_BASE} database connection error`);
     return  {
       statusCode: 500,
-      err: 'Internal Server Error',
-      message: 'An internal server error occurred'
+      code: 'Internal Server Error',
+      message: 'An internal server error occurred',
+      error: true
     }; // process exit 
   }
 };

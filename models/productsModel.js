@@ -1,5 +1,5 @@
 const connection = require('./connection');
-// const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 const create = async (name, quantity) => {
   const db = await connection();
@@ -22,11 +22,24 @@ const getByName = async (name) => {
   return result;
 };
 
-// getAll().then((data) => console.log(data));
-// create('café', 10).then((data) => data.json()).then( r =>console.log(r));
+const getById = async (id) => {
+  const db = await connection();
+  const result = await db.collection('products').findOne({ _id: ObjectId(id) });
+  return result;
+};
+
+const updateOne = async (dataForUpdate) => {
+  const db = await connection();
+  const result = await db.collection('products').updateOne(dataForUpdate);
+};
+
+//getById('60c4f6f6ecc0b62dd790c178').then(console.log);
+// getAll().then(console.log);
+// create('café', 10).then(console.log);
 
 module.exports = {
   create,
   getAll,
-  getByName
+  getByName,
+  getById,
 };
