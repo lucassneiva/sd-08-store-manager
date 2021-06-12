@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const useControllers = require('../controllers/sales');
+const useControllers = require('../controllers/Sales');
 const { requestValidations } = require('../middlewares/Sales');
 
 router.post('/', requestValidations, useControllers.add);
