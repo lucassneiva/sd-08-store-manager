@@ -27,6 +27,8 @@ app.delete('/products/:id', products.deleteProduct);
 // SALES
 
 app.post('/sales', sales.addSales);
+app.get('/sales', sales.getAllSales);
+app.get('/sales/:id', sales.getSaleById);
 
 // GET ERRORS
 app.use((error, _req, res, _next) => {

@@ -5,6 +5,7 @@ const ZERO = 0;
 const ONE = 1;
 
 const UNPROCESS = 422;
+const NOT_FOUND = 404;
 
 const schema = joi.object({
   productId: joi
@@ -45,6 +46,22 @@ const create = async(sales) => {
   return model.createSales(sales);
 };
 
+const getAll = async () => model.getAllSales();
+
+const getById = async (id) => {
+  const resp = await model.getSaleById(id);
+
+  return resp
+    ? model.getSaleById(id)
+    : {
+      code: 'not_found',
+      error: { message: 'Sale not found' },
+      status: NOT_FOUND,
+    };
+};
+
 module.exports = {
   create,
+  getAll,
+  getById,
 };
