@@ -26,6 +26,8 @@ app.delete('/products/:id', products.deleteProduct);
 
 // SALES
 
+app.post('/sales', sales.addSales);
+
 // GET ERRORS
 app.use((error, _req, res, _next) => {
   console.log('-----------------------------------------------------');
