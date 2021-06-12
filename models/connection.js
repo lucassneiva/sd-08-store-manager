@@ -1,22 +1,13 @@
 const { MongoClient } = require('mongodb');
-// const { URL_MONGO_DATABASE, NAME_OF_DATABASE, OPTIONS } = require('../common/defs');
-const URL_MONGO_DATABASE = 'mongodb://localhost:27017/StoreManager';
-const NAME_OF_DATABASE = 'StoreManager';
-const OPTIONS = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
+const { MONGO_DB_URL, DB_NAME, OPTIONS } = require('../utils/consts');
 
-async function connection() {
-  return MongoClient.connect(URL_MONGO_DATABASE, OPTIONS)
-    .then((conection) => {
-      console.log(conection);
-      conection.db(NAME_OF_DATABASE);
-    })
-    .catch((error) => {
-      console.log(error);
+const connection = () => {
+  return MongoClient.connect(MONGO_DB_URL, OPTIONS)
+    .then((conn) => console.log('Connected to the MongoDB.') || conn.db(DB_NAME))
+    .catch ((err) => {
+      console.log(err);
       process.exit();
     });
-}
+};
 
-module.exports = { connection };
+module.exports = connection;
