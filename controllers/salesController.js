@@ -18,8 +18,6 @@ router.post('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-  console.log('sales get.id');
-
   const { id } = req.params;
   const body = await salesServices.findById(id);
 

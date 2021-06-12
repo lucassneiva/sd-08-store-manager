@@ -12,11 +12,15 @@ const findByName = async (nameNewProduct) =>
     .then(response => response)
     .catch(err => console.log(err));
 
-const findById = async (id) =>
-  await connection()
-    .then((db) => db.collection('products').findOne(new ObjectId(id)))
-    .then(response => response)
-    .catch(err => console.log(err));
+const findById = async (id) => {
+  try {
+    const db = await connection();
+    return await db.collection('products')
+      .findOne(new ObjectId(id));
+  } catch (error) {
+    return null;
+  }
+};
 
 const getAll = async () => {
   try {
@@ -44,7 +48,7 @@ const deleteByID = async (id) =>{
   try {
     const db = await connection();
     return await db.collection('products')
-      .deleteOne({ _id: ObjectId(id) });
+      .deleteOne(new ObjectId(id));
   } catch (error) {
     return null;
   }
