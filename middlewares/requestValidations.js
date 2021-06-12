@@ -4,9 +4,9 @@ const { ERROR_TYPES } = require('../common/erroTypes');
 module.exports = (req, res, cb) => {
   const { name, quantity } = req.body;
   const { eEmpty, eLength, eZero, eString } = ERROR_TYPES;
-  if (name) {
-    return res.status(eEmpty.status).json({ err: eEmpty.err });
-  }
+  // if (!name) {
+  //   return res.status(eEmpty.status).json({ err: eEmpty.err });
+  // }
   if (name.length < MIN_LENGTH) {
     return res.status(eLength.status).json({ err: eLength.err });
   }

@@ -1,19 +1,20 @@
-const { connect } = require('../models/connect');
+const { connection } = require('../models/connection');
 const { ObjectId } = require('bson');
 
 const registerNewProduct = async (name, quantity) => {
-  return connect().then((database) =>
-    database
-      .collection('products')
-      .insertOne(name, quantity)
-      .then((res) => res.ops[0]),
+  return connection().then((database) => console.log(database)
+    // database
+    //   .collection('products')
+    //   .insertOne(name, quantity)
+    //   .then((res) => res.ops[0]),
   );
 };
 
 const findProductById = async (id) => {
   if (!ObjectId.isValid(id)) return null;
-  return connect().then((database) => {
-    database.collection('products').findOne(new ObjectId(id).then((res) => res));
+  return connection().then((database) => {
+
+    database?.collection('products').findOne(new ObjectId(id).then((res) => res));
   });
 };
 
@@ -22,9 +23,9 @@ const deleteProduct = async (id) => {
     return null;
   }
   const newProductId = new ObjectId(id);
-  return connect().then((database) =>
+  return connection().then((database) =>
     database
-      .collection('products')
+      ?.collection('products')
       .findOneAndDelete({ _id: newProductId })
       .then((result) => result),
   );
@@ -37,9 +38,9 @@ const updateProduct = async (id, name, quantity) => {
   const productId = new ObjectId(id);
   const newDetails = { name, quantity };
 
-  return connect().then((database) =>
+  return connection().then((database) =>
     database
-      .collection('products')
+      ?.collection('products')
       .findOneAndUpdate(
         {
           _id: productId,
@@ -56,7 +57,7 @@ const updateProduct = async (id, name, quantity) => {
 };
 
 const listAllProducts = async () => {
-  return connect().then((database) => {
+  return connection().then((database) => {
     database
       .collection('products')
       .find()
@@ -66,9 +67,9 @@ const listAllProducts = async () => {
 };
 
 const findByName = async (name) => {
-  return connect().then((database) => {
+  return connection().then((database) => {
     database
-      .collection('products')
+      ?.collection('products')
       .findOne({ name })
       .then((res) => res);
   });

@@ -3,13 +3,12 @@ const express = require('express');
 const productRouter = require('./routes/products.routes');
 const { DEFAULT_PORT } = require('./common/defs');
 
-
 const app = express();
 app.use(bodyParser.json());
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
-  response.send();
+  response.send({ messege: 'Ops, vc esta na home' });
 });
 
 app.use('/products', productRouter);
