@@ -1,4 +1,4 @@
-// Service faz conexão com o model
+// Service faz conexão com o model, sendo utilizado pelo controller, geralmente aqui ficam os ifs
 const productsModel = require('../models/productsModel');
 
 const getAll = async () => {

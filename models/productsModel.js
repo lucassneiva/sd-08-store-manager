@@ -1,4 +1,4 @@
-// Models faz a conexão com o banco de dados
+// Models faz a conexão com o banco de dados, sendo utilizado pelo services
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
@@ -26,7 +26,7 @@ const addProduct = async (name, quantity = 1) => {
   return product;
 };
 
-const updateOrCreateProduct = async (id, name, quantity) => {
+const updateOrCreateProduct = async (id, name, quantity = 1) => {
   const db = await connection();
   if (!ObjectId.isValid(id)) return null;
   const product = await db
