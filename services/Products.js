@@ -36,10 +36,10 @@ const findById = async (id) => {
 
 const update = async (product) => Products.update(product);
 
-const remove = async (product) => {
-  const removedProduct = await Products.remove(product);
+const remove = async (id) => {
+  const productExists = await Products.findById(id);
 
-  if (!removedProduct) {
+  if (!productExists) {
     return {
       error: {
         code: 'invalid_data',
@@ -48,7 +48,7 @@ const remove = async (product) => {
     };
   }
 
-  return removedProduct;
+  return Products.remove(id);
 };
 
 module.exports = {

@@ -49,17 +49,12 @@ const update = async (updatedProduct) => {
   return { _id: id, ...product };
 };
 
-const remove = async (product) => {
-  const { id } = product;
-
+const remove = async (id) => {
   if (!ObjectId.isValid(id)) return null;
 
   await connection()
     .then((db) => db.collection('products')
       .deleteOne({ _id: ObjectId(id) }));
-
-  
-  return { _id: id, ...product };
 };
 
 module.exports = {

@@ -55,14 +55,13 @@ const update = rescue(async (req, res, next) => {
 });
 
 const remove = rescue(async (req, res, next) => {
-  const { name, quantity } = req.body;
   const { id } = req.params;
 
-  const product = await service.remove({ id, name, quantity });
+  const product = await service.remove(id);
 
-  if (product.error) return next(product.error);
+  if (product?.error) return next(product.error);
 
-  res.status(OK).json(product);
+  res.status(OK).json({ message: 'ok'});
 });
 
 module.exports = {

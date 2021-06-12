@@ -40,9 +40,9 @@ const findById = async (id) => {
 const update = async (sale) => Sales.update(sale);
 
 const remove = async (id) => {
-  const removedProduct = await Sales.remove(id);
+  const saleExists = await Sales.findById(id);
 
-  if (!removedProduct) {
+  if (!saleExists) {
     return {
       error: {
         code: 'invalid_data',
@@ -51,7 +51,7 @@ const remove = async (id) => {
     };
   }
 
-  return removedProduct;
+  return Sales.remove(id);
 };
 
 module.exports = {
