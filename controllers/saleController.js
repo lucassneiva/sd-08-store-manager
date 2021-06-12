@@ -11,9 +11,6 @@ const addSales = rescue(async (req, res, next) => {
     status = resp.status;
     next(resp);
   }
-  console.log('************');
-  console.log(resp);
-  console.log('************');
   res.status(status).json(resp);
 });
 
@@ -44,9 +41,21 @@ const updateSale = rescue(async (req, res, next) => {
   res.status(status).json(resp);
 });
 
+const deleteSale = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  let status = OK;
+  const resp = await services.exclude(id);
+  if (resp.error) {
+    status = resp.status;
+    next(resp);
+  }
+  res.status(status).send(resp);
+});
+
 module.exports = {
   addSales,
   getAllSales,
   getSaleById,
   updateSale,
+  deleteSale,
 };
