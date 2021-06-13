@@ -28,11 +28,17 @@ const editProduct = async (id, name, quantity) => {
       .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity }}));
 };
 
+const deleteProduct = async (id) => {
+  return connect().then((db) => db.collection(collection)
+    .deleteOne({ _id: ObjectId(id) }));
+};
+
 module.exports = {
   createProduct,
   getProductByName,
   getProducts,
   getProductById,
   validateId,
-  editProduct
+  editProduct,
+  deleteProduct
 };

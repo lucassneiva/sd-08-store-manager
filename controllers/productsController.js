@@ -1,6 +1,8 @@
 const express = require('express');
 const { getProducts, validateId, editProduct } = require('../models/productsModel');
-const { addProduct, getProductById } = require('../services/productsService');
+const { addProduct, 
+  getProductById, 
+  deleteProduct } = require('../services/productsService');
 const router = express.Router();
 
 const SUCCESS = 200;
@@ -87,6 +89,22 @@ router.route('/:id')
       console.error(err);
       res.status(SERVER_ERROR).send('Error.');
     }
-  });
+  })
+  .delete(async (req, res) => {
+    try {
+      const { id } = req.params;
+      const response = await deleteProduct(id);
+      if (response instanceof Error) {
+        return res
+          .status(INVALID_DATA)
+          .json({ err: { code: INVALID_DATA_CODE, message: response.message } });
+      }
+      res.status(SUCCESS).json(response);
+    } catch (err) {
+      console.error(err);
+      res.status(SERVER_ERROR).send('Error.');
+    }
+  })
+;
 
 module.exports = router;

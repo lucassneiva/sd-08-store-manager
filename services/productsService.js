@@ -17,7 +17,14 @@ const getProductById = async (id) => {
   });
 };
 
+const deleteProduct = async (id) => {
+  const product = await getProductById(id);
+  if(product instanceof Error) return product;
+  return productsModel.deleteProduct(id).then(() => product);
+};
+
 module.exports = {
   addProduct,
   getProductById,
+  deleteProduct
 };
