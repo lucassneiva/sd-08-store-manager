@@ -14,11 +14,21 @@ const create = rescue (async(req, res, next) =>{
 });
 
 const getAll = rescue (async(req, res, next) => {
-  const result = await salesService.getAll();
+  const result = await salesService.getSales();
+  res.status(STATUS_OK).json({ sales: result});
+});
+
+const getById = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const result = await salesService.getSales(id);
+
+  if (result.error) return next(result);
+
   res.status(STATUS_OK).json(result);
 });
 
 module.exports = {
   create,
-  getAll
+  getAll,
+  getById
 };

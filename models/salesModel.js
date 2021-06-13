@@ -18,6 +18,17 @@ const update = async(id, sale) =>{
   return result;
 };
 
+const getById = async (id) => {
+  const db = await connection();
+  try {
+    const result = await db.collection('sales').findOne({ _id: ObjectId(id) });
+    return result;
+  } catch (err) {
+    console.error(`Id ${id} not found \n.`, err);
+    return { error: true };
+  }
+};
+
 const getAll = async() =>{
   const db = await connection();
   const result = await db.collection('sales').find().toArray();
@@ -30,6 +41,7 @@ const getAll = async() =>{
 
 module.exports = {
   create, 
-  getAll, 
+  getAll,
+  getById,
   update
 };
