@@ -41,7 +41,34 @@ const isValidProduct = (
   return true;
 };
 
+const getAll = async () => {
+
+  const allSales = await SalesModel
+    .getAll();
+
+  return allSales;
+};
+  
+const getAllById = async (id) => {
+  
+  const sales = await SalesModel
+    .getAllById(id);
+    
+  if (!sales) {
+    return {
+      err: {
+        code: 'not_found',
+        message: 'Sale not found',
+      },
+    };
+  }
+  
+  return sales;
+};
+
 module.exports = { 
   addSale,
   isValidProduct,
+  getAll,
+  getAllById,
 };
