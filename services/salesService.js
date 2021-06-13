@@ -23,7 +23,7 @@ const create = async (itensSold) => {
     return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
   }
 
-  const result = itensSold.reduce(async (promiseAcc, cur, array) => {
+  const result = itensSold.reduce(async (promiseAcc, cur) => {
     const acc = await promiseAcc;
 
     if (!acc._id) {
