@@ -8,15 +8,15 @@ const OPTIONS = {
 const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
 const DB_NAME = 'StoreManager';
 
-let db = null;
+let schema = null;
 
 const connection = () => {
-  return db
-    ? Promise.resolve(db)
+  return schema
+    ? Promise.resolve(schema)
     : MongoClient.connect(MONGO_DB_URL, OPTIONS)
       .then((conn) => {
-        db = conn.db(DB_NAME);
-        return db;
+        schema = conn.db(DB_NAME);
+        return schema;
       });
 };
 

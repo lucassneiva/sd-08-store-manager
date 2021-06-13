@@ -1,16 +1,20 @@
 const connection = require('./connection');
 
-
-async function getAll() {
+async function create({name, quantity}) {
   try {
-    let db = await connection();
-    return db.collection('products').find().toArray();
+    const db = await connection();
+    const { insertedId } = db.collection('products').insertOne({ name, quantity });
+    return {
+      _id: insertedId,
+      name,
+      quantity
+    };
   } catch (error) {
-    return error;
+
   }
 }
 
 
 module.exports = {
-  getAll
+  create
 };

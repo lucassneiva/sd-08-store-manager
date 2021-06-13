@@ -1,7 +1,7 @@
 const app = require('express')();
+require('dotenv').config();
 const ProductsRouter = require('./routes/productsRouter');
 
-const PORT = 3000;
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.send();
@@ -9,4 +9,4 @@ app.get('/', (_request, response) => {
 
 app.use('/products', ProductsRouter);
 
-app.listen(PORT);
+app.listen(process.env.PORT);
