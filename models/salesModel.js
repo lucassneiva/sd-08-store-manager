@@ -7,7 +7,7 @@ const create = async(dataForUpdate) =>{
   return result;
 };
 
-const update = async(id, sale) =>{
+const updateCreate = async(id, sale) =>{
   const db = await connection();
   const result = await db.collection('sales')
     .updateOne({_id: ObjectId(id)}, {
@@ -35,13 +35,27 @@ const getAll = async() =>{
   return result;
 };
 
-//create('arroz', 10).then(console.log);
-//getAll().then(console.log);
+const update = async (id, dataForUpdate) => {
+  const db = await connection();
+  const result = await db.collection('sales')
+    .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: dataForUpdate } });
+  return  result;
+};
 
+const remove = async (id) => {
+  if(!ObjectId.isValid(id)) return null;
+  const db = await connection();
+  const sale = await getById(id);
+  if (!sale) return null;
+  await db.collection('sales').deleteOne({ _id: ObjectId(id) });
+  return sale;
+};
 
 module.exports = {
   create, 
   getAll,
   getById,
-  update
+  updateCreate,
+  update, 
+  remove
 };
