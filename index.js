@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ProductsController = require('./controllers/ProductsController');
+const SalesController = require('./controllers/SalesController');
 
 const app = express();
 app.use(bodyParser.json());
@@ -22,6 +23,7 @@ app.put('/products/:id', ProductsController.updateProduct);
 
 app.delete('/products/:id', ProductsController.deleteProduct);
 
+app.post('/sales', SalesController.addSale);
 
 app.listen(PORT, () => {
   console.log(`Listen on ${PORT}`);
