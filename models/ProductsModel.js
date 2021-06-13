@@ -61,6 +61,13 @@ const updateProduct = async (id, newProduct) => {
   }
 };
 
+const deleteProduct = async (id) => {
+  const deletedProduct = await connection()
+    .then((db) => db
+      .collection('products').deleteOne(new ObjectId(id)),
+    );
+};
+
 
 module.exports = {
   addProduct,
@@ -68,4 +75,5 @@ module.exports = {
   getAll,
   getAllById,
   updateProduct,
+  deleteProduct,
 };
