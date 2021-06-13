@@ -1,9 +1,20 @@
 const connection = require('./connection');
-//const { ObjectId } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 const create = async(dataForUpdate) =>{
   const db = await connection();
   const result = await db.collection('sales').insertOne(dataForUpdate);
+  return result;
+};
+
+const update = async(id, sale) =>{
+  const db = await connection();
+  const result = await db.collection('sales')
+    .updateOne({_id: ObjectId(id)}, {
+      $push: {
+        itensSold:  sale }
+    }
+    );
   return result;
 };
 
@@ -19,5 +30,6 @@ const getAll = async() =>{
 
 module.exports = {
   create, 
-  getAll
+  getAll, 
+  update
 };

@@ -44,7 +44,6 @@ const remove = rescue(async (req, res, next) => {
   const { id } = req.params;
 
   const result = await productsService.remove(id);
-
   if (result.error) return next(result);
 
   res.status(STATUS_OK).json(result);
