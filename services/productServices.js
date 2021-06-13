@@ -1,8 +1,8 @@
 // Service faz conexão com o model, sendo utilizado pelo controller, geralmente aqui ficam os ifs
 const productsModel = require('../models/productsModel');
 
-const getAll = async () => {
-  const products = await productsModel.getAll();
+const getAllProducts = async () => {
+  const products = await productsModel.getAllTheProducts();
   return products;
 };
 
@@ -12,9 +12,7 @@ const getById = async (id) => {
 };
 
 const createProduct = async (name, quantity) => {
-  const findByName = await productsModel.findProductByName(name);
-  if (findByName) return null;
-  const product = await productsModel.addProduct(name, quantity);
+  const product = await productsModel.addProductToDB(name, quantity);
   return product;
 };
 
@@ -30,7 +28,7 @@ const deleteById = async (id) => {
 };
 
 module.exports = {
-  getAll,
+  getAllProducts,
   createProduct,
   getById,
   updateById,

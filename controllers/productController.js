@@ -1,16 +1,16 @@
 // Controller puxa/utiliza os services ou, dependendo, diretamente o models
 const productServices = require('../services/productServices');
-const responseNCodes = require('../utilities/errorsNCodes');
+const { responseNCodes } = require('../utilities/errorsNCodes');
 const { OK, CREATED } = responseNCodes;
 
-const getAllProducts = async (_req, res) => {
-  const allProducts = await productServices.getAll();
+const getAll = async (_req, res) => {
+  const allProducts = await productServices.getAllProducts();
   return res.status(OK).json({ products: allProducts });
 };
 
 const create = async (req, res) => {
-  const newProduct = req.body;
-  const result = await productServices.createProduct(newProduct);
+  const { name, quantity } = req.body;
+  const result = await productServices.createProduct(name, quantity);
   return res.status(CREATED).json(result);
 };
 
@@ -33,4 +33,4 @@ const remove = async (req, res) => {
   return res.status(OK).json(result);
 };
 
-module.exports = { getAllProducts, create, search, update, remove };
+module.exports = { getAll, create, search, update, remove };
