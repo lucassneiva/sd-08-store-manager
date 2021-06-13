@@ -5,8 +5,8 @@ const STATUS_OK = 200;
 const STATUS_CREATE = 201;
 
 const create = rescue (async(req, res, next) =>{
-  const { productId, quantity} = req.body;
-  const result =  await salesService.create(productId, quantity);
+  const arrDataForUpdate = req.body;
+  const result =  await salesService.create(arrDataForUpdate);
 
   res.status(STATUS_CREATE).json(result);
 });

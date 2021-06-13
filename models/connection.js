@@ -8,9 +8,9 @@ const OPTIONS = {
 };
 
 
-const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
+//const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
 // avaliador
-//const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
+const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
 // máquina
 
 const connection =  async () =>{
@@ -25,7 +25,7 @@ const connection =  async () =>{
       code: 'Internal Server Error',
       message: 'An internal server error occurred',
       error: true
-    }; // process exit 
+    }; // process exit
   }
 };
 

@@ -6,7 +6,6 @@ const UNPROCESSABLE_ENTITY = 422;
 
 const create = async (dataForUpdate) => {
   const { error } = productsSchema.product.validate(dataForUpdate);
-
   if (error) {
     const message = error.details[0].message;
     return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
@@ -40,7 +39,6 @@ const getProducts = async (id = false) => {
 
 const update = async (id, dataForUpdate) => {
   const { error } = productsSchema.product.validate(dataForUpdate);
-
   if (error) {
     const message = error.details[0].message;
     return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
@@ -53,7 +51,6 @@ const update = async (id, dataForUpdate) => {
 
 const remove = async (id) => {
   const { error } = await productsModel.getById(id);
-
   if (error) {
     const message = 'Wrong id format';
     return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
