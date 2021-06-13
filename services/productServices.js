@@ -17,14 +17,14 @@ const createProduct = async (name, quantity) => {
 };
 
 const updateById = async (id, updatedProduct) => {
-  const product = await productsModel.updateOrCreateProduct(id, updatedProduct);
+  const { name, quantity } = updatedProduct;
+  const product = await productsModel.updateOrCreateProduct(id, name, quantity);
   return product;
 };
 
 const deleteById = async (id) => {
-  const deletedProduct = await productsModel.getProductById(id);
-  await productsModel.deleteUsingId(id);
-  return (deletedProduct);
+  const deleteProduct = await productsModel.deleteUsingId(id);
+  return deleteProduct;
 };
 
 module.exports = {

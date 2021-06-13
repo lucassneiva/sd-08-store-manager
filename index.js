@@ -18,8 +18,9 @@ app.get('/', (_request, response) => {
 app.post('/products', productsRequestValidate, products.create);
 app.get('/products', products.getAll);
 app.get('/products/:id', productsSearchValidate, products.search);
-// app.put('/products/:id', products.updateById);
-// app.delete('/products/:id', products.deleteById);
+app.put('/products/:id',
+  productsRequestValidate, productsSearchValidate, products.update);
+app.delete('/products/:id', productsSearchValidate, products.remove);
 
 // app.post('/sales');
 // app.get('/sales', sales.getAll);

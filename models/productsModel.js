@@ -32,7 +32,7 @@ const updateOrCreateProduct = async (id, name, quantity) => {
   const product = await db
     .collection('products')
     .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } });
-  if (!product) return addProductToDB(name, quantity);
+  if (!product) return addProductToDB(name, quantity); // a questão não fala se não encontrar o produto, então...
   return { id, name, quantity };
 };
 
