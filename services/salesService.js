@@ -2,7 +2,8 @@ const salesModel = require('../models/salesModel');
 const objErrorGenerator = require('../utils/errorObjGenerator');
 const salesSchema = require('../schema/salesSchema');
 
-const UNPROCESSABLE_ENTITY = 404;
+const UNPROCESSABLE_ENTITY = 422;
+const NOT_FOUND = 404;
 
 const validate = (arr) =>{
   return arr.reduce((acc, obj) =>{
@@ -53,7 +54,7 @@ const getSales = async (id = false) => {
   const product = await salesModel.getById(id);
   if (product.error) {
     const message = 'Sale not found';
-    return objErrorGenerator(UNPROCESSABLE_ENTITY, 'not_found', message);
+    return objErrorGenerator(NOT_FOUND, 'not_found', message);
   };
 
   return product;
