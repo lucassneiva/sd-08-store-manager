@@ -42,19 +42,34 @@ const updateProduct = async (req, res) => {
   const { id } = req.params;
   const newProduct = req.body;
 
-  const product = await ProductsService
+  const productToUpdate = await ProductsService
     .updateProduct(id, newProduct);
 
-  if (product.err) {
-    return res.status(UNP_ENTITY).json(product);
+  if (productToUpdate.err) {
+    return res.status(UNP_ENTITY).json(productToUpdate);
   }
 
-  return res.status(SUCCESS).json(product);
+  return res.status(SUCCESS).json(productToUpdate);
 };
+
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+
+  const productToDelete = await ProductsService
+    .deleteProduct(id);
+
+  if (productToDelete.err) {
+    return res.status(UNP_ENTITY).json(productToDelete);
+  }
+
+  return res.status(SUCCESS).json(productToDelete);
+};
+
 
 module.exports = {
   addProducts,
   getAll,
   getAllById,
   updateProduct,
+  deleteProduct,
 };

@@ -62,10 +62,16 @@ const updateProduct = async (id, newProduct) => {
 };
 
 const deleteProduct = async (id) => {
-  const deletedProduct = await connection()
-    .then((db) => db
-      .collection('products').deleteOne(new ObjectId(id)),
-    );
+  try {
+    const productToDelete = await connection()
+      .then((db) => db
+        .collection('products').deleteOne({_id: ObjectId(id)}),
+      );
+
+    return productToDelete;
+  } catch (err) {
+    return null;
+  }
 };
 
 
