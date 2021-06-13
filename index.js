@@ -6,7 +6,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use('/products', require('./controllers/productsController'));
-
+app.use('/sales', require('./controllers/salesController'));
 const PORT = 3000;
 
 app.listen(PORT, () => console.log(`App ouvindo a porta ${PORT}!`));
