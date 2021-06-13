@@ -18,6 +18,8 @@ app.get('/products', ProductsController.getAll);
 
 app.get('/products/:id', ProductsController.getAllById);
 
+app.put('/products/:id', ProductsController.updateProduct);
+
 
 app.listen(PORT, () => {
   console.log(`Listen on ${PORT}`);

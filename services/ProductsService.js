@@ -5,9 +5,29 @@ const MIN_QUANTITY = 0;
 
 const addProduct = async (product) => {
 
-  const { name, quantity } = product;
+  const productValidation = isValidProduct(product);
 
-  const productAlreadyExists = await ProductsModel.findProduct(product);
+  if (productValidation.err) return productValidation;
+
+  const productAlreadyExists = await ProductsModel
+    .findProduct(product);
+
+  if (productAlreadyExists) {
+    return {
+      err: {
+        code: 'invalid_data',
+        message: 'Product already exists',
+      },
+    };
+  }
+
+  return ProductsModel
+    .addProduct(product);
+};
+
+const isValidProduct = (product) => {
+
+  const { name, quantity } = product;
 
   if (typeof name !== 'string' || name.length <= MIN_NAME_LENGTH) {
     return {
@@ -35,29 +55,21 @@ const addProduct = async (product) => {
       },
     };
   }
-
-  if (productAlreadyExists) {
-    return {
-      err: {
-        code: 'invalid_data',
-        message: 'Product already exists',
-      },
-    };
-  }
-
-  return ProductsModel.addProduct(product);
+  return 'validated';
 };
 
 const getAll = async () => {
 
-  const products = await ProductsModel.getAll();
+  const products = await ProductsModel
+    .getAll();
 
   return { products };
 };
 
 const getAllById = async (id) => {
 
-  const product = await ProductsModel.getAllById(id);
+  const product = await ProductsModel
+    .getAllById(id);
 
   if (!product) {
     return {
@@ -71,9 +83,30 @@ const getAllById = async (id) => {
   return product;
 };
 
+const updateProduct = async (id, newProduct) => {
+
+  const result = await ProductsModel
+    .updateProduct(id, newProduct);
+
+  const validation = isValidProduct(newProduct);
+
+  if (validation.err) return validation;
+
+
+  if (!result) return {
+    err: {
+      code: 'not_found',
+      message: 'Id not found'
+    }
+  };
+
+  return result;
+};
 
 module.exports = {
   addProduct,
+  isValidProduct,
   getAll,
   getAllById,
+  updateProduct,
 };

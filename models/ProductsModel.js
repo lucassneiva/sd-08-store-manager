@@ -41,9 +41,31 @@ const getAllById = async (id) => {
   }
 };
 
+
+const updateProduct = async (id, newProduct) => {
+  try {
+    const updateFinal = await connection()
+      .then((db) => db
+        .collection('products')
+        .updateOne({_id: ObjectId(id)}, { $set: newProduct }),
+      );
+
+    if (!updateFinal.matchedCount) return null;
+
+    return {
+      _id: id,
+      ...newProduct
+    };
+  } catch (err) {
+    return null;
+  }
+};
+
+
 module.exports = {
   addProduct,
   findProduct,
   getAll,
   getAllById,
+  updateProduct,
 };
