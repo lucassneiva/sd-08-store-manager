@@ -1,8 +1,7 @@
-const { expect } = require("chai")
+const { expect } = require("chai");
+const connection = require('../../models/connection');
 
-const ProductsService = {
-  create: () => {},
-}
+const ProductsService = require('../../services/productsService');
 
 describe('A camada service valida os campos corretamente ao inserir um produto', () => {
   describe('Quando insere com os dados inválidos', () => {
@@ -23,18 +22,33 @@ describe('A camada service valida os campos corretamente ao inserir um produto',
   })
 
   describe('Quado insere com os dados válido', () => {
-    const payload = {
-      name: 'Produto do service para teste',
-      quantity: 1
-    };
-    const ID_EXAMPLE = '604cb554311d68f491ba5781';
+
+    before(async () => {
+      let db = await connection();
+      await db.collection('products').deleteMany({});
+      await db.collection('products').insertOne({ name: 'Service', quantity: 22});
+    })
+
     it('retorna um objeto', async () => {
-      const response = await ProductsService(payload);
+      const response = await ProductsService.create({
+        name: 'Produto do service',
+        quantity: 1
+      });
       expect(response).to.be.an('object');
     })
+
     it('retorna um objeto com a propriedade "_id"', async () => {
-      const response = await ProductsService(payload);
+      const response = await ProductsService.create({
+        name: 'Produto do service 2',
+        quantity: 2
+      });
       expect(response).to.have.property('_id');
+    })
+
+    it('retorna a mensagem "Product already exists"', async () => {
+      const response = await ProductsService.create({name: 'Service', quantity: 22});
+      expect(response).to.have.property('message');
+      expect(response.message).to.be.equals('Product already exists');
     })
   })
 })

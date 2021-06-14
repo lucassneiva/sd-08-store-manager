@@ -3,16 +3,12 @@ const { expect } = require('chai');
 const ProductsModel = require('../../models/productsModel');
 
 
-describe('Cadastra o produto no banco de dados', () => {
-  describe('Quando passa os dados válido e da certo', () => {
+describe('Ao chamar o "create" do model', () => {
+  describe('Quando insere os dados válido', () => {
     const payload = {
       name: 'Produto de teste',
       quantity: 20,
     };
-
-    before(() => {
-
-    })
 
     it('retorna o objeto', async () => {
       const response = await ProductsModel.create(payload);
@@ -24,4 +20,5 @@ describe('Cadastra o produto no banco de dados', () => {
       expect(response).to.have.property('_id');
     })
   })
-})
+});
+
