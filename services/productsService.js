@@ -22,13 +22,11 @@ const create = async (dataForUpdate) => {
   return ops[0];
 };
 
-const getProducts = async (id = false) => {
-  if (!id) {
-    const result = await productsModel.getAll();
-    return result;
-  }
+const getAll = () => productsModel.getAll();
 
+const getById = async (id) => {
   const product = await productsModel.getById(id);
+
   if (product.error) {
     const message = 'Wrong id format';
     return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
@@ -62,7 +60,8 @@ const remove = async (id) => {
 
 module.exports = {
   create,
-  getProducts,
+  getAll,
+  getById,
   update,
   remove
 };

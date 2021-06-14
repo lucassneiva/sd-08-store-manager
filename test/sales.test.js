@@ -1,3 +1,9 @@
+/* eslint-disable max-lines */
+/* eslint-disable max-lines-per-function */
+/* eslint-disable max-len */
+/* eslint-disable no-magic-numbers */
+/* eslint-disable sonarjs/no-identical-functions */
+/* eslint-disable sonarjs/no-duplicate-string */
 const frisby = require('frisby');
 const { MongoClient } = require('mongodb');
 
@@ -63,6 +69,7 @@ describe('5 - Crie um endpoint para cadastrar vendas', () => {
       .then((secondResponse) => {
         const { json } = secondResponse;
         expect(json.err.code).toBe('invalid_data');
+        // eslint-disable-next-line sonarjs/no-duplicate-string
         expect(json.err.message).toBe('Wrong product ID or invalid quantity');
       });
   });
@@ -568,7 +575,7 @@ describe('7 - Crie um endpoint para atualizar uma venda', () => {
   });
 });
 
-describe('8 - Crie um endpoint para deletar uma venda', () => {
+describe.only('8 - Crie um endpoint para deletar uma venda', () => {
   let connection;
   let db;
 

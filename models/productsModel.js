@@ -25,7 +25,7 @@ const getById = async (id) => {
     const result = await db.collection('products').findOne({ _id: ObjectId(id) });
     return result;
   } catch (err) {
-    console.error(`Id ${id} not found \n.`, err);
+    console.error(`Id ${id} not found \n.`);
     return { error: true };
   }
 };

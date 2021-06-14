@@ -1,18 +1,19 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
 
-const create = async(dataForUpdate) =>{
+const create = async (dataForUpdate) => {
   const db = await connection();
   const result = await db.collection('sales').insertOne(dataForUpdate);
   return result;
 };
 
-const updateCreate = async(id, sale) =>{
+const updateCreate = async (id, sale) => {
   const db = await connection();
   const result = await db.collection('sales')
-    .updateOne({_id: ObjectId(id)}, {
+    .updateOne({ _id: ObjectId(id) }, {
       $push: {
-        itensSold:  sale }
+        itensSold: sale
+      }
     }
     );
   return result;
@@ -22,14 +23,17 @@ const getById = async (id) => {
   const db = await connection();
   try {
     const result = await db.collection('sales').findOne({ _id: ObjectId(id) });
+    if (!result) {
+      return { error: 'NotFound' };
+    }
     return result;
   } catch (err) {
-    console.error(`Id ${id} not found \n.`, err);
-    return { error: true };
+    console.error(`Id ${id} incorrect format\n.`);
+    return { error: 'IdIncorrectFormat' };
   }
 };
 
-const getAll = async() =>{
+const getAll = async () => {
   const db = await connection();
   const result = await db.collection('sales').find().toArray();
   return result;
@@ -39,23 +43,21 @@ const update = async (id, dataForUpdate) => {
   const db = await connection();
   const result = await db.collection('sales')
     .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: dataForUpdate } });
-  return  result;
+  return result;
 };
 
 const remove = async (id) => {
-  if(!ObjectId.isValid(id)) return null;
   const db = await connection();
-  const sale = await getById(id);
-  if (!sale) return null;
   await db.collection('sales').deleteOne({ _id: ObjectId(id) });
-  return sale;
 };
 
 module.exports = {
-  create, 
+  create,
   getAll,
   getById,
   updateCreate,
-  update, 
+  update,
   remove
 };
+
+

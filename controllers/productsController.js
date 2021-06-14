@@ -15,14 +15,14 @@ const create = rescue(async (req, res, next) => {
 });
 
 const getAll = rescue(async (_req, res, _next) => {
-  const result = await productsService.getProducts();
+  const result = await productsService.getAll();
 
   res.status(STATUS_OK).json({ products: result });
 });
 
 const getById = rescue(async (req, res, next) => {
   const { id } = req.params;
-  const result = await productsService.getProducts(id);
+  const result = await productsService.getById(id);
 
   if (result.error) return next(result);
 
