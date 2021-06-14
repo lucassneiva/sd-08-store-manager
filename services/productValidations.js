@@ -1,5 +1,5 @@
 const model = require('../models/productsModel');
-const { errors, responses } = require('../utilities/errorsNCodes');
+const { errors } = require('../utilities/errorsNCodes');
 const { Products } = errors;
 const {
   nameAtLeastFive, nameAlreadyExists,

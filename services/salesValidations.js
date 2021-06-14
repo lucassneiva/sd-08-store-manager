@@ -1,10 +1,22 @@
-const { errors, responses } = require('../utilities')
+const { errors } = require('../utilities/errorsNCodes');
 const { Sales } = errors;
-const { nameAtLeastFive, nameAlreadyExists, } = Sales;
+const { saleCantBeLessThanOne, saleQtdCantBeString } = Sales;
 
-const nameMustBe = 5;
+const saleMinQtd = 1;
 
-const salesValidations = (name, quantity) => {
-  if (name.length < nameMustBe) return nameAtLeastFive;
-  if ()
+const salesRequestValidate = (req, res, next) => {
+  const sellProducts = req.body;
+  const checkQtdIsNumber = sellProducts.some(product => product.quantity < saleMinQtd);
+  if (checkQtdIsNumber) {
+    return res.status(saleCantBeLessThanOne.status).send(saleCantBeLessThanOne.errorObj);
+  }
+  const checkQtdType = sellProducts.some(product => typeof product.quantity !== 'number');
+  if (checkQtdType) {
+    return res.status(saleQtdCantBeString.status).send(saleQtdCantBeString.errorObj);
+  }
+  next();
 };
+
+module.exports = { salesRequestValidate };
+
+

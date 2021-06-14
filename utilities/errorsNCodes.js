@@ -75,17 +75,16 @@ const errors = {
   },
 
   Sales: {
-    quantityOneOrMore:
-    {
+    saleCantBeLessThanOne: {
       response: UNPROCESSABLE_ENTITY,
       errorObj: {
         err: {
-          message: '"quantity" must be larger than or equal to 1',
+          message: 'Wrong product ID or invalid quantity',
           code: invalidData,
         }
       }
     },
-    saleCantBeZero: {
+    saleQtdCantBeString: {
       response: UNPROCESSABLE_ENTITY,
       errorObj: {
         err: {
