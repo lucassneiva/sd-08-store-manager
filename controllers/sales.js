@@ -5,7 +5,7 @@ const salesService = require('.././services/sales');
 const INTERNAL_ERROR = 500;
 const SUCESS = 200;
 const ERROR = 404;
-// const UNPROCESSABLE_ENTITY = 422;
+const UNPROCESSABLE_ENTITY = 422;
 
 const controllerSales = async (req, res) => {
   try {
@@ -42,8 +42,40 @@ const controllerGetById = async (req, res) => {
   };
 };
 
+const controllerUpdate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedSales= req.body;
+    const upSale = await salesService.updateId(id, updatedSales);
+    return res.status(SUCESS).json(upSale);
+  } catch (error) {
+    res.status(INTERNAL_ERROR).json({ error: error.message });
+  }
+};
+
+const controllerRemove = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const salesId = await salesService.getById(id);
+    if (!salesId) {
+      return res.status(UNPROCESSABLE_ENTITY).json({
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong sale ID format',
+        },
+      });
+    }
+    const removeId = await salesService.removeById(id);
+    return res.status(SUCESS).json(removeId);
+  } catch (error) {
+    res.status(INTERNAL_ERROR).json({ message });
+  }
+};
+
 module.exports = {
   controllerSales,
   controllerGetAllSales,
   controllerGetById,
+  controllerUpdate,
+  controllerRemove,
 };
