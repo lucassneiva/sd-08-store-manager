@@ -1,5 +1,6 @@
 const objErrorGenerator = require('../utils/errorObjGenerator');
 const salesModel = require('../models/salesModel');
+const productsModel = require('../models/productsModel');
 const salesSchema = require('../schema/salesSchema');
 
 const UNPROCESSABLE_ENTITY = 422;
@@ -27,14 +28,26 @@ const create = async (itensSold) => {
   const result = itensSold.reduce(async (promiseAcc, cur) => {
     const acc = await promiseAcc;
 
+    const {productId,quantity } = cur;
+
     if (!acc._id) {
       const { insertedId } = await salesModel.create({ itensSold: [cur] });
+      const product = await productsModel.getById(productId);
+      const calc = product.quantity - quantity;
+      const newProduct = {name: product.name , quantity: calc};
+      await productsModel.update(product._id, newProduct);
       acc._id = insertedId;
       acc.itensSold.push(cur);
       return acc;
     }
 
     await salesModel.updateCreate(acc._id, cur);
+
+    const product = await productsModel.getById(productId);
+    const calc = product.quantity - quantity;
+    const newProduct = {name: product.name , quantity: calc};
+    await productsModel.update(product._id, newProduct);
+
     acc.itensSold.push(cur);
 
     return acc;
@@ -77,7 +90,15 @@ const remove = async (id) => {
   if (resultID.error) {
     return resultID;
   }
+
+  const productId = resultID.itensSold[0].productId;  
+  const product = await productsModel.getById(productId);
+  const calc = product.quantity + resultID.itensSold[0].quantity;
+  const newProduct = {name: product.name , quantity: calc};
+  await productsModel.update(productId, newProduct);
+
   await salesModel.remove(id);
+
   return resultID;
 
 };
