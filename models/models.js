@@ -1,5 +1,5 @@
 const connection = require('../models/connections');
-const { ObjectId } = require('mongodb');
+const { ObjectId, ObjectID } = require('mongodb');
 
 function createProduct(product) {
   const { name, quantity} = product;
@@ -13,13 +13,12 @@ async function findProduct(product) {
       .findOne({ name }));
   const productFinded = await productFindedPromise;
   return productFinded;
-  // console.log(productFinded);
 }
 
 async function getAllProducts() {
   const allProductsPromise = connection()
     .then((db) => db.collection('products')
-      .find({}).toArray( ) );
+      .find().toArray( ) );
   const allProducts = await allProductsPromise;
   return allProducts;
 }
@@ -27,9 +26,20 @@ async function getAllProducts() {
 async function getByID(id) {
   const productByIdPromisse = connection()
     .then((db) => db.collection('products')
-      .findOne(  ObjectId(id)));
+      .findOne( ObjectId(id)));
   const product = await productByIdPromisse;
   return product;
 };
 
-module.exports = { createProduct, findProduct, getAllProducts, getByID };
+async function updateProduct(id,name, quantity ) {
+  try {
+    connection()
+      .then((db) => db.collection('products')
+        .updateOne({_id: ObjectID(id)},{$set: {'name': name, 'quantity': quantity}}));
+  } catch (err) {
+    console.log(err);
+  }
+
+}
+
+module.exports = { createProduct, findProduct, getAllProducts, getByID, updateProduct };

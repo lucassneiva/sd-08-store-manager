@@ -6,6 +6,7 @@ const MINIMUM_QUANTITY = 1;
 const ID_LENGTH = 24;
 
 async function checkProduct(req, res, next) {
+  const { id } = req.params;
   const {name, quantity } = req.body;
   if ( name.length < NAME_LENGTH ) {
     return res.status(STATUS_422).json(
@@ -18,17 +19,19 @@ async function checkProduct(req, res, next) {
     );
   }
 
-  const productFinded = await findProduct({name});
+  if(!id) {
+    const productFinded = await findProduct({name});
 
-  if (productFinded) {
-    return res.status(STATUS_422).json(
-      {
-        'err': {
-          'code': 'invalid_data',
-          'message': 'Product already exists'
+    if (productFinded) {
+      return res.status(STATUS_422).json(
+        {
+          'err': {
+            'code': 'invalid_data',
+            'message': 'Product already exists'
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   if (quantity < MINIMUM_QUANTITY) {

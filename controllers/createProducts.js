@@ -6,12 +6,12 @@ const {
   createProduct,
   findProduct,
   getAllProducts,
-  getByID
+  getByID,
+  updateProduct
 } = require('../models/models');
 
 const STATUS_201 = 201;
 const STATUS_200 = 200;
-const STATUS_422 = 422;
 
 const router =  express.Router();
 router.use(bodyParser.json());
@@ -32,6 +32,14 @@ router.get('/:id', checkID, async (req, res) => {
 router.get('/', async (req, res) => {
   const allProducts = await getAllProducts();
   res.status(STATUS_200).send({ 'products': allProducts});
+});
+
+router.put('/:id', checkProduct, async (req, res) => {
+  const { name, quantity } = req.body;
+  const { id } = req.params;
+  updateProduct(id,name, quantity );
+  const product = await getByID(id);
+  res.status(STATUS_200).send(product);
 });
 
 module.exports = router;
