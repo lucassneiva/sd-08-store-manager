@@ -11,6 +11,13 @@ const addSale = async (products) => {
   return salesModel.addSale(products);
 };
 
+const deleteSale = async (id) => {
+  const sale = await salesModel.getSalesById(id);
+  if(sale instanceof Error) return sale;
+  return salesModel.deleteSale(id).then(() => sale);
+};
+
 module.exports = {
-  addSale
+  addSale,
+  deleteSale
 };

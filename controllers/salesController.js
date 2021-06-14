@@ -1,7 +1,7 @@
 const express = require('express');
 const { validateId } = require('../models/productsModel');
 const { getSales, getSalesById, editSale } = require('../models/salesModel');
-const { addSale } = require('../services/salesService');
+const { addSale, deleteSale } = require('../services/salesService');
 const router = express.Router();
 
 const SUCCESS = 200;
@@ -87,6 +87,21 @@ router.route('/:id')
       await editSale(id, itensSold);
       res.status(SUCCESS).json({_id: id, itensSold});
     } catch(err) {
+      console.error(err);
+      res.status(SERVER_ERROR).send('Error.');
+    }
+  })
+  .delete(async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const err = new Error('Wrong sale ID format');
+      err.status = INVALID_DATA;
+      err.code = INVALID_DATA_CODE;
+      if (!validateId(id)) next(err);
+      const response = await deleteSale(id);
+      if (response instanceof Error) next(err);
+      res.status(SUCCESS).json(response);
+    } catch (err) {
       console.error(err);
       res.status(SERVER_ERROR).send('Error.');
     }
