@@ -17,8 +17,8 @@ const createSale = async (addedSale) => {
 };
 
 const updateSaleById = async (id, updatedsale) => {
-  const { name, quantity } = updatedsale;
-  const sale = await salesModel.updateOrCreateSale(id, name, quantity);
+  // const { name, quantity } = updatedsale;
+  const sale = await salesModel.updateOrCreateSale(id, updatedsale);
   return sale;
 };
 

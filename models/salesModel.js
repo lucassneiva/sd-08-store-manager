@@ -35,8 +35,12 @@ const updateOrCreateSale = async (id, sales) => {
     .collection('sales')
     .findOneAndUpdate({ _id: ObjectId(id) }, { $set: { itensSold: sales } },
       { returnOriginal: false });
+  // { _id: new ObjectId(id),  'itensSold.productId': `${productId}` },
+  // { $set: {'itensSold.$.quantity': quantity } },
+  // { returnOriginal: false })
   // Solução incrível encontrada no projeto do Tiago Bovolin, estava morrendo aqui e isso me ajudou muito.
   const { value } = sale;
+  console.log(sale)
   if (!sale) return addSale(sales);
   return { id, value };
 };

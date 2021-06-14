@@ -24,7 +24,7 @@ const search = async (req, res) => {
 const update = async (req, res) => {
   const { id } = req.params;
   const newData = req.body;
-  const result = await salesServices.updateById(id, newData);
+  const result = await salesServices.updateSaleById(id, newData);
   return res.status(OK).send(result);
 };
 
