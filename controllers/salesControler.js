@@ -17,7 +17,7 @@ const cdiv = 404;
 
 router.post('/', async(req, res) => {
   const arrvenda = req.body;
-  let result = validasale(arrvenda);
+  let result =  validasale(arrvenda);
   if(result === 'ok') {
     decrementpdt(arrvenda);
     result = await newsale(arrvenda);
@@ -62,8 +62,8 @@ router.put('/:id', async(req, res) => {
   const  body = req.body;
   
   const updated = await updates(id,body);
-  // console.log('get', sales);
-  let dinamics = updated.err? cdxxii: cc;
+  //console.log('put', updated);
+  let dinamics = updated ? cdxxii: cc;
   res.status(dinamics).send(updated);
   return;
   
@@ -75,7 +75,7 @@ router.delete('/:id', async(req, res) => {
    
   const deleted = await deleteonesale(id);
   console.log('controler:77', deleted);
-  let dinamics = deleted ? cc : cdxxii;
+  let dinamics = deleted !== null ? cc : cdxxii;
   res.status(dinamics).send(deleted);
   return;
   

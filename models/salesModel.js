@@ -29,12 +29,12 @@ const getsaleby = async(id) => {
   
 };
 
-const onesalebyid = async (id) => {
+/* const onesalebyid = async (id) => {
   return await conn().then(
     db => db.collection('sales').findOne(ObjectId(id))
   );
   
-};
+}; */
  
 
 
@@ -44,7 +44,7 @@ const decrementpdt = async(arrvenda) => {
     async (db) => {
       arrvenda.forEach(
         async({productId, quantity}, i) => {
-          let produ = Promise.all([oneprodu(productId)]);
+          let produ = await oneprodu(productId);
           console.log('model46', produ);
           await db.collection('products').updateOne(
             {_id: ObjectId(productId)},
@@ -76,7 +76,7 @@ const updatesale = async(id, body) =>
   conn().then( async (db) => { 
     const result = await db.collection('sales').updateOne(
       {_id: ObjectId(id)}, {$set:{itensSold: body }});
-    return await (onesalebyid(id));
+    return await (getsaleby(id));
   });
 ;
 
@@ -100,4 +100,5 @@ module.exports = {
   getsaleby,
   updatesale,
   decrementpdt,
+  //onesalebyid,
 };

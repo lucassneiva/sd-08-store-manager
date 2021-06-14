@@ -12,6 +12,7 @@ const {
   getsaleby,
   updatesale,
   deletesale,
+  onesalebyid,
 
 } = require('../models/salesModel');
 
@@ -28,6 +29,9 @@ const salenotf = {
 const upderr = {
   err: { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' }};; 
 
+const delerr = {
+  err: { code: 'invalid_data', message: 'Wrong sale ID format' }};; 
+  
 
 const validasale = (arrvenda) => { 
      
@@ -59,11 +63,14 @@ const updates = async(id, body) => {
   }else{ return await updatesale (id, body);}
 };
 
-const deleteonesale = (id)=>{
+const deleteonesale = async(id)=>{
   if (ObjectId.isValid(id)){
-    const removed = deletesale(id);
-    return removed;
-  }else return 'err';
+    const todelete = await getsaleby(id);
+    const removed = await deletesale(id);
+    console.log(removed.deletedCount);
+    if(removed.deletedCount == z){return {error:404, message: '404 Pagenote found'};} 
+    else if(removed.deletedCount > z){ return todelete;}
+  }else return delerr;
 
 };
 
