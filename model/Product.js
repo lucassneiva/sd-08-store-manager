@@ -29,6 +29,34 @@ async function getById(id){
   return !data ? null : data;
 }
 
+async function updateProduct(id, name, quantity){
+  if(!ObjectId.isValid(id)) return null;
+  const data = await connection().then((db) =>
+    db.collection('products').findOne(new ObjectId(id)));
+  if(!data) return null;
+  await connection().then((db) => db.collection('products').updateOne(
+    {_id: ObjectId(id)},
+    {$set: { name: name, quantity: quantity}
+    }
+  ));
+  return {
+    _id: id,
+    name,
+    quantity
+  };
+}
+
+async function deleteProduct(id) {
+  if(!ObjectId.isValid(id)) return null;
+  const data = await connection().then((db) =>
+    db.collection('products').findOne(new ObjectId(id)));
+  if(!data) return null;
+  await connection().then((db) => db.collection('products').deleteOne(
+    {_id: ObjectId(id)}
+  ));
+  return data;
+}
+
 module.exports = {
-  createProduct, getAll, getById
+  createProduct, getAll, getById, updateProduct, deleteProduct
 };
