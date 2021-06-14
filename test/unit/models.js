@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const connection = require('../../models/connection');
 
 const ProductsModel = require('../../models/productsModel');
 
@@ -22,19 +23,26 @@ describe('Ao chamar o "create" do model', () => {
   })
 });
 
-const getAll = () => {};
-// const getById = () => {};
-
 describe('Ao chamar o "getAll"', () => {
+  const payload = [{name: 'Martelo', quantity: 2 }, { name: 'Tesoura', quantity: 231 }]
+
+  before(async () => {
+    let db = await connection();
+    await db.collection('products').deleteMany({});
+    await db.collection('products').insertMany(payload);
+  })
 
   it('retorna um array', async () => {
-    const response = await getAll();
+    const response = await ProductsModel.getAll();
     expect(response).to.be.an('array');
   })
 
   it('retorna um array com todos os produtos cadastrados', async () => {
-    const response = await getAll();
-    expect(response).to.be.equals([{name: 'Martelo', quantity: 2 }, { name: 'Tesoura', quantity: 231 }]);
+    const response = await ProductsModel.getAll();
+    expect(response[0].name).to.be.equals('Martelo');
+    expect(response[0].quantity).to.be.equals(2);
+    expect(response[1].name).to.be.equals('Tesoura');
+    expect(response[1].quantity).to.be.equals(231);
   });
 });
 
