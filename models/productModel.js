@@ -24,7 +24,7 @@ const getProductByName = (name) => {
 const getProductById = (id) => {
   return connection()
     .then((db) => db.collection(PRODUCTS).findOne({ _id: id }));
-}
+};
 
 module.exports = {
   create,

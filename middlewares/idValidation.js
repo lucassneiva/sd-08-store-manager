@@ -1,4 +1,6 @@
-const { ObjectId } = require("mongodb");
+const { ObjectId } = require('mongodb');
+
+const UNPROCESSABLE_ENTITY_STATUS = 422;
 
 const idValidation = (req, res, next) => {
   const { id } = req.params;
@@ -8,7 +10,7 @@ const idValidation = (req, res, next) => {
     return next();
   }
 
-  return res.status(422).json({
+  return res.status(UNPROCESSABLE_ENTITY_STATUS).json({
     err: {
       code: 'invalid_data',
       message: 'Wrong id format',

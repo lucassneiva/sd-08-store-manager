@@ -12,12 +12,12 @@ const hasProduct = async (name) => {
 const getAll = async () => {
   return {
     products: [...await productModel.getAll()],
-  }
+  };
 };
 
 const getProductById = async (id) => {
   return productModel.getProductById(id);
-}
+};
 
 module.exports = {
   create,
