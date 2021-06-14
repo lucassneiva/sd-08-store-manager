@@ -44,7 +44,7 @@ const decrementpdt = async(arrvenda) => {
     async (db) => {
       arrvenda.forEach(
         async({productId, quantity}, i) => {
-          let produ = await oneprodu(productId);
+          let produ = Promise.all([oneprodu(productId)]);
           console.log('model46', produ);
           await db.collection('products').updateOne(
             {_id: ObjectId(productId)},

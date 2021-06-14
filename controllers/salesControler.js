@@ -75,8 +75,8 @@ router.delete('/:id', async(req, res) => {
    
   const deleted = await deleteonesale(id);
   console.log('controler:77', deleted);
-  let dinamics = ()=> {if(deleted.CommandResult){ cc; } cdxxii;};
-  res.status(dinamics).send(deleted.documents[0]);
+  let dinamics = deleted ? cc : cdxxii;
+  res.status(dinamics).send(deleted);
   return;
   
 });
