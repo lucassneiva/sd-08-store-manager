@@ -2,7 +2,7 @@ const salesServices = require('../services/salesServices');
 
 // Controller puxa/utiliza os services ou, dependendo, diretamente o models
 const { responseNCodes } = require('../utilities/errorsNCodes');
-const { OK, CREATED } = responseNCodes;
+const { OK } = responseNCodes;
 
 const getAll = async (_req, res) => {
   const allsales = await salesServices.getAllSales();
@@ -12,7 +12,7 @@ const getAll = async (_req, res) => {
 const create = async (req, res) => {
   const product = req.body;
   const result = await salesServices.createSale(product);
-  return res.status(CREATED).send(result);
+  return res.status(OK).send(result);
 };
 
 const search = async (req, res) => {
