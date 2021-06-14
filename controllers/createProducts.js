@@ -1,10 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { checkProduct } = require('../middleware/middleware');
+const { checkProduct, checkID } = require('../middleware/middleware');
+
+const {
+  createProduct,
+  findProduct,
+  getAllProducts,
+  getByID
+} = require('../models/models');
 
 const STATUS_201 = 201;
-
-const { createProduct, findProduct } = require('../models/models');
+const STATUS_200 = 200;
+const STATUS_422 = 422;
 
 const router =  express.Router();
 router.use(bodyParser.json());
@@ -14,6 +21,17 @@ router.post('/', checkProduct,   async (req, res) => {
   createProduct({name, quantity});
   const productFinded = await findProduct({name});
   res.status(STATUS_201).send(productFinded);
+});
+
+router.get('/:id', checkID, async (req, res) => {
+  const { id } = req.params;
+  const product = await getByID(id);
+  res.status(STATUS_200).send(product);
+});
+
+router.get('/', async (req, res) => {
+  const allProducts = await getAllProducts();
+  res.status(STATUS_200).send({ 'products': allProducts});
 });
 
 module.exports = router;
