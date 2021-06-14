@@ -17,7 +17,16 @@ async function getByName(name) {
   return product;
 }
 
+
+async function getAll() {
+  let db = await connection();
+  db = await db.collection('products').find().toArray();
+  return db;
+}
+
+
 module.exports = {
   create,
   getByName,
+  getAll
 };
