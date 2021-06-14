@@ -1,6 +1,6 @@
 const express = require('express');
 const { validateId } = require('../models/productsModel');
-const { getSales, getSalesById } = require('../models/salesModel');
+const { getSales, getSalesById, editSale } = require('../models/salesModel');
 const { addSale } = require('../services/salesService');
 const router = express.Router();
 
@@ -76,6 +76,17 @@ router.route('/:id')
       }
       res.status(SUCCESS).json(response);
     } catch (err) {
+      console.error(err);
+      res.status(SERVER_ERROR).send('Error.');
+    }
+  })
+  .put(validateDataQuantities, validateIdMiddleware, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const itensSold = req.body;
+      await editSale(id, itensSold);
+      res.status(SUCCESS).json({_id: id, itensSold});
+    } catch(err) {
       console.error(err);
       res.status(SERVER_ERROR).send('Error.');
     }
