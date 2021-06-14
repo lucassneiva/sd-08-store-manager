@@ -23,7 +23,7 @@ router.get('/', async(req, res) => {
  
   }catch (err) {
  
-    console.log(err);
+    // console.log(err);
     res.status(cdxxii).send(err);
  
   };
@@ -34,10 +34,10 @@ router.get('/:id', async(req, res) => {
   const { id } = req.params;
   try {
     const result = await getoneid(id);
-    console.log(result);
+    // console.log(result);
     res.status(cc).send(result);
   }catch (err) {
-    console.log(err);
+    //  console.log(err);
     res.status(cdxxii).send(err);
   };
 });
@@ -53,7 +53,7 @@ router.post('/', async(req, res) => {
     res.status(cci).json(result.ops[z]);
   
   }catch(err) {
-    console.log(err);
+    // console.log(err);
     return res.status(cdxxii).send(err);
   };
 });
@@ -67,7 +67,7 @@ router.put('/:id', async(req, res) => {
     const result = await updateOne(id, body);
     res.status(cc).json(result);
   }catch (err) {
-    console.log(err);
+    // console.log(err);
     res.status(cdxxii).send(err);
   };
 });
@@ -79,7 +79,7 @@ router.delete('/:id', async(req, res) => {
     const result = await  deleteone(id);
     res.status(cc).send(result);
   }catch (err) { 
-    console.log(err);
+    // console.log(err);
     res.status(cdxxii).send(err);
   }
 });

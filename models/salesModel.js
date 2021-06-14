@@ -4,10 +4,13 @@ const {getbyid} = require('./productModel');
 const rescue = require('rescue');
 
 
+
+
+
 const allsale = async() => { 
   
   const sales = await conn().then( db => db.collection('sales').find().toArray());
-  console.log(sales);
+  // console.log(sales);
   return sales;
       
     
@@ -16,34 +19,34 @@ const allsale = async() => {
 
 
 
-const getsalebyname = async(name) => {
-  return conn().then(db => db.collection('sales').countDocuments({name}));
+const getsaleby = async(id) => {
+  const onSale = await conn().then(db => db.collection('sales').findOne(ObjectId(id)));
+  return onSale;
   
 };
 
-const getsalebyid = async (id) => {
+const onesalebyid = async (id) => {
   return await conn().then(
-    db => db.collection('products').findOne(ObjectId(id))
+    db => db.collection('sales').findOne(ObjectId(id))
   );
   
 };
-
+ 
 
 
 const decrementpdt = async(arrvenda) => {
 
   conn().then(
-    
     async (db) => {
-      
-      arrvenda.forEach(async({productId, quantity}, i) => {
-        let produ =  await getsalebyid(ObjectId(productId));
-        await db.collection('products').updateOne(
-          {_id: ObjectId(productId)},
-          {$set: {quantity: produ.quantity - arrvenda[i].quantity}}
-        );
+      arrvenda.forEach(
+        async({productId, quantity}, i) => {
+          const produ =  Promise.all([getsaleby(ObjectId(productId))]);
+          await db.collection('products').updateOne(
+            {_id: ObjectId(productId)},
+            {$set: {quantity: produ.quantity - arrvenda[i].quantity}}
+          );
             
-      });
+        });
              
     },
     
@@ -67,8 +70,8 @@ const newsale =async(arrvenda)=>{
 const updatesale = async(id, body) => 
   conn().then( async (db) => { 
     const result = await db.collection('sales').updateOne(
-      {_id: ObjectId(id)}, {$set:{ name: body.name, quantity:body.quantity }});
-    return (getbyid(id));
+      {_id: ObjectId(id)}, {$set:{itensSold: body }});
+    return await (onesalebyid(id));
   });
 ;
 
@@ -89,8 +92,7 @@ module.exports = {
   allsale,
   newsale,
   deletesale,
-  getsalebyname,
-  getsalebyid,
+  getsaleby,
   updatesale,
   decrementpdt,
 };
