@@ -12,4 +12,6 @@ router.post(
   async (req, res) => await productController.create(req, res),
 );
 
+router.get('/', async (req, res) => await productController.getAll(req, res));
+
 module.exports = router;

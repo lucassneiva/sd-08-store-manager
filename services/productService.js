@@ -9,7 +9,19 @@ const hasProduct = async (name) => {
   return await productModel.getProductByName(name) !== null;
 };
 
+const getAll = async () => {
+  return {
+    products: [...await productModel.getAll()],
+  }
+};
+
+const getProductById = async (id) => {
+  return productModel.getProductById(id);
+}
+
 module.exports = {
   create,
   hasProduct,
+  getAll,
+  getProductById,
 };
