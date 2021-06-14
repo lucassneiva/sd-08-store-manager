@@ -4,6 +4,7 @@ const { ObjectId } = require('mongodb');
 const SalesModel = require('../models/salesModel');
 
 const message = 'Wrong product ID or invalid quantity';
+const message_2 = 'Sale not found';
 
 const requestDataIsValid = (quantity) => {
   const requiredNonEmptyNumber = Joi.number().not().empty().required();
@@ -60,10 +61,22 @@ const create = async (productsSold) => {
 //   return await SalesModel.create(productsSold);
 // };
 
+const getAll = async () => {
+  const products = await SalesModel.getAll();
+  return products;
+};
+
+const getByIds = async (id) => {
+  if(!ObjectId.isValid(id)) return { message: message_2 };
+  const product = await SalesModel.getByIds(id);
+  if (!product) return { message: message_2 };
+  return product;
+};
+
 module.exports = {
   create,
-  // getAll,
-  // findById,
+  getAll,
+  getByIds,
   // updateById,
   // deleteById,
 };

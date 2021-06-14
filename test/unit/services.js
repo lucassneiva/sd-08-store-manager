@@ -7,7 +7,7 @@ const StoreService = require('../../services/storeService');
 const SalesModel = require('../../models/salesModel');
 const SalesService = require('../../services/salesService');
 
-const ID_VALID_1 = '5f43a7ca92d58904914656b6';
+const ID_VALID_1 = '60c13544b7b98a438cb1e2bc';
 const NAME_VALID_1 = 'Produto do Batista';
 const QUANTITY_VALID_1 = 100;
 
@@ -15,9 +15,21 @@ const ID_VALID_2 = '60c13544b7b98a438cb1e2cd';
 const NAME_VALID_2 = 'Produto do Silva';
 const QUANTITY_VALID_2 = 10;
 
+const ID_VALID_3 = '60c6bbd36597202f5d3565ee';
+const NAME_VALID_3 = 'Produto da Joana';
+const QUANTITY_VALID_3 = 50;
+
+const ID_VALID_4 = '60c6bbd36597202f5d3565ff';
+const NAME_VALID_4 = 'Produto da Olivia';
+const QUANTITY_VALID_4 = 5;
+
 const ID_INVALID = '12345'
 const NAME_INVALID = 'Pro';
 const QUANTITY_INVALID = -100;
+
+const ID_SALE_1 = '5f43a7ca92d58904914656b6';
+const ID_SALE_2 = '5f43a7ca92d58904914656c7';
+
 
 const productResult = {
   _id: ID_VALID_1,
@@ -28,6 +40,21 @@ const productResult = {
 const productsResults = [
   { _id: ID_VALID_1, name: NAME_VALID_1, quantity: QUANTITY_VALID_1 },
   { _id: ID_VALID_2, name: NAME_VALID_2, quantity: QUANTITY_VALID_2 },
+];
+
+const payloadSales_1 = [
+  { productId: ID_VALID_1, quantity: QUANTITY_VALID_1 },
+  { productId: ID_VALID_2, quantity: QUANTITY_VALID_2 },
+];
+
+const payloadSales_2 = [
+  { productId: ID_VALID_3, quantity: QUANTITY_VALID_3 },
+  { productId: ID_VALID_4, quantity: QUANTITY_VALID_4 },
+];
+
+const salesResults = [
+  { _id: ID_SALE_1, itensSold: payloadSales_1 },
+  { _id: ID_SALE_2, itensSold: payloadSales_2 },
 ];
 
 describe('Na camada SERVICES', () => {
@@ -391,6 +418,54 @@ describe('Na camada SERVICES', () => {
         const { itensSold } = await SalesService.create(payloadSales);
         expect(itensSold).to.be.an('array');
         expect(itensSold[0]).to.be.a('object');
+      });
+    });
+  });
+
+  describe('ao chamar GETALL para buscar todas as vendas', () => {
+    describe('quando não existe produtos criados', () => {
+      before(() => {
+        sinon.stub(SalesModel, 'getAll').resolves([]);
+      });
+  
+      after(() => {
+        SalesModel.getAll.restore();
+      });
+  
+      it('o retorno é uma array vazia', async () => {
+        const response = await SalesService.getAll();
+        expect(response).to.be.an('array');
+        expect(response).to.be.empty;
+      });
+    });
+  
+    describe('quando existem produtos criados', () => {
+      before(() => {
+        sinon.stub(SalesModel, 'getAll').resolves(salesResults);
+      });
+  
+      after(() => {
+        SalesModel.getAll.restore();
+      });
+  
+      it('retorna um array', async () => {
+        const response = await SalesService.getAll();
+        expect(response).to.be.an('array');
+      });
+
+      it('o array não está vazio', async () => {
+        const response = await SalesService.getAll();
+        expect(response).to.be.not.empty;
+      });
+  
+      it('o array possuem itens do tipo objeto', async () => {
+        const [ item ] = await SalesService.getAll();
+        expect(item).to.be.an('object');
+      });
+  
+      it('tais itens possuem as propriedades "_id" e "itensSold"', async () => {
+        const [ item ] = await SalesService.getAll();
+        expect(item).to.include.all.keys('_id', 'itensSold');
       });
     });
   });

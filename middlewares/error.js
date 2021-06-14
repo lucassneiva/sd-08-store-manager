@@ -1,11 +1,20 @@
 const unprocessableEntity = 422;
-const code = 'invalid_data';
+const notFound = 404;
 
 module.exports = (err, _req, res, _next) => {
+  if (err === 'Sale not found') {
+    return res.status(notFound).json({ 
+      err: {
+        code: 'not_found',
+        message: err,
+      }
+    });
+  }
+
   if (err) {
     return res.status(unprocessableEntity).json({ 
       err: {
-        code,
+        code: 'invalid_data',
         message: err,
       }
     });

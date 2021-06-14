@@ -16,6 +16,14 @@ const ID_VALID_2 = '60c13544b7b98a438cb1e2cd';
 const NAME_VALID_2 = 'Produto do Silva';
 const QUANTITY_VALID_2 = 10;
 
+const ID_VALID_3 = '60c6bbd36597202f5d3565ee';
+const NAME_VALID_3 = 'Produto da Joana';
+const QUANTITY_VALID_3 = 50;
+
+const ID_VALID_4 = '60c6bbd36597202f5d3565ff';
+const NAME_VALID_4 = 'Produto da Olivia';
+const QUANTITY_VALID_4 = 5;
+
 const UPDATE_NAME = 'Produto do Batista Atualizado';
 const UPDATE_QUANTITY = 1000;
 
@@ -24,9 +32,14 @@ const payloadProducts = [
   { name: NAME_VALID_2, quantity: QUANTITY_VALID_2 },
 ];
 
-const payloadSales = [
+const payloadSales_1 = [
   { productId: ID_VALID_1, quantity: QUANTITY_VALID_1 },
   { productId: ID_VALID_2, quantity: QUANTITY_VALID_2 },
+];
+
+const payloadSales_2 = [
+  { productId: ID_VALID_3, quantity: QUANTITY_VALID_3 },
+  { productId: ID_VALID_4, quantity: QUANTITY_VALID_4 },
 ];
 
 describe('Na camada MODELS', () => {
@@ -52,6 +65,7 @@ describe('Na camada MODELS', () => {
   afterEach(async () => {
     db = connectionMock.db('StoreManager');
     await db.collection('products').deleteMany({});
+    await db.collection('sales').deleteMany({});
   });
   
   describe('ao chamar o CREATE para cadastrar um novo produto', () => {
@@ -81,7 +95,7 @@ describe('Na camada MODELS', () => {
     });
   });
 
-  describe('ao chamar o GETALL para procurar todos os produtos', () => {
+  describe('ao chamar o GETALL para retornar todos os produtos', () => {
     describe('quando não existe nenhum produto criado', () => { 
       it('retorna um array', async () => {
         const response = await StoreModel.getAll();
@@ -107,7 +121,6 @@ describe('Na camada MODELS', () => {
 
       it('o array não está vazio', async () => {
         const response = await StoreModel.getAll();
-        expect(response).to.be.an('array');
         expect(response).to.be.not.empty;
       });
   
@@ -215,12 +228,12 @@ describe('Na camada MODELS', () => {
   describe('ao chamar o CREATE para registrar vendas', () => {
     describe('quando é inserido com sucesso', () => { 
       it('retorna objeto com "_id" e "itensSold" da venda inserida', async () => {
-        const response = await SalesModel.create(payloadSales);
+        const response = await SalesModel.create(payloadSales_1);
         expect(response).to.include.all.keys('_id', 'itensSold')
       });
 
       it('na propriedade "itensSold" com um array de objetos', async () => {
-        const { itensSold } = await SalesModel.create(payloadSales);
+        const { itensSold } = await SalesModel.create(payloadSales_1);
         expect(itensSold).to.be.an('array');
         expect(itensSold[0]).to.be.a('object');
       });
@@ -233,7 +246,7 @@ describe('Na camada MODELS', () => {
       });
 
       it('retorna um array vazio', async () => {
-        const response = await SalesModel.findById(payloadSales);
+        const response = await SalesModel.findById(payloadSales_1);
         expect(response).to.be.an('array');
         expect(response).to.be.empty;
       });
@@ -261,6 +274,45 @@ describe('Na camada MODELS', () => {
       it('o objeto tem as propriedades "_id", "name" e "quantity"', async () => {
         const response = await SalesModel.findById(payload);
         expect(response[0]).to.include.all.keys('_id', 'name', 'quantity')
+      });
+    });
+  });
+
+  describe('ao chamar o GETALL para procurar todas as vendas', () => {
+    describe('quando não existe nenhum produto criado', () => { 
+      it('retorna um array', async () => {
+        const response = await SalesModel.getAll();
+        expect(response).to.be.an('array');
+      });
+  
+      it('o array é vazio', async () => {
+        const response = await SalesModel.getAll();
+        expect(response).to.be.empty;
+      });
+    });
+  
+    describe('quando existem produtos criados', () => {
+      beforeEach(async () => {
+        db = connectionMock.db('StoreManager');
+        await db.collection('sales').insertOne({ 'itensSold': payloadSales_1 });
+        await db.collection('sales').insertOne({ 'itensSold': payloadSales_2 });
+      });
+
+      it('retorna um array não vazio', async () => {
+        const response = await SalesModel.getAll();
+        console.log(response);
+        expect(response).to.be.an('array');
+        expect(response).to.be.not.empty;
+      });
+  
+      it('o array possuem itens do tipo objeto', async () => {
+        const [ item ] = await SalesModel.getAll();
+        expect(item).to.be.an('object');
+      });
+  
+      it('tais itens possuem as propriedades "_id" e "itensSold"', async () => {
+        const [ item ] = await SalesModel.getAll();
+        expect(item).to.include.all.keys('_id', 'itensSold');
       });
     });
   });

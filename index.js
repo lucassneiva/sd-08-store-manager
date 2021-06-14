@@ -18,6 +18,9 @@ app.get('/products/:id', StoreController.findById);
 app.put('/products/:id', StoreController.updateById);
 app.delete('/products/:id', StoreController.deleteById);
 app.post('/sales', SalesController.create);
+app.get('/sales', SalesController.getAll);
+app.get('/sales/:id', SalesController.getByIds);
+
 
 app.use(ErrorMiddleware);
 

@@ -14,19 +14,18 @@ const create = rescue(async (req, res, next) => {
   res.status(successStatus).json(response);
 });
 
-// const getAll = rescue(async (_req, res, _next) => {
-//   const response = await StoreService.getAll();
-//   // console.log(response);
-//   res.status(successStatus).json({ products: response });
-// });
+const getAll = rescue(async (_req, res, _next) => {
+  const response = await SalesService.getAll();
+  // console.log(response);
+  res.status(successStatus).json({ sales: response });
+});
 
-// const findById = rescue(async (req, res, next) => {
-//   const { id } = req.params;
-//   const response = await StoreService.findById(id);
-//   // console.log('findById Controller', response);
-//   if (response.message) return next(response.message);
-//   res.status(successStatus).json(response);
-// });
+const getByIds = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const response = await SalesService.getByIds(id);
+  if (response.message) return next(response.message);
+  res.status(successStatus).json(response);
+});
 
 // const updateById = rescue(async (req, res, next) => {
 //   const { id } = req.params;
@@ -46,8 +45,8 @@ const create = rescue(async (req, res, next) => {
 
 module.exports = {
   create,
-  // getAll,
-  // findById,
+  getAll,
+  getByIds,
   // updateById,
   // deleteById,
 };

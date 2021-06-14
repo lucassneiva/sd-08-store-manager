@@ -14,6 +14,17 @@ const ID_VALID_2 = '60c13544b7b98a438cb1e2cd';
 const NAME_VALID_2 = 'Produto do Silva';
 const QUANTITY_VALID_2 = 10;
 
+const ID_VALID_3 = '60c6bbd36597202f5d3565ee';
+const NAME_VALID_3 = 'Produto da Joana';
+const QUANTITY_VALID_3 = 50;
+
+const ID_VALID_4 = '60c6bbd36597202f5d3565ff';
+const NAME_VALID_4 = 'Produto da Olivia';
+const QUANTITY_VALID_4 = 5;
+
+const ID_SALE_1 = '5f43a7ca92d58904914656b6';
+const ID_SALE_2 = '5f43a7ca92d58904914656c7';
+
 const payloadProduct = {
   name: NAME_VALID_1,
   quantity: QUANTITY_VALID_1,
@@ -30,15 +41,20 @@ const productsResults = [
   { _id: ID_VALID_2, name: NAME_VALID_2, quantity: QUANTITY_VALID_2 },
 ];
 
-const payloadSales = [
-  { _id: ID_VALID_1, quantity: QUANTITY_VALID_1 },
-  { _id: ID_VALID_2, quantity: QUANTITY_VALID_2 },
+const payloadSales_1 = [
+  { productId: ID_VALID_1, quantity: QUANTITY_VALID_1 },
+  { productId: ID_VALID_2, quantity: QUANTITY_VALID_2 },
 ];
 
-const saleResult = {
-  itensSold: payloadSales,
-  _id: '60c6c65d71dfe53c7a466acd',
-};
+const payloadSales_2 = [
+  { productId: ID_VALID_3, quantity: QUANTITY_VALID_3 },
+  { productId: ID_VALID_4, quantity: QUANTITY_VALID_4 },
+];
+
+const salesResults = [
+  { _id: ID_SALE_1, itensSold: payloadSales_1 },
+  { _id: ID_SALE_2, itensSold: payloadSales_2 },
+];
 
 describe('Na camada CONTROLLERS', () => {
   describe('ao chamar CREATE para inserir um novo produto', () => {
@@ -143,7 +159,7 @@ describe('Na camada CONTROLLERS', () => {
         expect(response.status.calledWith(200)).to.be.equal(true);
       });
   
-      it('é chamado o método "json" passando um array vazia', async () => {
+      it('é chamado o método "json" passando um objeto com propriedade "products" e com valor uma array vazia', async () => {
         await StoreController.getAll(request, response);
         expect(response.json.calledWith({ products: [] })).to.be.equal(true);
       });
@@ -168,7 +184,7 @@ describe('Na camada CONTROLLERS', () => {
         expect(response.status.calledWith(200)).to.be.equal(true);
       });
   
-      it('é chamado o método "json" passando um array', async () => {
+      it('é chamado o método "json" passando um objeto com propriedade "products"', async () => {
         await StoreController.getAll(request, response);
         expect(response.json.calledWith({ products: productsResults })).to.be.equal(true);
       });
@@ -391,10 +407,10 @@ describe('Na camada CONTROLLERS', () => {
       const request = {};
   
       before(() => {
-        request.body = payloadSales;
+        request.body = payloadSales_1;
         response.status = sinon.stub().returns(response);
         response.json = sinon.stub().returns();
-        sinon.stub(SalesService, 'create').resolves(saleResult);
+        sinon.stub(SalesService, 'create').resolves(salesResults);
       });
   
       after(() => {
@@ -408,7 +424,60 @@ describe('Na camada CONTROLLERS', () => {
   
       it('é chamado o json com objeto do produto adicionado', async () => {
         await SalesController.create(request, response);
-        expect(response.json.calledWith(saleResult)).to.be.equal(true);
+        expect(response.json.calledWith(salesResults)).to.be.equal(true);
+      });
+    });
+  });
+
+  describe('ao chamar GETALL para buscar todas as vendas', () => {
+    describe('quando não é encontrado uma correspondência', () => {
+      const response = {};
+      const request = {};
+  
+      before(() => {
+        request.body = {};
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+        sinon.stub(SalesService, 'getAll').resolves([]);
+      })
+  
+      after(() => {
+        SalesService.getAll.restore();
+      })
+  
+      it('é chamado o método "status" passando 200', async () => {
+        await SalesController.getAll(request, response);
+        expect(response.status.calledWith(200)).to.be.equal(true);
+      });
+  
+      it('é chamado o método "json" passando um objeto com a propriedade "sales" e com valor uma array vazia', async () => {
+        await SalesController.getAll(request, response);
+        expect(response.json.calledWith({ sales: [] })).to.be.equal(true);
+      });
+    });
+  
+    describe('quando existe uma correspondência', () => {
+      const response = {};
+      const request = {};
+  
+      before(() => {
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns();
+        sinon.stub(SalesService, 'getAll').resolves(salesResults);
+      })
+  
+      after(() => {
+        SalesService.getAll.restore();
+      })
+  
+      it('é chamado o método "status" passando o código 200', async () => {
+        await SalesController.getAll(request, response);
+        expect(response.status.calledWith(200)).to.be.equal(true);
+      });
+  
+      it('é chamado o método "json" passando um objeto com propriedade "sales"', async () => {
+        await SalesController.getAll(request, response);
+        expect(response.json.calledWith({ sales: salesResults })).to.be.equal(true);
       });
     });
   });
