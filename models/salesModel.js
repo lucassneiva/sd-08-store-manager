@@ -23,13 +23,10 @@ const getById = async (id) => {
   const db = await connection();
   try {
     const result = await db.collection('sales').findOne({ _id: ObjectId(id) });
-    if (!result) {
-      return { error: 'NotFound' };
-    }
     return result;
-  } catch (err) {
-    console.error(`Id ${id} incorrect format\n.`);
-    return { error: 'IdIncorrectFormat' };
+  } catch (error) {
+    console.log(error);
+    return null;
   }
 };
 
@@ -48,7 +45,10 @@ const update = async (id, dataForUpdate) => {
 
 const remove = async (id) => {
   const db = await connection();
+  const sale = await getById(id);
+  if (!sale) return null;
   await db.collection('sales').deleteOne({ _id: ObjectId(id) });
+  return sale;
 };
 
 module.exports = {

@@ -1,4 +1,5 @@
 const objErrorGenerator = require('../utils/errorObjGenerator');
+const { ObjectId } = require('mongodb');
 const salesModel = require('../models/salesModel');
 const productsModel = require('../models/productsModel');
 const salesSchema = require('../schema/salesSchema');
@@ -58,16 +59,12 @@ const create = async (itensSold) => {
 };
 
 const getById = async (id) => {
-  const product = await salesModel.getById(id);
-  if (product.error === 'NotFound') {
+  const sale = await salesModel.getById(id);
+  if (!sale) {
     const message = 'Sale not found';
     return objErrorGenerator(NOT_FOUND, 'not_found', message);
   };
-  if (product.error === 'IdIncorrectFormat') {
-    const message = 'Wrong sale ID format';
-    return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
-  }
-  return product;
+  return sale;
 };
 
 const getAll = () => {
@@ -86,20 +83,27 @@ const update = async (id, itensSold) => {
 };
 
 const remove = async (id) => {
-  const resultID = await getById(id);
-  if (resultID.error) {
-    return resultID;
+  if (!ObjectId.isValid(id)) {
+    const message = 'Wrong sale ID format';
+    return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
   }
 
-  const productId = resultID.itensSold[0].productId;  
+  const sale = await salesModel.getById(id);
+
+  if (!sale) {
+    const message = 'Sale not found';
+    return objErrorGenerator(UNPROCESSABLE_ENTITY, 'invalid_data', message);
+  }
+
+  const productId = sale.itensSold[0].productId;  
   const product = await productsModel.getById(productId);
-  const calc = product.quantity + resultID.itensSold[0].quantity;
+  const calc = product.quantity + sale.itensSold[0].quantity;
   const newProduct = {name: product.name , quantity: calc};
   await productsModel.update(productId, newProduct);
 
   await salesModel.remove(id);
 
-  return resultID;
+  return sale;
 
 };
 
