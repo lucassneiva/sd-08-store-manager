@@ -69,13 +69,17 @@ const getByIds = async (id) => {
 //     .updateOne({ _id: ObjectId(id) }, { $set: { name, brand } });
 // };
 
-// const deleteById = async (id) => {
-//   const db = await connection();
-//   const product = await findById(id);
-//   await db.collection('products')
-//     .deleteOne({ _id: ObjectId(id) });
-//   return product;
-// };
+const deleteById = async (id) => {
+  const db = await connection();
+  const sale = await getByIds(id);
+  await db.collection('sales')
+    .deleteOne({ _id: ObjectId(id) });
+
+  const teste = await getByIds(id);
+  // console.log('MODEL antes', sale);
+  // console.log('MODEL apos', teste);
+  return sale;
+};
 
 module.exports = {
   create,
@@ -83,5 +87,5 @@ module.exports = {
   getAll,
   getByIds,
   // updateById,
-  // deleteById,
+  deleteById,
 };

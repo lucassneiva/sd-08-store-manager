@@ -36,17 +36,18 @@ const getByIds = rescue(async (req, res, next) => {
 //   res.status(successStatus).json({ _id: id, name, quantity });
 // });
 
-// const deleteById = rescue(async (req, res, next) => {
-//   const { id } = req.params;
-//   const response = await StoreService.deleteById(id);
-//   if (response.message) return next(response.message);
-//   res.status(successStatus).json(response);
-// });
+const deleteById = rescue(async (req, res, next) => {
+  const { id } = req.params;
+  const response = await SalesService.deleteById(id);
+  // console.log('CONTROLLER', response[0]);
+  if (response.message) return next(response.message);
+  res.status(successStatus).json(response[0]);
+});
 
 module.exports = {
   create,
   getAll,
   getByIds,
   // updateById,
-  // deleteById,
+  deleteById,
 };

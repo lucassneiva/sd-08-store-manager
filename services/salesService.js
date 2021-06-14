@@ -5,6 +5,9 @@ const SalesModel = require('../models/salesModel');
 
 const message = 'Wrong product ID or invalid quantity';
 const message_2 = 'Sale not found';
+const message_3 = 'Wrong sale ID format';
+
+const emptyArray = 0;
 
 const requestDataIsValid = (quantity) => {
   const requiredNonEmptyNumber = Joi.number().not().empty().required();
@@ -68,9 +71,27 @@ const getAll = async () => {
 
 const getByIds = async (id) => {
   if(!ObjectId.isValid(id)) return { message: message_2 };
-  const product = await SalesModel.getByIds(id);
-  if (!product) return { message: message_2 };
-  return product;
+  const sale = await SalesModel.getByIds(id);
+  // console.log('GETBYIDS SERVICE', sale);
+  if (!sale || sale.length === emptyArray) {
+    // console.log('entrou no getbyids vazio');
+    return { message: message_2 };
+  }
+  return sale;
+};
+
+
+
+
+const deleteById = async (id) => {
+  if(!ObjectId.isValid(id)) return { message: message_3 };
+  const sale = await SalesModel.deleteById(id);
+  console.log('SERVICE', sale);
+  if (sale.length === emptyArray) {
+    console.log('entrou sale vazio SERVICE');
+    return { message_3 };
+  }
+  return sale;
 };
 
 module.exports = {
@@ -78,5 +99,5 @@ module.exports = {
   getAll,
   getByIds,
   // updateById,
-  // deleteById,
+  deleteById,
 };
