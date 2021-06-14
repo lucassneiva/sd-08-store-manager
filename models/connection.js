@@ -5,7 +5,9 @@ const OPTIONS = {
   useUnifiedTopology: true,
 };
 
-const MONGO_DB_URL = 'mongodb://mongodb:27017/StoreManager';
+const urlAvaliador = (avaliador) => avaliador ? 'mongodb://mongodb:27017/StoreManager' : 'mongodb://localhost:27017/StoreManager';
+
+const MONGO_DB_URL = urlAvaliador(true);
 // const MONGO_DB_URL = 'mongodb://localhost:27017/StoreManager';
 const DB_NAME = 'StoreManager';
 

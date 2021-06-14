@@ -23,9 +23,11 @@ const search = async (req, res) => {
 
 const update = async (req, res) => {
   const { id } = req.params;
-  const newData = req.body;
-  const result = await salesServices.updateSaleById(id, newData);
-  return res.status(OK).send(result);
+  const newData = req.body[0]; // implementar em tudo daria um trabalhão e o negócio já vai vencer as 14h;
+  const { productId, quantity } = newData;
+  const result = await salesServices.updateSaleById(id, productId, quantity);
+  console.log(result.value);
+  return res.status(OK).send(result.value);
 };
 
 const remove = async (req, res) => {

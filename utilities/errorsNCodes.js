@@ -101,6 +101,15 @@ const errors = {
           code: notFoundCode,
         }
       }
+    },
+    badRequestSale: {
+      response: UNPROCESSABLE_ENTITY,
+      errorObj: {
+        err: {
+          message: 'Wrong sale ID format',
+          code: invalidData,
+        }
+      }
     }
   }
 };

@@ -1,7 +1,7 @@
 const { errors } = require('../utilities/errorsNCodes');
 const salesModel = require('../models/salesModel');
 const { Sales } = errors;
-const { saleAtLeastOne, saleQtdCantBeString, notFoundSale } = Sales;
+const { saleAtLeastOne, saleQtdCantBeString, notFoundSale, badRequestSale } = Sales;
 
 const saleMinQtd = 1;
 
@@ -18,15 +18,24 @@ const salesRequestValidate = async (req, res, next) => {
   next();
 };
 
-const saleIdExists = async (req, res, next) => {
+const saleIdFound = async (req, res, next) => {
   const idParams = req.params;
-  const checkDb = await salesModel.getSaleById(idParams);
+  const checkDb = await salesModel.getSaleById(idParams.id);
   if (!checkDb) {
     return res.status(notFoundSale.response).send(notFoundSale.errorObj);
   }
   next();
 };
 
-module.exports = { salesRequestValidate, saleIdExists };
+const saleIdRequest = async (req, res, next) => {
+  const idParams = req.params;
+  const checkDb = await salesModel.getSaleById(idParams.id);
+  if (!checkDb) {
+    return res.status(badRequestSale.response).send(badRequestSale.errorObj);
+  }
+  next();
+};
+
+module.exports = { salesRequestValidate, saleIdFound, saleIdRequest };
 
 

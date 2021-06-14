@@ -10,38 +10,36 @@ const getAllTheSales = async () => {
 const getSaleById = async (id) => {
   const db = await connection();
   if (!ObjectId.isValid(id)) return null;
-  return db.collection('sales').findOne({ _id: ObjectId(id) });
+  const finding = db.collection('sales').findOne({ _id: ObjectId(id) });
+  console.log(finding);
+  return finding;
 };
 
 const addSaleToDB = async (product) => {
   const db = await connection();
   const sale = await db.collection('sales')
     .insertOne({ itensSold: product });
-  return { _id: sale.insertedId, ...sale.ops[0] };
+  return sale.ops[0];
 };
 
 const deleteSaleById = async (id) => {
   const db = await connection();
   if (!ObjectId.isValid(id)) return null;
-  const sale = await getSaleById(id);
-  await db.collection('sales').deleteOne({ _id: ObjectId(id) });
+  const sale = await db.collection('sales').findOneAndDelete({ _id: ObjectId(id) });
   return sale;
 };
 
-const updateOrCreateSale = async (id, sales) => {
+const updateOrCreateSale = async (id, productId, quantity) => {
   const db = await connection();
   if (!ObjectId.isValid(id)) return null;
   const sale = await db
     .collection('sales')
-    .findOneAndUpdate({ _id: ObjectId(id) }, { $set: { itensSold: sales } },
+    .findOneAndUpdate({ _id: new ObjectId(id), 'itensSold.productId': `${productId}` },
+      { $set: { 'itensSold.$.quantity': quantity } },
       { returnOriginal: false });
-  // { _id: new ObjectId(id),  'itensSold.productId': `${productId}` },
-  // { $set: {'itensSold.$.quantity': quantity } },
-  // { returnOriginal: false })
   // returnOriginal encontrado no projeto do Tiago Bovolin, estava morrendo aqui e isso me ajudou muito. Apesar de que será removido em breve =(
   const { value } = sale;
-  console.log(sale);
-  if (!sale) return addSale(sales);
+  if (!sale) return addSale({ productId, quantity });
   return { id, value };
 };
 

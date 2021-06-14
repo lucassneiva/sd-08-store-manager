@@ -10,7 +10,8 @@ const {
   productsSearchValidate } = require('./services/productValidations');
 const {
   salesRequestValidate,
-  saleIdExists } = require('./services/salesValidations');
+  saleIdFound,
+  saleIdRequest } = require('./services/salesValidations');
 
 app.use(bodyParser.json());
 
@@ -30,9 +31,9 @@ app.delete('/products/:id', productsSearchValidate, products.remove);
 // Sales endpoints:
 app.post('/sales', salesRequestValidate, sales.create);
 app.get('/sales', sales.getAll);
-app.get('/sales/:id', saleIdExists, sales.search);
-app.put('/sales/:id', salesRequestValidate, saleIdExists, sales.update);
-// app.delete('/sales/:id', sales.deleteById);
+app.get('/sales/:id', saleIdFound, sales.search);
+app.put('/sales/:id', salesRequestValidate, saleIdFound, sales.update);
+app.delete('/sales/:id', saleIdRequest, sales.remove);
 
 // testing routes
 // app.post('/test', products.create);
