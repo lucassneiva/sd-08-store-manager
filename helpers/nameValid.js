@@ -9,7 +9,7 @@ const nameValid = (name) => {
       }
     };
   }
-  return 'Name validated';
+  return 'Validated';
 };
 
 module.exports = nameValid;

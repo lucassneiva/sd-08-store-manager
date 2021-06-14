@@ -1,3 +1,5 @@
+const Products = require('../models/productsModels');
+
 const nameExists = async (name) => {
   const allProducts = await Products.getAllProducts();
   const findProduct = await allProducts.find((product) => product.name === name);
@@ -9,7 +11,7 @@ const nameExists = async (name) => {
       }
     };
   }
-  return 'Name validated';
+  return 'Validated';
 };
 
 module.exports = nameExists;

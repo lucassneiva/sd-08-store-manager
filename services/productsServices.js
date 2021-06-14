@@ -4,11 +4,11 @@ const Helper = require('../helpers');
 const addProduct = async (name, quantity) => {
   const nameValidation = Helper.nameValid(name);
   const quantityValidation = Helper.quantityValid(quantity);
-  const existingProduct = Helper.nameExists(name);
+  const existingProduct = await Helper.nameExists(name);
 
   if (nameValidation.err) return nameValidation;
   if (quantityValidation.err) return quantityValidation;
-  if ((existingProduct).err) return existingProduct;
+  if (existingProduct.err) return existingProduct;
 
   return Products.addProduct(name, quantity);
 };

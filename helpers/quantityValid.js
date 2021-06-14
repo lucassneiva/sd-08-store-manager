@@ -9,7 +9,7 @@ const quantityValid = (quantity) => {
       }
     };
   }
-  if (quatity <= ZERO) {
+  if (quantity <= ZERO) {
     return {
       err: {
         code: 'invalid_data',
@@ -17,7 +17,7 @@ const quantityValid = (quantity) => {
       }
     };
   }
-  return 'Quantity validated';
+  return 'Validated';
 };
 
 module.exports = quantityValid;

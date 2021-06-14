@@ -9,6 +9,7 @@ const idValid = (id) => {
       }
     };
   }
+  return 'Validated';
 };
 
 module.exports = idValid;
