@@ -5,7 +5,7 @@ const router = express.Router();
 const { newsale, decrementpdt } = require('../models/salesModel');
 
 const{
-  validasale, asales, getsalebyid, updates,
+  validasale, asales, getsalebyid, updates, deleteonesale
 } = require('../services/salesService');
 
 const cc = 200;
@@ -43,16 +43,16 @@ router.get('/', async(req, res) => {
 
 
 router.get('/:id', async(req, res) => {  
-  
+  const { id } = req.params;
   try {
  
-    const sales = await getsalebyid(req.params.id);
-    // console.log('get', sales);
+    const sales = await getsalebyid(id);
+    console.log('controler:50', id);
     res.status(cc).send(sales);
     return;
   }catch (err) {
-    console.log(err);
-    res.status(cdxxii).send(err);
+    console.log('aqui',err);
+    res.status(cdiv).send(err);
     return;  
   };
 });
@@ -60,13 +60,27 @@ router.get('/:id', async(req, res) => {
 router.put('/:id', async(req, res) => {  
   const { id } = req.params;
   const  body = req.body;
- 
+  
   const updated = await updates(id,body);
   // console.log('get', sales);
-  res.status(cc).send(updated);
+  let dinamics = updated.err? cdxxii: cc;
+  res.status(dinamics).send(updated);
   return;
   
 });
+
+
+router.delete('/:id', async(req, res) => {  
+  const { id } = req.params;
+   
+  const deleted = await deleteonesale(id);
+  console.log('controler:77', deleted);
+  let dinamics = ()=> {if(deleted.CommandResult){ cc; } cdxxii;};
+  res.status(dinamics).send(deleted.documents[0]);
+  return;
+  
+});
+
 
 
 module.exports = router;

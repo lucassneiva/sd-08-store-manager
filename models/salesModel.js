@@ -17,7 +17,11 @@ const allsale = async() => {
 };  
 
 
-
+const oneprodu = async(id) => {
+  const one = await conn().then(db => db.collection('products').findOne(ObjectId(id)));
+  return one;
+  
+};
 
 const getsaleby = async(id) => {
   const onSale = await conn().then(db => db.collection('sales').findOne(ObjectId(id)));
@@ -40,7 +44,8 @@ const decrementpdt = async(arrvenda) => {
     async (db) => {
       arrvenda.forEach(
         async({productId, quantity}, i) => {
-          const produ =  Promise.all([getsaleby(ObjectId(productId))]);
+          let produ = await oneprodu(productId);
+          console.log('model46', produ);
           await db.collection('products').updateOne(
             {_id: ObjectId(productId)},
             {$set: {quantity: produ.quantity - arrvenda[i].quantity}}

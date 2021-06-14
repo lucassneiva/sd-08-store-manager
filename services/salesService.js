@@ -11,6 +11,7 @@ const {
   allsale,
   getsaleby,
   updatesale,
+  deletesale,
 
 } = require('../models/salesModel');
 
@@ -22,7 +23,7 @@ const objerr = {
   err: { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' }};
   
 const salenotf = {
-  err: { code: 'invalid_data', message: 'Sale not found' }};
+  err: { code: 'not_found', message: 'Sale not found' }};
 
 const upderr = {
   err: { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' }};; 
@@ -45,10 +46,10 @@ const asales = async() => {
 };
 
 const getsalebyid = async(id)=>{
-  if(id.length > x){
+  if(ObjectId.isValid(id) ||  id.length > x) {
     const ret = await getsaleby(id);
     return ret;
-  } else return salenotf;
+  } else throw salenotf;
 };
 
 const updates = async(id, body) => { 
@@ -58,10 +59,19 @@ const updates = async(id, body) => {
   }else{ return await updatesale (id, body);}
 };
 
+const deleteonesale = (id)=>{
+  if (ObjectId.isValid(id)){
+    const removed = deletesale(id);
+    return removed;
+  }else return 'err';
+
+};
+
 
 module.exports = {
   validasale,
   asales,
   getsalebyid,
   updates,
+  deleteonesale,
 };
