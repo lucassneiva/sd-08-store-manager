@@ -75,7 +75,7 @@ const errors = {
   },
 
   Sales: {
-    saleCantBeLessThanOne: {
+    saleAtLeastOne: {
       response: UNPROCESSABLE_ENTITY,
       errorObj: {
         err: {
