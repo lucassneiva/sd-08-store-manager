@@ -8,6 +8,7 @@ const service = require('./services/productServices');
 const {
   productsRequestValidate,
   productsSearchValidate } = require('./services/productValidations');
+const { salesRequestValidate } = require('./services/salesValidations');
 
 app.use(bodyParser.json());
 
@@ -25,7 +26,7 @@ app.put('/products/:id',
 app.delete('/products/:id', productsSearchValidate, products.remove);
 
 // Sales endpoints:
-app.post('/sales', sales.create);
+app.post('/sales', salesRequestValidate, sales.create);
 app.get('/sales', sales.getAll);
 // app.get('/sales/:id', sales.getById);
 // app.put('/sales/:id', sales.updateById);
