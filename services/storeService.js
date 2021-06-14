@@ -11,22 +11,21 @@ const requestDataIsValid = (name, quantity) => {
   const minLengthNameString = 5;
   const minValueQuantityNumber = 1;
 
-  return Joi.object({
+  const erro =  Joi.object({
     name: requiredNonEmptyString.min(minLengthNameString),
     quantity: requiredNonEmptyNumber.integer().min(minValueQuantityNumber),
   }).validate({ name, quantity });
+  // console.log('store', erro);
+  return erro;
 };
 
-const create = async ({ name, quantity }) => {
+const create = async (name, quantity) => {
   const { error } = requestDataIsValid(name, quantity);
-  if (error) {
-    const { isJoi, details } = error;
-    return { isJoi, details };
-  }
+  if (error) return error;
   const existingProduct = await StoreModel.findByName(name);
   if(existingProduct) return { message: 'Product already exists'};
-  
-  return await StoreModel.create({ name, quantity });
+
+  return await StoreModel.create(name, quantity);
 };
 
 const getAll = async () => {
@@ -42,22 +41,10 @@ const findById = async (id) => {
 };
 
 const updateById = async (id, name, quantity) => {
-  if(!ObjectId.isValid(id)) {
-    // console.log('entrou no id');
-    return { message };
-  }
+  if(!ObjectId.isValid(id)) return { message };
   const { error } = requestDataIsValid(name, quantity);
-  if (error) {
-    // console.log('entrou no Joi');
-    const { isJoi, details } = error;
-    return { isJoi, details };
-  }
-
+  if (error) return error;
   const { modifiedCount } = await StoreModel.updateById(id, name, quantity);
-  // if (!modifiedCount) {
-  //   console.log('entrou no id nao encontrado', modifiedCount);
-  //   return { message: 'Nothing to change' };
-  // }
   return { modifiedCount };
 };
 

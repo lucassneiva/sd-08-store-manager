@@ -5,18 +5,15 @@ const successStatus = 200;
 const responseSuccessStatus = 201;
 
 const create = rescue(async (req, res, next) => {
-  const response = await StoreService.create(req.body);
-  // console.log('STORECONTROLLER', response);
+  const { name, quantity } = req.body;
+  const response = await StoreService.create(name, quantity);
   if (response.isJoi) {
-    // console.log('entrou no isJoi');
     return next(response.details[0].message);
   }
   if (response.message) {
-    // console.log('entrou no dominio');
     return next(response.message);
   }
   res.status(responseSuccessStatus).json(response);
-  // res.status(responseSuccessStatus).send('OK');
 });
 
 const getAll = rescue(async (_req, res, _next) => {
@@ -50,5 +47,9 @@ const deleteById = rescue(async (req, res, next) => {
 });
 
 module.exports = {
-  create, getAll, findById, updateById, deleteById,
+  create,
+  getAll,
+  findById,
+  updateById,
+  deleteById,
 };
