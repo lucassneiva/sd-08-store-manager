@@ -39,7 +39,23 @@ async function updateProduct(id,name, quantity ) {
   } catch (err) {
     console.log(err);
   }
+};
 
+function deleteProduct(id) {
+  try {
+    connection()
+      .then((db) => db.collection('products')
+        .deleteOne({_id: ObjectID(id)}));
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-module.exports = { createProduct, findProduct, getAllProducts, getByID, updateProduct };
+
+module.exports = { createProduct,
+  findProduct,
+  getAllProducts,
+  getByID,
+  updateProduct,
+  deleteProduct
+};

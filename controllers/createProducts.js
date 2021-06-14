@@ -7,7 +7,8 @@ const {
   findProduct,
   getAllProducts,
   getByID,
-  updateProduct
+  updateProduct,
+  deleteProduct
 } = require('../models/models');
 
 const STATUS_201 = 201;
@@ -40,6 +41,13 @@ router.put('/:id', checkProduct, async (req, res) => {
   updateProduct(id,name, quantity );
   const product = await getByID(id);
   res.status(STATUS_200).send(product);
+});
+
+router.delete('/:id', checkID, async (req, res) => {
+  const { id } = req.params;
+  const product = await getByID(id);
+  res.status(STATUS_200).send(product);
+  deleteProduct(id);
 });
 
 module.exports = router;
