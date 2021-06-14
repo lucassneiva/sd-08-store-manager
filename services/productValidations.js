@@ -41,7 +41,7 @@ const checkIdExists = async (req, res, next) => {
   const idParams = req.params;
   const searching = await model.getProductById(idParams.id);
   if (!searching) {
-    return res.status(productDoNotExist.response).send(productDoNotExist.errorObj);
+    return res.status(productDoNotExist.response).send(productDoNotExist.errorObj); //
   }
   next();
 };
