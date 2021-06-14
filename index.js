@@ -31,7 +31,7 @@ app.delete('/products/:id', productsSearchValidate, products.remove);
 app.post('/sales', salesRequestValidate, sales.create);
 app.get('/sales', sales.getAll);
 app.get('/sales/:id', saleIdExists, sales.search);
-app.put('/sales/:id', sales.update);
+app.put('/sales/:id', salesRequestValidate, saleIdExists, sales.update);
 // app.delete('/sales/:id', sales.deleteById);
 
 // testing routes
