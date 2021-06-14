@@ -38,9 +38,9 @@ const updateOrCreateSale = async (id, sales) => {
   // { _id: new ObjectId(id),  'itensSold.productId': `${productId}` },
   // { $set: {'itensSold.$.quantity': quantity } },
   // { returnOriginal: false })
-  // Solução incrível encontrada no projeto do Tiago Bovolin, estava morrendo aqui e isso me ajudou muito.
+  // returnOriginal encontrado no projeto do Tiago Bovolin, estava morrendo aqui e isso me ajudou muito. Apesar de que será removido em breve =(
   const { value } = sale;
-  console.log(sale)
+  console.log(sale);
   if (!sale) return addSale(sales);
   return { id, value };
 };
