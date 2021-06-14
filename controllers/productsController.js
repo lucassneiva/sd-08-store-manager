@@ -1,8 +1,10 @@
 const ProductsService = require('../services/productsService');
+const ProductsModel = require('../models/productsModel');
 
 const STATUS_ERROR = 500;
 const STATUS_422 = 422;
 const STATUS_201 = 201;
+const STATUS_200 = 200;
 
 async function create(req, res) {
   try {
@@ -20,7 +22,20 @@ async function create(req, res) {
   }
 }
 
+async function getAll(_req, res) {
+  try {
+    const products = await ProductsModel.getAll();
+    const formatResponse = {
+      products: [...products],
+    };
+    res.status(STATUS_200).json(formatResponse);
+  } catch (error) {
+    return res.status(STATUS_ERROR).json({message: error.message});
+  }
+}
+
 
 module.exports = {
-  create
+  create,
+  getAll
 };
