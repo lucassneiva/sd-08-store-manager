@@ -1,5 +1,5 @@
 const connection = require('./connections');
-const { ObjectId, ObjectID } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 function createProduct(product) {
   const { name, quantity} = product;
@@ -35,7 +35,7 @@ async function updateProduct(id,name, quantity ) {
   try {
     connection()
       .then((db) => db.collection('products')
-        .updateOne({_id: ObjectID(id)},{$set: {'name': name, 'quantity': quantity}}));
+        .updateOne({_id: ObjectId(id)},{$set: {'name': name, 'quantity': quantity}}));
   } catch (err) {
     console.log(err);
   }
@@ -45,7 +45,7 @@ function deleteProduct(id) {
   try {
     connection()
       .then((db) => db.collection('products')
-        .deleteOne({_id: ObjectID(id)}));
+        .deleteOne({_id: ObjectId(id)}));
   } catch (err) {
     console.log(err);
   }

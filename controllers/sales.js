@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { ObjectId, ObjectID } = require('mongodb');
+const { ObjectId } = require('mongodb');
 
 const {
   insertSales,
@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
-  if ( !ObjectID.isValid(id)) {
+  if ( !ObjectId.isValid(id)) {
     return res.status(STATUS_404).json(
       {
         'err': {
@@ -49,6 +49,11 @@ router.get('/:id', async (req, res) => {
     );
   }
   const salesByID = await getSaleByID(id);
+
+  if (!salesByID) {
+    return res.status(STATUS_404)
+      .json({ err: { code: 'not_found', message: 'Sale not found' }});
+  }
   res.status(STATUS_200).json(salesByID);
 });
 
@@ -60,28 +65,26 @@ router.put('/:id',checkSalesCadastre , async (req, res) => {
   res.status(STATUS_200).send(sale);
 });
 
-// router.delete('/:id', async (req, res) => {
-//   const { id } = req.params;
-//   const sale = await getSaleByID(id);
-//   console.log(sale);
-//   const tra = await deleteSale(id);
-//   return res.status(STATUS_200).json(sale);
-// });
-
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  const idLength = 24;
-  if(id.length !== idLength) {
+
+  const IDLENGTH = 24;
+
+  if(id.length !== IDLENGTH) {
     return res.status(STATUS_422)
       .json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' }});
   }
+
   const sale = await getSaleByID(id);
-  console.log(sale);
+
+  // console.log(sale);
+
   if (!sale) {
     return res.status(STATUS_404)
       .json({ err: { code: 'not_found', message: 'Sale not found' }});
   }
-  await deleteSaleById(id);
+
+  const deleted = await deleteSaleById(id);
   return res.status(STATUS_200).json(sale);
 });
 

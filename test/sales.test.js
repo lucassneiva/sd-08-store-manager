@@ -617,6 +617,8 @@ describe('8 - Crie um endpoint para deletar uma venda', () => {
       .then((response) => {
         const { body } = response;
         result = JSON.parse(body);
+        console.log(result);
+
         resultProductId = result.products[0]._id;
       });
 
