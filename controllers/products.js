@@ -9,7 +9,7 @@ const {
   getByID,
   updateProduct,
   deleteProduct
-} = require('../models/models');
+} = require('../models/productModels');
 
 const STATUS_201 = 201;
 const STATUS_200 = 200;

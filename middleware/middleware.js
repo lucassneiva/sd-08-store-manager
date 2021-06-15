@@ -1,4 +1,4 @@
-const { findProduct } = require('../models/models');
+const { findProduct } = require('../models/productModels');
 
 const STATUS_422 = 422;
 const NAME_LENGTH = 5;
