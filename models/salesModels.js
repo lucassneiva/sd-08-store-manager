@@ -33,5 +33,19 @@ async function getSaleByID(id) {
   }
 };
 
+async function updateSale( id, productId, quantity ) {
+  try {
+    const ops = connection()
+      .then((db) => db.collection('sales')
+        .updateOne(
+          {_id: ObjectId(id), 'itensSold.productId': productId },
+          {$set: {'itensSold.$.quantity': quantity}})
+      ).then((result) => result);
+      // const tra = await ops;
+      // console.log(tra);
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-module.exports = { insertSales, getAllSales, getSaleByID };
+module.exports = { insertSales, getAllSales, getSaleByID, updateSale };

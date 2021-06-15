@@ -1,4 +1,4 @@
-const connection = require('../models/connections');
+const connection = require('./connections');
 const { ObjectId, ObjectID } = require('mongodb');
 
 function createProduct(product) {
@@ -51,25 +51,10 @@ function deleteProduct(id) {
   }
 };
 
-
-async function insertSales(sales) {
-  try {
-    const logInsert = connection()
-      .then((db) => db.collection('sales')
-        .insertOne({ itensSold: sales}))
-      .then((result) => result.ops[0] );
-    return logInsert;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-
 module.exports = { createProduct,
   findProduct,
   getAllProducts,
   getByID,
   updateProduct,
-  deleteProduct,
-  insertSales
+  deleteProduct
 };

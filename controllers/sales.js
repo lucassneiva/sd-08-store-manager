@@ -2,7 +2,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { ObjectId, ObjectID } = require('mongodb');
 
-const { insertSales, getAllSales, getSaleByID } = require('../models/salesModels');
+const {
+  insertSales,
+  getAllSales,
+  getSaleByID,
+  updateSale
+} = require('../models/salesModels');
 
 const { checkSalesCadastre } = require('../middleware/checkSales');
 
@@ -41,5 +46,12 @@ router.get('/:id', async (req, res) => {
   res.status(STATUS_200).json(salesByID);
 });
 
+router.put('/:id',checkSalesCadastre , async (req, res) => {
+  const { productId, quantity } = req.body[0];
+  const { id } = req.params;
+  updateSale(id, productId, quantity );
+  const sale = await getSaleByID(id);
+  res.status(STATUS_200).send(sale);
+});
 
 module.exports = router;
