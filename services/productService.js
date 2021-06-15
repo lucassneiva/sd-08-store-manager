@@ -21,18 +21,23 @@ const getAll = async () => {
   };
 };
 
-const getProductById = async (id) => {
+const getProductById = (id) => {
   return productModel.getProductById(id);
 };
 
-const updateProduct = async (id, name, quantity) => {
+const updateProduct = (id, name, quantity) => {
   return productModel.updateProduct(id, name, quantity);
 };
 
+const deleteProduct = (id) => {
+  return productModel.deleteProduct(id);
+}
+
 module.exports = {
   create,
-  hasAnotherProductWithName,
+  deleteProduct,
   getAll,
+  hasAnotherProductWithName,
   getProductById,
   updateProduct,
 };

@@ -29,4 +29,10 @@ router.put(
   async (req, res) => await productController.updateProduct(req, res),
 );
 
+router.delete(
+  '/:id',
+  middlewares.idValidation,
+  async (req, res) => await productController.deleteProduct(req, res),
+);
+
 module.exports = router;
