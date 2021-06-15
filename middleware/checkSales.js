@@ -56,9 +56,7 @@ async function checkIfSaleExist(req, res, next) {
   const { id } = req.params;
   console.log(id);
   const sale = await getSaleByID(id);
-  console.log("atra   ", sale);
   if(!sale) {
-    console.log("não existe");
     return res.status(STATUS_404).json(
       {
         'err': {
