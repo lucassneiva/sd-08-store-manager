@@ -6,10 +6,15 @@ const {
   insertSales,
   getAllSales,
   getSaleByID,
-  updateSale
+  updateSale,
+  deleteSale,
 } = require('../models/salesModels');
 
-const { checkSalesCadastre } = require('../middleware/checkSales');
+const {
+  checkSalesCadastre,
+  checkID,
+  checkIfSaleExist
+} = require('../middleware/checkSales');
 
 const router =  express.Router();
 router.use(bodyParser.json());
@@ -17,6 +22,7 @@ router.use(bodyParser.json());
 const STATUS_201 = 201;
 const STATUS_200 = 200;
 const STATUS_404 = 404;
+const STATUS_422 = 422;
 
 router.post('/', checkSalesCadastre, async (req, res) => {
   const sales  = req.body;
@@ -52,6 +58,28 @@ router.put('/:id',checkSalesCadastre , async (req, res) => {
   updateSale(id, productId, quantity );
   const sale = await getSaleByID(id);
   res.status(STATUS_200).send(sale);
+});
+
+// router.delete('/:id', async (req, res) => {
+//   const { id } = req.params;
+//   const sale = await getSaleByID(id);
+//   console.log(sale);
+//   const tra = await deleteSale(id);
+//   return res.status(STATUS_200).json(sale);
+// });
+
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const idLength = 24;
+  if(id.length !== idLength) {
+    return res.status(STATUS_422)
+      .json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' }});
+  }
+  const sale = await getSaleByID(id);
+  if (!sale) return res.status(404)
+    .json({ err: { code: 'not_found', message: 'Sale not found' }});
+  const tra = await deleteSale(id);
+  return res.status(STATUS_200).json(sale);
 });
 
 module.exports = router;

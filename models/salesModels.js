@@ -1,5 +1,5 @@
 const connection = require('./connections');
-const { ObjectId } = require('mongodb');
+const { ObjectID, ObjectId } = require('mongodb');
 async function insertSales(sales) {
   try {
     const logInsert = connection()
@@ -35,17 +35,26 @@ async function getSaleByID(id) {
 
 async function updateSale( id, productId, quantity ) {
   try {
-    const ops = connection()
+    connection()
       .then((db) => db.collection('sales')
         .updateOne(
           {_id: ObjectId(id), 'itensSold.productId': productId },
           {$set: {'itensSold.$.quantity': quantity}})
       ).then((result) => result);
-      // const tra = await ops;
-      // console.log(tra);
   } catch (err) {
     console.log(err);
   }
 };
 
-module.exports = { insertSales, getAllSales, getSaleByID, updateSale };
+function deleteSale(id) {
+  try {
+    const deletedSale = connection()
+      .then((db) => db.collection('sales')
+        .deleteOne({_id: ObjectID(id)}));
+    return deletedSale;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = { insertSales, getAllSales, getSaleByID, updateSale, deleteSale };
