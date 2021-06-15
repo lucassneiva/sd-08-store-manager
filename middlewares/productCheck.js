@@ -3,7 +3,6 @@ const { error } = require('../services/Responses');
 const five = 5;
 const zero = 0;
 
-
 const productCheck = (req, res) => {
   const { name, quantity } = req.body;
   if(!name || name.length < five) {
