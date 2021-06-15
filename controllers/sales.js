@@ -7,7 +7,7 @@ const {
   getAllSales,
   getSaleByID,
   updateSale,
-  deleteSale,
+  deleteSaleById,
 } = require('../models/salesModels');
 
 const {
@@ -76,9 +76,12 @@ router.delete('/:id', async (req, res) => {
       .json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' }});
   }
   const sale = await getSaleByID(id);
-  if (!sale) return res.status(404)
-    .json({ err: { code: 'not_found', message: 'Sale not found' }});
-  const tra = await deleteSale(id);
+  console.log(sale);
+  if (!sale) {
+    return res.status(STATUS_404)
+      .json({ err: { code: 'not_found', message: 'Sale not found' }});
+  }
+  await deleteSaleById(id);
   return res.status(STATUS_200).json(sale);
 });
 

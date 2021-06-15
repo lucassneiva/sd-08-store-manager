@@ -46,15 +46,22 @@ async function updateSale( id, productId, quantity ) {
   }
 };
 
-function deleteSale(id) {
-  try {
-    const deletedSale = connection()
-      .then((db) => db.collection('sales')
-        .deleteOne({_id: ObjectID(id)}));
-    return deletedSale;
-  } catch (err) {
-    console.log(err);
-  }
+// async function deleteSaleById(id) {
+//   try {
+//     const deletedSale = await connection()
+//       .then((db) => db.collection('sales')
+//         .deleteOne({_id: ObjectID(id)}));
+//     return deletedSale;
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
+
+
+const deleteSaleById = async (id) => {
+  const deletedSale = await connection()
+    .then((db) => db.collection('sales').deleteOne({ _id: ObjectId(id) }));
+  return deletedSale;
 };
 
-module.exports = { insertSales, getAllSales, getSaleByID, updateSale, deleteSale };
+module.exports = { insertSales, getAllSales, getSaleByID, updateSale, deleteSaleById };
