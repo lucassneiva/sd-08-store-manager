@@ -31,7 +31,7 @@ const updateProduct = (id, name, quantity) => {
 
 const deleteProduct = (id) => {
   return productModel.deleteProduct(id);
-}
+};
 
 module.exports = {
   create,
