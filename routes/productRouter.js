@@ -19,4 +19,12 @@ router.get(
   async (req, res) => await productController.getProductById(req, res),
 );
 
+router.put(
+  '/:id',
+  middlewares.nameValidation,
+  middlewares.quantityValidation,
+  middlewares.idValidation,
+  async (req, res) => await productController.updateProduct(req, res),
+);
+
 module.exports = router;
