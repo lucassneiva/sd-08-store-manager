@@ -10,7 +10,7 @@ const rescue = require('rescue');
 const allsale = async() => { 
   
   const sales = await conn().then( db => db.collection('sales').find().toArray());
-  // console.log(sales);
+  console.log('model13', sales);
   return sales;
       
     
@@ -39,17 +39,19 @@ const getsaleby = async(id) => {
 
 
 const decrementpdt = async(arrvenda) => {
-
+  console.log('smodel42', arrvenda);
   conn().then(
     async (db) => {
+      let produ =null;
       arrvenda.forEach(
         async({productId, quantity}, i) => {
-          let produ = await oneprodu(productId);
-          console.log('model46', produ);
+          produ = Promise.all([oneprodu(productId)]);
+          console.log('smodel49', produ);
           await db.collection('products').updateOne(
             {_id: ObjectId(productId)},
             {$set: {quantity: produ.quantity - arrvenda[i].quantity}}
           );
+          
             
         });
              
@@ -62,7 +64,8 @@ const newsale =async(arrvenda)=>{
   return(
     conn().then( 
       async(db)=>{
-        const inserted = await db.collection('sales').insertOne({ itensSold: arrvenda });
+        const inserted = await db.collection('sales').insertOne(
+          { itensSold: arrvenda });
         // console.log('result em model:', inserted.ops[0]);
         return(inserted.ops[0]);
       }

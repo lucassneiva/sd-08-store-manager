@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { ObjectId } = require('mongodb');
 
 const {
   alldocs,
@@ -13,7 +14,7 @@ const cci = 201;
 const z = 0;
 const cdxxii = 422;
 const cdiv = 404;
-
+const invid = { err:{ code: 'invalid_data', message: 'Wrong id format' } }; 
 
 router.get('/', async(req, res) => {  
   try {
@@ -32,13 +33,15 @@ router.get('/', async(req, res) => {
 
 router.get('/:id', async(req, res) => {
   const { id } = req.params;
-  try {
-    const result = await getoneid(id);
-    // console.log(result);
+  const result = await getoneid(id);
+  
+  if (result === null || result.err){
+    console.log(result);
+    res.status(cdxxii).send(invid);
+    return;
+  }else {
     res.status(cc).send(result);
-  }catch (err) {
-    //  console.log(err);
-    res.status(cdxxii).send(err);
+    return;
   };
 });
 
@@ -46,42 +49,39 @@ router.get('/:id', async(req, res) => {
 router.post('/', async(req, res) => {
   
   const { name, quantity } = req.body;
-  
-  try {
-  
-    const result = await insertpdt(name, quantity);
-    res.status(cci).json(result.ops[z]);
-  
-  }catch(err) {
-    // console.log(err);
-    return res.status(cdxxii).send(err);
-  };
-});
+    
+  const result = await insertpdt(name, quantity);
+  if(result === null || result.err){res.status(cdxxii).json(result); return;
+  }else if(!result === null || result.ops[z]){
+    res.status(cci).json(result.ops[z]); return;
+  }
+}); 
 
 
 router.put('/:id', async(req, res) => {
   const { id } = req.params;
   const  body = req.body;
-  // console.log('olha ai:', body);
-  try {
+  
+  if(ObjectId.isValid(id)){
     const result = await updateOne(id, body);
-    res.status(cc).json(result);
-  }catch (err) {
-    // console.log(err);
-    res.status(cdxxii).send(err);
-  };
-});
+  
+    if(result === null || result.err) {
+      res.status(cdxxii).send(result);
+      return;
+    }else {
+      res.status(cc).json(result);
+      return;
+    // console.log(result);
+    };
+  }});
 
 
 router.delete('/:id', async(req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await  deleteone(id);
-    res.status(cc).send(result);
-  }catch (err) { 
-    // console.log(err);
-    res.status(cdxxii).send(err);
-  }
+  const { id } = req.params;
+  const result = await  deleteone(id);
+  const din = result.err ? cdxxii : cc; 
+
+  res.status(din).send(result); return;
 });
 
 module.exports = router;

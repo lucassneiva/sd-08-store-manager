@@ -342,7 +342,7 @@ describe('6 - Crie um endpoint para listar as vendas', () => {
       });
   });
 });
-
+/*
 describe('7 - Crie um endpoint para atualizar uma venda', () => {
   let connection;
   let db;
@@ -833,3 +833,4 @@ describe('10 - Valide a quantidade de produtos', () => {
       });
   });
 }); 
+ */

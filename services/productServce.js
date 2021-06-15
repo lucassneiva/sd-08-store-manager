@@ -8,27 +8,44 @@ const {
   update, 
 } = require('../models/productModel');
 
+const invid = { 
+  err:{
+    code: 'invalid_data',
+    message: 'Wrong id format'
+  } 
+}; 
+
+
+
+
 const alldocs = async() => {
   const result = await getAll();
   return ({products: result});
 };
   
-
+const x = 10;
 const f = 5;
 const z = 0;
+const delerr = { 
+  err:{
+    code: 'invalid_data',
+    message: 'Wrong id format'
+  } 
+};
+
 const insertpdt = async(name, quantity) => { 
   const count = await getbyname(name);
   
   if (name.length < f){
     
-    throw({ 
+    return({ 
       err:{
         code: 'invalid_data',
         message: '\"name\" length must be at least 5 characters long'
       } 
     });
   }else if( quantity <= z){
-    throw (
+    return (
       { 
         err:{
           code: 'invalid_data',
@@ -38,7 +55,7 @@ const insertpdt = async(name, quantity) => {
     );
 
   } else if(!Number.isInteger(quantity)) {
-    throw (
+    return (
       { 
         err:{
           code: 'invalid_data',
@@ -47,7 +64,7 @@ const insertpdt = async(name, quantity) => {
       }
     );
   }else if(count > z) {
-    throw (
+    return (
       { 
         err:{
           code: 'invalid_data',
@@ -62,22 +79,14 @@ const insertpdt = async(name, quantity) => {
 
 const getoneid = async(id) => {
   if (!ObjectId.isValid(id)) {
-    throw(
-      { 
-        err:{
-          code: 'invalid_data',
-          message: 'Wrong id format'
-        } 
-      } 
-    );
-    
+    return(invid);
   }else { return await getbyid(id);}
 };
 
 
 const updateOne = async(id, body) => { 
-  if( body.name.length < f){
-    throw ({ 
+  if( !body || body.name.length < f){
+    return ({ 
       err:{
         code: 'invalid_data',
         message: '\"name\" length must be at least 5 characters long'
@@ -85,32 +94,31 @@ const updateOne = async(id, body) => {
     });
 
   }else if( body.quantity <= z){
-    throw ({ 
+    return ({ 
       err:{
         code: 'invalid_data',
         message: '\"quantity\" must be larger than or equal to 1'
       } 
     });
   }else if( typeof body.quantity === 'string'){
-    throw ({ 
+    return ({ 
       err:{
         code: 'invalid_data',
         message: '\"quantity\" must be a number'
       } 
     });
-  }else{ return await update(id, body);}
+  }else { return await update(id, body);}
 };
 
 
 const deleteone = async(id) => {
   if (!ObjectId.isValid(id)) {
-    throw({ 
-      err:{
-        code: 'invalid_data',
-        message: 'Wrong id format'
-      } 
-    });
-  }else{return  await deleteProduct(id);}
+    return delerr;
+  }else { 
+    const result = await deleteProduct(id);
+    return result;
+  }
+
 };
 
 

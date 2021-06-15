@@ -1,4 +1,4 @@
-// const { ObjectId } = require('bson');
+
 // const rescue = require('rescue');
 
 
@@ -34,19 +34,17 @@ const delerr = {
   
 
 const validasale = (arrvenda) => { 
-     
-  if (arrvenda.some(({quantity}) => { 
-    return quantity <= z || typeof quantity === 'string';}))
-  {
-    return objerr;
-  } else return 'ok';
+   
+  if (arrvenda.some((p)=> p.quantity <= z || typeof p.quantity == 'string' 
+  ))
+  { return objerr; } else return 'ok';
   
 };
 
 
 const asales = async() => {
   const result = await allsale();
-  return ({result});
+  return ({sales:result});
 };
 
 const getsalebyid = async(id)=>{

@@ -1,5 +1,5 @@
 const express = require('express');
-
+const { ObjectId } = require('mongodb');
 const router = express.Router();
 
 const { newsale, decrementpdt } = require('../models/salesModel');
@@ -16,10 +16,11 @@ const cdiv = 404;
 
 
 router.post('/', async(req, res) => {
-  const arrvenda = req.body;
+  const arrvenda = (req.body);
   let result =  validasale(arrvenda);
+  console.log('scontro21', result);
   if(result === 'ok') {
-    decrementpdt(arrvenda);
+    await decrementpdt(arrvenda);
     result = await newsale(arrvenda);
     res.status(cc).json(result);
     return;
@@ -31,11 +32,11 @@ router.get('/', async(req, res) => {
   try {
  
     const sales = await asales();
-    // console.log('get', sales);
+    console.log('control35', sales);
     res.status(cc).send(sales);
     return;
   }catch (err) {
-    console.log(err);
+    console.log('sconrol39',err);
     res.status(cdxxii).send(err);
     return;  
   };
@@ -47,11 +48,11 @@ router.get('/:id', async(req, res) => {
   try {
  
     const sales = await getsalebyid(id);
-    console.log('controler:50', id);
+    // console.log('controler:50', id);
     res.status(cc).send(sales);
     return;
   }catch (err) {
-    console.log('aqui',err);
+    // console.log('aqui',err);
     res.status(cdiv).send(err);
     return;  
   };
@@ -74,10 +75,11 @@ router.delete('/:id', async(req, res) => {
   const { id } = req.params;
    
   const deleted = await deleteonesale(id);
-  console.log('controler:77', deleted);
-  let dinamics = deleted !== null ? cc : cdxxii;
-  res.status(dinamics).send(deleted);
-  return;
+  // console.log('controler:77', deleted);
+  if(deleted.error === cdiv){ res.status(cdiv).send(deleted);return;
+  }else{  let dinamics = deleted !== null ? cc : cdxxii;
+    res.status(dinamics).send(deleted);
+    return;}
   
 });
 
