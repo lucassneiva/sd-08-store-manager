@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.post(
   '/',
-  async (req, res, next) => await middlewares.nameValidation(req, res, next),
+  middlewares.nameValidation,
+  async (req, res, next) => middlewares.uniqueNameValidation(req, res, next),
   middlewares.quantityValidation,
   async (req, res) => await productController.create(req, res),
 );
@@ -22,6 +23,7 @@ router.get(
 router.put(
   '/:id',
   middlewares.nameValidation,
+  async (req, res, next) => middlewares.uniqueNameValidation(req, res, next),
   middlewares.quantityValidation,
   middlewares.idValidation,
   async (req, res) => await productController.updateProduct(req, res),

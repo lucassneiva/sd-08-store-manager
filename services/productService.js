@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const productModel = require('../models/productModel');
 
 const create = async (name, quantity) => {
@@ -5,8 +6,13 @@ const create = async (name, quantity) => {
   return ops[0];
 };
 
-const hasProduct = async (name) => {
-  return await productModel.getProductByName(name) !== null;
+const hasAnotherProductWithName = async (name, id = null) => {
+  const product = await productModel.getProductByName(name);
+  if (id && product && product['_id'].toString() === id) {
+    return false;
+  }
+
+  return product !== null;
 };
 
 const getAll = async () => {
@@ -25,7 +31,7 @@ const updateProduct = async (id, name, quantity) => {
 
 module.exports = {
   create,
-  hasProduct,
+  hasAnotherProductWithName,
   getAll,
   getProductById,
   updateProduct,
