@@ -9,15 +9,14 @@ const getAllSales = async () => {
 
 const getSaleById = async (id) => {
   const db = await connection();
-  if (!ObjectId.isValid(id)) return null;
   const saleById = await db.collection('sales').findOne(ObjectId(id));
   return saleById;
 };
 
-const addSale = async (sales) => {
+const addSale = async (itensSold) => {
   const db = await connection();
-  const newSale = await db.collection('sales').insertOne({ itensSold: sales });
-  return newSale;
+  const newSale = await db.collection('sales').insertOne({ itensSold });
+  return newSale.ops[0];
 };
 
 module.exports = {
