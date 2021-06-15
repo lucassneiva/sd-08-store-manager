@@ -1,11 +1,11 @@
 const express = require('express');
 const bodyParser =  require('body-parser');
 
-const createProducts = require('./controllers/createProducts');
+const products = require('./controllers/products');
+const sales = require('./controllers/sales');
 
 
 const app = express();
-
 app.use(bodyParser.json());
 
 const PORT = 3000;
@@ -15,7 +15,8 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.use('/products', createProducts);
+app.use('/products', products);
+app.use('/sales', sales);
 
 app.listen(PORT, () => {
   console.log(`Listen on port ${PORT}`);

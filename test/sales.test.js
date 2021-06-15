@@ -154,6 +154,7 @@ describe('5 - Crie um endpoint para cadastrar vendas', () => {
       });
   });
 
+
   it('Será validado que é possível criar várias compras com sucesso', async () => {
     let result;
     let resultProductId;

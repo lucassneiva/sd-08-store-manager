@@ -73,4 +73,20 @@ function checkID(req, res, next) {
   next();
 };
 
-module.exports = { checkProduct, checkID };
+function checkSalesCadastre(req, res, next) {
+  const { body } = req;
+  body.forEach( sale => {
+    if( sale.quantity < 1 ) {
+      return res.status(STATUS_422).send(
+        {
+          'err': {
+            'code': 'invalid_data',
+            'message': 'Wrong product id or invalid quantity'
+          }
+        }
+      );
+    }
+  });
+}
+
+module.exports = { checkProduct, checkID, checkSalesCadastre };

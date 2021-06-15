@@ -49,7 +49,20 @@ function deleteProduct(id) {
   } catch (err) {
     console.log(err);
   }
-}
+};
+
+
+async function insertSales(sales) {
+  try {
+    const logInsert = connection()
+      .then((db) => db.collection('sales')
+        .insertOne({ itensSold: sales}))
+      .then((result) => result.ops[0] );
+    return logInsert;
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 
 module.exports = { createProduct,
@@ -57,5 +70,6 @@ module.exports = { createProduct,
   getAllProducts,
   getByID,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  insertSales
 };
