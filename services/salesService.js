@@ -27,10 +27,10 @@ const salenotf = {
   err: { code: 'not_found', message: 'Sale not found' }};
 
 const upderr = {
-  err: { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' }};; 
+  err: { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' }}; 
 
 const delerr = {
-  err: { code: 'invalid_data', message: 'Wrong sale ID format' }};; 
+  err: { code: 'invalid_data', message: 'Wrong sale ID format' }}; 
   
 
 const validasale = (arrvenda) => { 
@@ -48,10 +48,11 @@ const asales = async() => {
 };
 
 const getsalebyid = async(id)=>{
-  if(ObjectId.isValid(id) ||  id.length > x) {
+  if(ObjectId.isValid(id)) {
     const ret = await getsaleby(id);
-    return ret;
-  } else throw salenotf;
+    console.log('serv53', ret);
+    if(ret === null){ return salenotf; }else {return ret;}
+  }
 };
 
 const updates = async(id, body) => { 
@@ -65,10 +66,10 @@ const deleteonesale = async(id)=>{
   if (ObjectId.isValid(id)){
     const todelete = await getsaleby(id);
     const removed = await deletesale(id);
-    console.log(removed.deletedCount);
-    if(removed.deletedCount == z){return {error:404, message: '404 Pagenote found'};} 
+    console.log('sales68',todelete);
+    if(removed.deletedCount == z){return delerr;} 
     else if(removed.deletedCount > z){ return todelete;}
-  }else return delerr;
+  }else {return delerr;}
 
 };
 

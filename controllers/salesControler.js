@@ -8,6 +8,10 @@ const{
   validasale, asales, getsalebyid, updates, deleteonesale
 } = require('../services/salesService');
 
+const salenotf = {
+  err: { code: 'not_found', message: 'Sale not found' }};
+
+
 const cc = 200;
 const cci = 201;
 const z = 0;
@@ -45,17 +49,15 @@ router.get('/', async(req, res) => {
 
 router.get('/:id', async(req, res) => {  
   const { id } = req.params;
-  try {
- 
-    const sales = await getsalebyid(id);
-    // console.log('controler:50', id);
-    res.status(cc).send(sales);
-    return;
-  }catch (err) {
-    // console.log('aqui',err);
-    res.status(cdiv).send(err);
-    return;  
-  };
+  const sale = await getsalebyid(id);
+  console.log('controler:50', sale);
+  let din = null;
+  if(!sale ||sale.err){din = cdiv;}else{din = cc;};
+  
+  if(!sale){res.status(din).send(salenotf);}
+  res.status(din).send(sale);
+  return;
+  
 });
 
 router.put('/:id', async(req, res) => {  
@@ -63,8 +65,8 @@ router.put('/:id', async(req, res) => {
   const  body = req.body;
   
   const updated = await updates(id,body);
-  //console.log('put', updated);
-  let dinamics = updated ? cdxxii: cc;
+  console.log('contr66', updated);
+  let dinamics = updated.err ? cdxxii: cc;
   res.status(dinamics).send(updated);
   return;
   
@@ -75,12 +77,17 @@ router.delete('/:id', async(req, res) => {
   const { id } = req.params;
    
   const deleted = await deleteonesale(id);
+  let din = deleted.err ? cdxxii: cc;
+  res.status(din).send(deleted);
+  return;
+  
+
   // console.log('controler:77', deleted);
-  if(deleted.error === cdiv){ res.status(cdiv).send(deleted);return;
+/*  if(deleted.error === cdiv){ res.status(cdiv).send(deleted);return;
   }else{  let dinamics = deleted !== null ? cc : cdxxii;
     res.status(dinamics).send(deleted);
     return;}
-  
+  */ 
 });
 
 
