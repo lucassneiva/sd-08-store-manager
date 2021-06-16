@@ -18,14 +18,12 @@ const create = rescue(async (req, res, next) => {
 
 const getAll = rescue(async (_req, res, _next) => {
   const response = await StoreService.getAll();
-  // console.log(response);
   res.status(successStatus).json({ products: response });
 });
 
-const findById = rescue(async (req, res, next) => {
+const getByIdOrName = rescue(async (req, res, next) => {
   const { id } = req.params;
-  const response = await StoreService.findById(id);
-  // console.log('findById Controller', response);
+  const response = await StoreService.getByIdOrName(id);
   if (response.message) return next(response.message);
   res.status(successStatus).json(response);
 });
@@ -49,7 +47,7 @@ const deleteById = rescue(async (req, res, next) => {
 module.exports = {
   create,
   getAll,
-  findById,
+  getByIdOrName,
   updateById,
   deleteById,
 };

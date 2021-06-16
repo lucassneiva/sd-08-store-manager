@@ -279,7 +279,7 @@ describe('6 - Crie um endpoint para listar as vendas', () => {
       });
   });
 
-  it('Será validado que é possível listar uma determinada venda', async () => {
+  it.only('Será validado que é possível listar uma determinada venda', async () => {
     let result;
     let resultSales;
     let resultSalesId;

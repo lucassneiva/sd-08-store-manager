@@ -11,6 +11,15 @@ module.exports = (err, _req, res, _next) => {
     });
   }
 
+  if (err === 'Such amount is not permitted to sell') {
+    return res.status(notFound).json({ 
+      err: {
+        code: 'stock_problem',
+        message: err,
+      }
+    });
+  }
+
   if (err) {
     return res.status(unprocessableEntity).json({ 
       err: {

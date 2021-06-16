@@ -13,14 +13,14 @@ app.get('/', (_request, response) => {
 });
 
 app.post('/products', StoreController.create);
+app.get('/products/:id', StoreController.getByIdOrName);
 app.get('/products', StoreController.getAll);
-app.get('/products/:id', StoreController.findById);
 app.put('/products/:id', StoreController.updateById);
 app.delete('/products/:id', StoreController.deleteById);
 app.post('/sales', SalesController.create);
+app.get('/sales/:id', SalesController.getById);
 app.get('/sales', SalesController.getAll);
-app.get('/sales/:id', SalesController.getByIds);
-
+app.put('/sales/:id', SalesController.updateById);
 app.delete('/sales/:id', SalesController.deleteById);
 
 

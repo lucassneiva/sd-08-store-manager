@@ -2,8 +2,6 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 const { MongoClient } = require('mongodb');
 const { MongoMemoryServer } = require('mongodb-memory-server');
-const { ObjectId } = require('mongodb');
-
 
 const StoreModel = require('../../models/storeModel');
 const SalesModel = require('../../models/salesModel');
@@ -26,6 +24,9 @@ const QUANTITY_VALID_4 = 5;
 
 const UPDATE_NAME = 'Produto do Batista Atualizado';
 const UPDATE_QUANTITY = 1000;
+
+const ID_SALE_1 = '5f43a7ca92d58904914656b6';
+const ID_SALE_2 = '5f43a7ca92d58904914656c7';
 
 const payloadProducts = [
   { name: NAME_VALID_1, quantity: QUANTITY_VALID_1 },
@@ -83,13 +84,13 @@ describe('Na camada MODELS', () => {
   
     describe('ao procurar um produto por nome', () => {
       it('retorna nulo se não encontrar produto', async () => {
-        const response = await StoreModel.findByName(NAME_VALID_1);
+        const response = await StoreModel.getByIdOrName(null, NAME_VALID_1);
         expect(response).to.be.null;
       });
 
       it('retorna objeto com "_id", "name" e "quantity" do produto encontrado', async () => {      
         await StoreModel.create(NAME_VALID_1, QUANTITY_VALID_1);
-        const response = await StoreModel.findByName(NAME_VALID_1);
+        const response = await StoreModel.getByIdOrName(null, NAME_VALID_1);
         expect(response).to.include.all.keys('_id', 'name', 'quantity')
       });
     });
@@ -136,10 +137,10 @@ describe('Na camada MODELS', () => {
     });
   });
 
-  describe('ao chamar o FINDBYID para buscar um filme através do ID', () => {
+  describe('ao chamar o GETBYIDORNAME para buscar um produto através do ID', () => {
     describe('quando não é encontrado uma correspondência', () => {
       it('retorna "null"', async () => {
-        const response = await StoreModel.findById(ID_VALID_1);
+        const response = await StoreModel.getByIdOrName(ID_VALID_1);
         expect(response).to.be.equal(null)
       });
     });
@@ -153,18 +154,18 @@ describe('Na camada MODELS', () => {
       });
         
       it('retorna um objeto', async () => {
-        const response = await StoreModel.findById(INSERTED_ID);
+        const response = await StoreModel.getByIdOrName(INSERTED_ID);
         expect(response).to.be.a('object')
       });
   
       it('o objeto possui as propriedades: "_id", "name" e "quantity"', async () => {
-        const response = await StoreModel.findById(INSERTED_ID);
+        const response = await StoreModel.getByIdOrName(INSERTED_ID);
         expect(response).to.include.all.keys('_id', 'name', 'quantity')
       });
     });
   });
 
-  describe('ao chamar o UPDATEBYID para atualizar um filme através do ID', () => {
+  describe('ao chamar o UPDATEBYID para atualizar um produto através do ID', () => {
     describe('quando não é encontrado uma correspondência', () => {
       it('retorna um objeto', async () => {
         const response = await StoreModel.updateById(ID_VALID_1, UPDATE_NAME, UPDATE_QUANTITY);
@@ -197,7 +198,7 @@ describe('Na camada MODELS', () => {
     });
   });
 
-  describe('ao chamar o DELETEBYID para deletar um filme através do ID', () => {
+  describe('ao chamar o DELETEBYID para deletar um produto através do ID', () => {
     describe('quando não é encontrado uma correspondência', () => {
       it('retorna "null"', async () => {
         const response = await StoreModel.deleteById(ID_VALID_1);
@@ -246,7 +247,7 @@ describe('Na camada MODELS', () => {
       });
 
       it('retorna um array vazio', async () => {
-        const response = await SalesModel.findById(payloadSales_1);
+        const response = await StoreModel.getByIds(payloadSales_1);
         expect(response).to.be.an('array');
         expect(response).to.be.empty;
       });
@@ -266,13 +267,13 @@ describe('Na camada MODELS', () => {
       });
 
       it('retorna array de objetos', async () => {
-        const response = await SalesModel.findById(payload);
+        const response = await StoreModel.getByIds(payload);
         expect(response).to.be.an('array');
         expect(response[0]).to.be.an('object');
       });
 
       it('o objeto tem as propriedades "_id", "name" e "quantity"', async () => {
-        const response = await SalesModel.findById(payload);
+        const response = await StoreModel.getByIds(payload);
         expect(response[0]).to.include.all.keys('_id', 'name', 'quantity')
       });
     });
@@ -300,7 +301,6 @@ describe('Na camada MODELS', () => {
 
       it('retorna um array não vazio', async () => {
         const response = await SalesModel.getAll();
-        console.log(response);
         expect(response).to.be.an('array');
         expect(response).to.be.not.empty;
       });
@@ -313,6 +313,103 @@ describe('Na camada MODELS', () => {
       it('tais itens possuem as propriedades "_id" e "itensSold"', async () => {
         const [ item ] = await SalesModel.getAll();
         expect(item).to.include.all.keys('_id', 'itensSold');
+      });
+    });
+  });
+
+  describe('ao chamar o GETBYID para buscar uma venda através do ID', () => {
+    describe('quando não é encontrado uma correspondência', () => {
+      it('retorna um array vazio', async () => {
+        const response = await SalesModel.getById(ID_VALID_1);
+        expect(response).to.be.empty;
+      });
+    });
+  
+    describe('quando existe uma correspondência', () => {
+      let INSERTED_ID = '';
+      beforeEach(async () => {
+        db = connectionMock.db('StoreManager');
+        const id = await db.collection('sales').insertOne({ 'itensSold': payloadSales_1 });
+        INSERTED_ID = id.insertedId;
+      });
+        
+      it('retorna um array não vazio', async () => {
+        const response = await SalesModel.getById(INSERTED_ID);
+        expect(response).to.be.an('array')
+      });
+  
+      it('o array possuem itens do tipo objeto', async () => {
+        const [ item ] = await SalesModel.getAll();
+        expect(item).to.be.an('object');
+      });
+
+      it('tais itens possuem as propriedades "_id" e "itensSold"', async () => {
+        const [ item ] = await SalesModel.getAll();
+        expect(item).to.include.all.keys('_id', 'itensSold');
+      });
+    });
+  });
+
+  describe('ao chamar o UPDATEBYID para atualizar uma venda através do ID', () => {
+    describe('quando não é encontrado uma correspondência', () => {
+      it('retorna um objeto', async () => {
+        const response = await SalesModel.updateById(ID_SALE_1, ID_VALID_1, UPDATE_QUANTITY);
+        expect(response).to.be.a('object')
+      });
+
+      it('o objeto possui a propriedade: "modifiedCount", com valor igual a "0" ', async () => {
+        const response = await SalesModel.updateById(ID_SALE_1, ID_VALID_1, UPDATE_QUANTITY);
+        expect(response.modifiedCount).to.be.equal(0)
+      });
+    });
+  
+    describe('quando existe uma correspondência', () => {
+      let INSERTED_ID = '';
+      beforeEach(async () => {
+        db = connectionMock.db('StoreManager');
+        const id = await db.collection('sales').insertOne({ 'itensSold': payloadSales_1 });
+        INSERTED_ID = id.insertedId;
+      });
+        
+      it('retorna um objeto', async () => {
+        const response = await SalesModel.updateById(INSERTED_ID, ID_VALID_1, UPDATE_QUANTITY);
+        expect(response).to.be.a('object')
+      });
+  
+      it('o objeto possui a propriedade: "modifiedCount", com valor igual a "1" ', async () => {
+        const response = await SalesModel.updateById(INSERTED_ID, ID_VALID_1, UPDATE_QUANTITY);
+        expect(response.modifiedCount).to.be.equal(1)
+      });
+    });
+  });
+
+
+
+
+  describe('ao chamar o DELETEBYID para deletar uma venda através do ID', () => {
+    describe('quando não é encontrado uma correspondência', () => {
+      it('retorna array vazia', async () => {
+        const response = await SalesModel.deleteById(ID_VALID_1);
+        expect(response).to.be.empty;
+      });
+    });
+  
+    describe('quando existe uma correspondência', () => {
+      let INSERTED_ID = '';
+      beforeEach(async () => {
+        db = connectionMock.db('StoreManager');
+        const id = await db.collection('sales').insertOne({ 'itensSold': payloadSales_1 });
+        INSERTED_ID = id.insertedId;
+      });
+        
+      it('retorna uma de objeto', async () => {
+        const response = await SalesModel.deleteById(INSERTED_ID);
+        expect(response).to.be.an('array')
+      });
+  
+      it('o objeto possui as propriedades "_id" e "itensSold"', async () => {
+        const [item] = await SalesModel.deleteById(INSERTED_ID);
+        expect(item).to.include.all.keys('_id', 'itensSold')
       });
     });
   });

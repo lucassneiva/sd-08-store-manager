@@ -8,46 +8,48 @@ const create = async (name, quantity) => {
   return product;
 };
 
-const findByName = async (name) => {
-  const query = { name };
-  const db = await connection();
-  return await db.collection('products')
-    .findOne(query);
-};
-
 const getAll = async () => {
   const db = await connection();
-  const teste =  await db.collection('products')
+  return  await db.collection('products')
     .find().toArray();
-  // console.log(teste);
-  return teste;
 };
 
-const findById = async (id) => {
+const getByIdOrName = async (id, name) => {
   const db = await connection();
   return await db.collection('products')
-    .findOne({ _id: ObjectId(id) });
+    .findOne({ $or: [{ _id: ObjectId(id) }, { name }] });
 };
 
-const updateById = async (id, name, brand) => {
+const updateById = async (id, name, quantity) => {
+  // console.log('MODEL UPDATE argumentos', id, name, quantity);
   const db = await connection();
   return await db.collection('products')
-    .updateOne({ _id: ObjectId(id) }, { $set: { name, brand } });
+    .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } });
 };
 
 const deleteById = async (id) => {
   const db = await connection();
-  const product = await findById(id);
+  const product = await getByIdOrName(id);
   await db.collection('products')
     .deleteOne({ _id: ObjectId(id) });
   return product;
 };
 
+const getByIds = async (productsSold) => {
+  const ids = productsSold.map(({ productId }) => ObjectId(productId));
+  // console.log('MODEL ids', ids);
+  const db = await connection();
+  const products = await db.collection('products')
+    .find({ _id: { $in: ids } }).toArray();
+  // console.log('MODEL getByIds', getByIds);
+  return products;
+};
+
 module.exports = {
   create,
-  findByName,
   getAll,
-  findById,
+  getByIdOrName,
   updateById,
   deleteById,
+  getByIds
 };
