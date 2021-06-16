@@ -21,7 +21,6 @@ const getByIdOrName = async (id, name) => {
 };
 
 const updateById = async (id, name, quantity) => {
-  // console.log('MODEL UPDATE argumentos', id, name, quantity);
   const db = await connection();
   return await db.collection('products')
     .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity } });
@@ -37,12 +36,9 @@ const deleteById = async (id) => {
 
 const getByIds = async (productsSold) => {
   const ids = productsSold.map(({ productId }) => ObjectId(productId));
-  // console.log('MODEL ids', ids);
   const db = await connection();
-  const products = await db.collection('products')
+  return await db.collection('products')
     .find({ _id: { $in: ids } }).toArray();
-  // console.log('MODEL getByIds', getByIds);
-  return products;
 };
 
 module.exports = {
