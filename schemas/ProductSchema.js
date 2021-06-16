@@ -1,5 +1,4 @@
 const Joi = require('joi');
-const Products = require('../models/Products');
 
 // https://stackoverflow.com/questions/53154304/how-to-validate-uniqueness-in-db-via-joi-validate
 
@@ -11,7 +10,7 @@ const schema = Joi.object({
     .message('"quantity" must be larger than or equal to 1').required(),
 });
 
-const validateMiddleware = async (req, res, next) => {
+const validateMiddleware = (req, res, next) => {
   const code = 422;
 
   const { error } = schema.validate(req.body);
