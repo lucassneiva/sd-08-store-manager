@@ -24,9 +24,21 @@ async function getById(id) {
   return sale;
 }
 
+async function update(id, data) {
+  ObjectId(id);
+  const db = await connection();
+  const updatedSale = db.collection('sales')
+    .findOneAndUpdate({_id: ObjectId(id)},
+      { $set: { itensSold: data } },
+      { returnOriginal: false});
+
+  return updatedSale;
+}
+
 
 module.exports = {
   create,
   getAll,
-  getById
+  getById,
+  update
 };

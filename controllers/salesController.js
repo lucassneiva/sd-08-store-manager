@@ -50,8 +50,24 @@ async function getById(req, res) {
   }
 }
 
+async function update(req, res) {
+  try {
+    const { id } = req.params;
+    const updatedSale = await SalesService.update(id, req.body);
+    res.status(STATUS_200).json(updatedSale);
+  } catch (error) {
+    res.status(STATUS_422).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity'
+      }
+    });
+  }
+}
+
 module.exports = {
   create,
   getAll,
-  getById
+  getById,
+  update
 };
