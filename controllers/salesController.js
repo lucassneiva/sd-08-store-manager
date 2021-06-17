@@ -6,6 +6,7 @@ const STATUS_422 = 422;
 const STATUS_201 = 201;
 const STATUS_200 = 200;
 const STATUS_500 = 500;
+const STATUS_404 = 404;
 
 async function create(req, res) {
   try {
@@ -33,8 +34,20 @@ async function getAll(_req, res) {
   }
 }
 
-async function getById(id) {
-  return true;
+async function getById(req, res) {
+  try {
+    const { id } = req.params;
+    const sale = await SalesModel.getById(id);
+    if(sale) return res.status(STATUS_200).json(sale);
+
+  } catch (error) {
+    res.status(STATUS_404).json({
+      err: {
+        code: 'not_found',
+        message: 'Sale not found'
+      }
+    });
+  }
 }
 
 module.exports = {

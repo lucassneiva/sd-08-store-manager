@@ -18,7 +18,10 @@ async function getAll() {
 }
 
 async function getById(id) {
-  return true;
+  ObjectId(id);
+  const db = await connection();
+  const sale = db.collection('sales').findOne({_id: ObjectId(id)});
+  return sale;
 }
 
 
