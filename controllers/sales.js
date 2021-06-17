@@ -34,6 +34,16 @@ router.post('/', checkSalesCadastre, async (req, res) => {
   const { itensSold } = log;
   const { productId, quantity } = itensSold[0];
   const ops = await getByID(productId);
+  if(quantity > ops.quantity) {
+    return res.status(STATUS_404).json(
+      {
+        'err': {
+          'code': 'stock_problem',
+          'message': 'Such amount is not permitted to sell'
+        }
+      }
+    );
+  }
   await updateProductOnSale(productId , ops.quantity - quantity );
   res.status(STATUS_200).json(log);
 });
