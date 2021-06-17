@@ -35,10 +35,19 @@ async function update(id, data) {
   return updatedSale;
 }
 
+async function exclude(id) {
+  ObjectId(id);
+  const db = await connection();
+  const deletedSale = db.collection('sales').findOneAndDelete({_id: ObjectId(id)});
+
+  return deletedSale;
+}
+
 
 module.exports = {
   create,
   getAll,
   getById,
-  update
+  update,
+  exclude
 };

@@ -39,7 +39,8 @@ async function getById(req, res) {
     const { id } = req.params;
     const sale = await SalesModel.getById(id);
     if(sale) return res.status(STATUS_200).json(sale);
-
+    console.log(sale);
+    throw new Error();
   } catch (error) {
     res.status(STATUS_404).json({
       err: {
@@ -65,9 +66,26 @@ async function update(req, res) {
   }
 }
 
+async function exclude(req, res) {
+  try {
+    const { id } = req.params;
+    const { value } = await SalesModel.exclude(id);
+    if(value) return res.status(STATUS_200).json(value);
+    throw new Error();
+  } catch (error) {
+    res.status(STATUS_422).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }
+    });
+  }
+}
+
 module.exports = {
   create,
   getAll,
   getById,
-  update
+  update,
+  exclude
 };
