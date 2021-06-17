@@ -2,7 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const ProductsRouter = require('./routes/productsRouter');
-const ProductsModel = require('./models/productsModel');
+const SalesRouter = require('./routes/salesRouter');
+
+const SalesModel = require('./models/salesModel');
+
+const PORT = 3000;
 
 app.use(express.json());
 
@@ -12,5 +16,7 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', ProductsRouter);
+app.use('/sales', SalesRouter);
 
-app.listen(process.env.PORT);
+
+app.listen(PORT);
