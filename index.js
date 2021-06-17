@@ -75,7 +75,18 @@ app.get('/sales', async (_req, res) => {
 
 app.post('/sales', validateSaleMiddleware, async (req, res) => {
   const productsArray = req.body;
+
+  const id = productsArray[0].productId;
+  const product = await Products.findById(id);
+  const updateQuantity = parseInt(product.quantity) - parseInt(productsArray[0].quantity);
+
+  if (updateQuantity < 0) return res.status(404).json({ err: {
+    code: 'stock_problem',
+    message: 'Such amount is not permitted to sell',
+  } });
   
+  await Products.updateQuantity(id, updateQuantity);
+
   const addNewSale = await Sales.newSale(productsArray);
   res.status(200).json(addNewSale);
 });
@@ -101,12 +112,18 @@ app.put('/sales/:id', validateSaleMiddleware, async (req, res) => {
 app.delete('/sales/:id', async (req, res) => {
   const { id } = req.params;
   const findSale = await Sales.findById(id);
-  const deleteSale = await Sales.deleteSale(id);
 
+  const deleteSale = await Sales.deleteSale(id);
   if (!deleteSale) return res.status(422).json({ err: {
     code: 'invalid_data',
     message: 'Wrong sale ID format',
   } });
+  
+  const productId = findSale.itensSold[0].productId;
+  const product = await Products.findById(productId);
+  const quantity = parseInt(product.quantity) + parseInt(findSale.itensSold[0].quantity);
+  await Products.updateQuantity(productId, quantity);
+
   res.status(200).json(findSale);
 });
 

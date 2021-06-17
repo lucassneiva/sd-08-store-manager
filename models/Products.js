@@ -23,7 +23,7 @@ const findById = async (id) => {
 
   return connection()
     .then((db) => db.collection('products').findOne(new ObjectId(id)))
-    .then((item) => ({ _id: item.id, name: item.name, quantity: item.quantity }));
+    .then((item) => ({ _id: id, name: item.name, quantity: item.quantity }));
 };
 
 const updateProduct = async (id, name, quantity) => {
@@ -42,10 +42,22 @@ const deleteProduct = async (id) => {
     .then((db) => db.collection('products').deleteOne({ _id: ObjectId(id) }));
 };
 
+const updateQuantity = async (id, updateQuantity) => {
+  if (!ObjectId.isValid(id)) return null;
+
+  return connection()
+    .then((db) => db.collection('products')
+      .updateOne(
+        { _id: ObjectId(id) },
+        { $set: { quantity: updateQuantity } }
+      ));
+};
+
 module.exports = {
   getAll,
   newProduct,
   findById,
   updateProduct,
   deleteProduct,
+  updateQuantity,
 };
