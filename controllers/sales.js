@@ -8,13 +8,17 @@ const {
   getSaleByID,
   updateSale,
   deleteSaleById,
+  updateProductOnSale
 } = require('../models/salesModels');
+
+const { getByID } = require('../models/productModels');
 
 const {
   checkSalesCadastre,
   checkID,
   checkIfSaleExist
 } = require('../middleware/checkSales');
+
 
 const router =  express.Router();
 router.use(bodyParser.json());
@@ -27,6 +31,10 @@ const STATUS_422 = 422;
 router.post('/', checkSalesCadastre, async (req, res) => {
   const sales  = req.body;
   const log = await insertSales(sales);
+  const { itensSold } = log;
+  const { productId, quantity } = itensSold[0];
+  const ops = await getByID(productId);
+  await updateProductOnSale(productId , ops.quantity - quantity );
   res.status(STATUS_200).json(log);
 });
 
@@ -67,24 +75,21 @@ router.put('/:id',checkSalesCadastre , async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-
   const IDLENGTH = 24;
-
   if(id.length !== IDLENGTH) {
     return res.status(STATUS_422)
       .json({ err: { code: 'invalid_data', message: 'Wrong sale ID format' }});
   }
-
   const sale = await getSaleByID(id);
-
-  // console.log(sale);
-
   if (!sale) {
     return res.status(STATUS_404)
       .json({ err: { code: 'not_found', message: 'Sale not found' }});
   }
-
   const deleted = await deleteSaleById(id);
+  const { itensSold } = sale;
+  const { productId, quantity } = itensSold[0];
+  const ops = await getByID(productId);
+  await updateProductOnSale(productId , ops.quantity + quantity );
   return res.status(STATUS_200).json(sale);
 });
 

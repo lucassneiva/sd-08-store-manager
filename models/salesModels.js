@@ -46,17 +46,28 @@ async function updateSale( id, productId, quantity ) {
   }
 };
 
-// async function deleteSaleById(id) {
-//   const deletedSale = await connection()
-//     .then((db) => db.collection('sales')
-//       .deleteOne({_id: ObjectId(id)}));
-//   return deletedSale;
-// };
-
-const deleteSaleById = async (id) => {
-  const sales = await connection()
-    .then((db) => db.collection('sales').deleteOne({_id: ObjectId(id)}));
-  return sales;
+async function deleteSaleById(id) {
+  const deletedSale = await connection()
+    .then((db) => db.collection('sales')
+      .deleteOne({_id: ObjectId(id)}));
+  return deletedSale;
 };
 
-module.exports = { insertSales, getAllSales, getSaleByID, updateSale, deleteSaleById };
+async function updateProductOnSale(id , quantity ) {
+  try {
+    connection()
+      .then((db) => db.collection('products')
+        .updateOne({_id: ObjectId(id)},{$set: {'quantity': quantity}}));
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+module.exports = {
+  insertSales,
+  getAllSales,
+  getSaleByID,
+  updateSale,
+  deleteSaleById,
+  updateProductOnSale
+};
