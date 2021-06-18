@@ -833,4 +833,7 @@ describe('10 - Valide a quantidade de produtos', () => {
       });
   });
 }); 
+<<<<<<< HEAD
  
+=======
+>>>>>>> c543fb2a7e1140fa1beccbdb7db97f5a069de308

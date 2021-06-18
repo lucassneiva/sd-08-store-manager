@@ -23,7 +23,7 @@ router.post('/', async(req, res) => {
   const arrvenda = (req.body);
   let result =  validasale(arrvenda);
   console.log('scontro21', result);
-  if(result === 'ok') {
+  if(result == 'ok') {
     await decrementpdt(arrvenda);
     result = await newsale(arrvenda);
     res.status(cc).json(result);

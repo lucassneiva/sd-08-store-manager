@@ -25,7 +25,7 @@ const getbyid = async(id) => {
 
 
 
-const insertProduct = async(name, quantity) => 
+const insertProduct = async(name, quantity) => {
   conn().then(
     async (db) => 
     {
@@ -34,7 +34,7 @@ const insertProduct = async(name, quantity) =>
     }
 
   );
-;
+};
 
 const update = async(id, body) => 
   conn().then( async (db) => { 

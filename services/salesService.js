@@ -13,6 +13,8 @@ const {
   updatesale,
   deletesale,
   onesalebyid,
+  incrementpdt,
+  decrementpdt,
 
 } = require('../models/salesModel');
 
@@ -66,9 +68,13 @@ const deleteonesale = async(id)=>{
   if (ObjectId.isValid(id)){
     const todelete = await getsaleby(id);
     const removed = await deletesale(id);
-    console.log('sales68',todelete);
+    
     if(removed.deletedCount == z){return delerr;} 
-    else if(removed.deletedCount > z){ return todelete;}
+    else if(removed.deletedCount > z){
+      await  decrementpdt([todelete]);
+      //console.log('serv75',t);
+      return todelete; 
+    }
   }else {return delerr;}
 
 };
