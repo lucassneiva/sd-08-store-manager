@@ -1,5 +1,5 @@
 const { UNPROCESSABLE_ENTITY,
-  INTERNAL_SERVER_ERROR } = require('../services/variableErrors');
+  INTERNAL_SERVER_ERROR } = require('../services/variableStatus');
 
 const error = (err, _req, res, _next) => {
   if (err.isJoi) {

@@ -1,5 +1,5 @@
 const Products = require('../models/Products');
-const {UNPROCESSABLE_ENTITY}=require('./variableErrors');
+const {UNPROCESSABLE_ENTITY}=require('./variableStatus');
 
 const createProduct = async (name, quantity) => {
   const verifyName = await Products.findByName(name);

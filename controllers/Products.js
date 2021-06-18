@@ -2,7 +2,7 @@ const rescue = require('express-rescue');
 const Products = require('../services/Products');
 const SchemaProducts = require('../schemas/schemaProducts');
 
-const {CREATED}=require('../services/variableErrors');
+const {CREATED}=require('../services/variableStatus');
 
 const createProduct= rescue(async(req,res,next)=>{
 
