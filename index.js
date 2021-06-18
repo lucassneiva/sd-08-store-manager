@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const productsController = require('./controllers/productController');
 
 const app = express();
 app.use(bodyParser.json());
@@ -12,6 +13,8 @@ const PORT = '3000';
 app.get('/', (_request, response) => {
   response.send();
 });
+
+app.get('/products', productsController.getAll);
 
 app.listen(PORT, () => {
   console.log('Online');
