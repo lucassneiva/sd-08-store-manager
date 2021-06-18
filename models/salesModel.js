@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongodb');
 const conn = require('./conn');
-const {getbyid} = require('./productModel');
+const {getAll, update} = require('./productModel');
 const rescue = require('rescue');
 
 
@@ -8,12 +8,9 @@ const rescue = require('rescue');
 
 
 const allsale = async() => { 
-  
   const sales = await conn().then( db => db.collection('sales').find().toArray());
   console.log('model13', sales);
   return sales;
-      
-    
 };  
 
 
@@ -29,36 +26,33 @@ const getsaleby = async(id) => {
   
 };
 
-/* const onesalebyid = async (id) => {
-  return await conn().then(
-    db => db.collection('sales').findOne(ObjectId(id))
-  );
-  
-}; */
+const updatequantity = async(id, newvalue) => 
+  conn().then( async (db) => { 
+    const result = await db.collection('products').updateOne(
+      {_id: ObjectId(id)}, {$set:{ quantity: newvalue }}
+    );
+    //console.log('smodel34', result);
+    return result;
+  });
+;
  
 
 
 const decrementpdt = async(arrvenda) => {
-  console.log('smodel42', arrvenda);
-  conn().then(
-    async (db) => {
-      let produ =null;
-      arrvenda.forEach(
-        async({productId, quantity}, i) => {
-          produ = Promise.all([oneprodu(productId)]);
-          console.log('smodel49', produ);
-          await db.collection('products').updateOne(
-            {_id: ObjectId(productId)},
-            {$set: {quantity: produ.quantity - arrvenda[i].quantity}}
-          );
-          
-            
-        });
-             
-    },
-    
-  ); 
+  const pfromreq = arrvenda.map((p)=>{return p;});
+  const pfromdb = await getAll();
+  pfromreq.forEach(async({_id, quantity}, i)=>{
+    if (_id == pfromdb[i]._id){
+      let newvalue = pfromdb[i].quantity - quantity;
+      await updatequantity(_id, newvalue);
+      console.log('smod47',newvalue);
+      
+    }
+  });
+  console.log('smodel51', 'req:',pfromreq , 'banco:', pfromdb);
 };
+// if(newvalue > pfromdb[i].quantity){return 'quantity grether then stock'}
+
 
 const newsale =async(arrvenda)=>{
   return(
