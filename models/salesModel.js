@@ -39,25 +39,28 @@ const getsaleby = async(id) => {
 
 
 const decrementpdt = async(arrvenda) => {
-  console.log('smodel42', arrvenda);
+  // console.log('smodel42', arrvenda);
+​
   conn().then(
     async (db) => {
       let produ =null;
       arrvenda.forEach(
-        async({productId, quantity}, i) => {
-          produ = Promise.all([oneprodu(productId)]);
-          console.log('smodel49', produ);
+        async({productId, quantity}) => {
+          produ = await Promise.all([oneprodu(productId)]);
+          
+          const product = await getByIdProduct(productId);
+          
+          const calc = product.quantity - quantity;
+​
+          console.log(calc);
+          
           await db.collection('products').updateOne(
             {_id: ObjectId(productId)},
-            {$set: {quantity: produ.quantity - arrvenda[i].quantity}}
+            {$set: {quantity:calc }}
           );
-          
-            
         });
-             
     },
-    
-  ); 
+  );
 };
 
 const newsale =async(arrvenda)=>{
