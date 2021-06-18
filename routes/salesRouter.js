@@ -7,6 +7,8 @@ const router = express.Router();
 
 router.post(
   '/',
+  //async (req, res, next) => await middlewares.idValidationInArray(req, res, next),
+  middlewares.idValidationInArray,
   middlewares.quantityValidationInArray,
   salesController.create,
 );
