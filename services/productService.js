@@ -33,11 +33,17 @@ const deleteProduct = (id) => {
   return productModel.deleteProduct(id);
 };
 
+const getProductsByIds = (ids) => {
+  const objectIds = ids.map((id) => ObjectId(id));
+  return productModel.getProductsByIds(objectIds);
+};
+
 module.exports = {
   create,
   deleteProduct,
   getAll,
-  hasAnotherProductWithName,
   getProductById,
+  getProductsByIds,
+  hasAnotherProductWithName,
   updateProduct,
 };
