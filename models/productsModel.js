@@ -34,7 +34,7 @@ const createProduct = async ({ name, quantity }) => {
       _id: ops[0]._id,
       name: ops[0].name,
       quantity: ops[0].quantity,
-    }
+    };
     return obj;
   } catch (err) {
     return err;

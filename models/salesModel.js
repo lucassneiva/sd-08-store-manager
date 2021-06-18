@@ -24,7 +24,8 @@ const findSale = async (saleId) => {
 const createSale = async (sale) => {
   try {
     const db = await connection();
-    const { insertedId } = await db.collection('sales').insertOne({ itensSold: [...sale] });
+    const { insertedId } = await db
+      .collection('sales').insertOne({ itensSold: [...sale] });
     return insertedId;
   } catch (err) {
     console.log(err);
