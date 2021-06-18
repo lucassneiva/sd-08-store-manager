@@ -11,13 +11,14 @@ const STATUS_404 = 404;
 async function create(req, res) {
   try {
     const newSale = await SalesService.create(req.body);
-    if(newSale.error) return res.status(STATUS_422).json({err: {
-      code: 'invalid_data',
-      message: newSale.message,
-    }});
     res.status(STATUS_200).json(newSale);
   } catch (error) {
-    return false;
+    res.status(STATUS_422).json({
+      err: {
+        code: error.code,
+        message: error.message
+      }
+    });
   }
 }
 
@@ -69,14 +70,13 @@ async function update(req, res) {
 async function exclude(req, res) {
   try {
     const { id } = req.params;
-    const { value } = await SalesModel.exclude(id);
-    if(value) return res.status(STATUS_200).json(value);
-    throw new Error();
+    const product = await SalesService.exclude(id);
+    res.status(STATUS_200).json(product);
   } catch (error) {
     res.status(STATUS_422).json({
       err: {
         code: 'invalid_data',
-        message: 'Wrong sale ID format'
+        message: 'Wrong sale ID format',
       }
     });
   }

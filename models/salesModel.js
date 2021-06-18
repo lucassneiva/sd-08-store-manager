@@ -6,7 +6,6 @@ async function create(data) {
   const sale = await db.collection('sales')
     .insertOne( { itensSold: data } );
 
-  console.log('model');
   return sale;
 }
 
