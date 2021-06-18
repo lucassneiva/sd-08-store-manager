@@ -1,46 +1,49 @@
-const { ObjectId, ObjectID } = require('mongodb');
 const connection = require('./connection');
 
 const PRODUCTS = 'products';
 
-const create = (name, quantity) => {
-  return connection()
-    .then((db) => db.collection(PRODUCTS).insertOne({
-      name,
-      quantity,
-    }));
+const create = async (name, quantity) => {
+  const db = await connection();
+  return db.collection(PRODUCTS).insertOne({
+    name,
+    quantity,
+  });
 };
 
-const getAll = () => {
-  return result = connection()
-    .then((db) => db.collection(PRODUCTS).find().toArray());
+const getAll = async () => {
+  const db = await connection();
+  return db.collection(PRODUCTS).find().toArray();
 };
 
-const getProductByName = (name) => {
-  return connection()
-    .then((db) => db.collection(PRODUCTS).findOne({ name }));
+const getProductByName = async (name) => {
+  const db = await connection();
+  return db.collection(PRODUCTS).findOne({ name });
 };
 
-const getProductById = (id) => {
-  return connection()
-    .then((db) => db.collection(PRODUCTS).findOne({ _id: id }));
+const getProductById = async (id) => {
+  const db = await connection();
+  return db.collection(PRODUCTS).findOne({ _id: id });
 };
 
-const updateProduct = (id, name, quantity) => {
-  return connection()
-    .then((db) => db.collection(PRODUCTS).updateOne(
-      { _id: id },
-      { $set: { name, quantity } },
-    ))
-    .then(() => ({ _id: id, name, quantity }));
+const updateProduct = async (id, name, quantity) => {
+  const db = await connection();
+  db.collection(PRODUCTS).updateOne(
+    { _id: id },
+    { $set: { name, quantity } }
+  );
+  return ({ _id: id, name, quantity });
 };
 
 const deleteProduct = async (id) => {
   const product = await getProductById(id);
-  await connection()
-    .then((db) => db.collection(PRODUCTS).deleteOne({ _id: id }));
-
+  const db = await connection();
+  db.collection(PRODUCTS).deleteOne({ _id: id });
   return product;
+};
+
+const getProductsByIds = async (ids) => {
+  const db = await connection();
+  return db.collection(PRODUCTS).find({ _id: { $in: ids } }).toArray();
 };
 
 module.exports = {
@@ -49,5 +52,6 @@ module.exports = {
   getAll,
   getProductByName,
   getProductById,
+  getProductsByIds,
   updateProduct,
 };
