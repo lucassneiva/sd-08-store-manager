@@ -51,8 +51,8 @@ const updateProduct = async (
         .updateOne({ _id: ObjectId(productId) }, { $inc: { quantity: quant } });
       return true;
     }
-    await db.collection('products')
-      .updateOne({ _id: ObjectId(productId) }, { $set: { name, quantity } });
+    await db.collection('products').updateOne(
+      { _id: ObjectId(productId) }, { $set: { name, quantity } });
     return true;
   } catch (err) {
     return err;
