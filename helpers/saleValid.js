@@ -1,6 +1,6 @@
 const saleValidation = (quantity) => {
-  const ZERO = 0;
-  if (quantity <= ZERO) {
+  const MIN_QTD = 1;
+  if (quantity < MIN_QTD) {
     return {
       err: {
         code: 'invalid_data',

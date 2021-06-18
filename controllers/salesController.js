@@ -37,8 +37,7 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const sale = req.body;
-  const { productId, quantity } = sale;
+  const { productId, quantity } = req.body;
 
   const updatedSale = await Sales.updateSale(id, productId, quantity);
 

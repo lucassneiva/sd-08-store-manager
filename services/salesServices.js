@@ -25,7 +25,7 @@ const getSaleById = async (id) => {
 
 const addSale = async (sales) => {
   const quantityArray = sales.map((sale) => Helper.saleValid(sale.quantity));
-  if (quantityArray.find((soldItem) => quantityArray.err)) {
+  if (quantityArray.find((soldItem) => soldItem.err)) {
     return quantityArray.find((invalidItem) => invalidItem.err);
   }
 
