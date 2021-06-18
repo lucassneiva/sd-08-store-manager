@@ -24,11 +24,13 @@ async function create(sales) {
   if(products.includes(false)) {
     const err = new Error('Wrong product ID or invalid quantity');
     err.code = 'invalid_data';
+    err.statusCode = 422;
     throw err;
   }
   if(products.includes(null)) {
     const err = new Error('Such amount is not permitted to sell');
     err.code = 'stock_problem';
+    err.statusCode = 404;
     throw err;
   }
   console.log(products);
