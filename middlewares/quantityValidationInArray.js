@@ -1,17 +1,17 @@
 const UNPROCESSABLE_ENTITY_STATUS = 422;
+const MIN_QUANTITY = 0;
 
 const quantityValidationInArray = (req, res, next) => {
-  const array = req.body;
-  console.log(array);
+  const sales = req.body;
 
-  const invalidObjects = array
-    .find(({ quantity }) => typeof quantity !== 'number' || quantity <= 0);
+  const invalidObjects = sales
+    .find(({ quantity }) => typeof quantity !== 'number' || quantity <= MIN_QUANTITY);
 
   if (invalidObjects) {
-    res.status(UNPROCESSABLE_ENTITY_STATUS).json({
+    return res.status(UNPROCESSABLE_ENTITY_STATUS).json({
       err: {
-        code: "invalid_data",
-        message: "Wrong product ID or invalid quantity",
+        code: 'invalid_data',
+        message: 'Wrong product ID or invalid quantity',
       },
     });
   }
