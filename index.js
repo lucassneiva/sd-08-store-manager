@@ -14,7 +14,16 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.get('/products', productsController.getAll);
+app.get('/products/:id', productsController.findProduct);
+
+app.get('/products', productsController.getAllProducts);
+
+app.post('/products', productsController.createProduct);
+
+app.put('/products/:id', productsController.updateProduct);
+
+app.delete('/products/:id', productsController.deleteProduct);
+
 
 app.listen(PORT, () => {
   console.log('Online');
