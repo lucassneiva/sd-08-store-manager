@@ -20,21 +20,33 @@ router.get('/:id', async (req, res) => {
   if (saleById.err) {
     return res.status(NOT_FOUND).json(saleById);
   }
+
+  return res.status(STATUS_OK).json(saleById);
 });
 
 router.post('/', async (req, res) => {
-  const { itensSold } = req.body;
-  const newSale = await Sales.addSale(itensSold);
+  const sales = req.body;
+  const newSale = await Sales.addSale(sales);
 
   if (newSale.err) {
     return res.status(UNPROCESSABLE_ENTITY).json(newSale);
   }
 
-  res.status(STATUS_OK).json(newSale);
+  return res.status(STATUS_OK).json(newSale);
 });
 
-router.put('/:id', (_req, res) => {
-  res.status(STATUS_OK).send('Update de venda');
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const sale = req.body;
+  const { productId, quantity } = sale;
+
+  const updatedSale = await Sales.updateSale(id, productId, quantity);
+
+  if (updatedSale.err) {
+    return res.status(UNPROCESSABLE_ENTITY).json(updatedSale);
+  }
+
+  return res.status(STATUS_OK).json({ updatedSale });
 });
 
 router.delete('/:id', (_req, res) => {

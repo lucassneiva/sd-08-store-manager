@@ -13,14 +13,23 @@ const getSaleById = async (id) => {
   return saleById;
 };
 
-const addSale = async (itensSold) => {
+const addSale = async (sales) => {
   const db = await connection();
-  const newSale = await db.collection('sales').insertOne({ itensSold });
+  const newSale = await db.collection('sales').insertOne({ itensSold: sales });
   return newSale.ops[0];
+};
+
+const updateSale = async (id, productId, quantity) => {
+  const db = await connection();
+  const updatedSale = await db
+    .collection('sales')
+    .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: { productId, quantity } } });
+  return { id, productId, quantity };
 };
 
 module.exports = {
   getAllSales,
   getSaleById,
   addSale,
+  updateSale,
 };

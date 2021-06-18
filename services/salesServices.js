@@ -23,15 +23,26 @@ const getSaleById = async (id) => {
   return saleById;
 };
 
-const addSale = async (itensSold) => {
-  const saleValidation = await Helper.saleValid(itensSold);
-  if (saleValidation.err) return saleValidation;
+const addSale = async (sales) => {
+  const quantityArray = sales.map((sale) => Helper.saleValid(sale.quantity));
+  if (quantityArray.find((soldItem) => quantityArray.err)) {
+    return quantityArray.find((invalidItem) => invalidItem.err);
+  }
 
-  return await Sales.addSale(itensSold);
+  return await Sales.addSale(sales);
+};
+
+const updateSale = async (id, productId, quantity) => {
+  const quantityValidation = Helper.saleValid(quantity);
+  if (quantityValidation.err) return quantityValidation;
+
+  await Sales.updateSale(id, productId, quantity);
+  return { _id: id, itensSold: [{ productId, quantity }] };
 };
 
 module.exports = {
   getAllSales,
   getSaleById,
   addSale,
+  updateSale,
 };
