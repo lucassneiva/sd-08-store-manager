@@ -49,8 +49,15 @@ router.put('/:id', async (req, res) => {
   return res.status(STATUS_OK).json({ updatedSale });
 });
 
-router.delete('/:id', (_req, res) => {
-  res.status(STATUS_OK).send('Deletar venda');
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+  const deletedSale = await Sales.deleteSale(id);
+
+  if (deletedSale.err) {
+    return res.status(UNPROCESSABLE_ENTITY).json(deletedSale);
+  };
+
+  return res.status(STATUS_OK).json(deletedSale);
 });
 
 module.exports = router;
