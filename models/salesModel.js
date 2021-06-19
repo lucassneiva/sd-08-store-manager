@@ -12,7 +12,13 @@ const getAllSales = async () => {
   return db.collection(SALES).find().toArray();
 };
 
+const getSaleById = async (id) => {
+  const db = await connection();
+  return db.collection(SALES).findOne({ _id: id });
+};
+
 module.exports = {
   createSales,
   getAllSales,
+  getSaleById,
 };
