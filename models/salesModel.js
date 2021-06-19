@@ -7,6 +7,12 @@ const createSales = async (sales) => {
   return db.collection(SALES).insertOne({ itensSold: sales });
 };
 
+const getAllSales = async () => {
+  const db = connection();
+  return db.collection(SALES).find().toArray();
+};
+
 module.exports = {
   createSales,
+  getAllSales,
 };
