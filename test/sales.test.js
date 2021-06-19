@@ -192,7 +192,7 @@ describe('5 - Crie um endpoint para cadastrar vendas', () => {
   });
 });
 
-describe.skip('6 - Crie um endpoint para listar as vendas', () => {
+describe('6 - Crie um endpoint para listar as vendas', () => {
   let connection;
   let db;
 
@@ -343,7 +343,7 @@ describe.skip('6 - Crie um endpoint para listar as vendas', () => {
   });
 });
 
-describe.skip('7 - Crie um endpoint para atualizar uma venda', () => {
+describe.only('7 - Crie um endpoint para atualizar uma venda', () => {
   let connection;
   let db;
 
@@ -568,7 +568,7 @@ describe.skip('7 - Crie um endpoint para atualizar uma venda', () => {
   });
 });
 
-describe.skip('8 - Crie um endpoint para deletar uma venda', () => {
+describe('8 - Crie um endpoint para deletar uma venda', () => {
   let connection;
   let db;
 
@@ -661,7 +661,7 @@ describe.skip('8 - Crie um endpoint para deletar uma venda', () => {
   });
 });
 
-describe.skip('9 - Atualize a quantidade de produtos', () => {
+describe('9 - Atualize a quantidade de produtos', () => {
   let connection;
   let db;
 
@@ -771,7 +771,7 @@ describe.skip('9 - Atualize a quantidade de produtos', () => {
   });
 });
 
-describe.skip('10 - Valide a quantidade de produtos', () => {
+describe('10 - Valide a quantidade de produtos', () => {
   let connection;
   let db;
 

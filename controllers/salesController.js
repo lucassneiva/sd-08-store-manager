@@ -37,7 +37,8 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
-  const { productId, quantity } = req.body;
+  const sale = req.body;
+  const { productId, quantity } = sale[0];
 
   const updatedSale = await Sales.updateSale(id, productId, quantity);
 
@@ -45,7 +46,7 @@ router.put('/:id', async (req, res) => {
     return res.status(UNPROCESSABLE_ENTITY).json(updatedSale);
   }
 
-  return res.status(STATUS_OK).json({ updatedSale });
+  return res.status(STATUS_OK).json(updatedSale);
 });
 
 router.delete('/:id', async (req, res) => {

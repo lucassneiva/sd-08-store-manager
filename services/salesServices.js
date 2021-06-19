@@ -33,8 +33,8 @@ const addSale = async (sales) => {
 };
 
 const updateSale = async (id, productId, quantity) => {
-  const quantityValidation = Helper.saleValid(quantity);
-  if (quantityValidation.err) return quantityValidation;
+  const saleValidation = Helper.saleValid(quantity);
+  if (saleValidation.err) return saleValidation;
 
   await Sales.updateSale(id, productId, quantity);
   return { _id: id, itensSold: [{ productId, quantity }] };

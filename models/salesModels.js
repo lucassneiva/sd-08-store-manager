@@ -21,10 +21,9 @@ const addSale = async (sales) => {
 
 const updateSale = async (id, productId, quantity) => {
   const db = await connection();
-  await db
+  return await db
     .collection('sales')
     .updateOne({ _id: ObjectId(id) }, { $set: { itensSold: { productId, quantity } } });
-  return { id, productId, quantity };
 };
 
 const deleteSale = async (id) => {
