@@ -17,4 +17,10 @@ router.get(
   salesController.getAllSales,
 );
 
+router.get(
+  '/:id',
+  middlewares.idValidation,
+  salesController.getSaleById,
+);
+
 module.exports = router;
