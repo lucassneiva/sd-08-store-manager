@@ -56,7 +56,7 @@ const asales = async() => {
 const getsalebyid = async(id)=>{
   if(ObjectId.isValid(id)) {
     const ret = await getsaleby(id);
-    console.log('serv53', ret);
+    // console.log('serv53', ret);
     if(ret === null){ return salenotf; }else {return ret;}
   }
 };
@@ -71,12 +71,13 @@ const updates = async(id, body) => {
 const deleteonesale = async(id)=>{
   if (ObjectId.isValid(id)){
     const todelete = await getsaleby(id);
+    if(!todelete){return delerr;}; 
     const removed = await deletesale(id);
     const arrvenda = todelete.itensSold;
-    console.log('serv75',arrvenda);
+    //console.log('serv75',arrvenda);
     if(removed.deletedCount == z){return delerr;} 
     else if(removed.deletedCount > z){
-    // await  incrementpdt(arrvenda);
+      await incrementpdt(arrvenda);
       return todelete; 
     }
   }else {return delerr;}

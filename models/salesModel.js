@@ -10,7 +10,7 @@ const rescue = require('rescue');
 const allsale = async() => { 
   
   const sales = await conn().then( db => db.collection('sales').find().toArray());
-  console.log('model13', sales);
+  // console.log('model13', sales);
   return sales;
       
     
@@ -30,44 +30,37 @@ const getsaleby = async(id) => {
   
 };
 
-/* const onesalebyid = async (id) => {
-  return await conn().then(
-    db => db.collection('sales').findOne(ObjectId(id))
-  );
-  
-}; */
- 
 
 
 const decrementpdt = async(arrvenda) => {
-  console.log('smodel42', arrvenda);
-  const{ _id, quantity } = arrvenda[0];
-  const produ = await oneprodu(_id);
-  console.log('smodel49', produ);
+  //console.log('smodel42', arrvenda);
+  const{ productId, quantity } = arrvenda[0];
+  const produ = await oneprodu(productId);
   const subtraction = produ.quantity - quantity;
+  // console.log('smodel47', subtraction);
   conn().then(
     async (db) => {
       db.collection('products').updateOne(
-        {_id: ObjectId(_id)}, {$set: {quantity: subtraction}}
+        {_id: ObjectId(productId)}, {$set: {quantity: subtraction}}
       );
     }
   ); 
 };
 
 const newsale =async(arrvenda)=>{
-  const arr = arrvenda.map(({_id, quantity})=>{
-    return {'productId':_id,'quantity': quantity};  });
-  
+  const arr = arrvenda.map(({productId, quantity})=>{
+    return {productId, quantity};  
+  });
   return(
     conn().then( 
       async(db)=>{
         const inserted = await db.collection('sales').insertOne(
           {itensSold: arr}
         );
-        // console.log('result em model:', inserted.ops[0]);
+        //console.log('smodel67:', inserted.ops[0]);
         return(inserted.ops[0]);
       }
-    ).then((ins) =>{ return ins; })
+    )
   );
   
 };
@@ -83,23 +76,21 @@ const updatesale = async(id, body) =>
 
 
 const deletesale = async(id) => {
-  
   return conn().then(
     async (db) => await db.collection('sales').deleteOne({_id:ObjectId(id)})
   );
-      
 }; 
 
 const incrementpdt = async(arrvenda) => {
-  console.log('smodel42', arrvenda);
-  const{ _id, quantity } = arrvenda[0];
-  const produ = await oneprodu(_id);
-  console.log('smodel49', produ);
-  const sumaction = produ.quantity + quantity;
+  //console.log('smodel42', arrvenda);
+  const{ productId, quantity } = arrvenda[0];
+  const produ = await oneprodu(productId);
+  //console.log('smodel49', produ);
+  const numberSuma = produ.quantity + quantity;
   conn().then(
     async (db) => {
       db.collection('products').updateOne(
-        {_id: ObjectId(_id)}, {$set: {quantity: sumaction}}
+        {_id: ObjectId(productId)}, {$set: {quantity: numberSuma}}
       );
     }
   ); 

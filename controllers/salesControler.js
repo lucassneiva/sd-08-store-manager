@@ -76,10 +76,10 @@ router.put('/:id', async(req, res) => {
 
 router.delete('/:id', async(req, res) => {  
   const { id } = req.params;
-  console.log('scontr79', id);
   const deleted = await Promise.all([deleteonesale(id)]);
-  let din = deleted.err ? cdxxii: cc;
-  res.status(din).send(deleted);
+  console.log('scontr79', deleted);
+  let din = deleted[0].err ? cdxxii: cc;
+  res.status(din).send(...deleted);
   return;
   
 
