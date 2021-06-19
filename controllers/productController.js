@@ -51,7 +51,9 @@ const deleteProduct = async (req, res) => {
   if (result.err) {
     res.status(error).json(result);
   }
-  res.status(ok).json(result);
+  try {
+    res.status(ok).json(result);
+  } catch { }
 };
 
 module.exports = {

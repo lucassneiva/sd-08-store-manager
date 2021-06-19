@@ -239,149 +239,149 @@ describe('É possível criar uma venda', () => {
       expect(response.status).to.be.a('function');
     })
   });
-})
 
-describe('É possível buscar uma venda pelo Id', () => {
-  const itensSold = [
-    { productId: ObjectId(), quantity: 10 },
-    { productId: ObjectId(), quantity: 5 }
-  ];
+  describe('É possível buscar uma venda pelo Id', () => {
+    const itensSold = [
+      { productId: ObjectId(), quantity: 10 },
+      { productId: ObjectId(), quantity: 5 }
+    ];
 
-  const saleMock = { _id: ObjectId(), itensSold: itensSold };
+    const saleMock = { _id: ObjectId(), itensSold: itensSold };
 
-  beforeEach(() => {
-    request.params = { id: ObjectId() }
-  })
+    beforeEach(() => {
+      request.params = { id: ObjectId() }
+    })
 
-  describe('quando a venda é encontrada', async () => {
-    before(() => {
-      sinon.stub(SalesServices, 'findSale').resolves(saleMock);
+    describe('quando a venda é encontrada', async () => {
+      before(() => {
+        sinon.stub(SalesServices, 'findSale').resolves(saleMock);
+      });
+
+      after(() => SalesServices.findSale.restore());
+
+      it('usa o id recebido por params da request', async () => {
+        await SalesController.findSale(request, response);
+        expect(SalesServices.findSale.calledWith(request.params.id)).to.be.true;
+      })
+
+      it('chama json com o objeto da venda', async () => {
+        await SalesController.findSale(request, response);
+        expect(response.json.calledWith(saleMock)).to.be.true;
+      })
     });
 
-    after(() => SalesServices.findSale.restore());
+    describe('quando a venda não é encontrado', async () => {
+      before(() => {
+        sinon.stub(SalesServices, 'findSale').resolves(error);
+      });
 
-    it('usa o id recebido por params da request', async () => {
-      await SalesController.findSale(request, response);
-      expect(SalesServices.findSale.calledWith(request.params.id)).to.be.true;
-    })
+      after(() => SalesServices.findSale.restore());
 
-    it('chama json com o objeto da venda', async () => {
-      await SalesController.findSale(request, response);
-      expect(response.json.calledWith(saleMock)).to.be.true;
-    })
-  });
+      it('chama next com um objeto de error', async () => {
+        await SalesController.findSale(request, response, next);
+        expect(response.status.calledWith(404)).to.be.true;
+      })
+    });
+  })
 
-  describe('quando a venda não é encontrado', async () => {
+  describe('É possível recuperar todas as vendas', () => {
+    const itensSold = [
+      { productId: ObjectId(), quantity: 10 },
+      { productId: ObjectId(), quantity: 5 }
+    ];
+
+    const saleMock = { _id: ObjectId(), itensSold: itensSold };
+
     before(() => {
-      sinon.stub(SalesServices, 'findSale').resolves(error);
+      sinon.stub(SalesServices, 'getAllSales').resolves([saleMock]);
     });
 
-    after(() => SalesServices.findSale.restore());
+    after(() => SalesServices.getAllSales.restore());
 
-    it('chama next com um objeto de error', async () => {
-      await SalesController.findSale(request, response, next);
-      expect(response.status.calledWith(404)).to.be.true;
+    it('chama json com um array contendo as vendas', async () => {
+      await SalesController.getAllSales(request, response);
+      const { args } = response.json;
+      expect(args[0][0][0]).to.have.property('itensSold');
+      expect(args[0][0][0].itensSold).to.be.a('array');
+      expect(args[0][0][0]).to.equal(saleMock);
     })
-  });
-})
-
-describe('É possível recuperar todas as vendas', () => {
-  const itensSold = [
-    { productId: ObjectId(), quantity: 10 },
-    { productId: ObjectId(), quantity: 5 }
-  ];
-
-  const saleMock = { _id: ObjectId(), itensSold: itensSold };
-
-  before(() => {
-    sinon.stub(SalesServices, 'getAllSales').resolves([saleMock]);
-  });
-
-  after(() => SalesServices.getAllSales.restore());
-
-  it('chama json com um array contendo as vendas', async () => {
-    await SalesController.getAllSales(request, response);
-    const { args } = response.json;
-    expect(args[0][0][0]).to.have.property('itensSold');
-    expect(args[0][0][0].itensSold).to.be.a('array');
-    expect(args[0][0][0]).to.equal(saleMock);
-  })
-})
-
-describe('É possível editar uma venda', () => {
-  const saleId = ObjectId();
-
-  const updatedSale = [
-    { productId: ObjectId(), quantity: 20 },
-    { productId: ObjectId(), quantity: 15 }
-  ];
-
-  beforeEach(() => {
-    request.params = { id: saleId };
-    request.body = updatedSale;
   })
 
-  describe('quando editar uma venda', () => {
-    const editMock = {
-      _id: saleId,
-      itensSold: updatedSale
-    }
+  describe('É possível editar uma venda', () => {
+    const saleId = ObjectId();
 
-    before(() => sinon.stub(SalesServices, 'updateSale').resolves(editMock));
+    const updatedSale = [
+      { productId: ObjectId(), quantity: 20 },
+      { productId: ObjectId(), quantity: 15 }
+    ];
 
-    after(() => SalesServices.updateSale.restore());
+    beforeEach(() => {
+      request.params = { id: saleId };
+      request.body = updatedSale;
+    })
 
-    // it('deverá utilizar o id recebido em params', async () => {
-    //   await SalesController.updateSale(request, response);
-    //   const { args } = SalesServices.updateSale;
-    //   expect(args[0][0]).to.equal(request.params.id);
-    //   expect(args[0][1]).to.equal(request.body);
-    // })
+    // describe('quando editar uma venda', () => {
+    //   const editMock = {
+    //     _id: saleId,
+    //     itensSold: updatedSale
+    //   }
 
-    // it('deverá chamar json com o produto editado', async () => {
-    //   await SalesController.updateSale(request, response);
-    //   expect(response.json.calledWith(editMock)).to.be.true;
+    //   before(() => sinon.stub(SalesServices, 'updateSale').resolves(editMock));
+
+    //   after(() => SalesServices.updateSale.restore());
+
+    //   it('deverá utilizar o id recebido em params', async () => {
+    //     await SalesController.updateSale(request, response);
+    //     const { args } = SalesServices.updateSale;
+    //     expect(args[0][0]).to.equal(request.params.id);
+    //     expect(args[0][1]).to.equal(request.body);
+    //   })
+
+    //   it('deverá chamar json com o produto editado', async () => {
+    //     await SalesController.updateSale(request, response);
+    //     expect(response.json.calledWith(editMock)).to.be.true;
+    //   })
     // })
   })
-})
 
 
-describe('É possível remover uma venda', () => {
-  const itensSold = [
-    { productId: ObjectId(), quantity: 10 },
-    { productId: ObjectId(), quantity: 5 }
-  ];
+  describe('É possível remover uma venda', () => {
+    const itensSold = [
+      { productId: ObjectId(), quantity: 10 },
+      { productId: ObjectId(), quantity: 5 }
+    ];
 
-  const saleMock = { _id: ObjectId(), itensSold: itensSold };
+    const saleMock = { _id: ObjectId(), itensSold: itensSold };
 
-  beforeEach(() => {
-    request.params = { id: saleMock._id };
-  });
+    beforeEach(() => {
+      request.params = { id: saleMock._id };
+    });
 
-  // describe('ao remover com sucesso', () => {
-  //   before(() => sinon.stub(SalesServices, 'deleteSale').resolves(saleMock));
+    describe('ao remover com sucesso', () => {
+      before(() => sinon.stub(SalesServices, 'deleteSale').resolves(saleMock));
 
-  //   after(() => SalesServices.deleteSale.restore());
+      after(() => SalesServices.deleteSale.restore());
 
-  //   it('usa o id recebido por parametro para realizar a remoção', async () => {
-  //     await SalesController.deleteSale(request, response);
-  //     expect(SalesServices.deleteSale.calledWith(request.params.id)).to.be.true;
-  //   });
+      it('usa o id recebido por parametro para realizar a remoção', async () => {
+        await SalesController.deleteSale(request, response);
+        expect(SalesServices.deleteSale.calledWith(request.params.id)).to.be.true;
+      });
 
-  //   it('chama json com o produto removido', async () => {
-  //     await SalesController.deleteSale(request, response);
-  //     expect(response.json.calledWith(saleMock)).to.be.true;
-  //   })
-  // })
+      it('chama json com o produto removido', async () => {
+        await SalesController.deleteSale(request, response);
+        expect(response.json.calledWith(saleMock)).to.be.true;
+      })
+    })
 
-  describe('quando a remoção falhar', () => {
-    before(() => sinon.stub(SalesServices, 'deleteSale').resolves(error));
+    describe('quando a remoção falhar', () => {
+      before(() => sinon.stub(SalesServices, 'deleteSale').resolves(error));
 
-    after(() => SalesServices.deleteSale.restore());
+      after(() => SalesServices.deleteSale.restore());
 
-    it('chama next com um objeto de erro', async () => {
-      await SalesController.deleteSale(request, response, next);
-      expect(response.status.calledWith(422)).to.be.true;
+      it('chama next com um objeto de erro', async () => {
+        await SalesController.deleteSale(request, response, next);
+        expect(response.status.calledWith(422)).to.be.true;
+      })
     })
   })
 })

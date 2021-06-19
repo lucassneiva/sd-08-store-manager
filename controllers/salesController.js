@@ -26,8 +26,16 @@ const createSale = async (req, res) => {
     res.status(error).json(validation);
   }
   const result = await salesService.createSale(sale);
-  await salesService.saleQuantity(sale, negative);
-  res.status(ok).json(result);
+  const test = await salesService.saleQuantity(sale, negative);
+  if (test) {
+    res.status(notfound).json(test);
+  }
+  try {
+    res.status(ok).json(result);
+  } catch (err) {
+    return err;
+  }
+
 };
 
 const updateSale = async (req, res) => {
