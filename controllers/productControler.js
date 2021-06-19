@@ -50,7 +50,9 @@ router.post('/', async(req, res) => {
   
   const { name, quantity } = req.body;
     
-  const result = await insertpdt(name, quantity);
+  let result = null;
+  result = await insertpdt(name, quantity);
+  console.log('aqui',result);
   if(result === null || result.err){res.status(cdxxii).json(result); return;
   }else if(!result === null || result.ops[z]){
     res.status(cci).json(result.ops[z]); return;

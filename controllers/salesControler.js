@@ -21,15 +21,16 @@ const cdiv = 404;
 
 router.post('/', async(req, res) => {
   const arrvenda = (req.body);
-  let result =  validasale(arrvenda);
+  let result = await validasale(arrvenda);
   console.log('scontro21', result);
   if(result == 'ok') {
-    await decrementpdt(arrvenda);
     result = await newsale(arrvenda);
+    await decrementpdt(arrvenda);
     res.status(cc).json(result);
     return;
-  }
-  res.status(cdxxii).json(result);
+  }else if(result.err.code == 'stock_problem'){
+    res.status(cdiv).json(result);return;
+  }else res.status(cdxxii).json(result);
 });
 
 router.get('/', async(req, res) => {  
@@ -75,8 +76,8 @@ router.put('/:id', async(req, res) => {
 
 router.delete('/:id', async(req, res) => {  
   const { id } = req.params;
-   
-  const deleted = await deleteonesale(id);
+  console.log('scontr79', id);
+  const deleted = await Promise.all([deleteonesale(id)]);
   let din = deleted.err ? cdxxii: cc;
   res.status(din).send(deleted);
   return;

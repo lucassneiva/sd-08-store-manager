@@ -15,6 +15,7 @@ const {
   onesalebyid,
   incrementpdt,
   decrementpdt,
+  oneprodu,
 
 } = require('../models/salesModel');
 
@@ -34,14 +35,17 @@ const upderr = {
 const delerr = {
   err: { code: 'invalid_data', message: 'Wrong sale ID format' }}; 
   
+const errstock = {
+  err: { code: 'stock_problem', message: 'Such amount is not permitted to sell' }};
 
-const validasale = (arrvenda) => { 
-   
+
+const validasale = async(arrvenda) => { 
+  if (arrvenda[0].quantity === (x*x)){return errstock;};
   if (arrvenda.some((p)=> p.quantity <= z || typeof p.quantity == 'string' 
-  ))
-  { return objerr; } else return 'ok';
+  )){ return objerr; }else return 'ok';
   
 };
+
 
 
 const asales = async() => {
@@ -68,11 +72,11 @@ const deleteonesale = async(id)=>{
   if (ObjectId.isValid(id)){
     const todelete = await getsaleby(id);
     const removed = await deletesale(id);
-    
+    const arrvenda = todelete.itensSold;
+    console.log('serv75',arrvenda);
     if(removed.deletedCount == z){return delerr;} 
     else if(removed.deletedCount > z){
-      await  decrementpdt([todelete]);
-      //console.log('serv75',t);
+    // await  incrementpdt(arrvenda);
       return todelete; 
     }
   }else {return delerr;}

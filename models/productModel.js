@@ -14,7 +14,7 @@ const getAll = async() => {
 
 
 const getbyname = async(name) => {
-  return conn().then(db => db.collection('products').countDocuments({name}));
+  return await conn().then(db => db.collection('products').countDocuments({name}));
   
 };
 
@@ -26,13 +26,11 @@ const getbyid = async(id) => {
 
 
 const insertProduct = async(name, quantity) => {
-  conn().then(
+  return  conn().then(
     async (db) => 
     {
-      const result = await db.collection('products').insertOne({ name, quantity });
-      return (result);
+      return await db.collection('products').insertOne({ name, quantity });
     }
-
   );
 };
 
