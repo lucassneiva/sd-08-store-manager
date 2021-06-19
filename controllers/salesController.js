@@ -9,6 +9,12 @@ const create = async (req, res) => {
   return res.status(OK_STATUS).json(createdSales);
 };
 
+const getAllSales = async (_req, res) => {
+  const allSales = await salesService.getAllSales();
+  return res.status(OK_STATUS).json(allSales);
+};
+
 module.exports = {
   create,
+  getAllSales,
 };
