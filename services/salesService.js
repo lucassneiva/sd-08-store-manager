@@ -5,6 +5,11 @@ const create = async (sales) => {
   return createdSales.ops[0];
 };
 
+const getAllSales = () => {
+  return salesModel.getAllSales();
+};
+
 module.exports = {
   create,
+  getAllSales,
 };
