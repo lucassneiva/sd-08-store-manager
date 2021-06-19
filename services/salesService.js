@@ -5,8 +5,9 @@ const create = async (sales) => {
   return createdSales.ops[0];
 };
 
-const getAllSales = () => {
-  return salesModel.getAllSales();
+const getAllSales = async () => {
+  const allSales = { sales: await salesModel.getAllSales() };
+  return allSales;
 };
 
 const getSaleById = (id) => {
