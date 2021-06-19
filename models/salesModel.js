@@ -8,7 +8,7 @@ const createSales = async (sales) => {
 };
 
 const getAllSales = async () => {
-  const db = connection();
+  const db = await connection();
   return db.collection(SALES).find().toArray();
 };
 
