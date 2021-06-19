@@ -19,7 +19,6 @@ router.get(
 
 router.get(
   '/:id',
-  middlewares.idValidation,
   salesController.getSaleById,
 );
 

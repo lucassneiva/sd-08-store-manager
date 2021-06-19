@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const salesModel = require('../models/salesModel');
 
 const create = async (sales) => {
@@ -11,7 +12,11 @@ const getAllSales = async () => {
 };
 
 const getSaleById = (id) => {
-  return salesModel.getSaleById(id);
+  if (!ObjectId.isValid(id)) {
+    return null;
+  }
+  const validId = ObjectId(id);
+  return salesModel.getSaleById(validId);
 };
 
 module.exports = {
