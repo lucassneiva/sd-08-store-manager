@@ -1,5 +1,6 @@
 const connection = require('./connection');
 const { ObjectId } = require('mongodb');
+const { commerce } = require('faker');
 
 const getAllSales = async () => {
   try {
