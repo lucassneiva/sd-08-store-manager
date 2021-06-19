@@ -12,7 +12,11 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
+app.get('/products/:id', products.findById);
+app.get('/products', products.findAll);
 app.post('/products',products.createProduct);
+
+
 
 app.use(middlewareError.error);
 app.listen(PORT, () => {

@@ -13,8 +13,26 @@ const createProduct = async (name, quantity) => {
   }
   return await Products.createProduct(name, quantity);
 };
+const findAll = async () =>{
+  const AllProdutcs = await Products.findAll();
+  return AllProdutcs;
+};
 
+const findById = async (id)=>{
+  const selectId = await Products.findById(id);
+  if(!selectId){
+    return {
+      error:{
+        code: UNPROCESSABLE_ENTITY,
+        message: 'Wrong id format'
+      }
+    };
+  }
+  return selectId;
+};
 
 module.exports = {
-  createProduct
+  createProduct,
+  findAll,
+  findById
 };
