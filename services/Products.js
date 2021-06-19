@@ -30,9 +30,14 @@ const findById = async (id)=>{
   }
   return selectId;
 };
+const updateItem = async (product) =>{
+  const item = await Products.updateItem(product);
+  return item;
+};
 
 module.exports = {
   createProduct,
   findAll,
-  findById
+  findById,
+  updateItem
 };

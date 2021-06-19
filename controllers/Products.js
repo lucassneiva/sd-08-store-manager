@@ -28,8 +28,24 @@ const findById = rescue(async (req, res, next) => {
   return res.status(OK_).json( product );
 });
 
+
+const updateItem = rescue(async (req, res, next) => {
+  const { error } = await SchemaProducts.validate(req.body);
+  if (error) return next(error);
+ 
+  
+  const { name, quantity } = req.body;
+  const { id } = req.params;
+  
+  const product = await Products.updateItem({ id, name, quantity });
+  if (product.error) return next(product.error);
+  
+  return res.status(OK_).json(product);
+});
+
 module.exports = {
   createProduct,
   findAll,
-  findById
+  findById,
+  updateItem
 };

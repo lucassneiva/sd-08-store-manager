@@ -11,7 +11,7 @@ const products = require('./controllers/Products');
 app.get('/', (_request, response) => {
   response.send();
 });
-
+app.put('/products/:id', products.updateItem);
 app.get('/products/:id', products.findById);
 app.get('/products', products.findAll);
 app.post('/products',products.createProduct);
