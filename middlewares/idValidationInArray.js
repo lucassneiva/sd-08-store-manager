@@ -15,8 +15,6 @@ const idValidationInArray = async (req, res, next) => {
       err: {
         code: 'invalid_data',
         message: 'Wrong product ID or invalid quantity',
-        allProducts,
-        body: array,
       },
     });
   }
