@@ -9,7 +9,12 @@ const getAllSales = () => {
   return salesModel.getAllSales();
 };
 
+const getSaleById = (id) => {
+  return salesModel.getSaleById(id);
+};
+
 module.exports = {
   create,
   getAllSales,
+  getSaleById,
 };
