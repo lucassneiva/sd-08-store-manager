@@ -34,10 +34,24 @@ const updateItem = async (product) =>{
   const item = await Products.updateItem(product);
   return item;
 };
+const deleteItem = async (product) =>{
+  
+  const item = await Products.deleteItem(product);
+  if(!item){
+    return {
+      error:{
+        code: UNPROCESSABLE_ENTITY,
+        message: 'Wrong id format'
+      }
+    };
+  }
+  return item;
+};
 
 module.exports = {
   createProduct,
   findAll,
   findById,
-  updateItem
+  updateItem,
+  deleteItem
 };

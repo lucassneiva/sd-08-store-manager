@@ -13,6 +13,7 @@ app.get('/', (_request, response) => {
 });
 app.put('/products/:id', products.updateItem);
 app.get('/products/:id', products.findById);
+app.delete('/products/:id',products.deleteItem);
 app.get('/products', products.findAll);
 app.post('/products',products.createProduct);
 
