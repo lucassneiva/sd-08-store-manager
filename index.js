@@ -6,6 +6,7 @@ const DEFAULT_PORT = 3000;
 const PORT = process.env.PORT || DEFAULT_PORT;
 const middlewareError = require('./middlewares/error');
 const products = require('./controllers/Products');
+const sales = require('./controllers/Sales');
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
@@ -17,6 +18,7 @@ app.delete('/products/:id',products.deleteItem);
 app.get('/products', products.findAll);
 app.post('/products',products.createProduct);
 
+app.post('/sales', sales.createSale);
 
 
 app.use(middlewareError.error);
