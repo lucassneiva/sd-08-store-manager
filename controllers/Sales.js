@@ -25,9 +25,25 @@ const findById = rescue(async (req, res, next) => {
   return res.status(OK_).json( sale );
 });
 
+const updateSale = rescue(async (req, res, next) => {
+  const { error } = SchemaSales.validate(req.body);
+  if (error) return next(error);
+  
+  
+  const { id } = req.params;
+  const { body: itensSold } = req;
+  
+  const sale = await Sales.updateSale({ id, itensSold });
+  
+  if (sale.error) return next(sale.error);
+  
+  res.status(OK_).json(sale);
+});
+
 
 module.exports={
   createSale,
   findAll,
-  findById
+  findById,
+  updateSale
 };

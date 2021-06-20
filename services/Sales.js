@@ -37,8 +37,15 @@ const findById = async (id)=>{
   }
   return selectId;
 };
+
+
+const updateSale = async (products) =>{
+  const groupItem = await Sales.updateSale(products);
+  return groupItem;
+};
 module.exports = {
   createSale,
   findAll,
-  findById
+  findById,
+  updateSale
 };
