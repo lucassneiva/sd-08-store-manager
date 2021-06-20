@@ -35,8 +35,7 @@ const create = async (name, quantity) => {
 };
 
 /* PUT */
-const update = async ( id, name, quantity) => {
-  console.log(id);
+const update = async ( id, name, quantity ) => {
   if (!ObjectId.isValid(id)) {
     return null;
   };
@@ -44,7 +43,6 @@ const update = async ( id, name, quantity) => {
   const product = await connection()
     .then((db) => db.collection('products')
       .updateOne({ _id: ObjectId(id) }, { $set: { name, quantity }}));
-  console.log(product);
   return product;
 };
 

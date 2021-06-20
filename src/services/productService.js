@@ -70,8 +70,6 @@ const create = async (name, quantity) => {
 };
 
 const update = async (id, name, quantity) => {
-  let product = await ProductModel.update(id, name, quantity);
-
   if (name.length <= MIN_LENGTH_NAME ) {
     return {
       err: {
