@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const ProductController = require('./src/controllers/productController');
+const SaleController = require('./src/controllers/saleController');
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
@@ -14,6 +15,12 @@ app.get('/products/:id', ProductController.findById);
 app.post('/products', ProductController.create);
 app.put('/products/:id', ProductController.update);
 app.delete('/products/:id', ProductController.exclude);
+
+app.get('/sales', SaleController.getAll);
+app.get('/sales/:id', SaleController.findById);
+app.post('/sales', SaleController.create);
+app.put('/sales/:id', SaleController.update);
+app.delete('/sales/:id', SaleController.exclude);
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`## SERVIDOR RODANDO NA PORTA ${PORT} ##`));

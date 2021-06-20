@@ -112,7 +112,7 @@ const exclude = async (id) => {
     };
   };
 
-  return product;
+  return { _id: id };
 };
 
 module.exports = {
