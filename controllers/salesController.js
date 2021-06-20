@@ -29,8 +29,16 @@ const getSaleById = async (req, res) => {
   });
 };
 
+const updateSale = async (req, res) => {
+  const { id } = req.params;
+  const data = req.body;
+  const updatedSale = await salesService.updateSale(id, data);
+  return res.status(OK_STATUS).json(updatedSale);
+};
+
 module.exports = {
   create,
   getAllSales,
   getSaleById,
+  updateSale,
 };

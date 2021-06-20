@@ -19,8 +19,13 @@ const getSaleById = (id) => {
   return salesModel.getSaleById(validId);
 };
 
+const updateSale = (id, data) => {
+  return salesModel.updateSale(id, data);
+};
+
 module.exports = {
   create,
   getAllSales,
   getSaleById,
+  updateSale,
 };

@@ -22,4 +22,10 @@ router.get(
   salesController.getSaleById,
 );
 
+router.put(
+  '/:id',
+  middlewares.idValidation,
+  salesController.updateSale,
+);
+
 module.exports = router;

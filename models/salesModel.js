@@ -17,8 +17,21 @@ const getSaleById = async (id) => {
   return db.collection(SALES).findOne({ _id: id });
 };
 
+const updateSale = async (id, data) => {
+  const db = await connection();
+  const [{ productId, quantity }] = data;
+  // return { id, data, idType: typeof id };
+  db.collection(SALES).updateOne(
+    { _id: id, },
+    { $set: { 'itensSold.$[element].quantity': quantity } },
+    { arrayFilters: [{ 'element.productId': productId }] },
+  );
+  return getSaleById(id);
+};
+
 module.exports = {
   createSales,
   getAllSales,
   getSaleById,
+  updateSale,
 };
