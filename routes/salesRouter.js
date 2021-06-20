@@ -24,6 +24,7 @@ router.get(
 
 router.put(
   '/:id',
+  middlewares.quantityValidationInArray,
   middlewares.idValidation,
   salesController.updateSale,
 );
