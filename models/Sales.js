@@ -19,8 +19,7 @@ const findById = async (id) => {
 
   return connection()
     .then((db) => db.collection('sales').findOne(new ObjectId(id)))
-    .then((item) => ({ _id: id, itensSold: item.itensSold }))
-    .catch((err) => console.log(err));
+    .then((item) => (item));
 };
 
 const updateSale = async (id, modifiedSale) => {
