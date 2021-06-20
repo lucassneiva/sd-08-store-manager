@@ -3,6 +3,7 @@ const idValidationInArray = require('./idValidationInArray');
 const nameValidation = require('./nameValidation');
 const quantityValidation = require('./quantityValidation');
 const quantityValidationInArray = require('./quantityValidationInArray');
+const saleIdValidation = require('./saleIdValidation');
 const uniqueNameValidation = require('./uniqueNameValidation');
 
 module.exports = {
@@ -11,5 +12,6 @@ module.exports = {
   nameValidation,
   quantityValidation,
   quantityValidationInArray,
+  saleIdValidation,
   uniqueNameValidation,
 };

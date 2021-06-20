@@ -20,7 +20,6 @@ const getSaleById = async (id) => {
 const updateSale = async (id, data) => {
   const db = await connection();
   const [{ productId, quantity }] = data;
-  // return { id, data, idType: typeof id };
   db.collection(SALES).updateOne(
     { _id: id, },
     { $set: { 'itensSold.$[element].quantity': quantity } },
@@ -29,8 +28,16 @@ const updateSale = async (id, data) => {
   return getSaleById(id);
 };
 
+const deleteSale = async (id) => {
+  const db = await connection();
+  const deletedSale = await getSaleById(id);
+  db.collection(SALES).deleteOne({ _id: id });
+  return deletedSale;
+};
+
 module.exports = {
   createSales,
+  deleteSale,
   getAllSales,
   getSaleById,
   updateSale,

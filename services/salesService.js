@@ -23,8 +23,13 @@ const updateSale = (id, data) => {
   return salesModel.updateSale(id, data);
 };
 
+const deleteSale = (id) => {
+  return salesModel.deleteSale(id);
+};
+
 module.exports = {
   create,
+  deleteSale,
   getAllSales,
   getSaleById,
   updateSale,

@@ -29,4 +29,10 @@ router.put(
   salesController.updateSale,
 );
 
+router.delete(
+  '/:id',
+  middlewares.saleIdValidation,
+  salesController.deleteSale,
+);
+
 module.exports = router;
