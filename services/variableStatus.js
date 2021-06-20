@@ -1,4 +1,5 @@
 const UNPROCESSABLE_ENTITY = 422;
+const NOT_FOUND = 404;
 const INTERNAL_SERVER_ERROR = 500;
 const CREATED = 201;
 const OK_ = 200;
@@ -7,5 +8,6 @@ module.exports={
   UNPROCESSABLE_ENTITY,
   INTERNAL_SERVER_ERROR,
   CREATED,
-  OK_
+  OK_,
+  NOT_FOUND
 };

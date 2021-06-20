@@ -1,7 +1,7 @@
 const Sales = require('../models/Sales');
 const Products = require('../models/Products');
 
-const {UNPROCESSABLE_ENTITY}=require('./variableStatus');
+const {UNPROCESSABLE_ENTITY,NOT_FOUND}=require('./variableStatus');
 
 const createSale = async(itensSold)=>{
   
@@ -21,7 +21,24 @@ const createSale = async(itensSold)=>{
   
   return Sales.createSale(itensSold);
 };
-
+const findAll = async () =>{
+  const AllProdutcs = await Sales.findAll();
+  return AllProdutcs;
+};
+const findById = async (id)=>{
+  const selectId = await Sales.findById(id);
+  if(!selectId){
+    return {
+      error:{
+        code: NOT_FOUND,
+        message: 'Sale not found'
+      }
+    };
+  }
+  return selectId;
+};
 module.exports = {
-  createSale
+  createSale,
+  findAll,
+  findById
 };

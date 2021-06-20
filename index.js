@@ -18,7 +18,10 @@ app.delete('/products/:id',products.deleteItem);
 app.get('/products', products.findAll);
 app.post('/products',products.createProduct);
 
+app.get('/sales/:id', sales.findById);
 app.post('/sales', sales.createSale);
+app.get('/sales', sales.findAll);
+
 
 
 app.use(middlewareError.error);
