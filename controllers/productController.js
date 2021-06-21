@@ -9,6 +9,7 @@ const STATUS_OK = 200;
 const STATUS_CREATED = 201;
 const STATUS_ERROR_CLIENT = 422;
 const STATUS_ERROR_SERVER = 500;
+const messageErrorServer = {message: 'Sistema Indisponível'};
 
 //Req01
 router.post('/', productNameCheck, productQuatityCheck, async (req, res) => {
@@ -18,7 +19,7 @@ router.post('/', productNameCheck, productQuatityCheck, async (req, res) => {
     res.status(STATUS_CREATED).json(newProduct);
   } catch (error) {
     console.log(error.message);
-    res.status(STATUS_ERROR_SERVER).send({mesage: 'Sistema Indisponível'});
+    res.status(STATUS_ERROR_SERVER).send(messageErrorServer);
   }
 });
 
@@ -39,7 +40,7 @@ router.get('/:id', async (req, res) => {
     res.status(STATUS_OK).json(product);
   } catch (error) {
     console.log(error.message);
-    res.status(STATUS_ERROR_SERVER).send({message: 'Sistema Indisponível'});
+    res.status(STATUS_ERROR_SERVER).send(messageErrorServer);
   }
 });
 
@@ -50,7 +51,7 @@ router.get('/', async (req, res) => {
     res.status(STATUS_OK).json({ products });
   } catch (error) {
     console.log(error.message);
-    res.status(STATUS_ERROR_SERVER).send({message: 'Sistema Indisponível'});
+    res.status(STATUS_ERROR_SERVER).send(messageErrorServer);
   }
 });
 
@@ -64,7 +65,7 @@ router.put('/:id', productUpdateCheck, productQuatityCheck, async(req, res) => {
     res.status(STATUS_OK).json(productUpdated);
   } catch (error) {
     console.log(error.message);
-    res.status(STATUS_ERROR_SERVER).send({message: 'Sistema Indisponível'});
+    res.status(STATUS_ERROR_SERVER).send(messageErrorServer);
   }
 });
 
@@ -76,7 +77,7 @@ router.delete('/:id', idRemoveCheck, async(req, res) => {
     res.status(STATUS_OK).json(productRemoved);
   } catch (error) {
     console.log(error.message);
-    res.status(STATUS_ERROR_SERVER).send({message: 'Sistema Indisponível'});
+    res.status(STATUS_ERROR_SERVER).send(messageErrorServer);
   }
 });
 
