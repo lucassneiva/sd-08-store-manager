@@ -46,7 +46,7 @@ router.get('/', async (req, res) => {
   try {
     const products = await productModel.getAll();
     console.log(products);
-    res.status(STATUS_OK).json(products);
+    res.status(STATUS_OK).json({products});
   } catch (error) {
     console.log(error.message);
     res.status(STATUS_ERROR_SERVER).send({message: 'Sistema Indisponível'});
