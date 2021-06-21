@@ -69,4 +69,19 @@ const productUpdateCheck = async(req, res, next) => {
   return next();
 };
 
-module.exports = {productNameCheck, productQuatityCheck, productUpdateCheck};
+const idRemoveCheck = async(req, res, next) => {
+  const { id } = req.params;
+  const product = await productModel.getById(id);
+  if(!product) {
+    res.status(STATUS_ERROR_CLIENT).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong id format'
+      }
+    });
+  }
+  return next();
+};
+
+module.exports = {productNameCheck, productQuatityCheck, productUpdateCheck,
+  idRemoveCheck };
