@@ -2,17 +2,16 @@ const productModel = require('../models/productModel');
 
 const STATUS_ERROR_CLIENT = 422;
 
-// const nameExist = async(name) =>{
-//   const nameCheck = await productModel.findByName(name);
-//   console.log(nameCheck);
-//   return nameCheck;
-// };
+const nameExist = async(name) =>{
+  const nameCheck = await productModel.findByName(name);
+  console.log(nameCheck);
+  return nameCheck;
+};
 
-const productNameCheck = (req, res, next) => {
+const productNameCheck = async(req, res, next) => {
   const {name} = req.body;
   const nameMin = 5;
-  console.log(name.length);
-  // const testnameCheck = nameExist(name);
+  const testnameCheck = await nameExist(name);
   // console.log(testnameCheck);
   if (name.length < nameMin) {
     return res.status(STATUS_ERROR_CLIENT).json({
@@ -22,14 +21,14 @@ const productNameCheck = (req, res, next) => {
       }
     });
   }
-  // if (testnameCheck) {
-  //   return res.status(STATUS_ERROR_CLIENT).json({
-  //     err: {
-  //       code: 'invalid_data',
-  //       'message': 'Product already exists'
-  //     }
-  //   });
-  // }
+  if (testnameCheck) {
+    return res.status(STATUS_ERROR_CLIENT).json({
+      err: {
+        code: 'invalid_data',
+        'message': 'Product already exists'
+      }
+    });
+  }
   return next();
 };
 
