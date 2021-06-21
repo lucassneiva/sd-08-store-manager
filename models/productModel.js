@@ -27,4 +27,16 @@ const getById = async (id) => {
   return product;
 };
 
-module.exports = {getAll, add, findByName, getById};
+//Req03
+const update = async (id, productForUpdate) => {
+  const { name, quantity }  = productForUpdate;
+  if (!ObjectId.isValid(id)) {
+    return null;
+  };
+  const productUpdated = connect()
+    .then(async(db) => await db.collection('products')
+      .updateOne({_id: ObjectId(id)}, {$set:{ name, quantity }}));
+  return {_id: id, ...productForUpdate};
+};
+
+module.exports = {getAll, add, findByName, getById, update};
