@@ -1,5 +1,5 @@
 const salesSchema = require('../schemas/salesSchema');
-const { StatusCodes } = {
+const StatusCodes = {
   UNPROCESSABLE_ENTITY: 422,
 };
 
