@@ -2,6 +2,7 @@ const productModel = require('../models/productModel');
 
 const STATUS_ERROR_CLIENT = 422;
 
+// Req01
 const nameExist = async(name) =>{
   const nameCheck = await productModel.findByName(name);
   console.log(nameCheck);
