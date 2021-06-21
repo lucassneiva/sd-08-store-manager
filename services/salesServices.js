@@ -1,6 +1,9 @@
 const { ObjectId } = require('mongodb');
 const Sales = require('../models/salesModels');
+const Products = require('../models/productsModels');
 const Helper = require('../helpers');
+
+const MIN_QTD = 0;
 
 const getAllSales = async () => {
   const allSales = await Sales.getAllSales();
@@ -11,8 +14,8 @@ const getSaleById = async (id) => {
   const notFound = {
     err: {
       code: 'not_found',
-      message: 'Sale not found'
-    }
+      message: 'Sale not found',
+    },
   };
 
   if (!ObjectId.isValid(id)) return notFound;
@@ -29,12 +32,49 @@ const addSale = async (sales) => {
     return quantityArray.find((invalidItem) => invalidItem.err);
   }
 
-  return await Sales.addSale(sales);
+  const newSale = await Sales.addSale(sales);
+  const { itensSold } = newSale;
+
+  for (let item of itensSold) {
+    const product = await Products.getProductById(item.productId);
+    const updatedQuantity = product.quantity - item.quantity;
+    if (updatedQuantity < MIN_QTD) {
+      return {
+        err: {
+          code: 'stock_problem',
+          message: 'Such amount is not permitted to sell',
+        },
+      };
+    }
+    await Products.updateProduct(
+      product.productId,
+      product.name,
+      updatedQuantity
+    );
+  }
+
+  return newSale;
 };
 
 const updateSale = async (id, productId, quantity) => {
   const saleValidation = Helper.saleValid(quantity);
   if (saleValidation.err) return saleValidation;
+
+  const product = await Products.getProductById(productId);
+  const updatedQuantity = product.quantity - quantity;
+  if (updatedQuantity < MIN_QTD) {
+    return {
+      err: {
+        code: 'stock_problem',
+        message: 'Such amount is not permitted to sell',
+      },
+    };
+  }
+  await Products.updateProduct(
+    product.productId,
+    product.name,
+    { quantity: updatedQuantity }
+  );
 
   await Sales.updateSale(id, productId, quantity);
   return { _id: id, itensSold: [{ productId, quantity }] };
@@ -44,10 +84,23 @@ const deleteSale = async (id) => {
   const wrongSaleId = {
     err: {
       code: 'invalid_data',
-      message: 'Wrong sale ID format'
-    }
+      message: 'Wrong sale ID format',
+    },
   };
   if (!ObjectId.isValid(id)) return wrongSaleId;
+
+  const sale = await Sales.getSaleById(id);
+  const { itensSold } = sale;
+
+  for (let item of itensSold) {
+    const product = await Products.getProductById(item.productId);
+    const updatedQuantity = product.quantity + item.quantity;
+    await Products.updateProduct(
+      product.productId,
+      product.name,
+      { quantity: updatedQuantity }
+    );
+  }
 
   const deletedSale = await Sales.deleteSale(id);
   if (!deletedSale) return wrongSaleId;

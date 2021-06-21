@@ -29,7 +29,9 @@ router.post('/', async (req, res) => {
   const newSale = await Sales.addSale(sales);
 
   if (newSale.err) {
-    return res.status(UNPROCESSABLE_ENTITY).json(newSale);
+    return newSale.err.code === 'stock_problem'
+      ? res.status(NOT_FOUND).json(newSale)
+      : res.status(UNPROCESSABLE_ENTITY).json(newSale);
   }
 
   return res.status(STATUS_OK).json(newSale);
@@ -43,7 +45,9 @@ router.put('/:id', async (req, res) => {
   const updatedSale = await Sales.updateSale(id, productId, quantity);
 
   if (updatedSale.err) {
-    return res.status(UNPROCESSABLE_ENTITY).json(updatedSale);
+    return updatedSale.err.code === 'stock_problem'
+      ? res.status(NOT_FOUND).json(updatedSale)
+      : res.status(UNPROCESSABLE_ENTITY).json(updatedSale);
   }
 
   return res.status(STATUS_OK).json(updatedSale);
