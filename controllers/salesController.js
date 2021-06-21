@@ -67,7 +67,16 @@ const updateSale = async (req, res) => {
 
 const deleteSale = async (req, res) => {
   const { id } = req.params;
-  const deletedSale = salesService.deleteSale(id);
+  const deletedSale = await salesService.deleteSale(id);
+  const { itensSold } = deletedSale;
+
+  for (let index = FIRST_INDEX; index < itensSold.length; index += 1) {
+    const { productId, quantity: soldQuantity } = itensSold[index];
+    const productObjectId = ObjectId(productId);
+    const { name, quantity } = await productService.getProductById(productObjectId);
+    await productService.updateProduct(productObjectId, name, quantity + soldQuantity);
+  };
+
   return res.status(OK_STATUS).json(deletedSale);
 };
 
