@@ -22,6 +22,7 @@ app.put('/sales/:id', sales.updateSale);
 app.get('/sales/:id', sales.findById);
 app.post('/sales', sales.createSale);
 app.get('/sales', sales.findAll);
+app.delete('/sales/:id', sales.deleteSale);
 
 
 

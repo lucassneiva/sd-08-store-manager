@@ -40,10 +40,20 @@ const updateSale = rescue(async (req, res, next) => {
   res.status(OK_).json(sale);
 });
 
+const deleteSale=rescue(async (req, res, next) => {
+  const { id } = req.params;
+   
+  const sale = await Sales.deleteSale(id);
+    
+  if (sale.error) return next(sale.error);
+    
+  res.status(OK_).json(sale);
+});
 
 module.exports={
   createSale,
   findAll,
   findById,
-  updateSale
+  updateSale,
+  deleteSale
 };

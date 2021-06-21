@@ -43,9 +43,26 @@ const updateSale = async (products) =>{
   const groupItem = await Sales.updateSale(products);
   return groupItem;
 };
+
+const deleteSale = async (id) =>{
+  
+  const sale = await Sales.deleteSale(id);
+  if(!sale){
+    return {
+      error:{
+        code: UNPROCESSABLE_ENTITY,
+        message: 'Wrong sale ID format'
+      }
+    };
+  }
+  return sale;
+};
+
+
 module.exports = {
   createSale,
   findAll,
   findById,
-  updateSale
+  updateSale,
+  deleteSale
 };
