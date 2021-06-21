@@ -20,7 +20,7 @@ const getSaleById = async (id) => {
 const updateSale = async (id, data) => {
   const db = await connection();
   const [{ productId, quantity }] = data;
-  db.collection(SALES).updateOne(
+  await db.collection(SALES).updateOne(
     { _id: id, },
     { $set: { 'itensSold.$[element].quantity': quantity } },
     { arrayFilters: [{ 'element.productId': productId }] },
