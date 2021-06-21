@@ -12,7 +12,14 @@ const error = (err, _req, res, _next) => {
       .json({ err: { code: 'not_found',message: err.message } });
   }
 
-  console.log(err.code);
+
+  if (err.code == 'stock_problem') {
+    return res.status(NOT_FOUND)
+      .json({ err: { code: 'stock_problem',message: err.message } });
+  }
+  
+
+  //  console.log(err.code);
   return res.status(err.code || INTERNAL_SERVER_ERROR)
     .json({ err: { code: 'invalid_data', message: err.message } });;
 

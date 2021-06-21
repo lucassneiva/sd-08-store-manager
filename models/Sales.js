@@ -44,11 +44,15 @@ const deleteSale = async (id) => {
   
 };
 
+
+
+
 module.exports={
   createSale,
   findAll,
   findById,
   updateSale,
   deleteSale
+  
   
 };
