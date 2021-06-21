@@ -39,4 +39,15 @@ const update = async (id, productForUpdate) => {
   return {_id: id, ...productForUpdate};
 };
 
-module.exports = {getAll, add, findByName, getById, update};
+//Req04
+const remove = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  };
+  const productRemove = connect()
+    .then(async(db) => await db.collection('products')
+      .deleteOne({_id: ObjectId(id)}));
+  return productRemove;
+};
+
+module.exports = {getAll, add, findByName, getById, update, remove};
