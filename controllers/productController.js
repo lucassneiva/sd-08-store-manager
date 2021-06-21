@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const productModel = require('../models/productModel');
-const {productNameCheck} = require('../services/productService');
+const {productNameCheck, productQuatityCheck} = require('../services/productService');
 
 const STATUS_OK = 200;
 const STATUS_CREATED = 201;
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 });
 
 //Req01
-router.post('/', productNameCheck, async (req, res) => {
+router.post('/', productNameCheck, productQuatityCheck, async (req, res) => {
   const {name, quantity} = req.body;
   try {
     const newProduct = await productModel.add(name, quantity);
