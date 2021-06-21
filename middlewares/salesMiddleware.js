@@ -1,5 +1,7 @@
 const salesSchema = require('../schemas/salesSchema');
-const { StatusCodes } = require('http-status-codes');
+const { StatusCodes } = {
+  UNPROCESSABLE_ENTITY: 422,
+};
 
 const validateSales = (req, res, next) => {
   const itensSold = req.body;
