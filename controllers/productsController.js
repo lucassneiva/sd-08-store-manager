@@ -8,7 +8,12 @@ const {
   validateProduct, 
   validateProductId 
 } = require('../middlewares/productsMiddleware');
-const { StatusCodes } = require('http-status-codes');
+const StatusCodes = {
+  UNPROCESSABLE_ENTITY: 422,
+  NOT_FOUND: 404,
+  CREATED: 201,
+  OK: 200
+};
 
 router.get('/', rescue(async (_req, res) => {
   const products  = await serviceProducts.getAllProducts();
