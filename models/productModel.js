@@ -11,5 +11,10 @@ const add = async (name, quantity) =>
     return product.ops[0];
   });
 
-module.exports = {getAll, add};
+const findByName = async (name) =>
+  connect().then(async(db) => {
+    const product = await db.collection('products').findOne({'name': name});
+    return product;
+  });
 
+module.exports = {getAll, add, findByName};
