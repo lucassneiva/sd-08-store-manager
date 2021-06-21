@@ -1,5 +1,5 @@
 const productsSchema = require('../schemas/productsSchema');
-const error = require('../schemas/errorsSchema')
+const error = require('../schemas/errorsSchema');
 
 const validateProduct = (req, res, next) => {
   const { name, quantity } = req.body;
