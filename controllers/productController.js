@@ -60,8 +60,8 @@ router.put('/:id', productUpdateCheck, productQuatityCheck, async(req, res) => {
   try {
     const productForUpdate = req.body;
     const { id } = req.params;
-    const productUpdated = await productUpdatedModel.update(id, productForUpdate);
-    // console.log(product);
+    const productUpdated = await productModel.update(id, productForUpdate);
+    // console.log(productUpdated);
     res.status(STATUS_OK).json(productUpdated);
   } catch (error) {
     console.log(error.message);

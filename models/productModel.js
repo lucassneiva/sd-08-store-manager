@@ -33,7 +33,7 @@ const update = async (id, productForUpdate) => {
   if (!ObjectId.isValid(id)) {
     return null;
   };
-  const productUpdated = connect()
+  const productUpdate = connect()
     .then(async(db) => await db.collection('products')
       .updateOne({_id: ObjectId(id)}, {$set:{ name, quantity }}));
   return {_id: id, ...productForUpdate};
