@@ -5,16 +5,9 @@ const { UNPROCESSABLE_ENTITY, NOT_FOUND } = require('./variableStatus');
 const ZERO = 0;
 const createSale = async (itensSold) => {
 
-  const verifyIds = itensSold.map(({ productId }) => Products.findById(productId));/* NÂO DELETAR */
-  const respVerifyIds = await Promise.all(verifyIds);/* NÂO DELETAR */
-
-  // const quantidadeQueEutenho = respVerifyIds.map((x)=>x.quantity);
-  // const quantidadeQueEuPreciso = itensSold.map((x)=>x.quantity);
-  // console.log(quantidadeQueEutenho);
-  // console.log(quantidadeQueEuPreciso);
-
-
-  const checkVerifyIds = respVerifyIds.includes(null);/* NÂO DELETAR */
+  const verifyIds = itensSold.map(({ productId }) => Products.findById(productId));
+  const respVerifyIds = await Promise.all(verifyIds);
+  const checkVerifyIds = respVerifyIds.includes(null);
 
   if (checkVerifyIds) {
     return {
