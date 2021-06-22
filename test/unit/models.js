@@ -24,7 +24,6 @@ after(async () => {
     await DBServer.stop();
 });
 
-
 /* test Products */
 describe('Insere um novo produto no BD', () => {
     const payloadProduct = {
