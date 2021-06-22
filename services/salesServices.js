@@ -32,11 +32,9 @@ const addSale = async (sales) => {
     return quantityArray.find((invalidItem) => invalidItem.err);
   }
 
-  const newSale = await Sales.addSale(sales);
-  const { itensSold } = newSale;
-
-  for (let item of itensSold) {
+  for (let item of sales) {
     const product = await Products.getProductById(item.productId);
+    console.log(item.quantity);
     const updatedQuantity = product.quantity - item.quantity;
     if (updatedQuantity < MIN_QTD) {
       return {
@@ -49,11 +47,11 @@ const addSale = async (sales) => {
     await Products.updateProduct(
       product.productId,
       product.name,
-      updatedQuantity
+      { quantity: updatedQuantity }
     );
   }
 
-  return newSale;
+  return await Sales.addSale(sales);
 };
 
 const updateSale = async (id, productId, quantity) => {
