@@ -37,7 +37,6 @@ async function getById(req, res) {
     const { id } = req.params;
     const sale = await SalesModel.getById(id);
     if(sale) return res.status(STATUS_200).json(sale);
-    console.log(sale);
     throw new Error();
   } catch (error) {
     res.status(STATUS_404).json({

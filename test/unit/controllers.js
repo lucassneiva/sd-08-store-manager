@@ -270,11 +270,6 @@ describe('Products Controller', () => {
     describe('Quando o "id" informado não existe no DB', () => {
       const response = {};
       const request = {};
-      const deletedProduct = {
-        _id: '69cd2b9443dfec28a4a9631c',
-        name: 'Novo produto',
-        quantity: 212
-      }
 
       before(() => {
         request.body = {};
@@ -444,6 +439,141 @@ describe('Sales Controller', () => {
     it('retorna um JSON com todos os produtos cadastrados', async () => {
       await SalesController.getAll(request, response);
       expect(response.json.calledWith(allSales)).to.be.true;
+    })
+  })
+
+  describe('Ao chamar o "getById"', () => {
+    describe('Quando informa um "ID" e não encontra no DB', () => {
+      const response = {};
+      const request = {};
+      const errorJSON = {
+        err: {
+          code: 'not_found',
+          message: 'Sale not found'
+        }
+      }
+      before(() => {
+        request.body = {};
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns(response);
+        sinon.stub(SalesModel, 'getById').rejects();
+      })
+
+      after(() => {
+        SalesModel.getById.restore();
+      })
+
+      it('retorna o status "404"', async () => {
+        await SalesController.getById(request, response);
+        expect(response.status.calledWith(404)).to.be.true;
+      })
+
+      it('retorna o JSON de erro no formato correto', async () => {
+        await SalesController.getById(request, response);
+        expect(response.json.calledWith(errorJSON)).to.be.true;
+      })
+    })
+
+    describe('Quando informa um "id" válido', () => {
+      const response = {};
+      const request = {};
+      const saleDB = {
+        _id: '69cd2b9443dfec28a4a9631c',
+        itensSold: [
+          {productId: '69cd2b9443dfec28a4a7411c', quantity: 3},
+          {productId: '69gf2b9478ddfc28a4a3674e', quantity: 10}
+        ]
+      }
+
+      before(() => {
+        request.body = {};
+        request.params = { id: '69cd2b9443dfec28a4a9631c'}
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns(response);
+        sinon.stub(SalesModel, 'getById').resolves(saleDB);
+      })
+
+      after(() => {
+        SalesModel.getById.restore();
+      })
+
+      it('retorna o status "200"', async () => {
+        await SalesController.getById(request, response);
+        expect(response.status.calledWith(200)).to.be.true;
+      })
+      it('retorna o JSON com o produto encontrado', async () => {
+        await SalesController.getById(request, response);
+        expect(response.json.calledWith(saleDB)).to.be.true;
+      })
+    })
+  })
+
+  describe('Ao chamar "exclude"', () => {
+    describe('Quando o "id" informado não existe no DB', () => {
+      const response = {};
+      const request = {};
+      const errorObj = {
+        err: {
+          code: 'invalid_data',
+          message: 'Wrong sale ID format',
+        }
+      }
+
+      before(() => {
+        request.body = {};
+        request.params = { id: '69cd2b9443dfec28a4a9631c'}
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns(response);
+        sinon.stub(SalesModel, 'exclude').rejects();
+      })
+
+      after(() => {
+        SalesModel.exclude.restore();
+      })
+
+      it('retorna o status "422"', async () => {
+        await SalesController.exclude(request, response);
+        expect(response.status.calledWith(422)).to.be.true;
+      })
+
+      it('retorna um JSON com o formato correto', async () => {
+        await SalesController.exclude(request, response);
+        expect(response.json.calledWith(errorObj)).to.be.true;
+      })
+    })
+
+    describe('Quando o produto é deletado com sucesso', () => {
+      const response = {};
+      const request = {};
+      const deletedSale = {
+        _id: '69cd2b9443dfec28a4a9631c',
+        itensSold: [
+          {productId: '69cd2b9443dfec28a4a9631c', quantity: 2},
+          {productId: '69cd2b9443dfec28a4a1475c', quantity: 10}
+        ]
+      }
+
+      before(() => {
+        request.body = {};
+        request.params = { id: '69cd2b9443dfec28a4a9631c'}
+        response.status = sinon.stub().returns(response);
+        response.json = sinon.stub().returns(response);
+        sinon.stub(SalesService, 'exclude').resolves(deletedSale);
+      })
+
+      after(() => {
+        SalesService.exclude.restore();
+      })
+
+      it('retorna o status "200"', async () => {
+        await SalesController.exclude(request, response);
+        expect(response.status.calledWith(200)).to.be.true;
+      })
+
+      it('retorna um JSON com o formato correto', async () => {
+        await SalesController.exclude(request, response);
+        expect(response.json.calledWith(deletedSale)).to.be.true;
+      })
     })
   })
 
