@@ -28,12 +28,11 @@ describe('Teste Model', () => {
 
   after(() => {
     MongoClient.connect.restore();
-    sinon.restore();
   });
 
 
   describe('Verifica se é possivel cadastar um produto com sucesso', async () => {
-    it('', async () => {
+    it('Cadastro de produto', async () => {
       const {name, quantity } = PayloadProduct;
       productModel.createProduct({name, quantity});;
       const response = await productModel.findProduct({name});
@@ -46,7 +45,7 @@ describe('Teste Model', () => {
   });
 
   describe('Verifica se é possivel listar todos os produtos', async () => {
-    it('', async () => {
+    it('Listagem de produtos', async () => {
       const {name, quantity } = PayloadProduct;
       productModel.createProduct({name, quantity});
       const response = await productModel.getAllProducts();

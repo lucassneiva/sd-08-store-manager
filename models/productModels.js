@@ -37,7 +37,7 @@ async function updateProduct(id,name, quantity ) {
       .then((db) => db.collection('products')
         .updateOne({_id: ObjectId(id)},{$set: {'name': name, 'quantity': quantity}}));
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 };
 
@@ -47,7 +47,7 @@ function deleteProduct(id) {
       .then((db) => db.collection('products')
         .deleteOne({_id: ObjectId(id)}));
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 };
 
