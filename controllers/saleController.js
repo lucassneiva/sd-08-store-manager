@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const saleModel = require('../models/saleModel');
-const { saleQuatityCheck } = require('../services/saleService');
+const { saleQuatityCheck, idRemoveCheck } = require('../services/saleService');
 
 const STATUS_OK = 200;
 const STATUS_CREATED = 201;
@@ -54,5 +54,20 @@ router.get('/', async (req, res) => {
     res.status(STATUS_ERRO).send(messageErrorServer);
   }
 });
+
+// Req07
+
+// Req08
+router.delete('/:id', idRemoveCheck, async(req, res) =>{
+  try {
+    const { id } = req.params;
+    const saleRemoved = await saleModel.removeSale(id);
+    res.status(STATUS_OK).json(saleRemoved);
+  } catch (error) {
+    console.log(erro.message);
+    res.status(STATUS_ERRO).send(messageErrorServer);
+  }
+} );
+
 
 module.exports = router;

@@ -22,4 +22,26 @@ const getByIdSale = async (id) => {
   return product;
 };
 
-module.exports = { addNewSale, getAllSales, getByIdSale };
+// Req07
+const updateIdSale = async (id, itensSold) => {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  };
+  const sale = connect()
+    .then(async(db) => await db.collection('sales')
+      .updateOne({_id: ObjectId(id)}, {$set:{ itensSold }}));
+  return {_id: id, itensSold};
+};
+
+//Req08
+const removeSale = async (id) => {
+  if (!ObjectId.isValid(id)) {
+    return null;
+  };
+  const remove = connect()
+    .then(async(db) => await db.collection('sales')
+      .deleteOne({_id: ObjectId(id)}));
+  return remove;
+};
+
+module.exports = { addNewSale, getAllSales, getByIdSale, updateIdSale, removeSale };

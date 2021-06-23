@@ -1,5 +1,4 @@
 const saleModel = require('../models/saleModel');
-const productModel = require('../models/productModel');
 
 const STATUS_ERROR_CLIENT = 422;
 
@@ -12,6 +11,7 @@ const quantityIsValid = async(salesArray) => {
   return check;
 };
 
+// Req05
 const saleQuatityCheck = async(req, res, next) => {
   const salesArray = req.body;
   const quantityCheck = await quantityIsValid(salesArray);
@@ -27,4 +27,19 @@ const saleQuatityCheck = async(req, res, next) => {
   return next();
 };
 
-module.exports = { saleQuatityCheck };
+// Req08
+const idRemoveCheck = async(req, res, next) => {
+  const { id } = req.params;
+  const sale = await saleModel.getByIdSale(id);
+  if(!sale) {
+    res.status(STATUS_ERROR_CLIENT).json({
+      err: {
+        code: 'invalid_data',
+        message: 'Wrong sale ID format'
+      }
+    });
+  }
+  return next();
+};
+
+module.exports = { saleQuatityCheck, idRemoveCheck };
