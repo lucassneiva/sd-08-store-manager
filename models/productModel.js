@@ -8,6 +8,7 @@ const add = async (name, quantity) =>
     return product.ops[0];
   });
 
+// Req01 - Services
 const findByName = async (name) =>
   connect().then(async(db) => {
     const product = await db.collection('products').findOne({'name': name});

@@ -5,10 +5,11 @@ const STATUS_ERROR_CLIENT = 422;
 // Req01
 const nameExist = async(name) =>{
   const nameCheck = await productModel.findByName(name);
-  console.log(nameCheck);
+  // console.log(nameCheck);
   return nameCheck;
 };
 
+// Req01
 const productNameCheck = async(req, res, next) => {
   const {name} = req.body;
   const nameMin = 5;
@@ -33,6 +34,7 @@ const productNameCheck = async(req, res, next) => {
   return next();
 };
 
+// Req01 - 03
 const productQuatityCheck = (req, res, next) =>{
   const {quantity} = req.body;
   const quantityMin = 1;
@@ -55,6 +57,7 @@ const productQuatityCheck = (req, res, next) =>{
   return next();
 };
 
+// Req03
 const productUpdateCheck = async(req, res, next) => {
   const { name } = req.body;
   const nameMin = 5;
@@ -69,6 +72,7 @@ const productUpdateCheck = async(req, res, next) => {
   return next();
 };
 
+// Req04
 const idRemoveCheck = async(req, res, next) => {
   const { id } = req.params;
   const product = await productModel.getById(id);
