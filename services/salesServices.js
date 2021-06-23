@@ -7,7 +7,6 @@ async function updateStock(data, op) {
   await Promise.all(data.map(async ({product, saleQuantity}) => {
     const newQuantity = op === 'decrement'
       ? product.quantity - saleQuantity : product.quantity + saleQuantity;
-    console.log(newQuantity);
     await ProductsModel.update(product._id, product.name, newQuantity);
     return;
   }));
@@ -33,7 +32,6 @@ async function create(sales) {
     err.statusCode = 404;
     throw err;
   }
-  console.log(products);
   await updateStock(products, 'decrement');
   const newSale = await SalesModel.create(sales);
   return newSale.ops[0];
@@ -42,14 +40,14 @@ async function create(sales) {
 
 async function update(id, data) {
   const checkQuantity = data.every((sale) => sale.quantity > SALES_QUANTITY);
-  if(!checkQuantity) throw new Error();
-  const {value} = await SalesModel.update(id, data);
+  if(!checkQuantity) throw new Error('Invalid quantity');
+  const { value } = await SalesModel.update(id, data);
   return value;
 }
 
 async function exclude(id) {
   const { value } = await SalesModel.exclude(id);
-  if(!value) throw Error();
+  if(!value) throw Error('Product not found');
   const products = await Promise.all(value.itensSold.map(async (product) => {
     const findItem = await ProductsModel.getById(product.productId);
     return { product: findItem, saleQuantity: product.quantity };

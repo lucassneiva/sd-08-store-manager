@@ -18,7 +18,7 @@ describe('Teste da camada model', () => {
     sinon.stub(MongoClient, 'connect').resolves(connectionMock);
   });
 
-  after(async () => {
+  after(() => {
     MongoClient.connect.restore();
   });
 
