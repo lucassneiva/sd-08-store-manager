@@ -51,7 +51,8 @@ function deleteProduct(id) {
   }
 };
 
-module.exports = { createProduct,
+module.exports = {
+  createProduct,
   findProduct,
   getAllProducts,
   getByID,
