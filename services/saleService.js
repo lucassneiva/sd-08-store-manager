@@ -2,7 +2,7 @@ const saleModel = require('../models/saleModel');
 
 const STATUS_ERROR_CLIENT = 422;
 
-// Req05
+// Req05 - Req07
 const quantityIsValid = async(salesArray) => {
   const quantityMin = 1;
   // const check2 = await salesArray.forEach((el) => console.log(el.quantity));
@@ -11,7 +11,7 @@ const quantityIsValid = async(salesArray) => {
   return check;
 };
 
-// Req05
+// Req05 - Req07
 const saleQuatityCheck = async(req, res, next) => {
   const salesArray = req.body;
   const quantityCheck = await quantityIsValid(salesArray);

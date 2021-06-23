@@ -16,7 +16,7 @@ router.post('/', saleQuatityCheck, async(req, res)=> {
     const salesArray = req.body;
     // console.log(salesArray);
     const newSale = await saleModel.addNewSale(salesArray);
-    console.log(newSale);
+    // console.log(newSale);
     res.status(STATUS_OK).json(newSale);
   } catch (error) {
     console.log(erro.message);
@@ -56,6 +56,18 @@ router.get('/', async (req, res) => {
 });
 
 // Req07
+router.put('/:id', saleQuatityCheck, async(req, res) =>{
+  try {
+    const { id } = req.params;
+    const saleUpdate = req.body;
+    const saleUpdated = await saleModel.updateIdSale(id, saleUpdate);
+    // console.log(saleUpdated);
+    res.status(STATUS_OK).json(saleUpdated);
+  } catch (error) {
+    console.log(erro.message);
+    res.status(STATUS_ERRO).send(messageErrorServer);
+  }
+} );
 
 // Req08
 router.delete('/:id', idRemoveCheck, async(req, res) =>{
@@ -68,6 +80,5 @@ router.delete('/:id', idRemoveCheck, async(req, res) =>{
     res.status(STATUS_ERRO).send(messageErrorServer);
   }
 } );
-
 
 module.exports = router;
