@@ -18,3 +18,4 @@ app.listen(PORT, () => console.log('Server is running'));
 app.post('/products', productsController.registerProduct);
 app.get('/products', productsController.listProducts);
 app.get('/products/:id', productsController.listProducts);
+app.post('/products/:id', productsController.updateProduct);
