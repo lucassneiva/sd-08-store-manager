@@ -59,8 +59,8 @@ router.get('/', getAllSalesController );
 
 const getSaleByIdController = async (req, res ) => {
   const { id } = req.params;
-
-  if ( !ObjectId.isValid(id)) {
+  const IDLENGTH = 24;
+  if ( id.length !== IDLENGTH) {
     return res.status(STATUS_404).json(
       {
         'err': {
@@ -103,7 +103,7 @@ const deleteSaleController = async (req, res) => {
     return res.status(STATUS_404)
       .json({ err: { code: 'not_found', message: 'Sale not found' }});
   }
-  const deleted = await deleteSaleById(id);
+  await deleteSaleById(id);
   const { itensSold } = sale;
   const { productId, quantity } = itensSold[0];
   const ops = await getByID(productId);
