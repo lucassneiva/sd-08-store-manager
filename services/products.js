@@ -86,8 +86,16 @@ const update = async (id, name, quantity) => {
   return { status: 200, response: { _id: id, name, quantity } };
 };
 
+const deleteProduct = async (id) => {
+  const deleted = await Products.deleteProduct(id);
+  if (!deleted) return PRODUCTS_NOT_FOUND;
+
+  return { status: 200, response: { deleted } };
+};
+
 module.exports = {
   create,
   list,
-  update
+  update,
+  deleteProduct
 };

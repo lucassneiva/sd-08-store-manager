@@ -47,9 +47,29 @@ const update = async (_id, name, quantity) => {
   return updateProducts;
 };
 
+const deleteProduct = async (_id) => {
+  try {
+    const connection = connect();
+
+    const checkProduct = await connection.collection('products').findOne({
+      _id: ObjectId(_id)
+    });
+    if (!checkProduct) return;
+
+    const deleteOne = await connection.collection('products').deleteOne({
+      _id: ObjectId(_id)
+    });
+    if (deleteOne.deleteCount !== 1) return;
+    return deleteOne;
+  } catch (err) {
+    return;
+  }
+};
+
 module.exports = {
   findByName,
   create,
   list,
-  update
+  update,
+  deleteProduct
 };
