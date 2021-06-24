@@ -28,7 +28,7 @@ const STATUS_200 = 200;
 const STATUS_404 = 404;
 const STATUS_422 = 422;
 
-router.post('/', checkSalesCadastre, async (req, res) => {
+const insertSaleController = async (req, res) => {
   const sales  = req.body;
   const log = await insertSales(sales);
   const { itensSold } = log;
@@ -46,14 +46,18 @@ router.post('/', checkSalesCadastre, async (req, res) => {
   }
   await updateProductOnSale(productId , ops.quantity - quantity );
   res.status(STATUS_200).json(log);
-});
+};
 
-router.get('/', async (req, res) => {
+router.post('/', checkSalesCadastre, insertSaleController );
+
+const getAllSalesController = async (req, res) => {
   const allSales = await getAllSales();
   res.status(STATUS_200).json({ sales: allSales});
-});
+};
 
-router.get('/:id', async (req, res) => {
+router.get('/', getAllSalesController );
+
+const getSaleByIdController = async (req, res ) => {
   const { id } = req.params;
 
   if ( !ObjectId.isValid(id)) {
@@ -73,17 +77,21 @@ router.get('/:id', async (req, res) => {
       .json({ err: { code: 'not_found', message: 'Sale not found' }});
   }
   res.status(STATUS_200).json(salesByID);
-});
+};
 
-router.put('/:id',checkSalesCadastre , async (req, res) => {
+router.get('/:id', getSaleByIdController );
+
+const updateSaleController = async (req, res) => {
   const { productId, quantity } = req.body[0];
   const { id } = req.params;
   updateSale(id, productId, quantity );
   const sale = await getSaleByID(id);
   res.status(STATUS_200).send(sale);
-});
+};
 
-router.delete('/:id', async (req, res) => {
+router.put('/:id',checkSalesCadastre , updateSaleController );
+
+const deleteSaleController = async (req, res) => {
   const { id } = req.params;
   const IDLENGTH = 24;
   if(id.length !== IDLENGTH) {
@@ -101,6 +109,14 @@ router.delete('/:id', async (req, res) => {
   const ops = await getByID(productId);
   await updateProductOnSale(productId , ops.quantity + quantity );
   return res.status(STATUS_200).json(sale);
-});
+};
 
-module.exports = router;
+router.delete('/:id', deleteSaleController );
+
+module.exports = { router,
+  insertSaleController,
+  getAllSalesController,
+  getSaleByIdController,
+  updateSaleController,
+  deleteSaleController,
+};
