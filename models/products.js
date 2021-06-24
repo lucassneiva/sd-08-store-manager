@@ -18,7 +18,25 @@ const create = async (name, quantity) => {
   return newProduct.ops[0];
 };
 
+const list = async (_id) => {
+  const connection = connect();
+  if (_id) {
+    try {
+      const find = await connection.collection('products').findOne({
+        _id: ObjectId(_id)
+      });
+      return find;
+    } catch (err) {
+      return;
+    }
+  }
+  const productsList = await connection.collection('products').find().toArray();
+
+  return productsList;
+};
+
 module.exports = {
   findByName,
-  create
+  create,
+  list
 };

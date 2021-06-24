@@ -12,7 +12,6 @@ const INVALID_NAME = {
     }
   }
 };
-
 const ALREADY_EXISTS = {
   status: 422,
   response: {
@@ -22,7 +21,6 @@ const ALREADY_EXISTS = {
     }
   }
 };
-
 const INVALID_QUANTITY_TYPE = {
   status: 422,
   response: {
@@ -32,7 +30,6 @@ const INVALID_QUANTITY_TYPE = {
     }
   }
 };
-
 const INVALID_QUANTITY = {
   status: 422,
   response: {
@@ -42,8 +39,17 @@ const INVALID_QUANTITY = {
     }
   }
 };
+const PRODUCTS_NOT_FOUND = {
+  status: 422,
+  response: {
+    err: {
+      code: 'invalid_data',
+      message: 'Wrong id format',
+    }
+  }
+};
 
-const validateBody = (name, quantity) => {
+const validateBody = async (name, quantity) => {
   if (name.length < MIN_CHARACTERS) return INVALID_NAME;
   if (typeof quantity !== 'number') return INVALID_QUANTITY_TYPE;
   if (quantity < MIN_QUANTITY) return INVALID_QUANTITY;
@@ -62,6 +68,16 @@ const create = async (name, quantity) => {
   return { status: 201, response: newProduct };
 };
 
+const list = async (id) => {
+  const products = await Products.list(id);
+  if (!products) return PRODUCTS_NOT_FOUND;
+
+  if (id) return { status: 200, response: products };
+
+  return { status: 200, response: { products } };
+};
+
 module.exports = {
-  create
+  create,
+  list
 };
