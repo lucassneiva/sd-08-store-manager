@@ -1,5 +1,5 @@
 const productService = require('../../services/productService');
-// const salesService = require('../../services/salesService');
+const salesService = require('../../services/salesService');
 const sinon = require('sinon');
 const { expect } = require('chai');
 const { MongoClient } = require('mongodb');
@@ -9,6 +9,7 @@ const product3 = { name: 'p3', quantity: 3 };
 const product4 = { name: 'p4', quantity: 4 };
 let id3;
 let id4;
+let saleId;
 
 // before(async () => {
 //   const DBServer = new MongoMemoryServer();
@@ -192,6 +193,104 @@ describe('[Service] Remove um produto', () => {
     it('o produto foi removido', async () => {
       const product = await productService.getProductById(id3);
       expect(product).to.be.null;
+    });
+  });
+});
+
+describe('[Service] Cria uma venda', () => {
+  describe('quando a venda é criada com sucesso', () => {
+    let createdSale;
+    it('retorna um objeto', async () => {
+      const sales = [{ productId: id4, quantity: 40 }];
+      createdSale = await salesService.create(sales);
+      saleId = createdSale['_id'];
+      expect(createdSale).to.be.an('object');
+    });
+
+    it('o objeto possui os atributos: _id e itensSold', () => {
+      expect(createdSale).to.have.property('_id');
+      expect(createdSale).to.have.property('itensSold');
+    });
+  });
+});
+
+describe('[Service] Busca todas as vendas', () => {
+  describe('quando ao menos uma venda é encontrada', () => {
+    let allSales;
+    it('retorna um objeto', async () => {
+      allSales = await salesService.getAllSales();
+      expect(allSales).to.be.an.an('object');
+    });
+
+    it('o objeto possui o atributo sales', () => {
+      expect(allSales).to.have.property('sales');
+    });
+
+    it('o atributo sales é um array', () => {
+      expect(allSales.sales).to.be.an('array');
+    });
+
+    it('os elementos do array sales possuem os atributos: _id e itensSold', () => {
+      expect(allSales.sales[0]).to.have.property('_id');
+      expect(allSales.sales[0]).to.have.property('itensSold');
+    });
+  });
+});
+
+describe('[Service] Busca uma venda pelo id', () => {
+  describe('quando a venda é encontrada com sucesso', () => {
+    let sale;
+    it('retorna um objeto', async () => {
+      sale = await salesService.getSaleById(saleId);
+      expect(sale).to.be.an('object');
+    });
+
+    it('o objeto possui os atributos: _id e itensSold', () => {
+      expect(sale).to.have.property('_id');
+      expect(sale).to.have.property('itensSold');
+    });
+  });
+
+  describe('quando a venda não é encontrada', () => {
+    it('retorna null', async () => {
+      const sale = await salesService.getSaleById('9999999');
+      expect(sale).to.be.null;
+    });
+  });
+});
+
+describe('[Service] Atualiza uma venda', () => {
+  describe('quando a venda é atualizada com sucesso', () => {
+    let updatedSale;
+    let quantity;
+    it('retorna um objeto', async () => {
+      quantity = 400;
+      const data = [{ productId: id4, quantity }];
+      updatedSale = await salesService.updateSale(saleId, data);
+      expect(updatedSale).to.be.an('object');
+    });
+
+    it('o objeto possui os atributos: _id e itensSold', () => {
+      expect(updatedSale).to.have.property('_id');
+      expect(updatedSale).to.have.property('itensSold');
+    });
+
+    it('a venda foi atualizada', () => {
+      expect(updatedSale.itensSold[0].quantity).to.be.equals(400);
+    });
+  });
+});
+
+describe('[Service] Remove uma venda', () => {
+  describe('quando a venda é removida com sucesso', () => {
+    it('retorna um objeto', async () => {
+      const deletedSale = await salesService.deleteSale(saleId);
+      expect(deletedSale).to.be.an('object');
+    });
+
+    it('a venda foi removida', async () => {
+      const sale = await salesService.getSaleById(saleId);
+      expect(sale).to.be.null;
     });
   });
 });
