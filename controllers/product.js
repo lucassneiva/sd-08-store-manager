@@ -12,13 +12,24 @@ const create = async (req, res, next) => {
   res.status(CREATED).json(otherProduct);
 };
 
-const getAll = async (req, res, next) => {
+const getById = async (req, res, next) => {
+  const { id } = req.params;
+
+  const product = await Product.getById(id);
+
+  if (product.error) return next(product);
+
+  res.status(status).json(product);
+};
+
+const getAll = async (_req, res) => {
   const all = await Product.getAll();
 
-  res.status(status).json(all);
+  res.status(status).json({ products: all });
 };
 
 module.exports = {
   create,
-  getAll
+  getAll,
+  getById,
 };
