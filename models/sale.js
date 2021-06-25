@@ -27,14 +27,14 @@ const getById = async (id) => {
   return sale;
 };
 
-const update = async (id, name) =>  {
+const update = async (id, item) =>  {
   if (!ObjectId.isValid(id)) return null;
 
   const db = await connection();
   const updateSale = await db.collection('sales')
     .findOneAndUpdate(
       { _id: ObjectId(id) },
-      { $set: { itensSold: name } }, 
+      { $set: { itensSold: item } }, 
       { returnOriginal: false}
     );
 

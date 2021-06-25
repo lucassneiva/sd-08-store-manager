@@ -1,7 +1,7 @@
 const Joi = require('@hapi/joi');
 
 const Sale = require('../models/sale');
-
+const qtt = require('../models/product');
 
 const valid = Joi.array().items({
   productId: Joi.string().required(),
@@ -19,7 +19,21 @@ const create = async (items) => {
     };
   };
 
-  const otherSale = Sale.create(items);
+  const { productId } = items[0];
+  const { name, quantity } = await qtt.getById(productId);
+  const itemqtt = quantity - items[0].quantity;
+  const zero = 0;
+
+  if (itemqtt < zero) {
+    return {
+      status: 404,
+      code: 'stock_problem',
+      error: { message: 'Such amount is not permitted to sell' }
+    };
+  }
+
+  await qtt.update(productId, name, itemqtt);
+  const otherSale = await Sale.create(items);
 
   return otherSale;
 };
@@ -69,6 +83,11 @@ const deleteById = async (id) => {
       code: 'invalid_data',
       error: { message: 'Wrong sale ID format' } };
   };
+
+  const { productId, quantity } = deletedSale.itensSold[0];
+  const product = await qtt.getById(productId);
+  const itemQuantity = product.quantity + quantity;
+  await qtt.update(productId, product.name, itemQuantity);
 
   return deletedSale;
 };
