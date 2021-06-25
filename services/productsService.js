@@ -1,6 +1,5 @@
 const productsModel = require('../models/productsModel');
 const schemaProducts = require('../schema/schemaProducts');
-const code = 422;
 
 const validateProducts = [
   async(req, res, next) => {
@@ -31,6 +30,8 @@ const validateProducts = [
     next();
   }
 ];
+
+
 
 module.exports = {
   validateProducts,
