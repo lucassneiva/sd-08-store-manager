@@ -46,15 +46,13 @@ const update = async (id, name, quantity) =>  {
 };
 
 const deleteById = async (id) => {
-  try {
-    const product = await connection().then((db) =>
-      db.collection('products').deleteOne({_id: ObjectId(id)}),
-    );
-    console.log(product);
-    return product;
-  } catch (error) {
-    return null;
-  }
+  if (!ObjectId.isValid(id)) return null;
+
+  const deletedProduct = await getById(id);
+  const db = await connection();
+  await db.collection('products').deleteOne({ _id: ObjectId(id) });
+
+  return deletedProduct;
 };
 
 module.exports = {

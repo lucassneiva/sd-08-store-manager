@@ -8,12 +8,15 @@ const valid = Joi.array().items({
   quantity: Joi.number().min(1).required()
 });
 
+const statusErro = 422;
+const notFound = 404;
+
 const create = async (items) => {
   const { error } = valid.validate(items);
 
   if (error) { 
     return {
-      status: 422,
+      status: statusErro,
       code: 'invalid_data',
       error: { message: 'Wrong product ID or invalid quantity' }
     };
@@ -26,7 +29,7 @@ const create = async (items) => {
 
   if (itemqtt < zero) {
     return {
-      status: 404,
+      status: notFound,
       code: 'stock_problem',
       error: { message: 'Such amount is not permitted to sell' }
     };
@@ -49,7 +52,7 @@ const getById = async (id) => {
 
   if (!sale) {
     return {
-      status: 404,
+      status: notFound,
       code: 'not_found',
       error: { message: 'Sale not found' }
     };
@@ -63,7 +66,7 @@ const update = async(id, name) => {
 
   if (error) { 
     return {
-      status: 422,
+      status: statusErro,
       code: 'invalid_data',
       error: { message: 'Wrong product ID or invalid quantity' }};
   };
@@ -79,7 +82,7 @@ const deleteById = async (id) => {
 
   if (!result) { 
     return {
-      status: 422,
+      status: statusErro,
       code: 'invalid_data',
       error: { message: 'Wrong sale ID format' } };
   };

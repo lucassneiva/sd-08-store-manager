@@ -44,15 +44,13 @@ const update = async (id, item) =>  {
 };
 
 const deleteById = async (id) => {
-  try {
-    const sale = await connection().then((db) =>
-      db.collection('sales').deleteOne({_id: ObjectId(id)}),
-    );
-    console.log(sale);
-    return sale;
-  } catch (error) {
-    return null;
-  }
+  if (!ObjectId.isValid(id)) return null;
+
+  const sale = await getById(id);
+  const db = await connection();
+  await db.collection('sales').deleteOne({ _id: ObjectId(id) });
+
+  return sale;
 };
 
 module.exports = {

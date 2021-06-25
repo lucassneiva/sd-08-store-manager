@@ -8,11 +8,13 @@ const valid = Joi.object({
   quantity: Joi.number().min(1).required(),
 });
 
+const statusErro = 422;
+
 const create = async (name, quantity) => {
   const { error } = valid.validate({ name, quantity });
 
   if (error) { 
-    return {status: 422, code: 'invalid_data', error};
+    return {status: statusErro, code: 'invalid_data', error};
   };
 
   const all = await getAll();
@@ -20,7 +22,9 @@ const create = async (name, quantity) => {
 
   if (exists) {
     return {
-      status: 422, code: 'invalid_data', error: { message: 'Product already exists' }
+      status: statusErro,
+      code: 'invalid_data',
+      error: { message: 'Product already exists' }
     };
   }
 
@@ -40,7 +44,7 @@ const getById = async (id) => {
 
   if (!product) {
     return {
-      status: 422, code: 'invalid_data', error: { message: 'Wrong id format' }
+      status: statusErro, code: 'invalid_data', error: { message: 'Wrong id format' }
     };
   }
 
@@ -51,7 +55,7 @@ const update = async(id, name, quantity) => {
   const { error } = valid.validate({ name, quantity });
 
   if (error) { 
-    return {status: 422, code: 'invalid_data', error};
+    return {status: statusErro, code: 'invalid_data', error};
   };
 
   const updateProduct = await Product.update(id, name, quantity);
@@ -64,7 +68,9 @@ const deleteById = async (id) => {
   const result = await Product.deleteById(id);
 
   if (!result) { 
-    return {status: 422, code: 'invalid_data', error: { message: 'Wrong id format' } };
+    return {status: statusErro,
+      code: 'invalid_data',
+      error: { message: 'Wrong id format' } };
   };
 
   return deletedProduct;
