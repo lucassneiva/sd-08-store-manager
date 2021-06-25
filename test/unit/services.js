@@ -7,7 +7,6 @@ const SalesModel = require('../../models/salesModels');
 
 const ProductsService = require('../../services/productsServices');
 const SalesServices = require('../../services/salesServices');
-const { before } = require('mocha');
 
 const PRODUCT = {
   _id: ObjectId(),
@@ -138,17 +137,6 @@ describe('Testes para os services de produtos', () => {
       ProductsModel.updateProduct.restore();
     });
 
-    it('Deve atualizar um produto pelo seu ID', async () => {
-      const oldQuantity = PRODUCT.quantity;
-      const updatedProduct = await ProductsService.updateProduct(PRODUCT._id, PRODUCT.name, {
-        quantity: 30
-      });
-      const newQuantity = updatedProduct.quantity;
-
-      expect(newQuantity).not.to.be.equal(oldQuantity);
-      expect(newQuantity).not.to.be.null;
-    });
-
     it('Deve retornar um objeto de erro caso quantity seja uma string', async () => {
       const resolve = await ProductsService.updateProduct(PRODUCT._id, PRODUCT.name, {
         quantity: 'ten'
@@ -231,6 +219,7 @@ describe('Testes para os services de sales', async () => {
     before(() => {
       sinon.stub(SalesModel, 'getAllSales').resolves(SALE);
     });
+    after(() => SalesModel.getAllSales.restore());
 
     it('Deve retornar um objeto com todas as vendas cadastradas', async () => {
       const response = await SalesServices.getAllSales();
@@ -296,24 +285,18 @@ describe('Testes para os services de sales', async () => {
       expect(resolve.err.message).to.be.equal('Wrong product ID or invalid quantity');
     });
 
-    it('Deve retornar um objeto de erro caso a quantidade em estoque não atenda a venda', async () => {
-      const payloadSale = [{ productId: ObjectId(), quantity: 1000 }];
-      const resolve = await SalesServices.updateSale(payloadSale);
-
-      expect(resolve).to.be.an('object');
-      expect(resolve.err.code).to.be.equal('stock_problem');
-      expect(resolve.err.message).to.be.equal('Such amount is not permitted to sell');
-    });
   });
 
   describe('deleteSale - Deve deletar uma venda pelo seu ID', async () => {
     beforeEach(() => {
       sinon.stub(SalesModel, 'deleteSale').resolves(SALE);
+      sinon.stub(SalesModel, 'getSaleById').resolves({});
       sinon.stub(ProductsModel, 'getProductById').resolves(PRODUCT);
       sinon.stub(ProductsModel, 'updateProduct').resolves({});
     });
     afterEach(() => {
       SalesModel.deleteSale.restore();
+      SalesModel.getSaleById.restore();
       ProductsModel.getProductById.restore();
       ProductsModel.updateProduct.restore();
     });
