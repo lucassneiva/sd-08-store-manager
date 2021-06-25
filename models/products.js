@@ -3,7 +3,6 @@ const conn = require('./connections');
 
 const HTTP_STATUS_UNPROCESSABLE_ENTITY = 422;
 
-
 const addProductDB = async (name, quantity) => {
   const db = await conn();
   const product = await db.collection('products').insertOne({ name, quantity });
@@ -37,9 +36,22 @@ const getProductByIdDB = async (id) => {
   return product;
 };
 
+const editProductDB = async (id, name, quantity) => {
+  const db = await conn();
+
+  if (!ObjectId.isValid(id)) return null;
+
+  const newProduct = await db
+    .collection('products')
+    .updateOne({ _id: ObjectId(id)}, { $set: { name, quantity } });
+  const foundNew = await db.collection('products').findOne(ObjectId(id));
+  return foundNew;
+};
+
 module.exports = {
   addProductDB,
   getByNameDB,
   getAllProductsDB,
   getProductByIdDB,
+  editProductDB,
 };

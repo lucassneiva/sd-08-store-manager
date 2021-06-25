@@ -1,5 +1,5 @@
-const { addProduct } = require('../services/products');
-const { getAllProductsDB, getProductByIdDB } = require('../models/products');
+const productService = require('../services/products');
+const productModel = require('../models/products');
 
 const HTTP_STATUS_OK = 200;
 const HTTP_STATUS_CREATED = 201;
@@ -9,7 +9,7 @@ const postProduct = async (req, res) => {
   try {
     const { name, quantity } = req.body;
 
-    const result = await addProduct(name, quantity);
+    const result = await productService.addProduct(name, quantity);
 
     if(result.err) {
       const { status, ...rest } = result;
@@ -28,7 +28,7 @@ const postProduct = async (req, res) => {
 
 const getProducts = async (_req, res) => {
   try {
-    const products = await getAllProductsDB();
+    const products = await productModel.getAllProductsDB();
     return res
       .status(HTTP_STATUS_OK)
       .send(products);
@@ -42,7 +42,7 @@ const getProducts = async (_req, res) => {
 
 const getProductById = async (req, res) => {
   try {
-    const product = await getProductByIdDB(req.params.id);
+    const product = await productModel.getProductByIdDB(req.params.id);
 
     if (product.err) {
       const { status, ...rest } = product;
@@ -60,8 +60,31 @@ const getProductById = async (req, res) => {
   }
 };
 
+const putProduct = async (req, res) => {
+  try {
+    const { name, quantity } = req.body;
+    const { id } = req.params;
+
+    const result = await productService.updateProduct(id, name, quantity);
+
+    if(result.err) {
+      const { status, ...rest } = result;
+      return res.status(status).send(rest);
+    }
+
+    return res
+      .status(HTTP_STATUS_OK)
+      .send(result);    
+  } catch (error) {
+    return res
+      .status(HTTP_STATUS_INTERNAL_SERVER_ERROR)
+      .send(err.message);
+  }
+};
+
 module.exports = {
   postProduct,
   getProducts,
   getProductById,
+  putProduct,
 };

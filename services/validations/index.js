@@ -1,21 +1,8 @@
-const { getByNameDB } = require('../../models/products');
-
 const MINIMUM_LENGTH = 5;
 const MINIMUM_QUANTITY = 1;
 const HTTP_STATUS_UNPROCESSABLE_ENTITY = 422;
 
 const validateName = async (name) => {
-  const productExists = await getByNameDB(name);
-
-  if (productExists)
-    return {
-      status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
-      err: {
-        code: 'invalid_data',
-        message: 'Product already exists',
-      },
-    };
-
   if (name.length < MINIMUM_LENGTH)
     return {
       status: HTTP_STATUS_UNPROCESSABLE_ENTITY,
