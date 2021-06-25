@@ -16,7 +16,7 @@ app.post('/products', controller.create);
 app.get('/products', controller.getAll);
 app.get('/products/:id', controller.getById);
 app.put('/products/:id', controller.update);
-
+app.delete('/products/:id', controller.deleteById);
 
 app.use(error);
 
