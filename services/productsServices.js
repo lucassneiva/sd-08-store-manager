@@ -29,11 +29,9 @@ const getProductById = async (id) => {
 const updateProduct = async (id, name, quantity) => {
   const nameValidation = Helper.nameValid(name);
   const quantityValidation = Helper.quantityValid(quantity);
-  const idValidation = Helper.idValid(id);
 
   if (nameValidation.err) return nameValidation;
   if (quantityValidation.err) return quantityValidation;
-  if (idValidation.err) return idValidation;
 
   const updatedProduct = await Products.updateProduct(id, name, quantity);
   return { _id: id, ...updatedProduct };
