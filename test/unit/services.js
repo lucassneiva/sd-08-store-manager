@@ -16,10 +16,10 @@ const PRODUCT = {
 
 const SALE = {
   _id: ObjectId(),
-  itensSold: {
+  itensSold: [{
     productId: ObjectId(),
     quantity: 100
-  }
+  }]
 };
 
 describe('Testes para os services de produtos', () => {
@@ -290,7 +290,7 @@ describe('Testes para os services de sales', async () => {
   describe('deleteSale - Deve deletar uma venda pelo seu ID', async () => {
     beforeEach(() => {
       sinon.stub(SalesModel, 'deleteSale').resolves(SALE);
-      sinon.stub(SalesModel, 'getSaleById').resolves({});
+      sinon.stub(SalesModel, 'getSaleById').resolves(SALE);
       sinon.stub(ProductsModel, 'getProductById').resolves(PRODUCT);
       sinon.stub(ProductsModel, 'updateProduct').resolves({});
     });
@@ -301,7 +301,7 @@ describe('Testes para os services de sales', async () => {
       ProductsModel.updateProduct.restore();
     });
 
-    it('Deve deletar um venda pelo ID e retornar um objeto o item deletado', async () => {
+    it('Deve deletar um venda pelo ID e retornar um objeto com o item deletado', async () => {
       const saleId = SALE._id;
       const response = await SalesServices.deleteSale(saleId);
 

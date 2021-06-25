@@ -101,6 +101,7 @@ const deleteSale = async (id) => {
   }
 
   const deletedSale = await Sales.deleteSale(id);
+  console.log('Testando delete', deletedSale);
   if (!deletedSale) return wrongSaleId;
 
   return deletedSale;
